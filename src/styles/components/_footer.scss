@@ -1,88 +1,88 @@
 .footer {
-  color: $black;
+    color: $black;
 
-  // ====================
-  // General List Styles
-  // ====================
-  .footer__lists {
-    display: flex;
-    justify-content: space-between;
-    padding: 3vw 6vw 2vw;
-
-    @media (max-width: $mobile) {
-      flex-direction: column;
-      margin-bottom: 10vw;
-    }
-
-    .list {
-      width: 20vw;
-
-      @media (max-width: $mobile) {
-        width: 100%;
-      }
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
-
-      li {
-        margin-bottom: 1vw;
+    // ====================
+    // General List Styles
+    // ====================
+    .footer__lists {
+        display: flex;
+        justify-content: space-between;
+        padding: 3vw 6vw 2vw;
 
         @media (max-width: $mobile) {
-          margin-bottom: 3.4vw;
+            flex-direction: column;
+            margin-bottom: 10vw;
         }
 
-        p {
-          margin: 0;
-          margin-bottom: 0.2vw;
+        .list {
+            width: 20vw;
 
-          @media (max-width: $mobile) {
-            margin-bottom: 1vw;
-          }
+            @media (max-width: $mobile) {
+                width: 100%;
+            }
         }
-      }
+
+        ul {
+            list-style: none;
+            padding: 0;
+
+            li {
+                margin-bottom: 1vw;
+
+                @media (max-width: $mobile) {
+                    margin-bottom: 3.4vw;
+                }
+
+                p {
+                    margin: 0;
+                    margin-bottom: 0.2vw;
+
+                    @media (max-width: $mobile) {
+                        margin-bottom: 1vw;
+                    }
+                }
+            }
+        }
+
+        // =====================
+        // Specific List Styles
+        // =====================
+        .site {
+            text-align: center;
+        }
+
+        .social {
+            text-align: right;
+        }
+
+        .contact,
+        .site,
+        .social {
+            @media (max-width: $mobile) {
+                text-align: center;
+            }
+        }
     }
 
-    // =====================
-    // Specific List Styles
-    // =====================
-    .site {
-      text-align: center;
+    .footer__scroll-to-top {
+        display: flex;
+        justify-content: center;
+        padding-bottom: 3vw;
+
+        @media (max-width: $tablet) {
+            transform: scale(0.9);
+        }
+
+        @media (max-width: $mobile) {
+            padding-bottom: 10vw;
+        }
+
+        svg {
+            cursor: pointer;
+        }
     }
 
-    .social {
-      text-align: right;
+    &--light {
+        color: $white;
     }
-
-    .contact,
-    .site,
-    .social {
-      @media (max-width: $mobile) {
-        text-align: center;
-      }
-    }
-  }
-
-  .footer__scroll-to-top {
-    display: flex;
-    justify-content: center;
-    padding-bottom: 3vw;
-
-    @media (max-width: $tablet) {
-      transform: scale(0.9);
-    }
-
-    @media (max-width: $mobile) {
-      padding-bottom: 10vw;
-    }
-
-    svg {
-      cursor: pointer;
-    }
-  }
-
-  &--light {
-    color: $white;
-  }
 }

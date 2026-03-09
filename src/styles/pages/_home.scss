@@ -1,65 +1,65 @@
 .home__mobile-cover {
-  display: none;
-  justify-content: center;
-  align-items: center;
-  color: $black;
-  font-weight: 300;
-  font-size: 4vw;
-  text-align: center;
-  height: 50vh;
-  height: calc(var(--vh, 1vh) * 50);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    color: $black;
+    font-weight: 300;
+    font-size: 4vw;
+    text-align: center;
+    height: 50vh;
+    height: calc(var(--vh, 1vh) * 50);
 
-  @media (max-width: $mobile) {
-    display: flex;
-  }
+    @media (max-width: $mobile) {
+        display: flex;
+    }
 }
 
 .home__statement {
-  padding: 19vw 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+    padding: 19vw 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 
-  @media (max-width: $mobile) {
-    display: none;
-  }
+    @media (max-width: $mobile) {
+        display: none;
+    }
 
-  span {
-    font-family: $displayFont;
-    margin-bottom: 0.6vw;
-    color: $black;
-  }
+    span {
+        font-family: $displayFont;
+        margin-bottom: 0.6vw;
+        color: $black;
+    }
 }
 
 .home__covid-notice {
-  padding: 8vw 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-
-  @media (max-width: $mobile) {
-    padding: 20vw 0;
-  }
-
-  span {
-    margin-bottom: 2vw;
-    color: $black;
-  }
-
-  p {
-    max-width: 40vw;
-    margin: 1vw 0;
-
-    @media (max-width: $tablet) {
-      max-width: 50vw;
-    }
+    padding: 8vw 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 
     @media (max-width: $mobile) {
-      max-width: 85vw;
-      margin: 2vw 0;
+        padding: 20vw 0;
     }
-  }
+
+    span {
+        margin-bottom: 2vw;
+        color: $black;
+    }
+
+    p {
+        max-width: 40vw;
+        margin: 1vw 0;
+
+        @media (max-width: $tablet) {
+            max-width: 50vw;
+        }
+
+        @media (max-width: $mobile) {
+            max-width: 85vw;
+            margin: 2vw 0;
+        }
+    }
 }

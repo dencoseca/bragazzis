@@ -24,38 +24,38 @@
 // ===============
 body,
 html {
-  font-family: $textFont;
-  /* Adjust font size */
-  font-size: 100%;
-  -webkit-text-size-adjust: 100%;
-  /* Font varient */
-  font-variant-ligatures: none;
-  -webkit-font-variant-ligatures: none;
-  /* Smoothing */
-  text-rendering: optimizeLegibility;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  color: $black;
-  width: 100%;
-  margin: 0px;
-  padding: 0px;
-  overflow-x: hidden;
-  overscroll-behavior: none;
+    font-family: $textFont;
+    /* Adjust font size */
+    font-size: 100%;
+    -webkit-text-size-adjust: 100%;
+    /* Font varient */
+    font-variant-ligatures: none;
+    -webkit-font-variant-ligatures: none;
+    /* Smoothing */
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    color: $black;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden;
+    overscroll-behavior: none;
 }
 /* Hide scrollbar for Chrome, Safari and Opera */
 ::-webkit-scrollbar {
-  display: none;
-  /* Hide scrollbar for IE, Edge and Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+    display: none;
+    /* Hide scrollbar for IE, Edge and Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
 }
 // Prevent flashing by making 'main' element hidden until after page is loaded
 main {
-  visibility: hidden;
+    visibility: hidden;
 }
 .visible {
-  visibility: visible;
+    visibility: visible;
 }
 .unscrollable {
-  overflow: hidden;
+    overflow: hidden;
 }

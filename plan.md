@@ -58,9 +58,9 @@ This plan is divided into phases to be executed sequentially. To track progress,
 - [x] Migrate `ilgiorno.js` content to `src/pages/IlGiorno.tsx`.
 - [x] Convert all sub-components (`Cover`, `FloatingItems`, `FullWidthBanner`, etc.) to TSX using path aliases and CSS Modules.
 
-### Phase 5: Optimization & Verification [ ]
+### Phase 5: Optimization & Verification [x]
 
-- [ ] Configure `vite-plugin-image-optimizer` for final build settings.
-- [ ] Run `eslint --fix` and `prettier --write` to ensure code quality and consistency.
-- [ ] Verify responsiveness at the original breakpoints (760px and 1080px).
-- [ ] Execute `pnpm build` and preview the static site in the `dist` folder to ensure animations and styles are preserved.
+- [x] Configure `vite-plugin-image-optimizer` for final build settings.
+- [x] Run `eslint --fix` and `prettier --write` to ensure code quality and consistency.
+- [x] Verify responsiveness at the original breakpoints (760px and 1080px).
+- [x] Execute `pnpm build` and preview the static site in the `dist` folder to ensure animations and styles are preserved.
