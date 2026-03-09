@@ -2,23 +2,23 @@
 // Imports
 // ===============
 // Reset
-@import "normalize";
+@use "normalize";
 // Variables
-@import "variables";
+@use "variables" as *;
 // Fonts
-@import "typography";
+@use "typography";
 // Components
-@import "components/cover";
-@import "components/floatingItems";
-@import "components/header";
-@import "components/footer";
-@import "components/fullWidthBanner";
-@import "components/menu";
+@use "components/cover";
+@use "components/floatingItems";
+@use "components/header";
+@use "components/footer";
+@use "components/fullWidthBanner";
+@use "components/menu";
 // Pages
-@import "pages/home";
-@import "pages/lastoria";
-@import "pages/ilgiorno";
-@import "pages/404";
+@use "pages/home";
+@use "pages/lastoria";
+@use "pages/ilgiorno";
+@use "pages/404" as page404;
 // ===============
 // General Styles
 // ===============

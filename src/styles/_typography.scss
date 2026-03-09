@@ -1,3 +1,4 @@
+@use "variables" as *;
 // ===============
 // Display
 // ===============
@@ -52,11 +53,6 @@
     font-weight: 700;
     font-display: swap;
 }
-// ===================
-// Set Variables
-// ===================
-$displayFont: "Abril Fatface", cursive;
-$textFont: "Josefin Sans", sans-serif;
 // ===================
 // Global text styles
 // ===================
