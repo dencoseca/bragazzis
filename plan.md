@@ -27,11 +27,11 @@ This plan is divided into phases to be executed sequentially. To track progress,
 
 - [x] Initialize a new Vite project in the root with the `react-ts` template.
 - [x] Configure `pnpm` as the package manager and enforce its use:
-  - Add `"packageManager": "pnpm@10.x.x"` to `package.json`.
-  - Add `"preinstall": "npx only-allow pnpm"` to `package.json` scripts.
+    - Add `"packageManager": "pnpm@10.x.x"` to `package.json`.
+    - Add `"preinstall": "npx only-allow pnpm"` to `package.json` scripts.
 - [x] Install dependencies:
-  - `sass`, `locomotive-scroll`, `motion`, `clsx`, `react-helmet-async`, `react-router-dom`.
-  - Dev dependencies: `eslint`, `prettier`, `vite-plugin-image-optimizer`, `vite-plugin-svgr`.
+    - `sass`, `locomotive-scroll`, `motion`, `clsx`, `react-helmet-async`, `react-router-dom`.
+    - Dev dependencies: `eslint`, `prettier`, `vite-plugin-image-optimizer`, `vite-plugin-svgr`.
 - [x] Configure `vite.config.ts` (image optimizer, svgr, path aliases).
 - [x] Configure `tsconfig.json` (strict type checking, path aliases `@/*`).
 - [x] Add `lint` (using `eslint --fix`) and `format` (using `prettier --write`) scripts to `package.json`.
