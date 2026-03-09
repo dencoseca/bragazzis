@@ -7,6 +7,10 @@
         top: 65%;
         width: 30vw;
 
+        img {
+            width: 100%;
+        }
+
         &.left {
             left: -5vw;
             transform: rotate(-25deg);
@@ -71,6 +75,11 @@
 .lastoria__image {
     margin: 0 auto;
     width: 50vw;
+
+    img {
+        width: 100%;
+        display: block;
+    }
 
     @media (max-width: $mobile) {
         width: 100vw;
