@@ -13,6 +13,12 @@
     @media (max-width: $mobile) {
         display: flex;
     }
+
+    .opening-hours {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
 }
 
 .home__statement {

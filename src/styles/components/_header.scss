@@ -107,6 +107,10 @@
 .header__mobile-menu-button {
     display: none;
     width: 30px;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
 
     @media (max-width: $mobile) {
         display: block;

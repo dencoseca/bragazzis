@@ -108,11 +108,11 @@ const Cover = memo(function Cover({
                     initial="initial"
                     animate="animate"
                 >
-                    <div className="opening-hours">
+                    <ul className="opening-hours">
                         {openingHours.map((line, index) => (
-                            <p key={index}>{line}</p>
+                            <li key={index}>{line}</li>
                         ))}
-                    </div>
+                    </ul>
                     <div className="address">
                         <a
                             href="https://goo.gl/maps/n4uLGJGtaqSjSfoo6"

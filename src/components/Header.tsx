@@ -90,7 +90,13 @@ const Header = memo(function Header({
                     Il Giorno
                 </Link>
             </nav>
-            <div className="header__mobile-menu-button" onClick={toggleMenu}>
+            <button
+                type="button"
+                className="header__mobile-menu-button"
+                onClick={toggleMenu}
+                aria-label="Toggle menu"
+                aria-expanded={menuIsOpen}
+            >
                 <motion.div
                     className="line"
                     initial="closed"
@@ -107,7 +113,7 @@ const Header = memo(function Header({
                     transition={smoothTransition}
                     style={{ backgroundColor: menuColor }}
                 />
-            </div>
+            </button>
         </div>
     );
 });

@@ -59,3 +59,26 @@ main {
 .unscrollable {
     overflow: hidden;
 }
+.skip-to-content {
+    position: absolute;
+    left: -9999px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    z-index: 10000;
+    padding: 1rem;
+    background: $black;
+    color: $white;
+    text-decoration: none;
+    font-size: 1rem;
+
+    &:focus {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: auto;
+        height: auto;
+        overflow: visible;
+    }
+}

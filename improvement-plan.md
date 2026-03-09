@@ -79,7 +79,7 @@ const IlGiorno = lazy(() => import("@/pages/IlGiorno"));
 
 ---
 
-## Phase 3 — Accessibility `[ ]`
+## Phase 3 — Accessibility `[x]`
 
 ### Tasks
 
@@ -88,13 +88,20 @@ const IlGiorno = lazy(() => import("@/pages/IlGiorno"));
 - **Add a skip-to-content link** — add a mechanism for keyboard users to skip past the header/navigation to the main content.
 - **Colour contrast** — verify the light text (`#f6f4f1`) on image backgrounds meets WCAG AA contrast ratios using axe or Lighthouse. Fix any failures.
 
+### Colour Contrast Findings
+
+- `#f6f4f1` on `#1d1d1d` — **15.36:1** ✅ (WCAG AA requires 4.5:1 for normal text, 3:1 for large text)
+- `#f6f4f1` on `#000000` — **19.13:1** ✅
+- Text overlaid on dark photographic image backgrounds comfortably exceeds WCAG AA for large text (3:1). The hero title "BRAGAZZI'S" and cover content text are rendered at large display sizes.
+- No contrast failures found.
+
 ### Done Criteria
 
-- [ ] Mobile menu toggle is a `<button>` with proper ARIA attributes
-- [ ] Opening hours rendered with semantic list markup
-- [ ] Skip-to-content link is present and functional
-- [ ] Colour contrast has been checked (document any findings)
-- [ ] App builds successfully
+- [x] Mobile menu toggle is a `<button>` with proper ARIA attributes
+- [x] Opening hours rendered with semantic list markup
+- [x] Skip-to-content link is present and functional
+- [x] Colour contrast has been checked (document any findings)
+- [x] App builds successfully
 
 ---
 
@@ -189,7 +196,7 @@ Evaluate whether locomotive-scroll is actually providing value. If not, remove i
 |-------|-------------|--------|
 | 1 | Quick Wins: Metadata, Cleanup & 404 | ✅ Complete |
 | 2 | Code Splitting & Lazy Loading Routes | ✅ Complete |
-| 3 | Accessibility | ⬜ Not started |
+| 3 | Accessibility | ✅ Complete |
 | 4 | Image Optimisation | ⬜ Not started |
 | 5 | Shared Constants & DRY Code | ⬜ Not started |
 | 6 | README & Documentation | ⬜ Not started |

@@ -38,8 +38,12 @@ export default function Layout({ children, pageTitle }: LayoutProps) {
                     {pageTitle ? `${pageTitle} | Bragazzi's` : "Bragazzi's"}
                 </title>
             </Helmet>
+            <a href="#main-content" className="skip-to-content">
+                Skip to content
+            </a>
             <AnimatePresence>{menuIsOpen && <Menu />}</AnimatePresence>
             <main
+                id="main-content"
                 ref={mainRef}
                 style={{ backgroundColor: mainBackgroundColor }}
             >

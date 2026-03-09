@@ -50,11 +50,11 @@ export default function Home() {
                 breakpoints={breakpoints}
             />
             <section className="home__mobile-cover" id="mobile-cover">
-                <div>
+                <ul className="opening-hours">
                     {openingHours.map((line, index) => (
-                        <p key={index}>{line}</p>
+                        <li key={index}>{line}</li>
                     ))}
-                </div>
+                </ul>
             </section>
             <section className="home__statement text--display" id="statement">
                 <span>Roam freely and find inspiration...</span>
