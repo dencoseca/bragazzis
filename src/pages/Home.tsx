@@ -20,11 +20,6 @@ export default function Home() {
     }));
 
     useEffect(() => {
-        const main = document.querySelector("main");
-        if (main) main.classList.add("visible");
-    }, []);
-
-    useEffect(() => {
         const vh = dimensions.height * 0.01;
         document.documentElement.style.setProperty("--vh", `${vh}px`);
 

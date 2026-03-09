@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { AnimatePresence } from "motion/react";
@@ -21,6 +21,12 @@ export default function Layout({ children, pageTitle }: LayoutProps) {
 
     useLocomotiveScroll();
 
+    const mainRef = useRef<HTMLElement>(null);
+
+    useEffect(() => {
+        if (mainRef.current) mainRef.current.classList.add("visible");
+    }, []);
+
     return (
         <>
             <Helmet>
@@ -29,7 +35,7 @@ export default function Layout({ children, pageTitle }: LayoutProps) {
                 </title>
             </Helmet>
             <AnimatePresence>{menuIsOpen && <Menu />}</AnimatePresence>
-            <main style={{ backgroundColor: mainBackgroundColor }}>
+            <main ref={mainRef} style={{ backgroundColor: mainBackgroundColor }}>
                 <Header menuIsOpen={menuIsOpen} setMenuIsOpen={setMenuIsOpen} />
                 {children}
                 <Footer />
