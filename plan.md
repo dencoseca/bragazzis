@@ -23,19 +23,21 @@ This document outlines the plan for migrating the existing Gatsby-based website 
 
 This plan is divided into phases to be executed sequentially. To track progress, mark tasks with `[x]` when complete.
 
-### Phase 1: Project Setup & Configuration [ ]
-- [ ] Initialize a new Vite project in the root with the `react-ts` template.
-- [ ] Configure `pnpm` as the package manager and enforce its use:
+### Phase 1: Project Setup & Configuration [x]
+
+- [x] Initialize a new Vite project in the root with the `react-ts` template.
+- [x] Configure `pnpm` as the package manager and enforce its use:
   - Add `"packageManager": "pnpm@10.x.x"` to `package.json`.
   - Add `"preinstall": "npx only-allow pnpm"` to `package.json` scripts.
-- [ ] Install dependencies:
+- [x] Install dependencies:
   - `sass`, `locomotive-scroll`, `motion`, `clsx`, `react-helmet-async`, `react-router-dom`.
   - Dev dependencies: `eslint`, `prettier`, `vite-plugin-image-optimizer`, `vite-plugin-svgr`.
-- [ ] Configure `vite.config.ts` (image optimizer, svgr, path aliases).
-- [ ] Configure `tsconfig.json` (strict type checking, path aliases `@/*`).
-- [ ] Add `lint` (using `eslint --fix`) and `format` (using `prettier --write`) scripts to `package.json`.
+- [x] Configure `vite.config.ts` (image optimizer, svgr, path aliases).
+- [x] Configure `tsconfig.json` (strict type checking, path aliases `@/*`).
+- [x] Add `lint` (using `eslint --fix`) and `format` (using `prettier --write`) scripts to `package.json`.
 
 ### Phase 2: Asset & Style Migration [ ]
+
 - [ ] Copy fonts from `bragazzis-gatsby/src/fonts` to `src/assets/fonts` and create global `@font-face` rules.
 - [ ] Copy images from `bragazzis-gatsby/src/images` to `src/assets/images`.
 - [ ] Copy SCSS files from `bragazzis-gatsby/src/styles` to `src/styles` and create `src/styles/main.scss`.
@@ -43,18 +45,21 @@ This plan is divided into phases to be executed sequentially. To track progress,
 - [ ] Ensure original breakpoints (760px, 1080px) are maintained in SCSS variables.
 
 ### Phase 3: Core Infrastructure & Shared Components [ ]
+
 - [ ] Implement `locomotive-scroll` within a custom hook or the main `App` component.
 - [ ] Create `Layout` component (including `Header`, `Footer`, `Menu`) in TSX.
 - [ ] Setup `react-router-dom` routing and `react-helmet-async` provider.
 - [ ] Create `src/constants/openingHours.ts` with hard-coded data (avoiding Google APIs).
 
 ### Phase 4: Page Migration (TSX) [ ]
+
 - [ ] Migrate `index.js` content to `src/pages/Home.tsx`.
 - [ ] Migrate `lastoria.js` content to `src/pages/LaStoria.tsx`.
 - [ ] Migrate `ilgiorno.js` content to `src/pages/IlGiorno.tsx`.
 - [ ] Convert all sub-components (`Cover`, `FloatingItems`, `FullWidthBanner`, etc.) to TSX using path aliases and CSS Modules.
 
 ### Phase 5: Optimization & Verification [ ]
+
 - [ ] Configure `vite-plugin-image-optimizer` for final build settings.
 - [ ] Run `eslint --fix` and `prettier --write` to ensure code quality and consistency.
 - [ ] Verify responsiveness at the original breakpoints (760px and 1080px).
