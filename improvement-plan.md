@@ -9,8 +9,6 @@
 
 ## Phase 1 — Quick Wins: Metadata, Cleanup & 404 Page `[ ]`
 
-_Priority: High–Medium · Effort: Low · Estimated scope: ~30 min_
-
 These are small, independent fixes that immediately improve the project's polish.
 
 ### 1a. Fix `index.html` Metadata
@@ -53,8 +51,6 @@ Create a `NotFound.tsx` page and add a catch-all route:
 
 ## Phase 2 — Code Splitting & Lazy Loading Routes `[ ]`
 
-_Priority: High · Effort: Low · Estimated scope: ~20 min_
-
 All three page components (`Home`, `LaStoria`, `IlGiorno`) are eagerly imported in `App.tsx`. Since each page imports many large images, this means every image for every page is included in the initial bundle.
 
 ### Tasks
@@ -85,8 +81,6 @@ const IlGiorno = lazy(() => import("@/pages/IlGiorno"));
 
 ## Phase 3 — Accessibility `[ ]`
 
-_Priority: Medium · Effort: Low · Estimated scope: ~30 min_
-
 ### Tasks
 
 - **`Header.tsx`** — the mobile menu toggle is a `<div onClick={...}>`. Replace with a `<button>` element with `aria-label="Toggle menu"` and `aria-expanded={menuIsOpen}` so screen readers and keyboard users can operate it.
@@ -105,8 +99,6 @@ _Priority: Medium · Effort: Low · Estimated scope: ~30 min_
 ---
 
 ## Phase 4 — Image Optimisation `[ ]`
-
-_Priority: High · Effort: Medium · Estimated scope: ~1 hr_
 
 The `src/assets/images/` directory contains 66 images, most of which are JPEGs between 1–2.4 MB each. Even with `vite-plugin-image-optimizer` compressing them at build time, they remain in JPEG format and are very large for a web project.
 
@@ -129,8 +121,6 @@ The `src/assets/images/` directory contains 66 images, most of which are JPEGs b
 
 ## Phase 5 — Shared Constants & DRY Code `[ ]`
 
-_Priority: Low · Effort: Low · Estimated scope: ~20 min_
-
 ### Tasks
 
 - **Extract `smoothTransition`** — it is defined separately in both `Cover.tsx` and `Header.tsx` with slightly different values. Extract into a shared animation constants file (e.g. `src/constants/animations.ts`) to keep motion config DRY.
@@ -145,8 +135,6 @@ _Priority: Low · Effort: Low · Estimated scope: ~20 min_
 ---
 
 ## Phase 6 — README & Documentation `[ ]`
-
-_Priority: Low · Effort: Low · Estimated scope: ~15 min_
 
 The `README.md` contains only the text "# bragazzis" — it provides no useful information.
 
@@ -168,8 +156,6 @@ Expand `README.md` to include:
 ---
 
 ## Phase 7 — Styling Organisation & Locomotive Scroll Evaluation `[ ]`
-
-_Priority: Low · Effort: Medium · Estimated scope: ~30 min_
 
 ### 7a. Co-locate or Consolidate Styling Approach
 
