@@ -1,0 +1,72 @@
+// ===============
+// Imports
+// ===============
+
+// Reset
+@import "normalize";
+
+// Variables
+@import "variables";
+
+// Fonts
+@import "typography";
+
+// Components
+@import "components/cover";
+@import "components/floatingItems";
+@import "components/header";
+@import "components/footer";
+@import "components/fullWidthBanner";
+@import "components/menu";
+
+// Pages
+@import "pages/home";
+@import "pages/lastoria";
+@import "pages/ilgiorno";
+@import "pages/404";
+
+// ===============
+// General Styles
+// ===============
+
+body,
+html {
+  font-family: $textFont;
+  /* Adjust font size */
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  /* Font varient */
+  font-variant-ligatures: none;
+  -webkit-font-variant-ligatures: none;
+  /* Smoothing */
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  color: $black;
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+  overflow-x: hidden;
+  overscroll-behavior: none;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+// Prevent flashing by making 'main' element hidden until after page is loaded
+main {
+  visibility: hidden;
+}
+
+.visible {
+  visibility: visible;
+}
+
+.unscrollable {
+  overflow: hidden;
+}
