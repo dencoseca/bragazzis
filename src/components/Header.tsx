@@ -1,3 +1,4 @@
+import { memo, useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, useAnimation } from "motion/react";
 
@@ -33,7 +34,10 @@ interface HeaderProps {
     setMenuIsOpen: (open: boolean) => void;
 }
 
-export default function Header({ menuIsOpen, setMenuIsOpen }: HeaderProps) {
+const Header = memo(function Header({
+    menuIsOpen,
+    setMenuIsOpen,
+}: HeaderProps) {
     const location = useLocation();
     const pageIsLastoria = location.pathname.includes("/lastoria");
 
@@ -43,7 +47,7 @@ export default function Header({ menuIsOpen, setMenuIsOpen }: HeaderProps) {
 
     const controls = useAnimation();
 
-    function toggleMenu() {
+    const toggleMenu = useCallback(() => {
         if (menuIsOpen) {
             setMenuIsOpen(false);
             controls.start("closed");
@@ -52,7 +56,7 @@ export default function Header({ menuIsOpen, setMenuIsOpen }: HeaderProps) {
             setMenuIsOpen(true);
             controls.start("open");
         }
-    }
+    }, [menuIsOpen, setMenuIsOpen, controls]);
 
     return (
         <div
@@ -86,10 +90,7 @@ export default function Header({ menuIsOpen, setMenuIsOpen }: HeaderProps) {
                     Il Giorno
                 </Link>
             </nav>
-            <div
-                className="header__mobile-menu-button"
-                onClick={() => toggleMenu()}
-            >
+            <div className="header__mobile-menu-button" onClick={toggleMenu}>
                 <motion.div
                     className="line"
                     initial="closed"
@@ -109,4 +110,6 @@ export default function Header({ menuIsOpen, setMenuIsOpen }: HeaderProps) {
             </div>
         </div>
     );
-}
+});
+
+export default Header;

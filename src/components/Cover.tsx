@@ -1,5 +1,8 @@
+import { memo, useCallback } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
 import parmesanImg from "@/assets/images/parmesan.jpg";
+
+const preventContextMenu = (e: React.MouseEvent) => e.preventDefault();
 
 interface CoverProps {
     openingHours: string[];
@@ -57,7 +60,7 @@ const titleVariants = {
     },
 };
 
-export default function Cover({
+const Cover = memo(function Cover({
     openingHours,
     dimensions: { width, vh },
     breakpoints: { mobile },
@@ -65,11 +68,11 @@ export default function Cover({
     const { scrollYProgress } = useScroll();
     const heroImageScroll = useTransform(scrollYProgress, [0, 1], [0, vh * 59]);
 
-    const handleScrollDown = () => {
+    const handleScrollDown = useCallback(() => {
         const targetId = width >= mobile ? "statement" : "mobile-cover";
         const target = document.getElementById(targetId);
         target?.scrollIntoView({ behavior: "smooth" });
-    };
+    }, [width, mobile]);
 
     return (
         <AnimatePresence>
@@ -95,7 +98,7 @@ export default function Cover({
                             className="cover__image"
                             src={parmesanImg}
                             alt="a busy Italian cafe"
-                            onContextMenu={(e) => e.preventDefault()}
+                            onContextMenu={preventContextMenu}
                         />
                     </motion.div>
                 </div>
@@ -149,4 +152,6 @@ export default function Cover({
             </div>
         </AnimatePresence>
     );
-}
+});
+
+export default Cover;

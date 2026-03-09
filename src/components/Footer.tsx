@@ -1,6 +1,7 @@
+import { memo, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 
-export default function Footer() {
+const Footer = memo(function Footer() {
     const location = useLocation();
     const pageIsIlgiorno = location.pathname.includes("/ilgiorno");
 
@@ -10,12 +11,12 @@ export default function Footer() {
         : "text--link-dark";
     const scrollToTopFillColor = pageIsIlgiorno ? "#f6f4f1" : "#1d1d1d";
 
-    function scrollToTop() {
+    const scrollToTop = useCallback(() => {
         window.scrollTo({
             top: 0,
             behavior: pageIsIlgiorno ? "auto" : "smooth",
         });
-    }
+    }, [pageIsIlgiorno]);
 
     return (
         <footer className={footerClassName}>
@@ -149,4 +150,6 @@ export default function Footer() {
             </div>
         </footer>
     );
-}
+});
+
+export default Footer;

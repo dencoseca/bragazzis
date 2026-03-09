@@ -1,12 +1,15 @@
+import { memo } from "react";
 import { AnimatePresence, motion, useScroll, useTransform } from "motion/react";
 import eggImg from "@/assets/images/egg.jpg";
+
+const preventContextMenu = (e: React.MouseEvent) => e.preventDefault();
 
 interface FullWidthBannerProps {
     dimensions: { width: number; vh: number };
     breakpoints: { mobile: number; tablet: number };
 }
 
-export default function FullWidthBanner({
+const FullWidthBanner = memo(function FullWidthBanner({
     dimensions: { width, vh },
     breakpoints: { mobile, tablet },
 }: FullWidthBannerProps) {
@@ -35,7 +38,8 @@ export default function FullWidthBanner({
                     className="full-width-banner__image"
                     src={eggImg}
                     alt="a gigantic italian chocolate easter egg"
-                    onContextMenu={(e) => e.preventDefault()}
+                    loading="lazy"
+                    onContextMenu={preventContextMenu}
                 />
                 <motion.article
                     className="full-width-banner__text"
@@ -69,4 +73,6 @@ export default function FullWidthBanner({
             </section>
         </AnimatePresence>
     );
-}
+});
+
+export default FullWidthBanner;

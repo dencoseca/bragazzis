@@ -20,25 +20,27 @@ export default function Home() {
     }));
 
     useEffect(() => {
-        const vh = dimensions.height * 0.01;
+        const vh = window.innerHeight * 0.01;
         document.documentElement.style.setProperty("--vh", `${vh}px`);
-
-        if (dimensions.width >= breakpoints.mobile) {
-            const debouncedHandleResize = debounce(function handleResize() {
-                setDimensions({
-                    height: window.innerHeight,
-                    width: window.innerWidth,
-                    vh: window.innerHeight / 100,
-                    vw: window.innerWidth / 100,
-                });
-            }, 1000);
-
-            window.addEventListener("resize", debouncedHandleResize);
-            return () => {
-                window.removeEventListener("resize", debouncedHandleResize);
-            };
-        }
     }, [dimensions]);
+
+    useEffect(() => {
+        if (window.innerWidth < breakpoints.mobile) return;
+
+        const debouncedHandleResize = debounce(function handleResize() {
+            setDimensions({
+                height: window.innerHeight,
+                width: window.innerWidth,
+                vh: window.innerHeight / 100,
+                vw: window.innerWidth / 100,
+            });
+        }, 1000);
+
+        window.addEventListener("resize", debouncedHandleResize);
+        return () => {
+            window.removeEventListener("resize", debouncedHandleResize);
+        };
+    }, []);
 
     return (
         <Layout pageTitle="Home">

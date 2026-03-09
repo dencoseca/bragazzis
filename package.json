@@ -10,7 +10,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint . --fix",
     "format": "prettier --write .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "clsx": "2.1.1",

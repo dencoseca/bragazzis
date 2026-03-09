@@ -1,15 +1,18 @@
+import { memo } from "react";
 import { AnimatePresence, motion, useScroll, useTransform } from "motion/react";
 import shelvesImg from "@/assets/images/shelves.jpg";
 import coffeePourImg from "@/assets/images/coffee-pour.jpg";
 import ciabattaImg from "@/assets/images/ciabatta.jpg";
 import shopChristmasImg from "@/assets/images/shop-christmas.jpg";
 
+const preventContextMenu = (e: React.MouseEvent) => e.preventDefault();
+
 interface FloatingItemsProps {
     dimensions: { width: number; vw: number };
     breakpoints: { mobile: number };
 }
 
-export default function FloatingItems({
+const FloatingItems = memo(function FloatingItems({
     dimensions: { width, vw },
     breakpoints: { mobile },
 }: FloatingItemsProps) {
@@ -30,7 +33,8 @@ export default function FloatingItems({
                         className="item__image"
                         src={shelvesImg}
                         alt="delicious focaccia sandwiches"
-                        onContextMenu={(e) => e.preventDefault()}
+                        loading="lazy"
+                        onContextMenu={preventContextMenu}
                     />
                     <div className="item__text">
                         <p className="text--md">
@@ -63,7 +67,8 @@ export default function FloatingItems({
                         className="item__image"
                         src={coffeePourImg}
                         alt="silky coffee being poured"
-                        onContextMenu={(e) => e.preventDefault()}
+                        loading="lazy"
+                        onContextMenu={preventContextMenu}
                     />
                     <div className="item__text">
                         <p className="text--md">
@@ -85,7 +90,8 @@ export default function FloatingItems({
                         className="item__image"
                         src={ciabattaImg}
                         alt="fresh salad being plated"
-                        onContextMenu={(e) => e.preventDefault()}
+                        loading="lazy"
+                        onContextMenu={preventContextMenu}
                     />
                     <div className="item__text">
                         <p className="text--md">
@@ -105,7 +111,8 @@ export default function FloatingItems({
                         className="item__image"
                         src={shopChristmasImg}
                         alt="a beautifully stocked italian dry goods shop"
-                        onContextMenu={(e) => e.preventDefault()}
+                        loading="lazy"
+                        onContextMenu={preventContextMenu}
                     />
                     <div className="item__text">
                         <p className="text--md">
@@ -122,4 +129,6 @@ export default function FloatingItems({
             </section>
         </AnimatePresence>
     );
-}
+});
+
+export default FloatingItems;

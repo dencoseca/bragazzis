@@ -49,6 +49,8 @@ import laughingJoeAndLeonImg from "@/assets/images/laughing-joe-and-leon.jpg";
 import leaningMatteoImg from "@/assets/images/leaning-matteo.jpg";
 import emptyCafeClosingImg from "@/assets/images/empty-cafe-closing.jpg";
 
+const preventContextMenu = (e: React.MouseEvent) => e.preventDefault();
+
 interface GalleryImage {
     src: string;
     alt: string;
@@ -245,7 +247,8 @@ export default function IlGiorno() {
                         className={`image ${image.sizeClass}`}
                         src={image.src}
                         alt={image.alt}
-                        onContextMenu={(e) => e.preventDefault()}
+                        loading="lazy"
+                        onContextMenu={preventContextMenu}
                     />
                 ))}
                 <div className="ilgiorno__caption ilgiorno__caption--chiuso text--display">

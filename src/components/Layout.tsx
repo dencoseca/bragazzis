@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { AnimatePresence } from "motion/react";
@@ -18,6 +18,10 @@ export default function Layout({ children, pageTitle }: LayoutProps) {
     const mainBackgroundColor = isPageIlgiorno ? "#1d1d1d" : "#fff";
 
     const [menuIsOpen, setMenuIsOpen] = useState(false);
+    const handleSetMenuIsOpen = useCallback(
+        (open: boolean) => setMenuIsOpen(open),
+        [],
+    );
 
     useLocomotiveScroll();
 
@@ -35,8 +39,14 @@ export default function Layout({ children, pageTitle }: LayoutProps) {
                 </title>
             </Helmet>
             <AnimatePresence>{menuIsOpen && <Menu />}</AnimatePresence>
-            <main ref={mainRef} style={{ backgroundColor: mainBackgroundColor }}>
-                <Header menuIsOpen={menuIsOpen} setMenuIsOpen={setMenuIsOpen} />
+            <main
+                ref={mainRef}
+                style={{ backgroundColor: mainBackgroundColor }}
+            >
+                <Header
+                    menuIsOpen={menuIsOpen}
+                    setMenuIsOpen={handleSetMenuIsOpen}
+                />
                 {children}
                 <Footer />
             </main>
