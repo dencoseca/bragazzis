@@ -49,7 +49,7 @@ Create a `NotFound.tsx` page and add a catch-all route:
 
 ---
 
-## Phase 2 — Code Splitting & Lazy Loading Routes `[ ]`
+## Phase 2 — Code Splitting & Lazy Loading Routes `[x]`
 
 All three page components (`Home`, `LaStoria`, `IlGiorno`) are eagerly imported in `App.tsx`. Since each page imports many large images, this means every image for every page is included in the initial bundle.
 
@@ -72,10 +72,10 @@ const IlGiorno = lazy(() => import("@/pages/IlGiorno"));
 
 ### Done Criteria
 
-- [ ] Page components are lazy-loaded via `React.lazy`
-- [ ] Routes are wrapped in `<Suspense>` with a fallback
-- [ ] Build output shows separate chunks per page
-- [ ] App builds and runs successfully
+- [x] Page components are lazy-loaded via `React.lazy`
+- [x] Routes are wrapped in `<Suspense>` with a fallback
+- [x] Build output shows separate chunks per page
+- [x] App builds and runs successfully
 
 ---
 
@@ -188,7 +188,7 @@ Evaluate whether locomotive-scroll is actually providing value. If not, remove i
 | Phase | Description | Status |
 |-------|-------------|--------|
 | 1 | Quick Wins: Metadata, Cleanup & 404 | ✅ Complete |
-| 2 | Code Splitting & Lazy Loading Routes | ⬜ Not started |
+| 2 | Code Splitting & Lazy Loading Routes | ✅ Complete |
 | 3 | Accessibility | ⬜ Not started |
 | 4 | Image Optimisation | ⬜ Not started |
 | 5 | Shared Constants & DRY Code | ⬜ Not started |
