@@ -7,7 +7,7 @@
 
 ---
 
-## Phase 1 — Quick Wins: Metadata, Cleanup & 404 Page `[ ]`
+## Phase 1 — Quick Wins: Metadata, Cleanup & 404 Page `[x]`
 
 These are small, independent fixes that immediately improve the project's polish.
 
@@ -42,10 +42,10 @@ Create a `NotFound.tsx` page and add a catch-all route:
 
 ### Done Criteria
 
-- [ ] `index.html` has correct title, meta description, OG tags, and favicon
-- [ ] All four unused files are deleted
-- [ ] A `NotFound` page exists and is rendered for unknown routes
-- [ ] App builds successfully (`pnpm build`)
+- [x] `index.html` has correct title, meta description, OG tags, and favicon
+- [x] All four unused files are deleted
+- [x] A `NotFound` page exists and is rendered for unknown routes
+- [x] App builds successfully (`pnpm build`)
 
 ---
 
@@ -187,7 +187,7 @@ Evaluate whether locomotive-scroll is actually providing value. If not, remove i
 
 | Phase | Description | Status |
 |-------|-------------|--------|
-| 1 | Quick Wins: Metadata, Cleanup & 404 | ⬜ Not started |
+| 1 | Quick Wins: Metadata, Cleanup & 404 | ✅ Complete |
 | 2 | Code Splitting & Lazy Loading Routes | ⬜ Not started |
 | 3 | Accessibility | ⬜ Not started |
 | 4 | Image Optimisation | ⬜ Not started |
