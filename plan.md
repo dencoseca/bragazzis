@@ -44,12 +44,12 @@ This plan is divided into phases to be executed sequentially. To track progress,
 - [x] Set up CSS Modules (`.module.scss`) for component-level styling to avoid collisions.
 - [x] Ensure original breakpoints (760px, 1080px) are maintained in SCSS variables.
 
-### Phase 3: Core Infrastructure & Shared Components [ ]
+### Phase 3: Core Infrastructure & Shared Components [x]
 
-- [ ] Implement `locomotive-scroll` within a custom hook or the main `App` component.
-- [ ] Create `Layout` component (including `Header`, `Footer`, `Menu`) in TSX.
-- [ ] Setup `react-router-dom` routing and `react-helmet-async` provider.
-- [ ] Create `src/constants/openingHours.ts` with hard-coded data (avoiding Google APIs).
+- [x] Implement `locomotive-scroll` within a custom hook or the main `App` component.
+- [x] Create `Layout` component (including `Header`, `Footer`, `Menu`) in TSX.
+- [x] Setup `react-router-dom` routing and `react-helmet-async` provider.
+- [x] Create `src/constants/openingHours.ts` with hard-coded data (avoiding Google APIs).
 
 ### Phase 4: Page Migration (TSX) [ ]
 
