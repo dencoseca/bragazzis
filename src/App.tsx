@@ -1,20 +1,14 @@
 import { Routes, Route } from 'react-router-dom'
-import Layout from '@/components/Layout'
-
-function Placeholder({ title }: { title: string }) {
-  return (
-    <Layout pageTitle={title}>
-      <div />
-    </Layout>
-  )
-}
+import Home from '@/pages/Home'
+import LaStoria from '@/pages/LaStoria'
+import IlGiorno from '@/pages/IlGiorno'
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Placeholder title="Il Caffè" />} />
-      <Route path="/lastoria" element={<Placeholder title="La Storia" />} />
-      <Route path="/ilgiorno" element={<Placeholder title="Il Giorno" />} />
+      <Route path="/" element={<Home />} />
+      <Route path="/lastoria" element={<LaStoria />} />
+      <Route path="/ilgiorno" element={<IlGiorno />} />
     </Routes>
   )
 }

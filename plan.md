@@ -51,12 +51,12 @@ This plan is divided into phases to be executed sequentially. To track progress,
 - [x] Setup `react-router-dom` routing and `react-helmet-async` provider.
 - [x] Create `src/constants/openingHours.ts` with hard-coded data (avoiding Google APIs).
 
-### Phase 4: Page Migration (TSX) [ ]
+### Phase 4: Page Migration (TSX) [x]
 
-- [ ] Migrate `index.js` content to `src/pages/Home.tsx`.
-- [ ] Migrate `lastoria.js` content to `src/pages/LaStoria.tsx`.
-- [ ] Migrate `ilgiorno.js` content to `src/pages/IlGiorno.tsx`.
-- [ ] Convert all sub-components (`Cover`, `FloatingItems`, `FullWidthBanner`, etc.) to TSX using path aliases and CSS Modules.
+- [x] Migrate `index.js` content to `src/pages/Home.tsx`.
+- [x] Migrate `lastoria.js` content to `src/pages/LaStoria.tsx`.
+- [x] Migrate `ilgiorno.js` content to `src/pages/IlGiorno.tsx`.
+- [x] Convert all sub-components (`Cover`, `FloatingItems`, `FullWidthBanner`, etc.) to TSX using path aliases and CSS Modules.
 
 ### Phase 5: Optimization & Verification [ ]
 
