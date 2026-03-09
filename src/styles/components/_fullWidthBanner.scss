@@ -32,6 +32,7 @@
 .full-width-banner__image {
     position: relative;
     z-index: -1;
+    width: 100%;
 
     @media (max-width: $mobile) {
         height: 100%;
