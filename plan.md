@@ -13,7 +13,7 @@ This document outlines the plan for migrating the existing Gatsby-based website 
 - **Path Aliases Rule**: Use `@/` for `src` to simplify imports across the project.
 - **Metadata Rule**: Use `react-helmet-async` for page titles and SEO tags.
 - **Scrolling Library**: `locomotive-scroll` (replaces custom scroll logic and `react-scroll`)
-- **Animations**: `framer-motion` (maintained from the old project for consistent transitions)
+- **Animations**: `motion` (successor to `framer-motion` from v11+; the package to install is `motion`; maintained from the old project for consistent transitions)
 - **Styles**: `Sass` (maintained from the old project to preserve the original design)
 - **Linting**: `oxlint` (extremely fast linter)
 - **Formatting**: `oxfmt` (fast formatter)
@@ -25,7 +25,7 @@ This document outlines the plan for migrating the existing Gatsby-based website 
 - Initialize a new Vite project in the root with the `react-ts` template.
 - Configure `pnpm` as the package manager.
 - Install necessary dependencies:
-  - `sass`, `locomotive-scroll`, `framer-motion`, `clsx`, `tailwind-merge`, `react-helmet-async`, `react-router-dom`.
+  - `sass`, `locomotive-scroll`, `motion` (successor to `framer-motion`), `clsx`, `react-helmet-async`, `react-router-dom`.
   - Development dependencies: `oxlint`, `oxfmt`, `vite-plugin-image-optimizer`.
 - **Note**: Always use the `@latest` tag when installing (e.g., `pnpm add react@latest`).
 
@@ -48,7 +48,12 @@ This document outlines the plan for migrating the existing Gatsby-based website 
   - Tablet: `1080px`
 - Update style imports in components to match the new structure.
 
-### 5. Component & Page Migration (TSX)
+### 5. Implement Locomotive Scroll
+- Initialize `locomotive-scroll` within a custom hook or the main `App` component.
+- Apply `data-scroll-container` to the main wrapper.
+- Use `data-scroll`, `data-scroll-speed`, and other attributes to recreate the parallax and smooth scrolling effects from the original site.
+
+### 6. Component & Page Migration (TSX)
 - Convert all React components and pages to TypeScript (`.tsx`).
 - **Path Aliases**: Use `@/` for all imports to keep code clean.
 - **Layout**: Implement a main `Layout` component that includes the `Header`, `Footer`, and `Menu`.
@@ -56,11 +61,6 @@ This document outlines the plan for migrating the existing Gatsby-based website 
 - **Navigation**: Use `react-router-dom` for client-side routing between `/`, `/lastoria`, and `/ilgiorno`.
 - **Opening Hours**: Hard-code the opening hours in a constant file (e.g., `src/constants/openingHours.ts`) instead of fetching from Google APIs.
 - **Static Content**: Migrate the content from `index.js`, `lastoria.js`, and `ilgiorno.js` to their respective page components.
-
-### 6. Implement Locomotive Scroll
-- Initialize `locomotive-scroll` within a custom hook or the main `App` component.
-- Apply `data-scroll-container` to the main wrapper.
-- Use `data-scroll`, `data-scroll-speed`, and other attributes to recreate the parallax and smooth scrolling effects from the original site.
 
 ### 7. Image Optimization
 - Configure `vite-plugin-image-optimizer` in `vite.config.ts` to automatically optimize images during the build process.
