@@ -1,0 +1,210 @@
+# Improvement Plan
+
+> **Usage:** Open a new agent session and prompt:
+> _"Please execute phase N of @file:improvement-plan.md and mark it complete"_
+>
+> Each phase is self-contained and ordered by priority. Complete them in sequence.
+
+---
+
+## Phase 1 — Quick Wins: Metadata, Cleanup & 404 Page `[ ]`
+
+_Priority: High–Medium · Effort: Low · Estimated scope: ~30 min_
+
+These are small, independent fixes that immediately improve the project's polish.
+
+### 1a. Fix `index.html` Metadata
+
+The `<title>` in `index.html` is still set to **"tmp-vite"** — the default from project scaffolding. While `react-helmet-async` overrides this per page, the fallback title (visible during loading or if JS fails) should be updated to **"Bragazzi's"**.
+
+Also add:
+
+- A proper `<meta name="description">` tag.
+- Open Graph / social media meta tags for link previews.
+- A proper favicon (replace the default Vite one).
+
+### 1b. Remove Unused Files
+
+Delete these unused remnants from the Vite scaffold or earlier iterations:
+
+- `src/App.css` — empty or unused (styles are in SCSS).
+- `src/index.css` — empty or unused (styles are in SCSS via `main.scss`).
+- `src/components/Example.module.scss` — not imported anywhere.
+- `public/vite.svg` — default Vite favicon, not referenced.
+
+### 1c. Add 404 / Catch-All Route
+
+There is a `_404.scss` stylesheet but no corresponding 404 page component or catch-all route in `App.tsx`. If a user navigates to an unknown URL, they see a blank page.
+
+Create a `NotFound.tsx` page and add a catch-all route:
+
+```tsx
+<Route path="*" element={<NotFound />} />
+```
+
+### Done Criteria
+
+- [ ] `index.html` has correct title, meta description, OG tags, and favicon
+- [ ] All four unused files are deleted
+- [ ] A `NotFound` page exists and is rendered for unknown routes
+- [ ] App builds successfully (`pnpm build`)
+
+---
+
+## Phase 2 — Code Splitting & Lazy Loading Routes `[ ]`
+
+_Priority: High · Effort: Low · Estimated scope: ~20 min_
+
+All three page components (`Home`, `LaStoria`, `IlGiorno`) are eagerly imported in `App.tsx`. Since each page imports many large images, this means every image for every page is included in the initial bundle.
+
+### Tasks
+
+- Lazy-load all page components using `React.lazy()` and `Suspense`:
+
+```tsx
+import { lazy, Suspense } from "react";
+
+const Home = lazy(() => import("@/pages/Home"));
+const LaStoria = lazy(() => import("@/pages/LaStoria"));
+const IlGiorno = lazy(() => import("@/pages/IlGiorno"));
+
+// Wrap routes in <Suspense fallback={<LoadingSpinner />}>
+```
+
+- Create a simple loading fallback component if one doesn't exist.
+- Ensure each page is split into its own chunk (verify with `pnpm build` output).
+
+### Done Criteria
+
+- [ ] Page components are lazy-loaded via `React.lazy`
+- [ ] Routes are wrapped in `<Suspense>` with a fallback
+- [ ] Build output shows separate chunks per page
+- [ ] App builds and runs successfully
+
+---
+
+## Phase 3 — Accessibility `[ ]`
+
+_Priority: Medium · Effort: Low · Estimated scope: ~30 min_
+
+### Tasks
+
+- **`Header.tsx`** — the mobile menu toggle is a `<div onClick={...}>`. Replace with a `<button>` element with `aria-label="Toggle menu"` and `aria-expanded={menuIsOpen}` so screen readers and keyboard users can operate it.
+- **`Cover.tsx`** — the opening hours list uses `openingHours.map` to render `<p>` tags. Change to a `<ul>` / `<li>` list or a `<dl>` (definition list) for day/time pairs.
+- **Add a skip-to-content link** — add a mechanism for keyboard users to skip past the header/navigation to the main content.
+- **Colour contrast** — verify the light text (`#f6f4f1`) on image backgrounds meets WCAG AA contrast ratios using axe or Lighthouse. Fix any failures.
+
+### Done Criteria
+
+- [ ] Mobile menu toggle is a `<button>` with proper ARIA attributes
+- [ ] Opening hours rendered with semantic list markup
+- [ ] Skip-to-content link is present and functional
+- [ ] Colour contrast has been checked (document any findings)
+- [ ] App builds successfully
+
+---
+
+## Phase 4 — Image Optimisation `[ ]`
+
+_Priority: High · Effort: Medium · Estimated scope: ~1 hr_
+
+The `src/assets/images/` directory contains 66 images, most of which are JPEGs between 1–2.4 MB each. Even with `vite-plugin-image-optimizer` compressing them at build time, they remain in JPEG format and are very large for a web project.
+
+### Tasks
+
+- **Convert images to modern formats (WebP / AVIF)** — the existing `vite-plugin-image-optimizer` already has config entries for `webp` and `avif`, so this is partly in place. Serve images as `<picture>` elements with format fallbacks.
+- **Resize images to the maximum dimensions they are actually displayed at** — provide 2× variants for retina displays and nothing more.
+- **Add lazy loading** — use `loading="lazy"` on `<img>` tags that are below the fold.
+- **Consider a CDN or external image service** — hosting 66 large images inside the Git repo inflates clone size. A service like Cloudinary, imgix, or an S3 bucket with a CDN would keep the repo lean and allow on-the-fly format/size transformations. _(Document a recommendation even if not implemented in this phase.)_
+
+### Done Criteria
+
+- [ ] Images served via `<picture>` elements with WebP/AVIF fallbacks where possible
+- [ ] Images resized to appropriate display dimensions
+- [ ] Below-the-fold images use `loading="lazy"`
+- [ ] CDN/image service recommendation documented (in this file or README)
+- [ ] App builds successfully
+
+---
+
+## Phase 5 — Shared Constants & DRY Code `[ ]`
+
+_Priority: Low · Effort: Low · Estimated scope: ~20 min_
+
+### Tasks
+
+- **Extract `smoothTransition`** — it is defined separately in both `Cover.tsx` and `Header.tsx` with slightly different values. Extract into a shared animation constants file (e.g. `src/constants/animations.ts`) to keep motion config DRY.
+- **Evaluate breakpoints/dimensions prop drilling** — breakpoints and dimensions are passed as props through the component tree (e.g. `Cover` receives `dimensions` and `breakpoints`). Consider using CSS media queries or a shared context/hook for responsive logic instead of manual `width >= mobile` checks in JS. _(Implement or document recommendation.)_
+
+### Done Criteria
+
+- [ ] `smoothTransition` extracted to a shared constants file and imported in both components
+- [ ] Breakpoints approach evaluated (improved or recommendation documented)
+- [ ] App builds successfully
+
+---
+
+## Phase 6 — README & Documentation `[ ]`
+
+_Priority: Low · Effort: Low · Estimated scope: ~15 min_
+
+The `README.md` contains only the text "# bragazzis" — it provides no useful information.
+
+### Tasks
+
+Expand `README.md` to include:
+
+- A brief project description.
+- Prerequisites (Node.js version, pnpm).
+- Setup instructions (`pnpm install`, `pnpm dev`).
+- Available scripts and what they do.
+- Deployment notes.
+
+### Done Criteria
+
+- [ ] README contains all five sections listed above
+- [ ] Information is accurate (verify scripts from `package.json`)
+
+---
+
+## Phase 7 — Styling Organisation & Locomotive Scroll Evaluation `[ ]`
+
+_Priority: Low · Effort: Medium · Estimated scope: ~30 min_
+
+### 7a. Co-locate or Consolidate Styling Approach
+
+Styles are split between `src/styles/components/` (SCSS partials with BEM naming) and component files in `src/components/`. There is also an unused `Example.module.scss` suggesting CSS modules were considered.
+
+Pick one approach and commit to it:
+
+- **Option A (SCSS modules):** Co-locate `.module.scss` files alongside their components (e.g. `Cover.module.scss` next to `Cover.tsx`). This improves locality and avoids style leakage.
+- **Option B (Global SCSS):** Keep the current approach but document the convention and ensure the `src/styles/` structure mirrors the component structure clearly.
+
+Either way, remove the unused `Example.module.scss` (if not already removed in Phase 1).
+
+### 7b. Evaluate Locomotive Scroll
+
+`locomotive-scroll` (v5) is installed and initialised in a custom hook, but it's being used with default options and no `data-scroll` attributes are visible on elements. If the only goal is smooth scrolling, this library adds significant bundle weight for little benefit — CSS `scroll-behavior: smooth` or the existing `scrollIntoView({ behavior: "smooth" })` calls already handle this.
+
+Evaluate whether locomotive-scroll is actually providing value. If not, remove it to reduce bundle size and complexity.
+
+### Done Criteria
+
+- [ ] Styling approach decision made and implemented (or documented)
+- [ ] `Example.module.scss` removed (if still present)
+- [ ] Locomotive scroll evaluated — removed if unnecessary, or justified if kept
+- [ ] App builds successfully
+
+---
+
+## Progress Tracker
+
+| Phase | Description | Status |
+|-------|-------------|--------|
+| 1 | Quick Wins: Metadata, Cleanup & 404 | ⬜ Not started |
+| 2 | Code Splitting & Lazy Loading Routes | ⬜ Not started |
+| 3 | Accessibility | ⬜ Not started |
+| 4 | Image Optimisation | ⬜ Not started |
+| 5 | Shared Constants & DRY Code | ⬜ Not started |
+| 6 | README & Documentation | ⬜ Not started |
+| 7 | Styling Organisation & Locomotive Scroll | ⬜ Not started |
