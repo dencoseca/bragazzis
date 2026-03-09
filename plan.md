@@ -8,7 +8,7 @@ This document outlines the plan for migrating the existing Gatsby-based website 
 - **Build Tool**: `Vite` (for fast development and efficient static builds)
 - **UI Framework**: `React` (v19)
 - **Language**: `TypeScript` (v5+)
-- **Package Management Rule**: Always install the latest version of packages with `pnpm` (e.g., `pnpm add [package]@latest`).
+- **Package Management Rule**: Always use `pnpm`. Enforce this in `package.json` using the `packageManager` field and a `preinstall` script (e.g., `"preinstall": "npx only-allow pnpm"`) to ensure `npm` usage errors. Always install the latest version of packages with `pnpm` (e.g., `pnpm add [package]@latest`).
 - **Styling Rule**: Use **CSS Modules** for all component-level styling (using Sass `.module.scss`).
 - **Path Aliases Rule**: Use `@/` for `src` to simplify imports across the project.
 - **Metadata Rule**: Use `react-helmet-async` for page titles and SEO tags.
@@ -19,55 +19,43 @@ This document outlines the plan for migrating the existing Gatsby-based website 
 - **Formatting**: `oxfmt` (fast formatter)
 - **Image Optimization**: `vite-plugin-image-optimizer` (uses `sharp` under the hood, popular and well-maintained)
 
-## Migration Steps
+## Migration Phases
 
-### 1. Initialize Project
-- Initialize a new Vite project in the root with the `react-ts` template.
-- Configure `pnpm` as the package manager.
-- Install necessary dependencies:
-  - `sass`, `locomotive-scroll`, `motion` (successor to `framer-motion`), `clsx`, `react-helmet-async`, `react-router-dom`.
-  - Development dependencies: `oxlint`, `oxfmt`, `vite-plugin-image-optimizer`.
-- **Note**: Always use the `@latest` tag when installing (e.g., `pnpm add react@latest`).
+This plan is divided into phases to be executed sequentially. To track progress, mark tasks with `[x]` when complete.
 
-### 2. Configure Tools
-- **Vite**: Set up `vite.config.ts` with the image optimizer plugin.
-- **TypeScript**: Configure `tsconfig.json` for strict type checking and path aliases (e.g., `@/components`, `@/assets`).
-- **Oxlint/Oxfmt**: Add scripts to `package.json` for linting and formatting.
+### Phase 1: Project Setup & Configuration [ ]
+- [ ] Initialize a new Vite project in the root with the `react-ts` template.
+- [ ] Configure `pnpm` as the package manager and enforce its use:
+  - Add `"packageManager": "pnpm@10.x.x"` to `package.json`.
+  - Add `"preinstall": "npx only-allow pnpm"` to `package.json` scripts.
+- [ ] Install dependencies:
+  - `sass`, `locomotive-scroll`, `motion`, `clsx`, `react-helmet-async`, `react-router-dom`.
+  - Dev dependencies: `oxlint`, `oxfmt`, `vite-plugin-image-optimizer`, `vite-plugin-svgr`.
+- [ ] Configure `vite.config.ts` (image optimizer, svgr, path aliases).
+- [ ] Configure `tsconfig.json` (strict type checking, path aliases `@/*`).
+- [ ] Add `lint` and `format` scripts to `package.json`.
 
-### 3. Asset Migration
-- **Fonts**: Copy all fonts from `bragazzis-gatsby/src/fonts` to `src/assets/fonts`. Create a global CSS/SCSS file to define `@font-face` rules.
-- **Images**: Copy all images from `bragazzis-gatsby/src/images` to `src/assets/images`. Vite will handle these via imports or the public directory.
-- **SVG**: For the logo and other SVGs, consider using `vite-plugin-svgr` for easier React component usage.
+### Phase 2: Asset & Style Migration [ ]
+- [ ] Copy fonts from `bragazzis-gatsby/src/fonts` to `src/assets/fonts` and create global `@font-face` rules.
+- [ ] Copy images from `bragazzis-gatsby/src/images` to `src/assets/images`.
+- [ ] Copy SCSS files from `bragazzis-gatsby/src/styles` to `src/styles` and create `src/styles/main.scss`.
+- [ ] Set up CSS Modules (`.module.scss`) for component-level styling to avoid collisions.
+- [ ] Ensure original breakpoints (760px, 1080px) are maintained in SCSS variables.
 
-### 4. Style Migration
-- Copy all SCSS files from `bragazzis-gatsby/src/styles` to `src/styles`.
-- Refactor global styles and variables into a central entry point (e.g., `src/styles/main.scss`).
-- **CSS Modules**: For each component, create a corresponding `.module.scss` file. Migrate component-specific styles from the original SCSS files to these modules to avoid global namespace collisions.
-- Maintain the original breakpoints:
-  - Mobile: `760px`
-  - Tablet: `1080px`
-- Update style imports in components to match the new structure.
+### Phase 3: Core Infrastructure & Shared Components [ ]
+- [ ] Implement `locomotive-scroll` within a custom hook or the main `App` component.
+- [ ] Create `Layout` component (including `Header`, `Footer`, `Menu`) in TSX.
+- [ ] Setup `react-router-dom` routing and `react-helmet-async` provider.
+- [ ] Create `src/constants/openingHours.ts` with hard-coded data (avoiding Google APIs).
 
-### 5. Implement Locomotive Scroll
-- Initialize `locomotive-scroll` within a custom hook or the main `App` component.
-- Apply `data-scroll-container` to the main wrapper.
-- Use `data-scroll`, `data-scroll-speed`, and other attributes to recreate the parallax and smooth scrolling effects from the original site.
+### Phase 4: Page Migration (TSX) [ ]
+- [ ] Migrate `index.js` content to `src/pages/Home.tsx`.
+- [ ] Migrate `lastoria.js` content to `src/pages/LaStoria.tsx`.
+- [ ] Migrate `ilgiorno.js` content to `src/pages/IlGiorno.tsx`.
+- [ ] Convert all sub-components (`Cover`, `FloatingItems`, `FullWidthBanner`, etc.) to TSX using path aliases and CSS Modules.
 
-### 6. Component & Page Migration (TSX)
-- Convert all React components and pages to TypeScript (`.tsx`).
-- **Path Aliases**: Use `@/` for all imports to keep code clean.
-- **Layout**: Implement a main `Layout` component that includes the `Header`, `Footer`, and `Menu`.
-- **Metadata**: Integrate `react-helmet-async` within the `Layout` or individual pages to manage SEO titles and tags.
-- **Navigation**: Use `react-router-dom` for client-side routing between `/`, `/lastoria`, and `/ilgiorno`.
-- **Opening Hours**: Hard-code the opening hours in a constant file (e.g., `src/constants/openingHours.ts`) instead of fetching from Google APIs.
-- **Static Content**: Migrate the content from `index.js`, `lastoria.js`, and `ilgiorno.js` to their respective page components.
-
-### 7. Image Optimization
-- Configure `vite-plugin-image-optimizer` in `vite.config.ts` to automatically optimize images during the build process.
-- Use standard `<img>` tags or a lightweight React wrapper for optimized loading (e.g., lazy loading by default).
-
-### 8. Verification & Build
-- Run `oxlint` and `oxfmt` to ensure code quality and consistency.
-- Verify responsiveness at the original breakpoints (760px and 1080px).
-- Execute `pnpm build` to generate the static website in the `dist` folder.
-- Preview the build locally to ensure all animations and styles are preserved.
+### Phase 5: Optimization & Verification [ ]
+- [ ] Configure `vite-plugin-image-optimizer` for final build settings.
+- [ ] Run `oxlint` and `oxfmt` to ensure code quality and consistency.
+- [ ] Verify responsiveness at the original breakpoints (760px and 1080px).
+- [ ] Execute `pnpm build` and preview the static site in the `dist` folder to ensure animations and styles are preserved.
