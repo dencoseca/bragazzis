@@ -1,0 +1,78 @@
+.lastoria__title-wrapper {
+  position: relative;
+
+  .ticket {
+    position: absolute;
+    top: 65%;
+    width: 30vw;
+
+    &.left {
+      left: -5vw;
+      transform: rotate(-25deg);
+      top: 50vw;
+
+      @media (max-width: $mobile) {
+        top: 70vw;
+      }
+    }
+
+    &.right {
+      right: -5vw;
+      transform: rotate(25deg);
+      top: 90vw;
+
+      @media (max-width: $mobile) {
+        top: 133vw;
+      }
+    }
+  }
+}
+
+.lastoria__title {
+  padding: 8vw 0 0;
+  position: relative;
+  z-index: 1;
+
+  @media (max-width: $mobile) {
+    padding-top: 20vw;
+  }
+}
+
+.lastoria__statement {
+  margin: 12vw 0;
+}
+
+.lastoria__story {
+  margin: 10vw 20vw 4vw;
+  text-align: center;
+
+  @media (max-width: $mobile) {
+    margin: 10vw;
+  }
+
+  p {
+    width: 45vw;
+    margin: 3vw auto;
+
+    @media (max-width: $mobile) {
+      width: 80vw;
+    }
+  }
+
+  .line {
+    width: 1px;
+    height: 15vw;
+    background-color: #aaa;
+    margin: 0 auto;
+  }
+}
+
+.lastoria__image {
+  margin: 0 auto;
+  width: 50vw;
+
+  @media (max-width: $mobile) {
+    width: 100vw;
+    margin-bottom: 10vw;
+  }
+}

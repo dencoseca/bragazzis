@@ -36,13 +36,13 @@ This plan is divided into phases to be executed sequentially. To track progress,
 - [x] Configure `tsconfig.json` (strict type checking, path aliases `@/*`).
 - [x] Add `lint` (using `eslint --fix`) and `format` (using `prettier --write`) scripts to `package.json`.
 
-### Phase 2: Asset & Style Migration [ ]
+### Phase 2: Asset & Style Migration [x]
 
-- [ ] Copy fonts from `bragazzis-gatsby/src/fonts` to `src/assets/fonts` and create global `@font-face` rules.
-- [ ] Copy images from `bragazzis-gatsby/src/images` to `src/assets/images`.
-- [ ] Copy SCSS files from `bragazzis-gatsby/src/styles` to `src/styles` and create `src/styles/main.scss`.
-- [ ] Set up CSS Modules (`.module.scss`) for component-level styling to avoid collisions.
-- [ ] Ensure original breakpoints (760px, 1080px) are maintained in SCSS variables.
+- [x] Copy fonts from `bragazzis-gatsby/src/fonts` to `src/assets/fonts` and create global `@font-face` rules.
+- [x] Copy images from `bragazzis-gatsby/src/images` to `src/assets/images`.
+- [x] Copy SCSS files from `bragazzis-gatsby/src/styles` to `src/styles` and create `src/styles/main.scss`.
+- [x] Set up CSS Modules (`.module.scss`) for component-level styling to avoid collisions.
+- [x] Ensure original breakpoints (760px, 1080px) are maintained in SCSS variables.
 
 ### Phase 3: Core Infrastructure & Shared Components [ ]
 
