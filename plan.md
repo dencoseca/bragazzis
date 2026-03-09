@@ -15,8 +15,8 @@ This document outlines the plan for migrating the existing Gatsby-based website 
 - **Scrolling Library**: `locomotive-scroll` (replaces custom scroll logic and `react-scroll`)
 - **Animations**: `motion` (successor to `framer-motion` from v11+; the package to install is `motion`; maintained from the old project for consistent transitions)
 - **Styles**: `Sass` (maintained from the old project to preserve the original design)
-- **Linting**: `oxlint` (extremely fast linter)
-- **Formatting**: `oxfmt` (fast formatter)
+- **Linting**: `eslint` (industry standard linter)
+- **Formatting**: `prettier` (industry standard formatter)
 - **Image Optimization**: `vite-plugin-image-optimizer` (uses `sharp` under the hood, popular and well-maintained)
 
 ## Migration Phases
@@ -30,10 +30,10 @@ This plan is divided into phases to be executed sequentially. To track progress,
   - Add `"preinstall": "npx only-allow pnpm"` to `package.json` scripts.
 - [ ] Install dependencies:
   - `sass`, `locomotive-scroll`, `motion`, `clsx`, `react-helmet-async`, `react-router-dom`.
-  - Dev dependencies: `oxlint`, `oxfmt`, `vite-plugin-image-optimizer`, `vite-plugin-svgr`.
+  - Dev dependencies: `eslint`, `prettier`, `vite-plugin-image-optimizer`, `vite-plugin-svgr`.
 - [ ] Configure `vite.config.ts` (image optimizer, svgr, path aliases).
 - [ ] Configure `tsconfig.json` (strict type checking, path aliases `@/*`).
-- [ ] Add `lint` and `format` scripts to `package.json`.
+- [ ] Add `lint` (using `eslint --fix`) and `format` (using `prettier --write`) scripts to `package.json`.
 
 ### Phase 2: Asset & Style Migration [ ]
 - [ ] Copy fonts from `bragazzis-gatsby/src/fonts` to `src/assets/fonts` and create global `@font-face` rules.
@@ -56,6 +56,6 @@ This plan is divided into phases to be executed sequentially. To track progress,
 
 ### Phase 5: Optimization & Verification [ ]
 - [ ] Configure `vite-plugin-image-optimizer` for final build settings.
-- [ ] Run `oxlint` and `oxfmt` to ensure code quality and consistency.
+- [ ] Run `eslint --fix` and `prettier --write` to ensure code quality and consistency.
 - [ ] Verify responsiveness at the original breakpoints (760px and 1080px).
 - [ ] Execute `pnpm build` and preview the static site in the `dist` folder to ensure animations and styles are preserved.
