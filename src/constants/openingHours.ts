@@ -1,9 +1,9 @@
 export const openingHours = [
-    "Monday: 8:00 AM – 5:30 PM",
-    "Tuesday: 8:00 AM – 5:30 PM",
-    "Wednesday: 8:00 AM – 5:30 PM",
-    "Thursday: 8:00 AM – 5:30 PM",
-    "Friday: 8:00 AM – 5:30 PM",
-    "Saturday: 8:00 AM – 5:30 PM",
-    "Sunday: 10:00 AM – 4:00 PM",
+    "Monday: 9:00 AM – 3:00 PM",
+    "Tuesday: 9:00 AM – 3:00 PM",
+    "Wednesday: 9:00 AM – 3:00 PM",
+    "Thursday: 9:00 AM – 3:00 PM",
+    "Friday: 9:00 AM – 4:15 PM",
+    "Saturday: 9:00 AM – 4:15 PM",
+    "Sunday: Closed",
 ];
