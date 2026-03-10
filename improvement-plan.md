@@ -192,7 +192,7 @@ Expand `README.md` to include:
 
 ---
 
-## Phase 7 — Styling Organisation & Locomotive Scroll Evaluation `[ ]`
+## Phase 7 — Styling Organisation & Locomotive Scroll Evaluation `[x]`
 
 ### 7a. Co-locate or Consolidate Styling Approach
 
@@ -211,12 +211,31 @@ Either way, remove the unused `Example.module.scss` (if not already removed in P
 
 Evaluate whether locomotive-scroll is actually providing value. If not, remove it to reduce bundle size and complexity.
 
+### Styling Convention (Option B — Global SCSS)
+
+The project uses **global SCSS with BEM naming**, organised as follows:
+
+- `src/styles/main.scss` — entry point that imports all partials.
+- `src/styles/_variables.scss` — shared variables (colours, fonts, breakpoints).
+- `src/styles/_typography.scss` — font declarations and base typographic styles.
+- `src/styles/_normalize.scss` — CSS reset/normalisation.
+- `src/styles/components/` — one SCSS partial per component (e.g. `_cover.scss` for `Cover.tsx`), using BEM class naming (`.cover`, `.cover__title`, `.cover--variant`).
+- `src/styles/pages/` — one SCSS partial per page (e.g. `_home.scss`, `_lastoria.scss`).
+
+**Convention:** When adding a new component or page, create a corresponding SCSS partial in the appropriate directory and `@use` it in `main.scss`. Use BEM naming to scope styles and avoid collisions.
+
+### Locomotive Scroll Evaluation
+
+`locomotive-scroll` (v5) was installed and initialised in a custom hook (`useLocomotiveScroll`) with default options. No `data-scroll` attributes were used on any elements, meaning the library provided no value beyond smooth scrolling — which is already handled natively via CSS `scroll-behavior: smooth` and existing `scrollIntoView({ behavior: "smooth" })` calls.
+
+**Decision:** Removed `locomotive-scroll` and the `useLocomotiveScroll` hook. Added `scroll-behavior: smooth` to the `html` element in `main.scss` as a lightweight replacement. This reduces bundle size and eliminates an unnecessary dependency.
+
 ### Done Criteria
 
-- [ ] Styling approach decision made and implemented (or documented)
-- [ ] `Example.module.scss` removed (if still present)
-- [ ] Locomotive scroll evaluated — removed if unnecessary, or justified if kept
-- [ ] App builds successfully
+- [x] Styling approach decision made and documented (Option B — global SCSS with BEM naming)
+- [x] `Example.module.scss` removed (already removed in Phase 1)
+- [x] Locomotive scroll evaluated and removed — replaced with CSS `scroll-behavior: smooth`
+- [x] App builds successfully
 
 ---
 
@@ -230,4 +249,4 @@ Evaluate whether locomotive-scroll is actually providing value. If not, remove i
 | 4 | Image Optimisation | ✅ Complete |
 | 5 | Shared Constants & DRY Code | ✅ Complete |
 | 6 | README & Documentation | ✅ Complete |
-| 7 | Styling Organisation & Locomotive Scroll | ⬜ Not started |
+| 7 | Styling Organisation & Locomotive Scroll | ✅ Complete |

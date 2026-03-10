@@ -5,7 +5,6 @@ import { AnimatePresence } from "motion/react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Menu from "@/components/Menu";
-import { useLocomotiveScroll } from "@/hooks/useLocomotiveScroll";
 
 interface LayoutProps {
     children: React.ReactNode;
@@ -22,8 +21,6 @@ export default function Layout({ children, pageTitle }: LayoutProps) {
         (open: boolean) => setMenuIsOpen(open),
         [],
     );
-
-    useLocomotiveScroll();
 
     const mainRef = useRef<HTMLElement>(null);
 
