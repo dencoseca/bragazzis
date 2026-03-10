@@ -171,7 +171,7 @@ The current approach defines `breakpoints` and `dimensions` in `Home.tsx` and pa
 
 ---
 
-## Phase 6 — README & Documentation `[ ]`
+## Phase 6 — README & Documentation `[x]`
 
 The `README.md` contains only the text "# bragazzis" — it provides no useful information.
 
@@ -187,8 +187,8 @@ Expand `README.md` to include:
 
 ### Done Criteria
 
-- [ ] README contains all five sections listed above
-- [ ] Information is accurate (verify scripts from `package.json`)
+- [x] README contains all five sections listed above
+- [x] Information is accurate (verify scripts from `package.json`)
 
 ---
 
@@ -229,5 +229,5 @@ Evaluate whether locomotive-scroll is actually providing value. If not, remove i
 | 3 | Accessibility | ✅ Complete |
 | 4 | Image Optimisation | ✅ Complete |
 | 5 | Shared Constants & DRY Code | ✅ Complete |
-| 6 | README & Documentation | ⬜ Not started |
+| 6 | README & Documentation | ✅ Complete |
 | 7 | Styling Organisation & Locomotive Scroll | ⬜ Not started |
