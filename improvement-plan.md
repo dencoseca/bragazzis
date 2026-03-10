@@ -105,7 +105,7 @@ const IlGiorno = lazy(() => import("@/pages/IlGiorno"));
 
 ---
 
-## Phase 4 — Image Optimisation `[ ]`
+## Phase 4 — Image Optimisation `[x]`
 
 The `src/assets/images/` directory contains 66 images, most of which are JPEGs between 1–2.4 MB each. Even with `vite-plugin-image-optimizer` compressing them at build time, they remain in JPEG format and are very large for a web project.
 
@@ -116,13 +116,23 @@ The `src/assets/images/` directory contains 66 images, most of which are JPEGs b
 - **Add lazy loading** — use `loading="lazy"` on `<img>` tags that are below the fold.
 - **Consider a CDN or external image service** — hosting 66 large images inside the Git repo inflates clone size. A service like Cloudinary, imgix, or an S3 bucket with a CDN would keep the repo lean and allow on-the-fly format/size transformations. _(Document a recommendation even if not implemented in this phase.)_
 
+### CDN / Image Service Recommendation
+
+Hosting 66 large images inside the Git repository inflates clone size significantly. For a production deployment, consider migrating images to an external image service:
+
+- **Cloudinary** (recommended) — free tier covers small projects; supports automatic format negotiation (WebP/AVIF), on-the-fly resizing via URL parameters, and a global CDN. This would eliminate the need for the local `optimize-images` script and the checked-in WebP files.
+- **imgix** — similar CDN-based transformation pipeline; better suited if images are already hosted on S3 or GCS.
+- **S3 + CloudFront** — more manual setup but full control; pair with a Lambda@Edge function for automatic format conversion.
+
+Any of these would keep the repo lean (< 10 MB vs ~100 MB currently) and allow on-the-fly format/size transformations without a build step.
+
 ### Done Criteria
 
-- [ ] Images served via `<picture>` elements with WebP/AVIF fallbacks where possible
-- [ ] Images resized to appropriate display dimensions
-- [ ] Below-the-fold images use `loading="lazy"`
-- [ ] CDN/image service recommendation documented (in this file or README)
-- [ ] App builds successfully
+- [x] Images served via `<picture>` elements with WebP fallbacks (via `OptimizedImage` component and `imageMap` utility)
+- [x] Images resized to appropriate display dimensions (max 1920px / 2× retina via `scripts/optimize-images.mjs`)
+- [x] Below-the-fold images use `loading="lazy"` (hero/cover images use `loading="eager"`)
+- [x] CDN/image service recommendation documented (see above)
+- [x] App builds successfully
 
 ---
 
@@ -197,7 +207,7 @@ Evaluate whether locomotive-scroll is actually providing value. If not, remove i
 | 1 | Quick Wins: Metadata, Cleanup & 404 | ✅ Complete |
 | 2 | Code Splitting & Lazy Loading Routes | ✅ Complete |
 | 3 | Accessibility | ✅ Complete |
-| 4 | Image Optimisation | ⬜ Not started |
+| 4 | Image Optimisation | ✅ Complete |
 | 5 | Shared Constants & DRY Code | ⬜ Not started |
 | 6 | README & Documentation | ⬜ Not started |
 | 7 | Styling Organisation & Locomotive Scroll | ⬜ Not started |

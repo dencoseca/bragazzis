@@ -1,4 +1,5 @@
 import Layout from "@/components/Layout";
+import OptimizedImage from "@/components/OptimizedImage";
 import apertoImg from "@/assets/images/aperto.jpg";
 import sandwichPrepDuoImg from "@/assets/images/sandwich-prep-duo.jpg";
 import sandwichBoardPlanImg from "@/assets/images/sandwich-board-plan.jpg";
@@ -242,7 +243,7 @@ export default function IlGiorno() {
                     Aperto
                 </div>
                 {galleryImages.map((image, index) => (
-                    <img
+                    <OptimizedImage
                         key={index}
                         className={`image ${image.sizeClass}`}
                         src={image.src}

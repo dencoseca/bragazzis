@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { AnimatePresence, motion, useScroll, useTransform } from "motion/react";
+import OptimizedImage from "@/components/OptimizedImage";
 import shelvesImg from "@/assets/images/shelves.jpg";
 import coffeePourImg from "@/assets/images/coffee-pour.jpg";
 import ciabattaImg from "@/assets/images/ciabatta.jpg";
@@ -29,7 +30,7 @@ const FloatingItems = memo(function FloatingItems({
                     className="item item--1"
                     style={{ translateY: width >= mobile ? item1Scroll : 0 }}
                 >
-                    <img
+                    <OptimizedImage
                         className="item__image"
                         src={shelvesImg}
                         alt="delicious focaccia sandwiches"
@@ -63,7 +64,7 @@ const FloatingItems = memo(function FloatingItems({
                     className="item item--2"
                     style={{ translateY: width >= mobile ? item2Scroll : 0 }}
                 >
-                    <img
+                    <OptimizedImage
                         className="item__image"
                         src={coffeePourImg}
                         alt="silky coffee being poured"
@@ -86,7 +87,7 @@ const FloatingItems = memo(function FloatingItems({
                     className="item item--3"
                     style={{ translateY: width >= mobile ? item3Scroll : 0 }}
                 >
-                    <img
+                    <OptimizedImage
                         className="item__image"
                         src={ciabattaImg}
                         alt="fresh salad being plated"
@@ -107,7 +108,7 @@ const FloatingItems = memo(function FloatingItems({
                     className="item item--4"
                     style={{ translateY: width >= mobile ? item4Scroll : 0 }}
                 >
-                    <img
+                    <OptimizedImage
                         className="item__image"
                         src={shopChristmasImg}
                         alt="a beautifully stocked italian dry goods shop"

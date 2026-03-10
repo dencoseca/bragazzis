@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from "motion/react";
 import Layout from "@/components/Layout";
+import OptimizedImage from "@/components/OptimizedImage";
 import ticketRomaImg from "@/assets/images/ticket-roma.jpg";
 import ticketPisaImg from "@/assets/images/ticket-pisa.jpg";
 import earlyDaysImg from "@/assets/images/early-days.jpg";
@@ -57,7 +58,7 @@ export default function LaStoria() {
                             animate="animate"
                             variants={leftTicketVariants}
                         >
-                            <img src={ticketRomaImg} alt="plane ticket" />
+                            <OptimizedImage src={ticketRomaImg} alt="plane ticket" loading="eager" />
                         </motion.div>
                         <motion.div
                             className="ticket right"
@@ -65,7 +66,7 @@ export default function LaStoria() {
                             animate="animate"
                             variants={rightTicketVariants}
                         >
-                            <img src={ticketPisaImg} alt="plane ticket" />
+                            <OptimizedImage src={ticketPisaImg} alt="plane ticket" loading="eager" />
                         </motion.div>
                     </div>
                     <div className="lastoria__story">
@@ -96,7 +97,7 @@ export default function LaStoria() {
                         <div className="line"></div>
                     </div>
                     <div className="lastoria__image">
-                        <img src={earlyDaysImg} alt="A busy cafe" />
+                        <OptimizedImage src={earlyDaysImg} alt="A busy cafe" loading="lazy" />
                     </div>
                 </div>
             </AnimatePresence>

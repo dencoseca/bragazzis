@@ -1,5 +1,6 @@
 import { memo, useCallback } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
+import OptimizedImage from "@/components/OptimizedImage";
 import parmesanImg from "@/assets/images/parmesan.jpg";
 
 const preventContextMenu = (e: React.MouseEvent) => e.preventDefault();
@@ -94,10 +95,11 @@ const Cover = memo(function Cover({
                             translateY: heroImageScroll,
                         }}
                     >
-                        <img
+                        <OptimizedImage
                             className="cover__image"
                             src={parmesanImg}
                             alt="a busy Italian cafe"
+                            loading="eager"
                             onContextMenu={preventContextMenu}
                         />
                     </motion.div>

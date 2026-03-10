@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { AnimatePresence, motion, useScroll, useTransform } from "motion/react";
+import OptimizedImage from "@/components/OptimizedImage";
 import eggImg from "@/assets/images/egg.jpg";
 
 const preventContextMenu = (e: React.MouseEvent) => e.preventDefault();
@@ -34,7 +35,7 @@ const FullWidthBanner = memo(function FullWidthBanner({
     return (
         <AnimatePresence>
             <section className="full-width-banner">
-                <img
+                <OptimizedImage
                     className="full-width-banner__image"
                     src={eggImg}
                     alt="a gigantic italian chocolate easter egg"
