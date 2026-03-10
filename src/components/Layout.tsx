@@ -5,6 +5,7 @@ import { AnimatePresence } from "motion/react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Menu from "@/components/Menu";
+import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 
 interface LayoutProps {
     children: React.ReactNode;
@@ -21,6 +22,8 @@ export default function Layout({ children, pageTitle }: LayoutProps) {
         (open: boolean) => setMenuIsOpen(open),
         [],
     );
+
+    useSmoothScroll();
 
     const mainRef = useRef<HTMLElement>(null);
 

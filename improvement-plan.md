@@ -226,15 +226,15 @@ The project uses **global SCSS with BEM naming**, organised as follows:
 
 ### Locomotive Scroll Evaluation
 
-`locomotive-scroll` (v5) was installed and initialised in a custom hook (`useLocomotiveScroll`) with default options. No `data-scroll` attributes were used on any elements, meaning the library provided no value beyond smooth scrolling — which is already handled natively via CSS `scroll-behavior: smooth` and existing `scrollIntoView({ behavior: "smooth" })` calls.
+`locomotive-scroll` (v5) was installed and initialised in a custom hook (`useLocomotiveScroll`) with default options. No `data-scroll` attributes were used on any elements, but the library's underlying Lenis smooth-scrolling engine was providing the page's scroll behaviour.
 
-**Decision:** Removed `locomotive-scroll` and the `useLocomotiveScroll` hook. Added `scroll-behavior: smooth` to the `html` element in `main.scss` as a lightweight replacement. This reduces bundle size and eliminates an unnecessary dependency.
+**Decision:** Replaced `locomotive-scroll` with `lenis` directly — Lenis is the lightweight core that locomotive-scroll v5 wraps. Created a `useSmoothScroll` hook in `src/hooks/useSmoothScroll.ts` that initialises Lenis and drives it via `requestAnimationFrame`. This preserves the same smooth/parallax scrolling behaviour while eliminating the heavier locomotive-scroll wrapper.
 
 ### Done Criteria
 
 - [x] Styling approach decision made and documented (Option B — global SCSS with BEM naming)
 - [x] `Example.module.scss` removed (already removed in Phase 1)
-- [x] Locomotive scroll evaluated and removed — replaced with CSS `scroll-behavior: smooth`
+- [x] Locomotive scroll evaluated and replaced with lightweight `lenis` package (the core engine locomotive-scroll v5 wraps)
 - [x] App builds successfully
 
 ---
