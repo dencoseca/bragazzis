@@ -66,31 +66,6 @@ export default function Home() {
                 dimensions={dimensions}
                 breakpoints={breakpoints}
             />
-            <section className="home__covid-notice">
-                <span className="text--display">Covid Restrictions</span>
-                <p className="text--md">
-                    We want to reassure you that we are putting all measures in
-                    place to keep you and our team safe so that you can
-                    confidently enjoy your visit.
-                </p>
-                <p className="text--md">
-                    We are following all government guidelines and working on
-                    practice measures within the shop. We have completed
-                    necessary risk assessments and all procedures which will be
-                    constantly reviewed and updated where necessary in line with
-                    government guidelines.
-                </p>
-                <p className="text--md">
-                    We ask you to please use common sense to play your part
-                    keeping everyone safe. In return we will be doing the same
-                    for you.
-                </p>
-                <p className="text--md">
-                    Due to the constantly changing nature of this guidance, we
-                    will be continuously reviewing our procedures related to
-                    capacity.
-                </p>
-            </section>
         </Layout>
     );
 }
