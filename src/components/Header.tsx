@@ -1,11 +1,7 @@
 import { memo, useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, useAnimation } from "motion/react";
-
-const smoothTransition = {
-    duration: 0.6,
-    ease: [0.43, 0.13, 0.13, 0.96] as [number, number, number, number],
-};
+import { quickTransition } from "@/constants/animations";
 
 const topLineVariants = {
     closed: {
@@ -102,7 +98,7 @@ const Header = memo(function Header({
                     initial="closed"
                     animate={controls}
                     variants={topLineVariants}
-                    transition={smoothTransition}
+                    transition={quickTransition}
                     style={{ backgroundColor: menuColor }}
                 />
                 <motion.div
@@ -110,7 +106,7 @@ const Header = memo(function Header({
                     initial="closed"
                     animate={controls}
                     variants={bottomLineVariants}
-                    transition={smoothTransition}
+                    transition={quickTransition}
                     style={{ backgroundColor: menuColor }}
                 />
             </button>

@@ -1,17 +1,13 @@
 import { Link } from "react-router-dom";
 import { motion } from "motion/react";
-
-const smoothTransition = {
-    duration: 0.6,
-    ease: [0.13, 0.43, 0.45, 0.96] as [number, number, number, number],
-};
+import { menuSlideTransition } from "@/constants/animations";
 
 const menuVariants = {
     closed: {
         translateX: "-100%",
         overflow: "visible" as const,
         transition: {
-            ...smoothTransition,
+            ...menuSlideTransition,
             duration: 0.4,
         },
     },
@@ -19,7 +15,7 @@ const menuVariants = {
         translateX: "0%",
         overflow: "hidden" as const,
         transition: {
-            ...smoothTransition,
+            ...menuSlideTransition,
             staggerChildren: 0.15,
             delayChildren: 0.1,
         },
@@ -31,7 +27,7 @@ const linkVariants = {
         opacity: 0,
         translateX: -200,
         transition: {
-            ...smoothTransition,
+            ...menuSlideTransition,
             duration: 0.4,
         },
     },
@@ -39,7 +35,7 @@ const linkVariants = {
         opacity: 1,
         translateX: 0,
         transition: {
-            ...smoothTransition,
+            ...menuSlideTransition,
             duration: 0.5,
         },
     },

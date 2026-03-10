@@ -3,11 +3,11 @@ import Layout from "@/components/Layout";
 import OptimizedImage from "@/components/OptimizedImage";
 import ticketRomaImg from "@/assets/images/ticket-roma.jpg";
 import ticketPisaImg from "@/assets/images/ticket-pisa.jpg";
+import { smoothTransition } from "@/constants/animations";
 import earlyDaysImg from "@/assets/images/early-days.jpg";
 
-const smoothTransition = {
-    duration: 1.1,
-    ease: [0.43, 0.13, 0.13, 0.96] as [number, number, number, number],
+const laStoriaTransition = {
+    ...smoothTransition,
     delay: 0.3,
 };
 
@@ -22,7 +22,7 @@ const leftTicketVariants = {
         translateX: 0,
         rotate: "-25deg",
         transition: {
-            ...smoothTransition,
+            ...laStoriaTransition,
         },
     },
 };
@@ -38,7 +38,7 @@ const rightTicketVariants = {
         translateX: 0,
         rotate: "25deg",
         transition: {
-            ...smoothTransition,
+            ...laStoriaTransition,
         },
     },
 };

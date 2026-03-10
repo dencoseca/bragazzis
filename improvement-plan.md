@@ -136,18 +136,38 @@ Any of these would keep the repo lean (< 10 MB vs ~100 MB currently) and allow o
 
 ---
 
-## Phase 5 — Shared Constants & DRY Code `[ ]`
+## Phase 5 — Shared Constants & DRY Code `[x]`
 
 ### Tasks
 
 - **Extract `smoothTransition`** — it is defined separately in both `Cover.tsx` and `Header.tsx` with slightly different values. Extract into a shared animation constants file (e.g. `src/constants/animations.ts`) to keep motion config DRY.
 - **Evaluate breakpoints/dimensions prop drilling** — breakpoints and dimensions are passed as props through the component tree (e.g. `Cover` receives `dimensions` and `breakpoints`). Consider using CSS media queries or a shared context/hook for responsive logic instead of manual `width >= mobile` checks in JS. _(Implement or document recommendation.)_
 
+### Animation Constants
+
+Created `src/constants/animations.ts` with three shared transition presets extracted from four components:
+
+- **`smoothTransition`** (duration 1.1s) — used by `Cover.tsx` and `LaStoria.tsx` for page-level entrance animations.
+- **`quickTransition`** (duration 0.6s) — used by `Header.tsx` for the hamburger menu toggle.
+- **`menuSlideTransition`** (duration 0.6s, different ease curve) — used by `Menu.tsx` for slide and link animations.
+
+All four components (`Cover.tsx`, `Header.tsx`, `Menu.tsx`, `LaStoria.tsx`) now import from the shared file instead of defining local constants.
+
+### Breakpoints / Dimensions Evaluation
+
+The current approach defines `breakpoints` and `dimensions` in `Home.tsx` and passes them as props to `Cover`, `FloatingItems`, and `FullWidthBanner`. This pattern exists because:
+
+1. **`dimensions` must be JS-based** — the components use `dimensions.vh` and `dimensions.width` for Framer Motion `useTransform` calculations (e.g. parallax scroll offsets) and conditional JS logic. CSS media queries cannot replace this since the values feed into JS animation math, not just styling.
+2. **`breakpoints` gate JS behaviour, not just layout** — e.g. `Cover` decides which scroll target to use based on `width >= mobile`, and `Home` skips the resize listener on mobile entirely.
+3. **The prop drilling is shallow** — only one level deep (`Home` → child components), so the overhead is minimal and a React Context or custom hook would add complexity without meaningful benefit at this scale.
+
+**Recommendation:** Keep the current approach. The prop drilling is shallow, the values drive JS logic (not just CSS layout), and introducing a context/hook would be over-engineering for three consumers. If more components need responsive JS logic in the future, extract a `useViewport` hook at that point.
+
 ### Done Criteria
 
-- [ ] `smoothTransition` extracted to a shared constants file and imported in both components
-- [ ] Breakpoints approach evaluated (improved or recommendation documented)
-- [ ] App builds successfully
+- [x] `smoothTransition` extracted to a shared constants file and imported in both components
+- [x] Breakpoints approach evaluated (improved or recommendation documented)
+- [x] App builds successfully
 
 ---
 
@@ -208,6 +228,6 @@ Evaluate whether locomotive-scroll is actually providing value. If not, remove i
 | 2 | Code Splitting & Lazy Loading Routes | ✅ Complete |
 | 3 | Accessibility | ✅ Complete |
 | 4 | Image Optimisation | ✅ Complete |
-| 5 | Shared Constants & DRY Code | ⬜ Not started |
+| 5 | Shared Constants & DRY Code | ✅ Complete |
 | 6 | README & Documentation | ⬜ Not started |
 | 7 | Styling Organisation & Locomotive Scroll | ⬜ Not started |

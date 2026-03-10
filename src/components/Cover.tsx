@@ -1,6 +1,7 @@
 import { memo, useCallback } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
 import OptimizedImage from "@/components/OptimizedImage";
+import { smoothTransition } from "@/constants/animations";
 import parmesanImg from "@/assets/images/parmesan.jpg";
 
 const preventContextMenu = (e: React.MouseEvent) => e.preventDefault();
@@ -10,11 +11,6 @@ interface CoverProps {
     dimensions: { width: number; vh: number };
     breakpoints: { mobile: number };
 }
-
-const smoothTransition = {
-    duration: 1.1,
-    ease: [0.43, 0.13, 0.13, 0.96] as [number, number, number, number],
-};
 
 const contentVariants = {
     initial: {
