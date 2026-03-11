@@ -22,6 +22,7 @@
     // General Image Styles
     // =====================
     .image {
+        display: block;
         margin: 5vw;
 
         @media (max-width: $mobile) {
@@ -36,6 +37,12 @@
         &:nth-of-type(3n - 1) {
             margin-left: 0vw;
             margin-right: 0vw;
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+            display: block;
         }
     }
 

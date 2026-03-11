@@ -10,12 +10,13 @@ export default function OptimizedImage({
     src,
     alt,
     loading = "lazy",
+    className,
     ...props
 }: OptimizedImageProps) {
     const webpSrc = getWebpSrc(src);
 
     return (
-        <picture>
+        <picture className={className}>
             {webpSrc && <source srcSet={webpSrc} type="image/webp" />}
             <img src={src} alt={alt} loading={loading} {...props} />
         </picture>
