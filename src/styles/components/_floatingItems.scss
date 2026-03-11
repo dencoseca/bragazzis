@@ -27,6 +27,14 @@
     }
 }
 
+.item__image {
+    img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+}
+
 .item__text {
     @media (max-width: $mobile) {
         margin: 3vw 0;
