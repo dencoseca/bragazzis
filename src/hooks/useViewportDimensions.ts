@@ -13,7 +13,10 @@ export { breakpoints };
 
 export default function useViewportDimensions(): ViewportDimensions {
     const [dimensions, setDimensions] = useState<ViewportDimensions>({
-        height: 0, width: 0, vh: 0, vw: 0,
+        height: 0,
+        width: 0,
+        vh: 0,
+        vw: 0,
     });
 
     useEffect(() => {
@@ -37,7 +40,8 @@ export default function useViewportDimensions(): ViewportDimensions {
         }, 1000);
 
         window.addEventListener("resize", debouncedHandleResize);
-        return () => window.removeEventListener("resize", debouncedHandleResize);
+        return () =>
+            window.removeEventListener("resize", debouncedHandleResize);
     }, []);
 
     return dimensions;

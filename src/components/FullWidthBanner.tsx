@@ -33,44 +33,44 @@ const FullWidthBanner = memo(function FullWidthBanner({
               : 0;
 
     return (
-            <section className="full-width-banner">
-                <OptimizedImage
-                    className="full-width-banner__image"
-                    src={eggImg}
-                    alt="a gigantic italian chocolate easter egg"
-                    loading="lazy"
-                    onContextMenu={preventContextMenu}
-                />
-                <motion.article
-                    className="full-width-banner__text"
-                    style={{
-                        translateY: textScrollTranslateYValue,
-                        translateX: "-50%",
-                    }}
-                >
-                    {width >= mobile ? (
-                        <>
-                            <span className="text--display">
-                                Each season brings a selection of
-                            </span>
-                            <span className="text--display">
-                                well considered products
-                            </span>
-                        </>
-                    ) : (
-                        <>
-                            <span className="text--display">Each season</span>
-                            <span className="text--display">
-                                brings a selection
-                            </span>
-                            <span className="text--display">
-                                of well considered
-                            </span>
-                            <span className="text--display">products</span>
-                        </>
-                    )}
-                </motion.article>
-            </section>
+        <section className="full-width-banner">
+            <OptimizedImage
+                className="full-width-banner__image"
+                src={eggImg}
+                alt="a gigantic italian chocolate easter egg"
+                loading="lazy"
+                onContextMenu={preventContextMenu}
+            />
+            <motion.article
+                className="full-width-banner__text"
+                style={{
+                    translateY: textScrollTranslateYValue,
+                    translateX: "-50%",
+                }}
+            >
+                {width >= mobile ? (
+                    <>
+                        <span className="text--display">
+                            Each season brings a selection of
+                        </span>
+                        <span className="text--display">
+                            well considered products
+                        </span>
+                    </>
+                ) : (
+                    <>
+                        <span className="text--display">Each season</span>
+                        <span className="text--display">
+                            brings a selection
+                        </span>
+                        <span className="text--display">
+                            of well considered
+                        </span>
+                        <span className="text--display">products</span>
+                    </>
+                )}
+            </motion.article>
+        </section>
     );
 });
 

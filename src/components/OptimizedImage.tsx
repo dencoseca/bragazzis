@@ -1,7 +1,6 @@
 import { getWebpSrc } from "@/utils/imageMap";
 
-interface OptimizedImageProps
-    extends React.ImgHTMLAttributes<HTMLImageElement> {
+interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
     src: string;
     alt: string;
 }

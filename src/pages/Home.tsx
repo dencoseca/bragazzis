@@ -1,6 +1,8 @@
 import { useScroll } from "motion/react";
 import { openingHours } from "@/constants/openingHours";
-import useViewportDimensions, { breakpoints } from "@/hooks/useViewportDimensions";
+import useViewportDimensions, {
+    breakpoints,
+} from "@/hooks/useViewportDimensions";
 import Layout from "@/components/Layout";
 import Cover from "@/components/Cover";
 import FloatingItems from "@/components/FloatingItems";
@@ -11,7 +13,10 @@ export default function Home() {
     const { scrollYProgress } = useScroll();
 
     return (
-        <Layout pageTitle="Home" description="Bragazzi's — an Italian deli, café in Sheffield.">
+        <Layout
+            pageTitle="Home"
+            description="Bragazzi's — an Italian deli, café in Sheffield."
+        >
             <Cover
                 openingHours={openingHours}
                 dimensions={dimensions}

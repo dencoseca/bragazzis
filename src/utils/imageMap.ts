@@ -34,7 +34,8 @@ export async function initImageMap(): Promise<void> {
     const webpByName = new Map<string, string>();
     const webpEntries = await Promise.all(
         Object.entries(webpModules).map(
-            async ([path, resolver]) => [baseName(path), await resolver()] as const,
+            async ([path, resolver]) =>
+                [baseName(path), await resolver()] as const,
         ),
     );
     for (const [name, url] of webpEntries) {
@@ -43,7 +44,8 @@ export async function initImageMap(): Promise<void> {
 
     const jpgEntries = await Promise.all(
         Object.entries(jpgModules).map(
-            async ([path, resolver]) => [baseName(path), await resolver()] as const,
+            async ([path, resolver]) =>
+                [baseName(path), await resolver()] as const,
         ),
     );
     for (const [name, url] of jpgEntries) {

@@ -190,7 +190,10 @@ Guard with a `typeof window !== "undefined"` check or initialise with default va
 
 ```ts
 const [dimensions, setDimensions] = useState({
-    height: 0, width: 0, vh: 0, vw: 0,
+    height: 0,
+    width: 0,
+    vh: 0,
+    vw: 0,
 });
 
 useEffect(() => {

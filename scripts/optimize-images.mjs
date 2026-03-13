@@ -20,8 +20,8 @@ const WEBP_QUALITY = 80;
 
 async function optimizeImages() {
     const files = await readdir(IMAGES_DIR);
-    const imageFiles = files.filter((f) =>
-        /\.(jpe?g|png)$/i.test(f) && !f.endsWith(".webp"),
+    const imageFiles = files.filter(
+        (f) => /\.(jpe?g|png)$/i.test(f) && !f.endsWith(".webp"),
     );
 
     console.log(`Found ${imageFiles.length} images to process.\n`);
@@ -70,9 +70,7 @@ async function optimizeImages() {
         webpCreated++;
     }
 
-    console.log(
-        `\nDone! Resized: ${resized}, WebP created: ${webpCreated}`,
-    );
+    console.log(`\nDone! Resized: ${resized}, WebP created: ${webpCreated}`);
 }
 
 function formatBytes(bytes) {

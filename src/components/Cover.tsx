@@ -72,81 +72,81 @@ const Cover = memo(function Cover({
     }, [width, mobile]);
 
     return (
-            <div className="cover" id="cover">
-                <div className="cover__title-wrapper">
-                    <motion.div
-                        className="cover__title text--page-title"
-                        variants={titleVariants}
-                        initial="initial"
-                        animate="animate"
-                    >
-                        BRAGAZZI'S
-                    </motion.div>
-                </div>
-                <div className="cover__image-wrapper">
-                    <motion.div
-                        className="cover__image-inner"
-                        style={{
-                            translateY: heroImageScroll,
-                        }}
-                    >
-                        <OptimizedImage
-                            className="cover__image"
-                            src={parmesanImg}
-                            alt="a busy Italian cafe"
-                            loading="eager"
-                            onContextMenu={preventContextMenu}
-                        />
-                    </motion.div>
-                </div>
+        <div className="cover" id="cover">
+            <div className="cover__title-wrapper">
                 <motion.div
-                    className="cover__content"
-                    variants={contentVariants}
+                    className="cover__title text--page-title"
+                    variants={titleVariants}
                     initial="initial"
                     animate="animate"
                 >
-                    <ul className="opening-hours">
-                        {openingHours.map((line, index) => (
-                            <li key={index}>{line}</li>
-                        ))}
-                    </ul>
-                    <div className="address">
-                        <a
-                            href="https://goo.gl/maps/n4uLGJGtaqSjSfoo6"
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            <p>224-228 Abbeydale Road</p>
-                            <p>Sheffield</p>
-                        </a>
-                    </div>
+                    BRAGAZZI'S
                 </motion.div>
-                <button
-                    type="button"
-                    className="cover__down-arrow-btn"
-                    onClick={handleScrollDown}
-                    aria-label="Scroll down"
-                >
-                    <motion.svg
-                        className="cover__down-arrow"
-                        variants={downArrowVariants}
-                        initial="initial"
-                        animate="animate"
-                        width="50"
-                        height="50"
-                        viewBox="0 0 50 50"
-                        fill="#f6f4f1"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M25 50C38.8071 50 50 38.8071 50 25C50 11.1929 38.8071 0 25 0C11.1929 0 0 11.1929 0 25C0 38.8071 11.1929 50 25 50ZM23.5858 38.5858L17 32L18.4142 30.5858L24 36.1716V9H26V36.1716L31.5858 30.5858L33 32L26.4142 38.5858L26 39L25 40L24 39L23.5858 38.5858Z"
-                            fill="#f6f4f1"
-                        />
-                    </motion.svg>
-                </button>
             </div>
+            <div className="cover__image-wrapper">
+                <motion.div
+                    className="cover__image-inner"
+                    style={{
+                        translateY: heroImageScroll,
+                    }}
+                >
+                    <OptimizedImage
+                        className="cover__image"
+                        src={parmesanImg}
+                        alt="a busy Italian cafe"
+                        loading="eager"
+                        onContextMenu={preventContextMenu}
+                    />
+                </motion.div>
+            </div>
+            <motion.div
+                className="cover__content"
+                variants={contentVariants}
+                initial="initial"
+                animate="animate"
+            >
+                <ul className="opening-hours">
+                    {openingHours.map((line, index) => (
+                        <li key={index}>{line}</li>
+                    ))}
+                </ul>
+                <div className="address">
+                    <a
+                        href="https://goo.gl/maps/n4uLGJGtaqSjSfoo6"
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        <p>224-228 Abbeydale Road</p>
+                        <p>Sheffield</p>
+                    </a>
+                </div>
+            </motion.div>
+            <button
+                type="button"
+                className="cover__down-arrow-btn"
+                onClick={handleScrollDown}
+                aria-label="Scroll down"
+            >
+                <motion.svg
+                    className="cover__down-arrow"
+                    variants={downArrowVariants}
+                    initial="initial"
+                    animate="animate"
+                    width="50"
+                    height="50"
+                    viewBox="0 0 50 50"
+                    fill="#f6f4f1"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M25 50C38.8071 50 50 38.8071 50 25C50 11.1929 38.8071 0 25 0C11.1929 0 0 11.1929 0 25C0 38.8071 11.1929 50 25 50ZM23.5858 38.5858L17 32L18.4142 30.5858L24 36.1716V9H26V36.1716L31.5858 30.5858L33 32L26.4142 38.5858L26 39L25 40L24 39L23.5858 38.5858Z"
+                        fill="#f6f4f1"
+                    />
+                </motion.svg>
+            </button>
+        </div>
     );
 });
 

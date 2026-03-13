@@ -5,8 +5,7 @@ function LoadingFallback() {
                 minHeight: "100vh",
                 backgroundColor: "#1d1d1d",
             }}
-        >
-        </div>
+        ></div>
     );
 }
 
