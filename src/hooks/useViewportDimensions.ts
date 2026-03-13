@@ -12,17 +12,18 @@ export interface ViewportDimensions {
 export { breakpoints };
 
 export default function useViewportDimensions(): ViewportDimensions {
-    const [dimensions, setDimensions] = useState<ViewportDimensions>(() => ({
-        height: window.innerHeight,
-        width: window.innerWidth,
-        vh: window.innerHeight / 100,
-        vw: window.innerWidth / 100,
-    }));
+    const [dimensions, setDimensions] = useState<ViewportDimensions>({
+        height: 0, width: 0, vh: 0, vw: 0,
+    });
 
     useEffect(() => {
-        const vh = window.innerHeight * 0.01;
-        document.documentElement.style.setProperty("--vh", `${vh}px`);
-    }, [dimensions]);
+        setDimensions({
+            height: window.innerHeight,
+            width: window.innerWidth,
+            vh: window.innerHeight / 100,
+            vw: window.innerWidth / 100,
+        });
+    }, []);
 
     useEffect(() => {
         const debouncedHandleResize = debounce(function handleResize() {

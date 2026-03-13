@@ -178,7 +178,7 @@ JS breakpoints (`mobile: 760`, `tablet: 1080`) probably mirror SCSS variables. A
 
 ---
 
-## Phase 5 — SSR Safety & Modern CSS `[ ]`
+## Phase 5 — SSR Safety & Modern CSS `[x]`
 
 ### 5.1 `Home.tsx` — `window` access in `useState` initializer (SSR-unsafe)
 
