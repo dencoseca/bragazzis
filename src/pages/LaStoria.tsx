@@ -45,7 +45,7 @@ const rightTicketVariants = {
 
 export default function LaStoria() {
     return (
-        <Layout pageTitle="La Storia">
+        <Layout pageTitle="La Storia" description="La Storia — the story of Bragazzi's. Learn about our Italian roots and how we became Edinburgh's beloved deli and café.">
             <AnimatePresence>
                 <div className="lastoria">
                     <div className="lastoria__title-wrapper">
