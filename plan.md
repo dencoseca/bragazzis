@@ -1,12 +1,12 @@
 # Codebase Improvement Plan
 
-Issues are grouped by priority. Each item includes the affected file(s) and step-by-step instructions to resolve it.
+This plan is organized into phases that can be executed independently. To execute a phase, start a new Junie session and say: **"Please execute phase N of @plan.md and mark it complete"**
 
 ---
 
-## High Priority
+## Phase 1 — Critical Bug Fixes (Memory Leak & Event Listeners) `[ ]`
 
-### 1. `useSmoothScroll` — `requestAnimationFrame` loop is never cancelled
+### 1.1 `useSmoothScroll` — `requestAnimationFrame` loop is never cancelled
 
 **Files:** `src/hooks/useSmoothScroll.ts`
 
@@ -37,9 +37,7 @@ useEffect(() => {
 }, []);
 ```
 
----
-
-### 2. `Home.tsx` — resize listener never attaches on mobile
+### 1.2 `Home.tsx` — resize listener never attaches on mobile
 
 **Files:** `src/pages/Home.tsx`
 
@@ -66,9 +64,7 @@ useEffect(() => {
 }, []);
 ```
 
----
-
-### 3. `Menu` links don't close the menu on navigation
+### 1.3 `Menu` links don't close the menu on navigation
 
 **Files:** `src/components/Menu.tsx`, `src/components/Layout.tsx`
 
@@ -88,9 +84,9 @@ useEffect(() => {
 
 ---
 
-## Medium Priority
+## Phase 2 — Component Logic Cleanup (Header, AnimatePresence) `[ ]`
 
-### 4. `Header.tsx` — `toggleMenu` uses two `if` checks instead of `if/else`
+### 2.1 `Header.tsx` — `toggleMenu` uses two `if` checks instead of `if/else`
 
 **Files:** `src/components/Header.tsx`
 
@@ -108,9 +104,21 @@ const toggleMenu = useCallback(() => {
 }, [menuIsOpen, setMenuIsOpen, controls]);
 ```
 
+### 2.2 `AnimatePresence` misused in Cover, FloatingItems, FullWidthBanner, and LaStoria
+
+**Files:** `src/components/Cover.tsx`, `src/components/FloatingItems.tsx`, `src/components/FullWidthBanner.tsx`, `src/pages/LaStoria.tsx`
+
+`AnimatePresence` only does something when its direct children conditionally mount/unmount (with a `key`). In these files it wraps permanently-rendered content, so it adds overhead for no benefit.
+
+**Fix:**
+
+Remove the `<AnimatePresence>` wrapper from each of these four components. The `AnimatePresence` in `Layout.tsx` (wrapping `Menu`) is correct and should stay.
+
 ---
 
-### 5. `IlGiorno.tsx` — ~50 images eagerly imported at module level
+## Phase 3 — Performance: Image Loading & Bundle Size `[ ]`
+
+### 3.1 `IlGiorno.tsx` — ~50 images eagerly imported at module level
 
 **Files:** `src/pages/IlGiorno.tsx`
 
@@ -122,9 +130,7 @@ Every image is a static import, so Vite must resolve and include all of them whe
 - Consider an intersection-observer approach where images only get their `src` set when they enter (or approach) the viewport, or use a virtualised list to reduce initial DOM size.
 - At minimum, move the image array to a separate data file so the component itself stays lean.
 
----
-
-### 6. `imageMap.ts` — eager glob of all images at startup
+### 3.2 `imageMap.ts` — eager glob of all images at startup
 
 **Files:** `src/utils/imageMap.ts`
 
@@ -138,19 +144,9 @@ Every image is a static import, so Vite must resolve and include all of them whe
 
 ---
 
-### 7. `AnimatePresence` misused in Cover, FloatingItems, FullWidthBanner, and LaStoria
+## Phase 4 — Shared State & Scroll Optimization `[ ]`
 
-**Files:** `src/components/Cover.tsx`, `src/components/FloatingItems.tsx`, `src/components/FullWidthBanner.tsx`, `src/pages/LaStoria.tsx`
-
-`AnimatePresence` only does something when its direct children conditionally mount/unmount (with a `key`). In these files it wraps permanently-rendered content, so it adds overhead for no benefit.
-
-**Fix:**
-
-Remove the `<AnimatePresence>` wrapper from each of these four components. The `AnimatePresence` in `Layout.tsx` (wrapping `Menu`) is correct and should stay.
-
----
-
-### 8. Three separate `useScroll()` hooks on the Home page
+### 4.1 Three separate `useScroll()` hooks on the Home page
 
 **Files:** `src/components/Cover.tsx`, `src/components/FloatingItems.tsx`, `src/components/FullWidthBanner.tsx`
 
@@ -161,9 +157,7 @@ Each component independently calls `useScroll()`, creating three separate scroll
 - Call `useScroll()` once in `Home.tsx` and pass `scrollYProgress` down as a prop, or
 - Create a shared scroll context that provides `scrollYProgress` to all children.
 
----
-
-### 9. `dimensions` / `breakpoints` prop-drilling
+### 4.2 `dimensions` / `breakpoints` prop-drilling
 
 **Files:** `src/pages/Home.tsx`, `src/components/Cover.tsx`, `src/components/FloatingItems.tsx`, `src/components/FullWidthBanner.tsx`
 
@@ -171,9 +165,7 @@ Each component independently calls `useScroll()`, creating three separate scroll
 
 Extract the `dimensions` state and resize logic into a custom hook (e.g., `useViewportDimensions`) and either call it in each component directly or expose it via React context. This eliminates the prop-drilling chain.
 
----
-
-### 10. Breakpoints duplicated between JS and CSS
+### 4.3 Breakpoints duplicated between JS and CSS
 
 **Files:** `src/pages/Home.tsx`, SCSS files (likely `src/styles/_variables.scss`)
 
@@ -186,9 +178,9 @@ JS breakpoints (`mobile: 760`, `tablet: 1080`) probably mirror SCSS variables. A
 
 ---
 
-## Low Priority
+## Phase 5 — SSR Safety & Modern CSS `[ ]`
 
-### 11. `Home.tsx` — `window` access in `useState` initializer (SSR-unsafe)
+### 5.1 `Home.tsx` — `window` access in `useState` initializer (SSR-unsafe)
 
 **Files:** `src/pages/Home.tsx`
 
@@ -211,19 +203,7 @@ useEffect(() => {
 }, []);
 ```
 
----
-
-### 12. Footer copyright year is hardcoded to 2021
-
-**Files:** `src/components/Footer.tsx`
-
-**Fix:**
-
-Replace `2021` with `{new Date().getFullYear()}`, or if you want a range: `2021–{new Date().getFullYear()}`.
-
----
-
-### 13. `--vh` custom property workaround is obsolete
+### 5.2 `--vh` custom property workaround is obsolete
 
 **Files:** `src/pages/Home.tsx`, any SCSS using `var(--vh)`
 
@@ -233,7 +213,9 @@ Modern browsers support `dvh` (dynamic viewport height). Replace `calc(var(--vh,
 
 ---
 
-### 14. `preventContextMenu` handler duplicated in 4 files
+## Phase 6 — Code Deduplication & Shared Utilities `[ ]`
+
+### 6.1 `preventContextMenu` handler duplicated in 4 files
 
 **Files:** `src/components/Cover.tsx`, `src/components/FloatingItems.tsx`, `src/components/FullWidthBanner.tsx`, `src/pages/IlGiorno.tsx`
 
@@ -241,9 +223,19 @@ Modern browsers support `dvh` (dynamic viewport height). Replace `calc(var(--vh,
 
 Move to a shared utility file (e.g., `src/utils/eventHandlers.ts`) and import from there.
 
+### 6.2 Footer copyright year is hardcoded to 2021
+
+**Files:** `src/components/Footer.tsx`
+
+**Fix:**
+
+Replace `2021` with `{new Date().getFullYear()}`, or if you want a range: `2021–{new Date().getFullYear()}`.
+
 ---
 
-### 15. `NotFound` page doesn't use `Layout`
+## Phase 7 — SEO, Accessibility & HTML Hygiene `[ ]`
+
+### 7.1 `NotFound` page doesn't use `Layout`
 
 **Files:** `src/pages/NotFound.tsx`
 
@@ -253,9 +245,7 @@ This means no `<Helmet>` meta tags, no header/footer, and no consistent styling.
 
 Wrap the content in `<Layout pageTitle="404">` and adjust styling as needed. Alternatively, if the minimal design is intentional, at least add a `<Helmet>` for the page title and a `noindex` meta tag.
 
----
-
-### 16. `og:image` points to an SVG favicon
+### 7.2 `og:image` points to an SVG favicon
 
 **Files:** `index.html`, `src/components/Layout.tsx`
 
@@ -265,9 +255,7 @@ Most social platforms can't render SVG for link previews.
 
 Create a raster image (PNG or JPG, ideally 1200×630px) for use as the OG image and update both `index.html` and `Layout.tsx`.
 
----
-
-### 17. Duplicate `<meta>` tags between `index.html` and `Layout.tsx`
+### 7.3 Duplicate `<meta>` tags between `index.html` and `Layout.tsx`
 
 **Files:** `index.html`, `src/components/Layout.tsx`
 
@@ -277,31 +265,7 @@ Both define `description`, `og:*`, and `twitter:*` tags. `react-helmet-async` ov
 
 Keep the tags in `index.html` as sensible defaults (for no-JS crawlers) and let Helmet override per-page. Just be aware they need to stay in sync — or remove the per-page ones from `index.html` if all crawlers execute JS.
 
----
-
-### 18. `clsx` dependency is unused
-
-**Files:** `package.json`
-
-**Fix:**
-
-Run `pnpm remove clsx`.
-
----
-
-### 19. `svgr` plugin is configured but never used
-
-**Files:** `package.json`, `vite.config.ts`
-
-No SVG is imported as a React component anywhere.
-
-**Fix:**
-
-If you don't plan to use SVGR, run `pnpm remove vite-plugin-svgr` and remove the `svgr()` call from `vite.config.ts`.
-
----
-
-### 20. Footer scroll-to-top button is not keyboard accessible
+### 7.4 Footer scroll-to-top button is not keyboard accessible
 
 **Files:** `src/components/Footer.tsx`
 
@@ -310,3 +274,25 @@ The scroll-to-top arrow is a `<div onClick={scrollToTop}>` — it can't be focus
 **Fix:**
 
 Replace the `<div>` with a `<button>` (with `type="button"`) and add an `aria-label="Scroll to top"`.
+
+---
+
+## Phase 8 — Dependency Cleanup `[ ]`
+
+### 8.1 `clsx` dependency is unused
+
+**Files:** `package.json`
+
+**Fix:**
+
+Run `pnpm remove clsx`.
+
+### 8.2 `svgr` plugin is configured but never used
+
+**Files:** `package.json`, `vite.config.ts`
+
+No SVG is imported as a React component anywhere.
+
+**Fix:**
+
+If you don't plan to use SVGR, run `pnpm remove vite-plugin-svgr` and remove the `svgr()` call from `vite.config.ts`.
