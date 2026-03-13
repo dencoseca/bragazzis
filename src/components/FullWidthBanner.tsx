@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { AnimatePresence, motion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import OptimizedImage from "@/components/OptimizedImage";
 import eggImg from "@/assets/images/egg.jpg";
 
@@ -33,7 +33,6 @@ const FullWidthBanner = memo(function FullWidthBanner({
               : 0;
 
     return (
-        <AnimatePresence>
             <section className="full-width-banner">
                 <OptimizedImage
                     className="full-width-banner__image"
@@ -72,7 +71,6 @@ const FullWidthBanner = memo(function FullWidthBanner({
                     )}
                 </motion.article>
             </section>
-        </AnimatePresence>
     );
 });
 

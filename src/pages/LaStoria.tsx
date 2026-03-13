@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 import Layout from "@/components/Layout";
 import OptimizedImage from "@/components/OptimizedImage";
 import ticketRomaImg from "@/assets/images/ticket-roma.jpg";
@@ -46,7 +46,6 @@ const rightTicketVariants = {
 export default function LaStoria() {
     return (
         <Layout pageTitle="La Storia" description="La Storia — the story of Bragazzi's. Learn about our Italian roots and how we first started.">
-            <AnimatePresence>
                 <div className="lastoria">
                     <div className="lastoria__title-wrapper">
                         <div className="lastoria__title text--page-title">
@@ -100,7 +99,6 @@ export default function LaStoria() {
                         <OptimizedImage src={earlyDaysImg} alt="A busy cafe" loading="lazy" />
                     </div>
                 </div>
-            </AnimatePresence>
         </Layout>
     );
 }

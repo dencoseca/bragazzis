@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { AnimatePresence, motion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import OptimizedImage from "@/components/OptimizedImage";
 import shelvesImg from "@/assets/images/shelves.jpg";
 import coffeePourImg from "@/assets/images/coffee-pour.jpg";
@@ -24,7 +24,6 @@ const FloatingItems = memo(function FloatingItems({
     const item4Scroll = useTransform(scrollYProgress, [0, 1], [0, vw * -29]);
 
     return (
-        <AnimatePresence>
             <section className="floating-items">
                 <motion.article
                     className="item item--1"
@@ -128,7 +127,6 @@ const FloatingItems = memo(function FloatingItems({
                     </div>
                 </motion.article>
             </section>
-        </AnimatePresence>
     );
 });
 

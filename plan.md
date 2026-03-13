@@ -84,7 +84,7 @@ useEffect(() => {
 
 ---
 
-## Phase 2 — Component Logic Cleanup (Header, AnimatePresence) `[ ]`
+## Phase 2 — Component Logic Cleanup (Header, AnimatePresence) `[x]`
 
 ### 2.1 `Header.tsx` — `toggleMenu` uses two `if` checks instead of `if/else`
 

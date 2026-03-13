@@ -47,8 +47,7 @@ const Header = memo(function Header({
         if (menuIsOpen) {
             setMenuIsOpen(false);
             controls.start("closed");
-        }
-        if (!menuIsOpen) {
+        } else {
             setMenuIsOpen(true);
             controls.start("open");
         }

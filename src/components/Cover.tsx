@@ -1,5 +1,5 @@
 import { memo, useCallback } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import OptimizedImage from "@/components/OptimizedImage";
 import { smoothTransition } from "@/constants/animations";
 import parmesanImg from "@/assets/images/parmesan.jpg";
@@ -72,7 +72,6 @@ const Cover = memo(function Cover({
     }, [width, mobile]);
 
     return (
-        <AnimatePresence>
             <div className="cover" id="cover">
                 <div className="cover__title-wrapper">
                     <motion.div
@@ -148,7 +147,6 @@ const Cover = memo(function Cover({
                     </motion.svg>
                 </button>
             </div>
-        </AnimatePresence>
     );
 });
 
