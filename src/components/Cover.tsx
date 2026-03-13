@@ -45,7 +45,7 @@ const downArrowVariants = {
 
 const titleVariants = {
     initial: {
-        translateY: 400,
+        translateY: "100%",
     },
     animate: {
         translateY: 0,
