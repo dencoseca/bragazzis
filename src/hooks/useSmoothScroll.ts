@@ -6,15 +6,17 @@ export function useSmoothScroll() {
 
     useEffect(() => {
         lenisRef.current = new Lenis();
+        let rafId: number;
 
         function raf(time: number) {
             lenisRef.current?.raf(time);
-            requestAnimationFrame(raf);
+            rafId = requestAnimationFrame(raf);
         }
 
-        requestAnimationFrame(raf);
+        rafId = requestAnimationFrame(raf);
 
         return () => {
+            cancelAnimationFrame(rafId);
             lenisRef.current?.destroy();
             lenisRef.current = null;
         };

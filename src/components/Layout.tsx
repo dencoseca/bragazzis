@@ -64,6 +64,10 @@ export default function Layout({
         [],
     );
 
+    useEffect(() => {
+        setMenuIsOpen(false);
+    }, [location.pathname]);
+
     useSmoothScroll();
 
     const mainRef = useRef<HTMLElement>(null);

@@ -25,9 +25,8 @@ export default function Home() {
     }, [dimensions]);
 
     useEffect(() => {
-        if (window.innerWidth < breakpoints.mobile) return;
-
         const debouncedHandleResize = debounce(function handleResize() {
+            if (window.innerWidth < breakpoints.mobile) return;
             setDimensions({
                 height: window.innerHeight,
                 width: window.innerWidth,
@@ -37,9 +36,7 @@ export default function Home() {
         }, 1000);
 
         window.addEventListener("resize", debouncedHandleResize);
-        return () => {
-            window.removeEventListener("resize", debouncedHandleResize);
-        };
+        return () => window.removeEventListener("resize", debouncedHandleResize);
     }, []);
 
     return (

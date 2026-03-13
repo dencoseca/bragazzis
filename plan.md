@@ -4,7 +4,7 @@ This plan is organized into phases that can be executed independently. To execut
 
 ---
 
-## Phase 1 — Critical Bug Fixes (Memory Leak & Event Listeners) `[ ]`
+## Phase 1 — Critical Bug Fixes (Memory Leak & Event Listeners) `[x]`
 
 ### 1.1 `useSmoothScroll` — `requestAnimationFrame` loop is never cancelled
 
