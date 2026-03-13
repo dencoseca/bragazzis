@@ -59,14 +59,15 @@ export default function Layout({
     const mainBackgroundColor = isPageIlgiorno ? "#1d1d1d" : "#fff";
 
     const [menuIsOpen, setMenuIsOpen] = useState(false);
+    const [prevPathname, setPrevPathname] = useState(location.pathname);
+    if (location.pathname !== prevPathname) {
+        setPrevPathname(location.pathname);
+        setMenuIsOpen(false);
+    }
     const handleSetMenuIsOpen = useCallback(
         (open: boolean) => setMenuIsOpen(open),
         [],
     );
-
-    useEffect(() => {
-        setMenuIsOpen(false);
-    }, [location.pathname]);
 
     useSmoothScroll();
 

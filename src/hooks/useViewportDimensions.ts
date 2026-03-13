@@ -11,22 +11,20 @@ export interface ViewportDimensions {
 
 export { breakpoints };
 
-export default function useViewportDimensions(): ViewportDimensions {
-    const [dimensions, setDimensions] = useState<ViewportDimensions>({
-        height: 0,
-        width: 0,
-        vh: 0,
-        vw: 0,
-    });
+function getViewportDimensions(): ViewportDimensions {
+    if (typeof window === "undefined") {
+        return { height: 0, width: 0, vh: 0, vw: 0 };
+    }
+    return {
+        height: window.innerHeight,
+        width: window.innerWidth,
+        vh: window.innerHeight / 100,
+        vw: window.innerWidth / 100,
+    };
+}
 
-    useEffect(() => {
-        setDimensions({
-            height: window.innerHeight,
-            width: window.innerWidth,
-            vh: window.innerHeight / 100,
-            vw: window.innerWidth / 100,
-        });
-    }, []);
+export default function useViewportDimensions(): ViewportDimensions {
+    const [dimensions, setDimensions] = useState<ViewportDimensions>(getViewportDimensions);
 
     useEffect(() => {
         const debouncedHandleResize = debounce(function handleResize() {
