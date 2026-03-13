@@ -19,21 +19,16 @@ const LOCAL_BUSINESS_JSONLD = {
     "@id": "https://bragazzis.co.uk/#localbusiness",
     name: "Bragazzi's",
     description:
-        "An Italian deli, café and cultural hub in Edinburgh, serving authentic Italian food and coffee since 1983.",
+        "An Italian deli, café in Sheffield, serving authentic Italian food and coffee.",
     url: "https://bragazzis.co.uk",
-    telephone: "+44 131 661 9141",
+    telephone: "+44 114 258 1483",
     address: {
         "@type": "PostalAddress",
-        streetAddress: "17 Middle Meadow Walk",
-        addressLocality: "Edinburgh",
-        addressRegion: "City of Edinburgh",
-        postalCode: "EH1 1EL",
+        streetAddress: "224-228 Abbeydale Road",
+        addressLocality: "Sheffield",
+        addressRegion: "South Yorkshire",
+        postalCode: "S7 1FL",
         addressCountry: "GB",
-    },
-    geo: {
-        "@type": "GeoCoordinates",
-        latitude: 55.9437,
-        longitude: -3.1909,
     },
     image: "https://bragazzis.co.uk/favicon.svg",
     logo: "https://bragazzis.co.uk/favicon.svg",
@@ -57,7 +52,7 @@ const LOCAL_BUSINESS_JSONLD = {
 export default function Layout({
     children,
     pageTitle,
-    description = "Bragazzi's — an Italian deli, café and cultural hub in Edinburgh. Discover our story, daily specials and opening hours.",
+    description = "Bragazzi's — an Italian deli, café in Sheffield, serving authentic Italian food and coffee.",
 }: LayoutProps) {
     const location = useLocation();
     const isPageIlgiorno = location.pathname.includes("/ilgiorno");
@@ -77,9 +72,7 @@ export default function Layout({
         if (mainRef.current) mainRef.current.classList.add("visible");
     }, []);
 
-    const fullTitle = pageTitle
-        ? `${pageTitle} | Bragazzi's`
-        : "Bragazzi's";
+    const fullTitle = pageTitle ? `${pageTitle} | Bragazzi's` : "Bragazzi's";
     const canonicalUrl = `https://bragazzis.co.uk${location.pathname}`;
 
     return (

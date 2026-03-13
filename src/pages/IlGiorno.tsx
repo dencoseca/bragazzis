@@ -236,7 +236,7 @@ const galleryImages: GalleryImage[] = [
 
 export default function IlGiorno() {
     return (
-        <Layout pageTitle="Il Giorno" description="Il Giorno — a day at Bragazzi's. Browse our daily specials, fresh Italian dishes and café favourites in Edinburgh.">
+        <Layout pageTitle="Il Giorno" description="Il Giorno — a day at Bragazzi's.">
             <div className="ilgiorno__title text--page-title">IL GIORNO</div>
             <div className="ilgiorno__gallery">
                 <div className="ilgiorno__caption ilgiorno__caption--aperto text--display">

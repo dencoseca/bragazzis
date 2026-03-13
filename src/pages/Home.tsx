@@ -43,7 +43,7 @@ export default function Home() {
     }, []);
 
     return (
-        <Layout pageTitle="Home" description="Bragazzi's — an Italian deli, café and cultural hub in Edinburgh. Discover our story, daily specials and opening hours.">
+        <Layout pageTitle="Home" description="Bragazzi's — an Italian deli, café in Sheffield.">
             <Cover
                 openingHours={openingHours}
                 dimensions={dimensions}
