@@ -1,8 +1,7 @@
 import Layout from "@/components/Layout";
 import OptimizedImage from "@/components/OptimizedImage";
+import { preventContextMenu } from "@/utils/eventHandlers";
 import { galleryImages } from "@/data/galleryImages";
-
-const preventContextMenu = (e: React.MouseEvent) => e.preventDefault();
 
 export default function IlGiorno() {
     return (

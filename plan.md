@@ -213,7 +213,7 @@ Modern browsers support `dvh` (dynamic viewport height). Replace `calc(var(--vh,
 
 ---
 
-## Phase 6 — Code Deduplication & Shared Utilities `[ ]`
+## Phase 6 — Code Deduplication & Shared Utilities `[x]`
 
 ### 6.1 `preventContextMenu` handler duplicated in 4 files
 

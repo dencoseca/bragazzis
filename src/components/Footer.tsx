@@ -58,7 +58,7 @@ const Footer = memo(function Footer() {
                     <h4 className="text--heading-sm">Site</h4>
                     <ul>
                         <li className="text--sm">
-                            &copy; 2021 Bragazzi&apos;s Ltd
+                            &copy; 2021–{new Date().getFullYear()} Bragazzi&apos;s Ltd
                         </li>
                         <li className="text--sm">
                             photography by{" "}

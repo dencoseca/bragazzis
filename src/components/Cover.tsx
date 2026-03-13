@@ -2,9 +2,8 @@ import { memo, useCallback } from "react";
 import { type MotionValue, motion, useTransform } from "motion/react";
 import OptimizedImage from "@/components/OptimizedImage";
 import { smoothTransition } from "@/constants/animations";
+import { preventContextMenu } from "@/utils/eventHandlers";
 import parmesanImg from "@/assets/images/parmesan.jpg";
-
-const preventContextMenu = (e: React.MouseEvent) => e.preventDefault();
 
 interface CoverProps {
     openingHours: string[];
