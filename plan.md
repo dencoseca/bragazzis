@@ -144,7 +144,7 @@ Every image is a static import, so Vite must resolve and include all of them whe
 
 ---
 
-## Phase 4 — Shared State & Scroll Optimization `[ ]`
+## Phase 4 — Shared State & Scroll Optimization `[x]`
 
 ### 4.1 Three separate `useScroll()` hooks on the Home page
 

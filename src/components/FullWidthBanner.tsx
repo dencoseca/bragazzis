@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { type MotionValue, motion, useTransform } from "motion/react";
 import OptimizedImage from "@/components/OptimizedImage";
 import eggImg from "@/assets/images/egg.jpg";
 
@@ -8,13 +8,14 @@ const preventContextMenu = (e: React.MouseEvent) => e.preventDefault();
 interface FullWidthBannerProps {
     dimensions: { width: number; vh: number };
     breakpoints: { mobile: number; tablet: number };
+    scrollYProgress: MotionValue<number>;
 }
 
 const FullWidthBanner = memo(function FullWidthBanner({
     dimensions: { width, vh },
     breakpoints: { mobile, tablet },
+    scrollYProgress,
 }: FullWidthBannerProps) {
-    const { scrollYProgress } = useScroll();
     const textScrollLaptop = useTransform(
         scrollYProgress,
         [0.7, 1],

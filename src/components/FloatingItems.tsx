@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { type MotionValue, motion, useTransform } from "motion/react";
 import OptimizedImage from "@/components/OptimizedImage";
 import shelvesImg from "@/assets/images/shelves.jpg";
 import coffeePourImg from "@/assets/images/coffee-pour.jpg";
@@ -11,13 +11,14 @@ const preventContextMenu = (e: React.MouseEvent) => e.preventDefault();
 interface FloatingItemsProps {
     dimensions: { width: number; vw: number };
     breakpoints: { mobile: number };
+    scrollYProgress: MotionValue<number>;
 }
 
 const FloatingItems = memo(function FloatingItems({
     dimensions: { width, vw },
     breakpoints: { mobile },
+    scrollYProgress,
 }: FloatingItemsProps) {
-    const { scrollYProgress } = useScroll();
     const item1Scroll = useTransform(scrollYProgress, [0, 1], [0, vw * -59]);
     const item2Scroll = useTransform(scrollYProgress, [0, 1], [0, vw * -118]);
     const item3Scroll = useTransform(scrollYProgress, [0, 1], [0, vw * -59]);

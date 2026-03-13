@@ -1,3 +1,5 @@
+@forward "breakpoints";
+
 // ===============
 // Colors
 // ===============
@@ -13,10 +15,3 @@ $textShadowColor: #666;
 
 $displayFont: "Abril Fatface", cursive;
 $textFont: "Josefin Sans", sans-serif;
-
-// ===============
-// Breakpoints
-// ===============
-
-$tablet: 1080px;
-$mobile: 760px;

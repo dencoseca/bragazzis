@@ -1,5 +1,5 @@
 import { memo, useCallback } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { type MotionValue, motion, useTransform } from "motion/react";
 import OptimizedImage from "@/components/OptimizedImage";
 import { smoothTransition } from "@/constants/animations";
 import parmesanImg from "@/assets/images/parmesan.jpg";
@@ -10,6 +10,7 @@ interface CoverProps {
     openingHours: string[];
     dimensions: { width: number; vh: number };
     breakpoints: { mobile: number };
+    scrollYProgress: MotionValue<number>;
 }
 
 const contentVariants = {
@@ -61,8 +62,8 @@ const Cover = memo(function Cover({
     openingHours,
     dimensions: { width, vh },
     breakpoints: { mobile },
+    scrollYProgress,
 }: CoverProps) {
-    const { scrollYProgress } = useScroll();
     const heroImageScroll = useTransform(scrollYProgress, [0, 1], [0, vh * 59]);
 
     const handleScrollDown = useCallback(() => {

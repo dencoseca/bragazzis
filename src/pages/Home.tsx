@@ -1,43 +1,14 @@
-import { useEffect, useState } from "react";
-import debounce from "@/utils/debounce";
+import { useScroll } from "motion/react";
 import { openingHours } from "@/constants/openingHours";
+import useViewportDimensions, { breakpoints } from "@/hooks/useViewportDimensions";
 import Layout from "@/components/Layout";
 import Cover from "@/components/Cover";
 import FloatingItems from "@/components/FloatingItems";
 import FullWidthBanner from "@/components/FullWidthBanner";
 
-const breakpoints = {
-    mobile: 760,
-    tablet: 1080,
-};
-
 export default function Home() {
-    const [dimensions, setDimensions] = useState(() => ({
-        height: window.innerHeight,
-        width: window.innerWidth,
-        vh: window.innerHeight / 100,
-        vw: window.innerWidth / 100,
-    }));
-
-    useEffect(() => {
-        const vh = window.innerHeight * 0.01;
-        document.documentElement.style.setProperty("--vh", `${vh}px`);
-    }, [dimensions]);
-
-    useEffect(() => {
-        const debouncedHandleResize = debounce(function handleResize() {
-            if (window.innerWidth < breakpoints.mobile) return;
-            setDimensions({
-                height: window.innerHeight,
-                width: window.innerWidth,
-                vh: window.innerHeight / 100,
-                vw: window.innerWidth / 100,
-            });
-        }, 1000);
-
-        window.addEventListener("resize", debouncedHandleResize);
-        return () => window.removeEventListener("resize", debouncedHandleResize);
-    }, []);
+    const dimensions = useViewportDimensions();
+    const { scrollYProgress } = useScroll();
 
     return (
         <Layout pageTitle="Home" description="Bragazzi's — an Italian deli, café in Sheffield.">
@@ -45,6 +16,7 @@ export default function Home() {
                 openingHours={openingHours}
                 dimensions={dimensions}
                 breakpoints={breakpoints}
+                scrollYProgress={scrollYProgress}
             />
             <section className="home__mobile-cover" id="mobile-cover">
                 <ul className="opening-hours">
@@ -58,10 +30,15 @@ export default function Home() {
                 <span>or that obscure pasta shape that you've</span>
                 <span>been looking for</span>
             </section>
-            <FloatingItems dimensions={dimensions} breakpoints={breakpoints} />
+            <FloatingItems
+                dimensions={dimensions}
+                breakpoints={breakpoints}
+                scrollYProgress={scrollYProgress}
+            />
             <FullWidthBanner
                 dimensions={dimensions}
                 breakpoints={breakpoints}
+                scrollYProgress={scrollYProgress}
             />
         </Layout>
     );
