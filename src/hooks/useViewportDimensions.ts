@@ -24,7 +24,9 @@ function getViewportDimensions(): ViewportDimensions {
 }
 
 export default function useViewportDimensions(): ViewportDimensions {
-    const [dimensions, setDimensions] = useState<ViewportDimensions>(getViewportDimensions);
+    const [dimensions, setDimensions] = useState<ViewportDimensions>(
+        getViewportDimensions,
+    );
 
     useEffect(() => {
         const debouncedHandleResize = debounce(function handleResize() {
