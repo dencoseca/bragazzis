@@ -277,7 +277,7 @@ Replace the `<div>` with a `<button>` (with `type="button"`) and add an `aria-la
 
 ---
 
-## Phase 8 — Dependency Cleanup `[ ]`
+## Phase 8 — Dependency Cleanup `[x]`
 
 ### 8.1 `clsx` dependency is unused
 
