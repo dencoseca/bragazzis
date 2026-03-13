@@ -4,6 +4,9 @@ import { BrowserRouter } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import "@/styles/main.scss";
 import App from "./App.tsx";
+import { initImageMap } from "@/utils/imageMap";
+
+initImageMap();
 
 createRoot(document.getElementById("root")!).render(
     <StrictMode>

@@ -116,7 +116,7 @@ Remove the `<AnimatePresence>` wrapper from each of these four components. The `
 
 ---
 
-## Phase 3 — Performance: Image Loading & Bundle Size `[ ]`
+## Phase 3 — Performance: Image Loading & Bundle Size `[x]`
 
 ### 3.1 `IlGiorno.tsx` — ~50 images eagerly imported at module level
 
