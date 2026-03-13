@@ -68,6 +68,10 @@
     .footer__scroll-to-top {
         display: flex;
         justify-content: center;
+        width: 100%;
+        background: none;
+        border: none;
+        padding: 0;
         padding-bottom: 3vw;
 
         @media (max-width: $tablet) {

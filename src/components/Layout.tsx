@@ -30,7 +30,7 @@ const LOCAL_BUSINESS_JSONLD = {
         postalCode: "S7 1FL",
         addressCountry: "GB",
     },
-    image: "https://bragazzis.co.uk/favicon.svg",
+    image: "https://bragazzis.co.uk/og-image.png",
     logo: "https://bragazzis.co.uk/favicon.svg",
     openingHoursSpecification: [
         {
@@ -91,7 +91,7 @@ export default function Layout({
                 <meta property="og:type" content="website" />
                 <meta
                     property="og:image"
-                    content="https://bragazzis.co.uk/favicon.svg"
+                    content="https://bragazzis.co.uk/og-image.png"
                 />
                 <meta name="twitter:card" content="summary" />
                 <meta name="twitter:title" content={fullTitle} />

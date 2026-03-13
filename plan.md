@@ -233,7 +233,7 @@ Replace `2021` with `{new Date().getFullYear()}`, or if you want a range: `2021�
 
 ---
 
-## Phase 7 — SEO, Accessibility & HTML Hygiene `[ ]`
+## Phase 7 — SEO, Accessibility & HTML Hygiene `[x]`
 
 ### 7.1 `NotFound` page doesn't use `Layout`
 

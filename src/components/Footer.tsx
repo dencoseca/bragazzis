@@ -131,9 +131,13 @@ const Footer = memo(function Footer() {
                     </ul>
                 </div>
             </div>
-            <div className="footer__scroll-to-top" onClick={scrollToTop}>
+            <button
+                type="button"
+                className="footer__scroll-to-top"
+                onClick={scrollToTop}
+                aria-label="Scroll to top"
+            >
                 <svg
-                    className="footer__scroll-to-top"
                     width="52"
                     height="52"
                     viewBox="0 0 52 52"
@@ -147,7 +151,7 @@ const Footer = memo(function Footer() {
                         fill={scrollToTopFillColor}
                     />
                 </svg>
-            </div>
+            </button>
         </footer>
     );
 });
