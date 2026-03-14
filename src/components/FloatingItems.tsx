@@ -53,8 +53,7 @@ const FloatingItems = memo(function FloatingItems({
                         vegetables.
                     </p>
                     <p className="text--md">
-                        At breakfast, we have pastries. In summer we have
-                        gelato. In winter, we have shelves of hard-to-find
+                        At breakfast, we have pastries. In winter, we have shelves of hard-to-find
                         Christmas produce direct from producers in Italy.
                     </p>
                 </div>
