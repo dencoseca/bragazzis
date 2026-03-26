@@ -94,7 +94,6 @@ const Cover = memo(function Cover({
                         className="cover__image"
                         src={parmesanImg}
                         alt="a busy Italian cafe"
-                        loading="eager"
                         onContextMenu={preventContextMenu}
                     />
                 </motion.div>

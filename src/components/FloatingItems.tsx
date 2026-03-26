@@ -33,7 +33,6 @@ const FloatingItems = memo(function FloatingItems({
                     className="item__image"
                     src={shelvesImg}
                     alt="delicious focaccia sandwiches"
-                    loading="lazy"
                     onContextMenu={preventContextMenu}
                 />
                 <div className="item__text">
@@ -66,7 +65,6 @@ const FloatingItems = memo(function FloatingItems({
                     className="item__image"
                     src={coffeePourImg}
                     alt="silky coffee being poured"
-                    loading="lazy"
                     onContextMenu={preventContextMenu}
                 />
                 <div className="item__text">
@@ -89,7 +87,6 @@ const FloatingItems = memo(function FloatingItems({
                     className="item__image"
                     src={ciabattaImg}
                     alt="fresh salad being plated"
-                    loading="lazy"
                     onContextMenu={preventContextMenu}
                 />
                 <div className="item__text">
@@ -110,7 +107,6 @@ const FloatingItems = memo(function FloatingItems({
                     className="item__image"
                     src={shopChristmasImg}
                     alt="a beautifully stocked italian dry goods shop"
-                    loading="lazy"
                     onContextMenu={preventContextMenu}
                 />
                 <div className="item__text">

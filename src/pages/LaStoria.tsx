@@ -63,7 +63,6 @@ export default function LaStoria() {
                         <OptimizedImage
                             src={ticketRomaImg}
                             alt="plane ticket"
-                            loading="eager"
                         />
                     </motion.div>
                     <motion.div
@@ -75,7 +74,6 @@ export default function LaStoria() {
                         <OptimizedImage
                             src={ticketPisaImg}
                             alt="plane ticket"
-                            loading="eager"
                         />
                     </motion.div>
                 </div>
@@ -109,7 +107,6 @@ export default function LaStoria() {
                     <OptimizedImage
                         src={earlyDaysImg}
                         alt="A busy cafe"
-                        loading="lazy"
                     />
                 </div>
             </div>

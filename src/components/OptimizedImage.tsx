@@ -8,7 +8,7 @@ interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> 
 export default function OptimizedImage({
     src,
     alt,
-    loading = "lazy",
+    loading = "eager",
     className,
     ...props
 }: OptimizedImageProps) {

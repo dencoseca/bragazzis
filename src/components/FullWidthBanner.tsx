@@ -38,7 +38,6 @@ const FullWidthBanner = memo(function FullWidthBanner({
                 className="full-width-banner__image"
                 src={eggImg}
                 alt="a gigantic italian chocolate easter egg"
-                loading="lazy"
                 onContextMenu={preventContextMenu}
             />
             <motion.article
