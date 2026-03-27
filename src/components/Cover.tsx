@@ -1,8 +1,7 @@
-import { memo, useCallback } from "react";
-import { type MotionValue, motion, useTransform } from "motion/react";
+import React, { memo, useCallback } from "react";
+import { motion, type MotionValue, useTransform } from "motion/react";
 import OptimizedImage from "@/components/OptimizedImage";
 import { smoothTransition } from "@/constants/animations";
-import { preventContextMenu } from "@/utils/eventHandlers";
 import parmesanImg from "@/assets/images/parmesan.jpg";
 
 interface CoverProps {
@@ -94,7 +93,9 @@ const Cover = memo(function Cover({
                         className="cover__image"
                         src={parmesanImg}
                         alt="a busy Italian cafe"
-                        onContextMenu={preventContextMenu}
+                        onContextMenu={(e: React.MouseEvent) =>
+                            e.preventDefault()
+                        }
                     />
                 </motion.div>
             </div>

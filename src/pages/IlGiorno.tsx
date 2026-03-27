@@ -1,7 +1,7 @@
 import Layout from "@/components/Layout";
 import OptimizedImage from "@/components/OptimizedImage";
-import { preventContextMenu } from "@/utils/eventHandlers";
 import { galleryImages } from "@/data/galleryImages";
+import React from "react";
 
 export default function IlGiorno() {
     return (
@@ -21,7 +21,9 @@ export default function IlGiorno() {
                         src={image.src}
                         alt={image.alt}
                         loading="lazy"
-                        onContextMenu={preventContextMenu}
+                        onContextMenu={(e: React.MouseEvent) =>
+                            e.preventDefault()
+                        }
                     />
                 ))}
                 <div className="ilgiorno__caption ilgiorno__caption--chiuso text--display">

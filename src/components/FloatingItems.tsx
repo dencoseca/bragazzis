@@ -1,7 +1,6 @@
-import { memo } from "react";
-import { type MotionValue, motion, useTransform } from "motion/react";
+import React, { memo } from "react";
+import { motion, type MotionValue, useTransform } from "motion/react";
 import OptimizedImage from "@/components/OptimizedImage";
-import { preventContextMenu } from "@/utils/eventHandlers";
 import shelvesImg from "@/assets/images/shelves.jpg";
 import coffeePourImg from "@/assets/images/coffee-pour.jpg";
 import ciabattaImg from "@/assets/images/ciabatta.jpg";
@@ -33,7 +32,7 @@ const FloatingItems = memo(function FloatingItems({
                     className="item__image"
                     src={shelvesImg}
                     alt="delicious focaccia sandwiches"
-                    onContextMenu={preventContextMenu}
+                    onContextMenu={(e: React.MouseEvent) => e.preventDefault()}
                 />
                 <div className="item__text">
                     <p className="text--md">
@@ -52,8 +51,9 @@ const FloatingItems = memo(function FloatingItems({
                         vegetables.
                     </p>
                     <p className="text--md">
-                        At breakfast, we have pastries. In winter, we have shelves of hard-to-find
-                        Christmas produce direct from producers in Italy.
+                        At breakfast, we have pastries. In winter, we have
+                        shelves of hard-to-find Christmas produce direct from
+                        producers in Italy.
                     </p>
                 </div>
             </motion.article>
@@ -65,7 +65,7 @@ const FloatingItems = memo(function FloatingItems({
                     className="item__image"
                     src={coffeePourImg}
                     alt="silky coffee being poured"
-                    onContextMenu={preventContextMenu}
+                    onContextMenu={(e: React.MouseEvent) => e.preventDefault()}
                 />
                 <div className="item__text">
                     <p className="text--md">
@@ -87,7 +87,7 @@ const FloatingItems = memo(function FloatingItems({
                     className="item__image"
                     src={ciabattaImg}
                     alt="fresh salad being plated"
-                    onContextMenu={preventContextMenu}
+                    onContextMenu={(e: React.MouseEvent) => e.preventDefault()}
                 />
                 <div className="item__text">
                     <p className="text--md">
@@ -107,7 +107,7 @@ const FloatingItems = memo(function FloatingItems({
                     className="item__image"
                     src={shopChristmasImg}
                     alt="a beautifully stocked italian dry goods shop"
-                    onContextMenu={preventContextMenu}
+                    onContextMenu={(e: React.MouseEvent) => e.preventDefault()}
                 />
                 <div className="item__text">
                     <p className="text--md">
