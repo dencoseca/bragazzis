@@ -123,7 +123,8 @@
         @media (max-width: $mobile) {
             left: 50%;
             transform: translateX(-50%);
-            top: 45vw;
+            top: calc(15% + 17vw);
+            bottom: auto;
             text-align: center;
             text-transform: uppercase;
             width: fit-content;

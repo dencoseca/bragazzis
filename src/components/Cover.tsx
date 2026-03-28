@@ -62,7 +62,12 @@ const Cover = memo(function Cover({
     breakpoints: { mobile },
     scrollYProgress,
 }: CoverProps) {
-    const heroImageScroll = useTransform(scrollYProgress, [0, 1], [0, vh * 59]);
+    const isMobile = width < mobile;
+    const heroImageScroll = useTransform(
+        scrollYProgress,
+        [0, 1],
+        isMobile ? [0, 0] : [0, vh * 59],
+    );
 
     const handleScrollDown = useCallback(() => {
         const targetId = width >= mobile ? "statement" : "mobile-cover";
