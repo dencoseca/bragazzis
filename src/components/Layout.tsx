@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
 import { AnimatePresence } from "motion/react";
-import Header from "@/components/Header";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Helmet } from "react-helmet-async";
+import { useLocation } from "react-router-dom";
+
 import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 import Menu from "@/components/Menu";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 

@@ -1,6 +1,7 @@
+import { motion, useAnimation } from "motion/react";
 import { memo, useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { motion, useAnimation } from "motion/react";
+
 import { quickTransition } from "@/constants/animations";
 
 const topLineVariants = {

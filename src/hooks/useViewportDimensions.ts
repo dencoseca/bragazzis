@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import debounce from "@/utils/debounce";
+
 import breakpoints from "@/constants/breakpoints.json";
+import debounce from "@/utils/debounce";
 
 export interface ViewportDimensions {
     height: number;

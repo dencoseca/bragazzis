@@ -1,12 +1,13 @@
 import { useScroll } from "motion/react";
+
+import Cover from "@/components/Cover";
+import FloatingItems from "@/components/FloatingItems";
+import FullWidthBanner from "@/components/FullWidthBanner";
+import Layout from "@/components/Layout";
 import { openingHours } from "@/constants/openingHours";
 import useViewportDimensions, {
     breakpoints,
 } from "@/hooks/useViewportDimensions";
-import Layout from "@/components/Layout";
-import Cover from "@/components/Cover";
-import FloatingItems from "@/components/FloatingItems";
-import FullWidthBanner from "@/components/FullWidthBanner";
 
 export default function Home() {
     const dimensions = useViewportDimensions();

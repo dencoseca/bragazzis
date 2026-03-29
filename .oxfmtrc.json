@@ -5,6 +5,7 @@
   "useTabs": false,
   "semi": true,
   "jsdoc": {},
+  "sortImports": {},
   "singleQuote": false,
   "trailingComma": "all",
   "ignorePatterns": ["dist", "pnpm-lock.yaml"],

@@ -1,10 +1,11 @@
 import { motion } from "motion/react";
+
+import earlyDaysImg from "@/assets/images/early-days.jpg";
+import ticketPisaImg from "@/assets/images/ticket-pisa.jpg";
+import ticketRomaImg from "@/assets/images/ticket-roma.jpg";
 import Layout from "@/components/Layout";
 import OptimizedImage from "@/components/OptimizedImage";
-import ticketRomaImg from "@/assets/images/ticket-roma.jpg";
-import ticketPisaImg from "@/assets/images/ticket-pisa.jpg";
 import { smoothTransition } from "@/constants/animations";
-import earlyDaysImg from "@/assets/images/early-days.jpg";
 
 const laStoriaTransition = {
     ...smoothTransition,

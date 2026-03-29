@@ -13,6 +13,7 @@
 import { readdir, stat } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+
 import sharp from "sharp";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));

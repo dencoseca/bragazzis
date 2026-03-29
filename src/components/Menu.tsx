@@ -1,5 +1,6 @@
-import { Link } from "react-router-dom";
 import { motion } from "motion/react";
+import { Link } from "react-router-dom";
+
 import { menuSlideTransition } from "@/constants/animations";
 
 const menuVariants = {

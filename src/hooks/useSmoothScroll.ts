@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
 import Lenis from "lenis";
+import { useEffect, useRef } from "react";
 
 export function useSmoothScroll() {
     const lenisRef = useRef<Lenis | null>(null);

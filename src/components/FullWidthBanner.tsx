@@ -1,7 +1,8 @@
-import React, { memo } from "react";
 import { motion, type MotionValue, useTransform } from "motion/react";
-import OptimizedImage from "@/components/OptimizedImage";
+import React, { memo } from "react";
+
 import eggImg from "@/assets/images/egg.jpg";
+import OptimizedImage from "@/components/OptimizedImage";
 
 interface FullWidthBannerProps {
     dimensions: { width: number; vh: number };

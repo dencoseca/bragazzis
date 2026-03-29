@@ -1,8 +1,9 @@
-import React, { memo, useCallback } from "react";
 import { motion, type MotionValue, useTransform } from "motion/react";
+import React, { memo, useCallback } from "react";
+
+import parmesanImg from "@/assets/images/parmesan.jpg";
 import OptimizedImage from "@/components/OptimizedImage";
 import { smoothTransition } from "@/constants/animations";
-import parmesanImg from "@/assets/images/parmesan.jpg";
 
 interface CoverProps {
     openingHours: string[];

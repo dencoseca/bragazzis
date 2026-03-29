@@ -1,10 +1,11 @@
-import React, { memo } from "react";
 import { motion, type MotionValue, useTransform } from "motion/react";
-import OptimizedImage from "@/components/OptimizedImage";
-import shelvesImg from "@/assets/images/shelves.jpg";
-import coffeePourImg from "@/assets/images/coffee-pour.jpg";
+import React, { memo } from "react";
+
 import ciabattaImg from "@/assets/images/ciabatta.jpg";
+import coffeePourImg from "@/assets/images/coffee-pour.jpg";
+import shelvesImg from "@/assets/images/shelves.jpg";
 import shopChristmasImg from "@/assets/images/shop-christmas.jpg";
+import OptimizedImage from "@/components/OptimizedImage";
 
 interface FloatingItemsProps {
     dimensions: { width: number; vw: number };

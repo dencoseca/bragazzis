@@ -1,7 +1,8 @@
+import React from "react";
+
 import Layout from "@/components/Layout";
 import OptimizedImage from "@/components/OptimizedImage";
 import { galleryImages } from "@/data/galleryImages";
-import React from "react";
 
 export default function IlGiorno() {
     return (
