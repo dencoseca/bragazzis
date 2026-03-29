@@ -11,9 +11,7 @@ export default defineConfig({
     },
     lint: { options: { typeAware: true, typeCheck: true } },
     fmt: {
-        printWidth: 80,
         tabWidth: 4,
-        useTabs: false,
         semi: true,
         jsdoc: {},
         sortImports: {},
