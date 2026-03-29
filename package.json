@@ -4,16 +4,17 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vp dev",
     "preinstall": "npx only-allow pnpm",
     "optimize-images": "node scripts/optimize-images.mjs",
-    "build": "tsc -b && vite build",
-    "lint": "oxlint --fix",
-    "lint:check": "oxlint",
-    "format": "oxfmt",
-    "format:check": "oxfmt --check",
-    "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "build": "vp build",
+    "lint": "vp lint --fix",
+    "lint:check": "vp lint",
+    "format": "vp fmt",
+    "format:check": "vp fmt --check",
+    "preview": "vp preview",
+    "typecheck": "tsc --noEmit",
+    "prepare": "vp config"
   },
   "dependencies": {
     "lenis": "^1.3.18",
@@ -29,13 +30,18 @@
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
-    "oxfmt": "^0.42.0",
-    "oxlint": "^1.57.0",
     "sharp": "0.34.5",
     "svgo": "4.0.1",
     "typescript": "~5.9.3",
-    "vite": "^8.0.3",
-    "vite-plugin-image-optimizer": "2.0.3"
+    "vite": "npm:@voidzero-dev/vite-plus-core@latest",
+    "vite-plugin-image-optimizer": "2.0.3",
+    "vite-plus": "latest"
   },
-  "packageManager": "pnpm@10.30.1"
+  "packageManager": "pnpm@10.30.1",
+  "pnpm": {
+    "overrides": {
+      "vite": "npm:@voidzero-dev/vite-plus-core@latest",
+      "vitest": "npm:@voidzero-dev/vite-plus-test@latest"
+    }
+  }
 }
