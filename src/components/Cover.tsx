@@ -27,12 +27,10 @@ const contentVariants = {
 const downArrowVariants = {
     initial: {
         opacity: 0,
-        translateX: "-50%",
     },
     animate: {
         opacity: [0, 1, 1],
         translateY: [-20, 0, 0],
-        translateX: "-50%",
         transition: {
             ...smoothTransition,
             delay: 1.5,

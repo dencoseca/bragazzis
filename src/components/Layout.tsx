@@ -56,7 +56,7 @@ export default function Layout({
 }: LayoutProps) {
     const location = useLocation();
     const isPageIlgiorno = location.pathname.includes("/ilgiorno");
-    const mainBackgroundColor = isPageIlgiorno ? "#1d1d1d" : "#fff";
+    const mainBackgroundColor = isPageIlgiorno ? "#1d1d1d" : "#f6f4f1";
 
     const [menuIsOpen, setMenuIsOpen] = useState(false);
     const [prevPathname, setPrevPathname] = useState(location.pathname);
