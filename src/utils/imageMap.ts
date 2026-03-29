@@ -58,7 +58,10 @@ export async function initImageMap(): Promise<void> {
     initialized = true;
 }
 
-/** Given a resolved image URL (from a standard Vite import), return the WebP URL if available. */
+/**
+ * Given a resolved image URL (from a standard Vite import), return the WebP URL
+ * if available.
+ */
 export function getWebpSrc(originalSrc: string): string | undefined {
     return originalToWebp.get(originalSrc);
 }

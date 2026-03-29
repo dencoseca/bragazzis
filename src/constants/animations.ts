@@ -1,9 +1,9 @@
 /**
  * Shared animation transition presets used across components.
  *
- * - `smoothTransition`     — page-level entrance animations (Cover, LaStoria)
- * - `quickTransition`      — shorter UI transitions (Header hamburger toggle)
- * - `menuSlideTransition`  — menu slide/link animations (Menu)
+ * - `smoothTransition` — page-level entrance animations (Cover, LaStoria)
+ * - `quickTransition` — shorter UI transitions (Header hamburger toggle)
+ * - `menuSlideTransition` — menu slide/link animations (Menu)
  */
 
 const SMOOTH_EASE: [number, number, number, number] = [0.43, 0.13, 0.13, 0.96];

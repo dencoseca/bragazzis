@@ -4,6 +4,7 @@
   "tabWidth": 4,
   "useTabs": false,
   "semi": true,
+  "jsdoc": {},
   "singleQuote": false,
   "trailingComma": "all",
   "ignorePatterns": ["dist", "pnpm-lock.yaml"],
