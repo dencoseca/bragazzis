@@ -171,7 +171,7 @@ separate `actions/setup-node`, package-manager setup, cache, and install steps w
 ```yaml
 - uses: voidzero-dev/setup-vp@v1
   with:
-    cache: true
+      cache: true
 - run: vp check
 - run: vp test
 ```
