@@ -9,12 +9,7 @@
     "optimize-images": "node scripts/optimize-images.mjs",
     "check": "vp check --fix",
     "build": "vp build",
-    "lint": "vp lint --fix",
-    "lint:check": "vp lint",
-    "format": "vp fmt",
-    "format:check": "vp fmt --check",
     "preview": "vp preview",
-    "typecheck": "tsc --noEmit",
     "prepare": "vp config"
   },
   "dependencies": {
