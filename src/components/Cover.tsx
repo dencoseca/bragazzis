@@ -62,11 +62,7 @@ const Cover = memo(function Cover({
     scrollYProgress,
 }: CoverProps) {
     const isMobile = width < mobile;
-    const heroImageScroll = useTransform(
-        scrollYProgress,
-        [0, 1],
-        isMobile ? [0, 0] : [0, vh * 59],
-    );
+    const heroImageScroll = useTransform(scrollYProgress, [0, 1], isMobile ? [0, 0] : [0, vh * 59]);
 
     const handleScrollDown = useCallback(() => {
         const targetId = width >= mobile ? "statement" : "mobile-cover";
@@ -97,9 +93,7 @@ const Cover = memo(function Cover({
                         className="cover__image"
                         src={parmesanImg}
                         alt="a busy Italian cafe"
-                        onContextMenu={(e: React.MouseEvent) =>
-                            e.preventDefault()
-                        }
+                        onContextMenu={(e: React.MouseEvent) => e.preventDefault()}
                     />
                 </motion.div>
             </div>

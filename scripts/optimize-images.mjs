@@ -3,8 +3,8 @@
  *
  * Processes all JPEG and PNG images in src/assets/images/:
  *
- * 1. Resizes any image wider than 1920px down to 1920px (suitable for 2× retina at
- *    ~960px max display).
+ * 1. Resizes any image wider than 1920px down to 1920px (suitable for 2× retina at ~960px max
+ *    display).
  * 2. Generates a WebP version alongside each original.
  *
  * Run with: node scripts/optimize-images.mjs
@@ -23,9 +23,7 @@ const WEBP_QUALITY = 80;
 
 async function optimizeImages() {
     const files = await readdir(IMAGES_DIR);
-    const imageFiles = files.filter(
-        (f) => /\.(jpe?g|png)$/i.test(f) && !f.endsWith(".webp"),
-    );
+    const imageFiles = files.filter((f) => /\.(jpe?g|png)$/i.test(f) && !f.endsWith(".webp"));
 
     console.log(`Found ${imageFiles.length} images to process.\n`);
 

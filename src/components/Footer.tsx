@@ -6,9 +6,7 @@ const Footer = memo(function Footer() {
     const pageIsIlgiorno = location.pathname.includes("/ilgiorno");
 
     const footerClassName = pageIsIlgiorno ? "footer footer--light" : "footer";
-    const textLinkClassName = pageIsIlgiorno
-        ? "text--link-light"
-        : "text--link-dark";
+    const textLinkClassName = pageIsIlgiorno ? "text--link-light" : "text--link-dark";
     const scrollToTopFillColor = pageIsIlgiorno ? "#f6f4f1" : "#1d1d1d";
 
     const scrollToTop = useCallback(() => {
@@ -37,18 +35,12 @@ const Footer = memo(function Footer() {
                             </a>
                         </li>
                         <li className="text--sm">
-                            <a
-                                className={textLinkClassName}
-                                href="mailto:info@bragazzis.co.uk"
-                            >
+                            <a className={textLinkClassName} href="mailto:info@bragazzis.co.uk">
                                 info@bragazzis.co.uk
                             </a>
                         </li>
                         <li className="text--sm">
-                            <a
-                                className={textLinkClassName}
-                                href="tel:+441142581483"
-                            >
+                            <a className={textLinkClassName} href="tel:+441142581483">
                                 0114 258 1483
                             </a>
                         </li>
@@ -58,8 +50,7 @@ const Footer = memo(function Footer() {
                     <h4 className="text--heading-sm">Site</h4>
                     <ul>
                         <li className="text--sm">
-                            &copy; 2021–{new Date().getFullYear()}{" "}
-                            Bragazzi&apos;s Ltd
+                            &copy; 2021–{new Date().getFullYear()} Bragazzi&apos;s Ltd
                         </li>
                         <li className="text--sm">
                             photography by{" "}

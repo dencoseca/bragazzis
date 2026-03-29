@@ -5,19 +5,14 @@ import FloatingItems from "@/components/FloatingItems";
 import FullWidthBanner from "@/components/FullWidthBanner";
 import Layout from "@/components/Layout";
 import { openingHours } from "@/constants/openingHours";
-import useViewportDimensions, {
-    breakpoints,
-} from "@/hooks/useViewportDimensions";
+import useViewportDimensions, { breakpoints } from "@/hooks/useViewportDimensions";
 
 export default function Home() {
     const dimensions = useViewportDimensions();
     const { scrollYProgress } = useScroll();
 
     return (
-        <Layout
-            pageTitle="Home"
-            description="Bragazzi's — an Italian deli, café in Sheffield."
-        >
+        <Layout pageTitle="Home" description="Bragazzi's — an Italian deli, café in Sheffield.">
             <Cover
                 openingHours={openingHours}
                 dimensions={dimensions}

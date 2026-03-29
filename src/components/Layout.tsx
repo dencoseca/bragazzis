@@ -19,8 +19,7 @@ const LOCAL_BUSINESS_JSONLD = {
     "@type": "LocalBusiness",
     "@id": "https://bragazzis.co.uk/#localbusiness",
     name: "Bragazzi's",
-    description:
-        "An Italian deli, café in Sheffield, serving authentic Italian food and coffee.",
+    description: "An Italian deli, café in Sheffield, serving authentic Italian food and coffee.",
     url: "https://bragazzis.co.uk",
     telephone: "+44 114 258 1483",
     address: {
@@ -65,10 +64,7 @@ export default function Layout({
         setPrevPathname(location.pathname);
         setMenuIsOpen(false);
     }
-    const handleSetMenuIsOpen = useCallback(
-        (open: boolean) => setMenuIsOpen(open),
-        [],
-    );
+    const handleSetMenuIsOpen = useCallback((open: boolean) => setMenuIsOpen(open), []);
 
     useSmoothScroll();
 
@@ -91,30 +87,18 @@ export default function Layout({
                 <meta property="og:description" content={description} />
                 <meta property="og:url" content={canonicalUrl} />
                 <meta property="og:type" content="website" />
-                <meta
-                    property="og:image"
-                    content="https://bragazzis.co.uk/og-image.png"
-                />
+                <meta property="og:image" content="https://bragazzis.co.uk/og-image.png" />
                 <meta name="twitter:card" content="summary" />
                 <meta name="twitter:title" content={fullTitle} />
                 <meta name="twitter:description" content={description} />
-                <script type="application/ld+json">
-                    {JSON.stringify(LOCAL_BUSINESS_JSONLD)}
-                </script>
+                <script type="application/ld+json">{JSON.stringify(LOCAL_BUSINESS_JSONLD)}</script>
             </Helmet>
             <a href="#main-content" className="skip-to-content">
                 Skip to content
             </a>
             <AnimatePresence>{menuIsOpen && <Menu />}</AnimatePresence>
-            <main
-                id="main-content"
-                ref={mainRef}
-                style={{ backgroundColor: mainBackgroundColor }}
-            >
-                <Header
-                    menuIsOpen={menuIsOpen}
-                    setMenuIsOpen={handleSetMenuIsOpen}
-                />
+            <main id="main-content" ref={mainRef} style={{ backgroundColor: mainBackgroundColor }}>
+                <Header menuIsOpen={menuIsOpen} setMenuIsOpen={handleSetMenuIsOpen} />
                 {children}
                 <Footer />
             </main>

@@ -31,10 +31,7 @@ interface HeaderProps {
     setMenuIsOpen: (open: boolean) => void;
 }
 
-const Header = memo(function Header({
-    menuIsOpen,
-    setMenuIsOpen,
-}: HeaderProps) {
+const Header = memo(function Header({ menuIsOpen, setMenuIsOpen }: HeaderProps) {
     const location = useLocation();
     const pageIsLastoria = location.pathname.includes("/lastoria");
 
@@ -55,14 +52,8 @@ const Header = memo(function Header({
     }, [menuIsOpen, setMenuIsOpen, controls]);
 
     return (
-        <div
-            className={headerClassName}
-            id="header"
-            style={{ position: headerPosition }}
-        >
-            <div className="header__tag">
-                Purveyors of quality Italian goods
-            </div>
+        <div className={headerClassName} id="header" style={{ position: headerPosition }}>
+            <div className="header__tag">Purveyors of quality Italian goods</div>
             <div className="header__logo-wrapper">
                 <Link to="/" aria-label="home">
                     <svg
