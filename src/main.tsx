@@ -8,7 +8,7 @@ import { initImageMap } from "@/utils/imageMap";
 
 import App from "./App.tsx";
 
-initImageMap();
+void initImageMap();
 
 createRoot(document.getElementById("root")!).render(
     <StrictMode>

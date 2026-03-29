@@ -47,10 +47,10 @@ const Header = memo(function Header({
     const toggleMenu = useCallback(() => {
         if (menuIsOpen) {
             setMenuIsOpen(false);
-            controls.start("closed");
+            void controls.start("closed");
         } else {
             setMenuIsOpen(true);
-            controls.start("open");
+            void controls.start("open");
         }
     }, [menuIsOpen, setMenuIsOpen, controls]);
 
