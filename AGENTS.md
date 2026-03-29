@@ -42,7 +42,7 @@ src/
 ```
 
 - **Path alias:** `@` maps to `src/` (configured in `vite.config.ts` and `tsconfig.app.json`). Always use `@/` imports instead of relative paths.
-- **Config files:** `vite.config.ts`, `.oxlintrc.json`, `.oxfmtrc.json`, `tsconfig.json`, `tsconfig.app.json`, `tsconfig.node.json`
+- **Config files:** `vite.config.ts`, `.oxfmtrc.json`, `tsconfig.json`, `tsconfig.app.json`, `tsconfig.node.json`
 
 ## Commands
 
@@ -63,7 +63,7 @@ src/
 
 - **Follow existing patterns.** Match the style of surrounding code — naming, formatting, file organization.
 - **Formatting:** oxfmt handles all formatting. Run `pnpm format` before finalizing changes. Config is in `.oxfmtrc.json`.
-- **Linting:** oxlint config is in `.oxlintrc.json`. Run `pnpm lint` to check and auto-fix.
+- **Linting:** oxlint uses its sane defaults (no config file). Run `pnpm lint` to check and auto-fix.
 - **TypeScript:** Strict mode. Do not use `any` — prefer explicit types or `unknown`. All files use `.ts` or `.tsx` extensions.
 - **Imports:** Use the `@/` path alias for all imports from `src/`. Example: `import debounce from "@/utils/debounce"`.
 - **Components:** Functional components only. Use named exports for types/interfaces, default exports for components and hooks.
