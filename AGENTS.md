@@ -14,8 +14,8 @@ This is the website for **Bragazzi's**, an Italian deli and café in Sheffield. 
 - **Styling:** Sass/SCSS (no CSS modules — global styles in `src/styles/`)
 - **Animation:** Motion (Framer Motion), Lenis (smooth scroll)
 - **SEO:** react-helmet-async
-- **Linting:** ESLint (flat config) with TypeScript, React Hooks, and React Refresh plugins
-- **Formatting:** Prettier
+- **Linting:** oxlint (void0 tooling) with TypeScript and React plugins
+- **Formatting:** oxfmt (void0 tooling)
 - **Image Optimization:** vite-plugin-image-optimizer, sharp (via `scripts/optimize-images.mjs`)
 
 ## Project Structure
@@ -42,26 +42,28 @@ src/
 ```
 
 - **Path alias:** `@` maps to `src/` (configured in `vite.config.ts` and `tsconfig.app.json`). Always use `@/` imports instead of relative paths.
-- **Config files:** `vite.config.ts`, `eslint.config.js`, `tsconfig.json`, `tsconfig.app.json`, `tsconfig.node.json`
+- **Config files:** `vite.config.ts`, `.oxlintrc.json`, `.oxfmtrc.json`, `tsconfig.json`, `tsconfig.app.json`, `tsconfig.node.json`
 
 ## Commands
 
-| Command | Description |
-|---|---|
-| `pnpm install` | Install dependencies |
-| `pnpm dev` | Start the Vite dev server |
-| `pnpm build` | Type-check with `tsc` then build for production |
-| `pnpm preview` | Preview the production build locally |
-| `pnpm typecheck` | Run TypeScript type-checking only (`tsc --noEmit`) |
-| `pnpm lint` | Run ESLint with auto-fix |
-| `pnpm format` | Run Prettier on all files |
-| `pnpm optimize-images` | Optimize images in `src/assets/` using sharp |
+| Command                | Description                                        |
+| ---------------------- | -------------------------------------------------- |
+| `pnpm install`         | Install dependencies                               |
+| `pnpm dev`             | Start the Vite dev server                          |
+| `pnpm build`           | Type-check with `tsc` then build for production    |
+| `pnpm preview`         | Preview the production build locally               |
+| `pnpm typecheck`       | Run TypeScript type-checking only (`tsc --noEmit`) |
+| `pnpm lint`            | Run oxlint with auto-fix                           |
+| `pnpm lint:check`      | Run oxlint without auto-fix                        |
+| `pnpm format`          | Format all files with oxfmt                        |
+| `pnpm format:check`    | Check formatting with oxfmt (no writes)            |
+| `pnpm optimize-images` | Optimize images in `src/assets/` using sharp       |
 
 ## Code Style & Conventions
 
 - **Follow existing patterns.** Match the style of surrounding code — naming, formatting, file organization.
-- **Formatting:** Prettier handles all formatting. Run `pnpm format` before finalizing changes.
-- **Linting:** ESLint flat config is in `eslint.config.js`. Run `pnpm lint` to check and auto-fix.
+- **Formatting:** oxfmt handles all formatting. Run `pnpm format` before finalizing changes. Config is in `.oxfmtrc.json`.
+- **Linting:** oxlint config is in `.oxlintrc.json`. Run `pnpm lint` to check and auto-fix.
 - **TypeScript:** Strict mode. Do not use `any` — prefer explicit types or `unknown`. All files use `.ts` or `.tsx` extensions.
 - **Imports:** Use the `@/` path alias for all imports from `src/`. Example: `import debounce from "@/utils/debounce"`.
 - **Components:** Functional components only. Use named exports for types/interfaces, default exports for components and hooks.

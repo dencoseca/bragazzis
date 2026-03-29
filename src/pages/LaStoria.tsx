@@ -104,10 +104,7 @@ export default function LaStoria() {
                     <div className="line"></div>
                 </div>
                 <div className="lastoria__image">
-                    <OptimizedImage
-                        src={earlyDaysImg}
-                        alt="A busy cafe"
-                    />
+                    <OptimizedImage src={earlyDaysImg} alt="A busy cafe" />
                 </div>
             </div>
         </Layout>
