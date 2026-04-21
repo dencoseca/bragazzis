@@ -20,7 +20,7 @@
     "sass": "1.99.0"
   },
   "devDependencies": {
-    "@types/node": "24.12.2",
+    "@types/node": "25.6.0",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "6.0.1",
@@ -32,16 +32,11 @@
     "vite-plus": "latest"
   },
   "engines": {
-    "node": "24.15.0"
+    "node": "25.9.0"
   },
   "packageManager": "pnpm@10.33.0",
   "pnpm": {
     "save-prefix": "",
-    "updateConfig": {
-      "ignoreDependencies": [
-        "@types/node"
-      ]
-    },
     "overrides": {
       "vite": "npm:@voidzero-dev/vite-plus-core@latest",
       "vitest": "npm:@voidzero-dev/vite-plus-test@latest"
