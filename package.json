@@ -5,7 +5,6 @@
   "type": "module",
   "scripts": {
     "dev": "vp dev",
-    "preinstall": "npx only-allow pnpm",
     "optimize-images": "node scripts/optimize-images.mjs",
     "check": "vp check --fix",
     "build": "tsc && vp build",
