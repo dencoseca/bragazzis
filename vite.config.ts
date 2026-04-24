@@ -13,8 +13,8 @@ export default defineConfig({
     fmt: {
         tabWidth: 4,
         semi: true,
-        jsdoc: {},
-        sortImports: {},
+        jsdoc: true,
+        sortImports: true,
         singleQuote: false,
         trailingComma: "all",
         ignorePatterns: ["dist", "pnpm-lock.yaml"],
