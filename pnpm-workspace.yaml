@@ -1,8 +1,8 @@
 allowBuilds:
-    "@parcel/watcher": false
-    esbuild: false
-    sharp: false
+  "@parcel/watcher": false
+  esbuild: false
+  sharp: false
 overrides:
-    vite: npm:@voidzero-dev/vite-plus-core@latest
-    vitest: npm:@voidzero-dev/vite-plus-test@latest
+  vite: npm:@voidzero-dev/vite-plus-core@latest
+  vitest: npm:@voidzero-dev/vite-plus-test@latest
 savePrefix: ""

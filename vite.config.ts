@@ -20,7 +20,7 @@ export default defineConfig({
         ignorePatterns: ["dist", "pnpm-lock.yaml"],
         overrides: [
             {
-                files: ["*.json"],
+                files: ["*.json", "*.yaml", "*.yml"],
                 options: {
                     tabWidth: 2,
                 },
