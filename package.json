@@ -34,12 +34,5 @@
   "engines": {
     "node": "25.9.0"
   },
-  "packageManager": "pnpm@10.33.0",
-  "pnpm": {
-    "save-prefix": "",
-    "overrides": {
-      "vite": "npm:@voidzero-dev/vite-plus-core@latest",
-      "vitest": "npm:@voidzero-dev/vite-plus-test@latest"
-    }
-  }
+  "packageManager": "pnpm@11.0.0-rc.5"
 }
