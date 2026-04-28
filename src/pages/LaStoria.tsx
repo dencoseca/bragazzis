@@ -1,8 +1,8 @@
 import { motion } from "motion/react";
 
-import earlyDaysImg from "@/assets/images/early-days.jpg";
-import ticketPisaImg from "@/assets/images/ticket-pisa.jpg";
-import ticketRomaImg from "@/assets/images/ticket-roma.jpg";
+import earlyDaysImg from "@/assets/images/early-days.jpg?w=360;540;720;960;1200&format=avif;webp;jpg&as=picture";
+import ticketPisaImg from "@/assets/images/ticket-pisa.jpg?w=360;540;720;960;1200&format=avif;webp;jpg&as=picture";
+import ticketRomaImg from "@/assets/images/ticket-roma.jpg?w=360;540;720;960;1200&format=avif;webp;jpg&as=picture";
 import Layout from "@/components/Layout";
 import OptimizedImage from "@/components/OptimizedImage";
 import { smoothTransition } from "@/constants/animations";
@@ -59,7 +59,11 @@ export default function LaStoria() {
                         animate="animate"
                         variants={leftTicketVariants}
                     >
-                        <OptimizedImage src={ticketRomaImg} alt="plane ticket" />
+                        <OptimizedImage
+                            image={ticketRomaImg}
+                            alt="plane ticket"
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                        />
                     </motion.div>
                     <motion.div
                         className="ticket right"
@@ -67,7 +71,11 @@ export default function LaStoria() {
                         animate="animate"
                         variants={rightTicketVariants}
                     >
-                        <OptimizedImage src={ticketPisaImg} alt="plane ticket" />
+                        <OptimizedImage
+                            image={ticketPisaImg}
+                            alt="plane ticket"
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                        />
                     </motion.div>
                 </div>
                 <div className="lastoria__story">
@@ -93,7 +101,11 @@ export default function LaStoria() {
                     <div className="line"></div>
                 </div>
                 <div className="lastoria__image">
-                    <OptimizedImage src={earlyDaysImg} alt="A busy cafe" />
+                    <OptimizedImage
+                        image={earlyDaysImg}
+                        alt="A busy cafe"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                    />
                 </div>
             </div>
         </Layout>

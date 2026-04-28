@@ -16,9 +16,9 @@ export default function IlGiorno() {
                     <OptimizedImage
                         key={index}
                         className={`image ${image.sizeClass}`}
-                        src={image.src}
+                        image={image.image}
                         alt={image.alt}
-                        loading="lazy"
+                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                         onContextMenu={(e: React.MouseEvent) => e.preventDefault()}
                     />
                 ))}

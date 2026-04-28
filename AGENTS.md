@@ -14,13 +14,13 @@ application with multiple routes, built with **React 19**, **TypeScript**, and *
 - **Styling:** Sass/SCSS (no CSS modules — global styles in `src/styles/`)
 - **Animation:** Motion (Framer Motion), Lenis (smooth scroll)
 - **SEO:** react-helmet-async
-- **Image Optimization:** vite-plugin-image-optimizer, sharp (via `scripts/optimize-images.mjs`)
+- **Image Optimization:** vite-imagetools (build-time responsive AVIF/WebP/fallback generation via sharp)
 
 ## Project Structure
 
 ```
 src/
-├── assets/images/     # Static image assets (jpg, webp, svg)
+├── assets/images/     # Static image assets (jpg, png, svg — high-quality originals)
 ├── components/        # Shared React components (Layout, Header, Footer, Menu, Cover, etc.)
 ├── constants/         # Shared constants (breakpoints.json, animations.ts, openingHours.ts)
 ├── data/              # Data files (galleryImages.ts)
@@ -34,7 +34,7 @@ src/
 │   ├── _typography.scss
 │   ├── _breakpoints.scss
 │   └── _normalize.scss
-├── utils/             # Utility functions (debounce, imageMap, eventHandlers)
+├── utils/             # Utility functions (debounce)
 ├── App.tsx            # Router setup
 └── main.tsx           # App entry point
 ```
@@ -56,8 +56,10 @@ src/
   `src/styles/main.scss`.
 - **Constants:** Shared values go in `src/constants/`. Breakpoints are defined in `breakpoints.json` and shared between
   JS and SCSS.
-- **Images:** Place new images in `src/assets/images/`. Run `vp run optimize-images` after adding new images. Use the
-  `OptimizedImage` component for rendering images where possible.
+- **Images:** Keep high-quality `.jpg` originals in `src/assets/images/`; do not overwrite or resize them. Use
+  `vite-imagetools` import queries to generate responsive AVIF/WebP/fallback variants at build time. Use the shared
+  `OptimizedImage` component for rendering images where possible. Existing `.webp` files are not source assets and
+  should not be imported directly.
 
 ## Key Architecture Notes
 
@@ -74,8 +76,8 @@ src/
 
 - **Do NOT add `"use client"` directives.** This is not a Next.js project.
 - **Do NOT introduce CSS-in-JS or CSS modules.** The project uses global SCSS with a partial-based architecture.
-- **Do NOT delete or modify images** without understanding the `imageMap.ts` glob — it auto-discovers images from
-  `src/assets/`.
+- **Do NOT delete or modify `.jpg` originals** in `src/assets/images/`. Responsive variants are generated at build time
+  by `vite-imagetools`.
 - **Keep bundle size in mind.** Lazy-load routes (already done in `App.tsx`) and avoid large eager imports.
 
 <!--VITE PLUS START-->

@@ -1,23 +1,46 @@
-import { getWebpSrc } from "@/utils/imageMap";
+import type { OptimizedPicture } from "@/types/imagetools";
 
-interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
-    src: string;
+export interface OptimizedImageProps {
+    image: OptimizedPicture;
     alt: string;
+    sizes: string;
+    className?: string;
+    imgClassName?: string;
+    priority?: boolean;
+    loading?: "eager" | "lazy";
+    onContextMenu?: React.MouseEventHandler<HTMLImageElement>;
 }
 
 export default function OptimizedImage({
-    src,
+    image,
     alt,
-    loading = "eager",
+    sizes,
     className,
-    ...props
+    imgClassName,
+    priority = false,
+    loading,
+    onContextMenu,
 }: OptimizedImageProps) {
-    const webpSrc = getWebpSrc(src);
+    const resolvedLoading = loading ?? (priority ? "eager" : "lazy");
+    const { sources, img } = image;
 
     return (
         <picture className={className}>
-            {webpSrc && <source srcSet={webpSrc} type="image/webp" />}
-            <img src={src} alt={alt} loading={loading} {...props} />
+            {Object.entries(sources).map(([type, srcset]) => (
+                <source key={type} srcSet={srcset} type={type} sizes={sizes} />
+            ))}
+            <img
+                className={imgClassName}
+                src={img.src}
+                alt={alt}
+                width={img.w}
+                height={img.h}
+                sizes={sizes}
+                loading={resolvedLoading}
+                decoding={priority ? "sync" : "async"}
+                fetchPriority={priority ? "high" : undefined}
+                onContextMenu={onContextMenu}
+            />
         </picture>
     );
 }

@@ -1,230 +1,231 @@
-import apertoImg from "@/assets/images/aperto.jpg";
-import busyThroughTheWindowImg from "@/assets/images/busy-through-the-window.jpg";
-import cafeViewImg from "@/assets/images/cafe-view.jpg";
-import carrotsImg from "@/assets/images/carrots.jpg";
-import chickenRunConversationImg from "@/assets/images/chicken-run-conversation.jpg";
-import clearingTableDetritusImg from "@/assets/images/clearing-table-detritus.jpg";
-import customersWalkingByImg from "@/assets/images/customers-walking-by.jpg";
-import cuttingParmaImg from "@/assets/images/cutting-parma.jpg";
-import emptyCafeClosingImg from "@/assets/images/empty-cafe-closing.jpg";
-import emptyCafeIorImg from "@/assets/images/empty-cafe-ior.jpg";
-import familyOnArmchairsImg from "@/assets/images/family-on-armchairs.jpg";
-import farfalleImg from "@/assets/images/farfalle.jpg";
-import feedingCakeImg from "@/assets/images/feeding-cake.jpg";
-import joeEspressoCupImg from "@/assets/images/joe-espresso-cup.jpg";
-import joeGettingMilkImg from "@/assets/images/joe-getting-milk.jpg";
-import joeSweepingOverspillImg from "@/assets/images/joe-sweeping-overspill.jpg";
-import jokesInKitchenImg from "@/assets/images/jokes-in-kitchen.jpg";
-import jtBringsInChairsImg from "@/assets/images/jt-brings-in-chairs.jpg";
-import kidOpeningFridgeImg from "@/assets/images/kid-opening-fridge.jpg";
-import kitchenTrioImg from "@/assets/images/kitchen-trio.jpg";
-import lastGoodbyesMonochromeImg from "@/assets/images/last-goodbyes-monochrome.jpg";
-import laughingJoeAndLeonImg from "@/assets/images/laughing-joe-and-leon.jpg";
-import laughingJtImg from "@/assets/images/laughing-jt.jpg";
-import laughingTomImg from "@/assets/images/laughing-tom.jpg";
-import leaningMatteoImg from "@/assets/images/leaning-matteo.jpg";
-import leonServingDeliStuffImg from "@/assets/images/leon-serving-deli-stuff.jpg";
-import maldiniSippingCoffeeImg from "@/assets/images/maldini-sipping-coffee.jpg";
-import mopedImg from "@/assets/images/moped.jpg";
-import oliveOilBreadImg from "@/assets/images/olive-oil-bread.jpg";
-import panettoneImg from "@/assets/images/panettone.jpg";
-import pastaStackedImg from "@/assets/images/pasta-stacked.jpg";
-import saladPlatedImg from "@/assets/images/salad-plated.jpg";
-import sandwichBoardPlanImg from "@/assets/images/sandwich-board-plan.jpg";
-import sandwichPrepDuoImg from "@/assets/images/sandwich-prep-duo.jpg";
-import sangersInBasketsImg from "@/assets/images/sangers-in-baskets.jpg";
-import shelvesWideShotImg from "@/assets/images/shelves-wide-shot.jpg";
-import slicingParmaImg from "@/assets/images/slicing-parma.jpg";
-import sofaThroughWindowImg from "@/assets/images/sofa-through-window.jpg";
-import steveAndJulesThroughDoorImg from "@/assets/images/steve-and-jules-through-door.jpg";
-import tiredJoeImg from "@/assets/images/tired-joe.jpg";
-import tiredJtImg from "@/assets/images/tired-jt.jpg";
-import tiredLeonImg from "@/assets/images/tired-leon.jpg";
-import tiredMatteoImg from "@/assets/images/tired-matteo.jpg";
-import tiredTomImg from "@/assets/images/tired-tom.jpg";
-import tomAndJoeLaughingImg from "@/assets/images/tom-and-joe-laughing.jpg";
-import tomAndJoeServingImg from "@/assets/images/tom-and-joe-serving.jpg";
-import tomFillingBucketImg from "@/assets/images/tom-filling-bucket.jpg";
-import tomatoesImg from "@/assets/images/tomatoes.jpg";
-import writingCakeLabelsImg from "@/assets/images/writing-cake-labels.jpg";
+import apertoImg from "@/assets/images/aperto.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import busyThroughTheWindowImg from "@/assets/images/busy-through-the-window.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import cafeViewImg from "@/assets/images/cafe-view.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import carrotsImg from "@/assets/images/carrots.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import chickenRunConversationImg from "@/assets/images/chicken-run-conversation.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import clearingTableDetritusImg from "@/assets/images/clearing-table-detritus.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import customersWalkingByImg from "@/assets/images/customers-walking-by.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import cuttingParmaImg from "@/assets/images/cutting-parma.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import emptyCafeClosingImg from "@/assets/images/empty-cafe-closing.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import emptyCafeIorImg from "@/assets/images/empty-cafe-ior.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import familyOnArmchairsImg from "@/assets/images/family-on-armchairs.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import farfalleImg from "@/assets/images/farfalle.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import feedingCakeImg from "@/assets/images/feeding-cake.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import joeEspressoCupImg from "@/assets/images/joe-espresso-cup.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import joeGettingMilkImg from "@/assets/images/joe-getting-milk.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import joeSweepingOverspillImg from "@/assets/images/joe-sweeping-overspill.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import jokesInKitchenImg from "@/assets/images/jokes-in-kitchen.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import jtBringsInChairsImg from "@/assets/images/jt-brings-in-chairs.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import kidOpeningFridgeImg from "@/assets/images/kid-opening-fridge.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import kitchenTrioImg from "@/assets/images/kitchen-trio.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import lastGoodbyesMonochromeImg from "@/assets/images/last-goodbyes-monochrome.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import laughingJoeAndLeonImg from "@/assets/images/laughing-joe-and-leon.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import laughingJtImg from "@/assets/images/laughing-jt.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import laughingTomImg from "@/assets/images/laughing-tom.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import leaningMatteoImg from "@/assets/images/leaning-matteo.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import leonServingDeliStuffImg from "@/assets/images/leon-serving-deli-stuff.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import maldiniSippingCoffeeImg from "@/assets/images/maldini-sipping-coffee.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import mopedImg from "@/assets/images/moped.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import oliveOilBreadImg from "@/assets/images/olive-oil-bread.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import panettoneImg from "@/assets/images/panettone.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import pastaStackedImg from "@/assets/images/pasta-stacked.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import saladPlatedImg from "@/assets/images/salad-plated.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import sandwichBoardPlanImg from "@/assets/images/sandwich-board-plan.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import sandwichPrepDuoImg from "@/assets/images/sandwich-prep-duo.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import sangersInBasketsImg from "@/assets/images/sangers-in-baskets.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import shelvesWideShotImg from "@/assets/images/shelves-wide-shot.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import slicingParmaImg from "@/assets/images/slicing-parma.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import sofaThroughWindowImg from "@/assets/images/sofa-through-window.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import steveAndJulesThroughDoorImg from "@/assets/images/steve-and-jules-through-door.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import tiredJoeImg from "@/assets/images/tired-joe.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import tiredJtImg from "@/assets/images/tired-jt.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import tiredLeonImg from "@/assets/images/tired-leon.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import tiredMatteoImg from "@/assets/images/tired-matteo.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import tiredTomImg from "@/assets/images/tired-tom.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import tomAndJoeLaughingImg from "@/assets/images/tom-and-joe-laughing.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import tomAndJoeServingImg from "@/assets/images/tom-and-joe-serving.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import tomFillingBucketImg from "@/assets/images/tom-filling-bucket.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import tomatoesImg from "@/assets/images/tomatoes.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import writingCakeLabelsImg from "@/assets/images/writing-cake-labels.jpg?w=240;360;480;720;960&format=avif;webp;jpg&as=picture";
+import type { OptimizedPicture } from "@/types/imagetools";
 
 export interface GalleryImage {
-    src: string;
+    image: OptimizedPicture;
     alt: string;
     sizeClass: string;
 }
 
 export const galleryImages: GalleryImage[] = [
     {
-        src: apertoImg,
+        image: apertoImg,
         alt: "sandwich board sign outside cafe",
         sizeClass: "image--60",
     },
     {
-        src: sandwichPrepDuoImg,
+        image: sandwichPrepDuoImg,
         alt: "people making sandwiches",
         sizeClass: "image--60",
     },
     {
-        src: sandwichBoardPlanImg,
+        image: sandwichBoardPlanImg,
         alt: "sandwich ingredients list",
         sizeClass: "image--60",
     },
     {
-        src: oliveOilBreadImg,
+        image: oliveOilBreadImg,
         alt: "olive oil on bread",
         sizeClass: "image--60",
     },
     {
-        src: sangersInBasketsImg,
+        image: sangersInBasketsImg,
         alt: "baskets full of sandwiches",
         sizeClass: "image--70",
     },
     {
-        src: writingCakeLabelsImg,
+        image: writingCakeLabelsImg,
         alt: "writing the cake labels",
         sizeClass: "image--50",
     },
     {
-        src: tomAndJoeServingImg,
+        image: tomAndJoeServingImg,
         alt: "barista serving customer",
         sizeClass: "image--60",
     },
     {
-        src: leonServingDeliStuffImg,
+        image: leonServingDeliStuffImg,
         alt: "serving at the deli counter",
         sizeClass: "image--45",
     },
     {
-        src: chickenRunConversationImg,
+        image: chickenRunConversationImg,
         alt: "customers conversing",
         sizeClass: "image--70",
     },
     {
-        src: shelvesWideShotImg,
+        image: shelvesWideShotImg,
         alt: "shelves full of italian dry goods",
         sizeClass: "image--70",
     },
-    { src: panettoneImg, alt: "panettone", sizeClass: "image--50" },
-    { src: pastaStackedImg, alt: "stacked pasta", sizeClass: "image--40" },
+    { image: panettoneImg, alt: "panettone", sizeClass: "image--50" },
+    { image: pastaStackedImg, alt: "stacked pasta", sizeClass: "image--40" },
     {
-        src: sofaThroughWindowImg,
+        image: sofaThroughWindowImg,
         alt: "customers talking",
         sizeClass: "image--50",
     },
     {
-        src: joeEspressoCupImg,
+        image: joeEspressoCupImg,
         alt: "serving an espresso",
         sizeClass: "image--50",
     },
     {
-        src: kidOpeningFridgeImg,
+        image: kidOpeningFridgeImg,
         alt: "child choosing soft drink",
         sizeClass: "image--65",
     },
     {
-        src: busyThroughTheWindowImg,
+        image: busyThroughTheWindowImg,
         alt: "busy cafe through the window",
         sizeClass: "image--60",
     },
     {
-        src: familyOnArmchairsImg,
+        image: familyOnArmchairsImg,
         alt: "family drinking coffee",
         sizeClass: "image--50",
     },
     {
-        src: kitchenTrioImg,
+        image: kitchenTrioImg,
         alt: "working in the kitchen",
         sizeClass: "image--60",
     },
     {
-        src: steveAndJulesThroughDoorImg,
+        image: steveAndJulesThroughDoorImg,
         alt: "customers browsing the shelves",
         sizeClass: "image--45",
     },
-    { src: farfalleImg, alt: "farfalle", sizeClass: "image--40" },
-    { src: mopedImg, alt: "moped", sizeClass: "image--70" },
+    { image: farfalleImg, alt: "farfalle", sizeClass: "image--40" },
+    { image: mopedImg, alt: "moped", sizeClass: "image--70" },
     {
-        src: tomAndJoeLaughingImg,
+        image: tomAndJoeLaughingImg,
         alt: "barista laughing hard",
         sizeClass: "image--55",
     },
     {
-        src: maldiniSippingCoffeeImg,
+        image: maldiniSippingCoffeeImg,
         alt: "customer sipping coffee",
         sizeClass: "image--50",
     },
     {
-        src: customersWalkingByImg,
+        image: customersWalkingByImg,
         alt: "customers looking in through the window",
         sizeClass: "image--50",
     },
-    { src: cafeViewImg, alt: "view of the busy cafe", sizeClass: "image--70" },
-    { src: tomatoesImg, alt: "tomatoes", sizeClass: "image--55" },
-    { src: carrotsImg, alt: "carrots", sizeClass: "image--50" },
-    { src: cuttingParmaImg, alt: "cutting parma ham", sizeClass: "image--40" },
-    { src: slicingParmaImg, alt: "slicing parma ham", sizeClass: "image--40" },
-    { src: saladPlatedImg, alt: "plating the salad", sizeClass: "image--65" },
+    { image: cafeViewImg, alt: "view of the busy cafe", sizeClass: "image--70" },
+    { image: tomatoesImg, alt: "tomatoes", sizeClass: "image--55" },
+    { image: carrotsImg, alt: "carrots", sizeClass: "image--50" },
+    { image: cuttingParmaImg, alt: "cutting parma ham", sizeClass: "image--40" },
+    { image: slicingParmaImg, alt: "slicing parma ham", sizeClass: "image--40" },
+    { image: saladPlatedImg, alt: "plating the salad", sizeClass: "image--65" },
     {
-        src: feedingCakeImg,
+        image: feedingCakeImg,
         alt: "couple feed each other cake",
         sizeClass: "image--50",
     },
     {
-        src: joeGettingMilkImg,
+        image: joeGettingMilkImg,
         alt: "barista on a milk run",
         sizeClass: "image--60",
     },
     {
-        src: jokesInKitchenImg,
+        image: jokesInKitchenImg,
         alt: "fun in the kitchen",
         sizeClass: "image--50",
     },
     {
-        src: lastGoodbyesMonochromeImg,
+        image: lastGoodbyesMonochromeImg,
         alt: "saying goodbye to customers",
         sizeClass: "image--60",
     },
     {
-        src: joeSweepingOverspillImg,
+        image: joeSweepingOverspillImg,
         alt: "sweeping the shop floor",
         sizeClass: "image--50",
     },
     {
-        src: tomFillingBucketImg,
+        image: tomFillingBucketImg,
         alt: "barista steaming the machine",
         sizeClass: "image--50",
     },
     {
-        src: jtBringsInChairsImg,
+        image: jtBringsInChairsImg,
         alt: "bringing in the outside chairs",
         sizeClass: "image--55",
     },
     {
-        src: clearingTableDetritusImg,
+        image: clearingTableDetritusImg,
         alt: "clearing last table",
         sizeClass: "image--50",
     },
-    { src: emptyCafeIorImg, alt: "empty cafe", sizeClass: "image--65" },
-    { src: tiredTomImg, alt: "tired barista", sizeClass: "image--55" },
-    { src: tiredLeonImg, alt: "tired barista", sizeClass: "image--50" },
-    { src: tiredJtImg, alt: "tired server", sizeClass: "image--45" },
-    { src: tiredMatteoImg, alt: "tired owner", sizeClass: "image--45" },
-    { src: tiredJoeImg, alt: "tired server", sizeClass: "image--50" },
-    { src: laughingTomImg, alt: "laughing barista", sizeClass: "image--55" },
-    { src: laughingJtImg, alt: "laughing server", sizeClass: "image--60" },
+    { image: emptyCafeIorImg, alt: "empty cafe", sizeClass: "image--65" },
+    { image: tiredTomImg, alt: "tired barista", sizeClass: "image--55" },
+    { image: tiredLeonImg, alt: "tired barista", sizeClass: "image--50" },
+    { image: tiredJtImg, alt: "tired server", sizeClass: "image--45" },
+    { image: tiredMatteoImg, alt: "tired owner", sizeClass: "image--45" },
+    { image: tiredJoeImg, alt: "tired server", sizeClass: "image--50" },
+    { image: laughingTomImg, alt: "laughing barista", sizeClass: "image--55" },
+    { image: laughingJtImg, alt: "laughing server", sizeClass: "image--60" },
     {
-        src: laughingJoeAndLeonImg,
+        image: laughingJoeAndLeonImg,
         alt: "laughing barista and server",
         sizeClass: "image--50",
     },
     {
-        src: leaningMatteoImg,
+        image: leaningMatteoImg,
         alt: "shot of matteo ready to leave",
         sizeClass: "image--50",
     },
     {
-        src: emptyCafeClosingImg,
+        image: emptyCafeClosingImg,
         alt: "empty cafe at the end of the day",
         sizeClass: "image--50",
     },
