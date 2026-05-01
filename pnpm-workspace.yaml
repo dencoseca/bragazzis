@@ -2,6 +2,9 @@ allowBuilds:
   "@parcel/watcher": false
   esbuild: false
   sharp: false
+updateConfig:
+  ignoreDependencies:
+    - "@types/node"
 overrides:
   vite: npm:@voidzero-dev/vite-plus-core@latest
   vitest: npm:@voidzero-dev/vite-plus-test@latest
