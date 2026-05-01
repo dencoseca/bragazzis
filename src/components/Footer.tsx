@@ -74,17 +74,7 @@ const Footer = memo(function Footer() {
                                 Ellie Grace Photography
                             </a>
                         </li>
-                        <li className="text--sm">
-                            site by{" "}
-                            <a
-                                className={textLinkClassName}
-                                href="https://leonbrown.dev"
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                LEON BROWN
-                            </a>
-                        </li>
+                        <li className="text--sm">site by Leon Brown</li>
                     </ul>
                 </div>
                 <div className="list social">
