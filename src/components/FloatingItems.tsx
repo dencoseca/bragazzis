@@ -1,10 +1,10 @@
 import { motion, type MotionValue, useTransform } from "motion/react";
 import React, { memo } from "react";
 
-import ciabattaImg from "@/assets/images/ciabatta.jpg";
-import coffeePourImg from "@/assets/images/coffee-pour.jpg";
-import shelvesImg from "@/assets/images/shelves.jpg";
-import shopChristmasImg from "@/assets/images/shop-christmas.jpg";
+import ciabattaImg from "@/assets/images/ciabatta.jpg?w=360;540;720;960;1200&format=avif;webp;jpg&as=picture";
+import coffeePourImg from "@/assets/images/coffee-pour.jpg?w=360;540;720;960;1200&format=avif;webp;jpg&as=picture";
+import shelvesImg from "@/assets/images/shelves.jpg?w=360;540;720;960;1200&format=avif;webp;jpg&as=picture";
+import shopChristmasImg from "@/assets/images/shop-christmas.jpg?w=360;540;720;960;1200&format=avif;webp;jpg&as=picture";
 import OptimizedImage from "@/components/OptimizedImage";
 
 interface FloatingItemsProps {
@@ -31,8 +31,9 @@ const FloatingItems = memo(function FloatingItems({
             >
                 <OptimizedImage
                     className="item__image"
-                    src={shelvesImg}
+                    image={shelvesImg}
                     alt="delicious focaccia sandwiches"
+                    sizes="(max-width: 768px) 100vw, 50vw"
                     onContextMenu={(e: React.MouseEvent) => e.preventDefault()}
                 />
                 <div className="item__text">
@@ -60,8 +61,9 @@ const FloatingItems = memo(function FloatingItems({
             >
                 <OptimizedImage
                     className="item__image"
-                    src={coffeePourImg}
+                    image={coffeePourImg}
                     alt="silky coffee being poured"
+                    sizes="(max-width: 768px) 100vw, 50vw"
                     onContextMenu={(e: React.MouseEvent) => e.preventDefault()}
                 />
                 <div className="item__text">
@@ -80,8 +82,9 @@ const FloatingItems = memo(function FloatingItems({
             >
                 <OptimizedImage
                     className="item__image"
-                    src={ciabattaImg}
+                    image={ciabattaImg}
                     alt="fresh salad being plated"
+                    sizes="(max-width: 768px) 100vw, 50vw"
                     onContextMenu={(e: React.MouseEvent) => e.preventDefault()}
                 />
                 <div className="item__text">
@@ -99,8 +102,9 @@ const FloatingItems = memo(function FloatingItems({
             >
                 <OptimizedImage
                     className="item__image"
-                    src={shopChristmasImg}
+                    image={shopChristmasImg}
                     alt="a beautifully stocked italian dry goods shop"
+                    sizes="(max-width: 768px) 100vw, 50vw"
                     onContextMenu={(e: React.MouseEvent) => e.preventDefault()}
                 />
                 <div className="item__text">

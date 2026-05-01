@@ -9,6 +9,8 @@
 
         img {
             width: 100%;
+            height: auto;
+            display: block;
         }
 
         &.left {
@@ -78,6 +80,7 @@
 
     img {
         width: 100%;
+        height: auto;
         display: block;
     }
 

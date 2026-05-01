@@ -1,7 +1,7 @@
 import { fileURLToPath, URL } from "node:url";
 
 import react from "@vitejs/plugin-react";
-import { ViteImageOptimizer } from "vite-plugin-image-optimizer";
+import { imagetools } from "vite-imagetools";
 import { defineConfig } from "vite-plus";
 
 // https://vite.dev/config/
@@ -27,25 +27,7 @@ export default defineConfig({
             },
         ],
     },
-    plugins: [
-        react(),
-        ViteImageOptimizer({
-            png: { quality: 80 },
-            jpeg: { quality: 80 },
-            jpg: { quality: 80 },
-            webp: { quality: 80 },
-            avif: { quality: 70 },
-            svg: {
-                plugins: [
-                    { name: "removeDoctype" },
-                    { name: "removeXMLProcInst" },
-                    { name: "minifyStyles" },
-                    { name: "sortAttrs" },
-                    { name: "removeDimensions" },
-                ],
-            },
-        }),
-    ],
+    plugins: [react(), imagetools()],
     resolve: {
         alias: {
             "@": fileURLToPath(new URL("./src", import.meta.url)),

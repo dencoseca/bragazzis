@@ -1,7 +1,7 @@
 import { motion, type MotionValue, useTransform } from "motion/react";
 import React, { memo } from "react";
 
-import eggImg from "@/assets/images/egg.jpg";
+import eggImg from "@/assets/images/egg.jpg?w=480;768;1024;1440;1920&format=avif;webp;jpg&as=picture";
 import OptimizedImage from "@/components/OptimizedImage";
 
 interface FullWidthBannerProps {
@@ -24,8 +24,9 @@ const FullWidthBanner = memo(function FullWidthBanner({
         <section className="full-width-banner">
             <OptimizedImage
                 className="full-width-banner__image"
-                src={eggImg}
+                image={eggImg}
                 alt="a gigantic italian chocolate easter egg"
+                sizes="100vw"
                 onContextMenu={(e: React.MouseEvent) => e.preventDefault()}
             />
             <motion.article
