@@ -99,4 +99,4 @@ This project is using Vite+, a unified toolchain built on top of Vite, Rolldown,
 - [ ] Check if there are tasks or `package.json` scripts necessary for validation, run via `vp run <script>`.
 
 * Docs: https://viteplus.dev/guide/
-      <!--VITE PLUS END-->
+  <!--VITE PLUS END-->
