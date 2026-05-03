@@ -34,7 +34,6 @@ src/
 │   ├── _typography.scss
 │   ├── _breakpoints.scss
 │   └── _normalize.scss
-├── utils/             # Utility functions (debounce)
 ├── App.tsx            # Router setup
 └── main.tsx           # App entry point
 ```
@@ -48,7 +47,7 @@ src/
 - **Follow existing patterns.** Match the style of surrounding code — naming, formatting, file organization.
 - **TypeScript:** Strict mode. Do not use `any` — prefer explicit types or `unknown`. All files use `.ts` or `.tsx`
   extensions.
-- **Imports:** Use the `@/` path alias for all imports from `src/`. Example: `import debounce from "@/utils/debounce"`.
+- **Imports:** Use the `@/` path alias for all imports from `src/`. Example: `import { OptimizedImage } from "@/components/OptimizedImage"`.
 - **Components:** Functional components only. Use named exports for types/interfaces, default exports for components and
   hooks.
 - **Hooks:** Custom hooks live in `src/hooks/`. Prefix with `use`.
@@ -99,4 +98,4 @@ This project is using Vite+, a unified toolchain built on top of Vite, Rolldown,
 - [ ] Check if there are tasks or `package.json` scripts necessary for validation, run via `vp run <script>`.
 
 * Docs: https://viteplus.dev/guide/
-  <!--VITE PLUS END-->
+    <!--VITE PLUS END-->

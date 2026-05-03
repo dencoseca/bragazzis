@@ -1,7 +1,7 @@
+import debounce from "debounce";
 import { useEffect, useState } from "react";
 
 import breakpointsJson from "@/constants/breakpoints.json";
-import { debounce } from "@/utils/debounce";
 
 export interface ViewportDimensions {
     height: number;
@@ -36,7 +36,7 @@ export function useViewportDimensions(): ViewportDimensions {
                 vh: window.innerHeight / 100,
                 vw: window.innerWidth / 100,
             });
-        }, 1000);
+        }, 100);
 
         window.addEventListener("resize", debouncedHandleResize);
         return () => window.removeEventListener("resize", debouncedHandleResize);
