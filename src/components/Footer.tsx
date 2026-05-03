@@ -1,7 +1,7 @@
-import { memo, useCallback } from "react";
+import { useCallback } from "react";
 import { useLocation } from "react-router-dom";
 
-export const Footer = memo(function Footer() {
+export function Footer() {
     const location = useLocation();
     const pageIsIlgiorno = location.pathname.includes("/ilgiorno");
 
@@ -136,4 +136,4 @@ export const Footer = memo(function Footer() {
             </button>
         </footer>
     );
-});
+}

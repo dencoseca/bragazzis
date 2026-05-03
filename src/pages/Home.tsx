@@ -5,20 +5,13 @@ import { FloatingItems } from "@/components/FloatingItems";
 import { FullWidthBanner } from "@/components/FullWidthBanner";
 import { Layout } from "@/components/Layout";
 import { openingHours } from "@/constants/openingHours";
-import { useViewportDimensions, breakpoints } from "@/hooks/useViewportDimensions";
 
 export function Home() {
-    const dimensions = useViewportDimensions();
     const { scrollYProgress } = useScroll();
 
     return (
         <Layout pageTitle="Home" description="Bragazzi's — an Italian deli, café in Sheffield.">
-            <Cover
-                openingHours={openingHours}
-                dimensions={dimensions}
-                breakpoints={breakpoints}
-                scrollYProgress={scrollYProgress}
-            />
+            <Cover openingHours={openingHours} scrollYProgress={scrollYProgress} />
             <section className="home__mobile-cover" id="mobile-cover">
                 <ul className="opening-hours">
                     {openingHours.map((line, index) => (
@@ -31,16 +24,8 @@ export function Home() {
                 <span>or that obscure pasta shape that you've</span>
                 <span>been looking for</span>
             </section>
-            <FloatingItems
-                dimensions={dimensions}
-                breakpoints={breakpoints}
-                scrollYProgress={scrollYProgress}
-            />
-            <FullWidthBanner
-                dimensions={dimensions}
-                breakpoints={breakpoints}
-                scrollYProgress={scrollYProgress}
-            />
+            <FloatingItems scrollYProgress={scrollYProgress} />
+            <FullWidthBanner scrollYProgress={scrollYProgress} />
         </Layout>
     );
 }

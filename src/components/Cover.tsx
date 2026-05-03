@@ -1,14 +1,13 @@
 import { motion, type MotionValue, useTransform } from "motion/react";
-import React, { memo, useCallback } from "react";
+import React, { useCallback } from "react";
 
 import parmesanImg from "@/assets/images/parmesan.jpg?w=480;768;1024;1440;1920&format=avif;webp;jpg&as=picture";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { smoothTransition } from "@/constants/animations";
+import { useViewportDimensions, breakpoints } from "@/hooks/useViewportDimensions";
 
 interface CoverProps {
     openingHours: string[];
-    dimensions: { width: number; vh: number };
-    breakpoints: { mobile: number };
     scrollYProgress: MotionValue<number>;
 }
 
@@ -55,12 +54,9 @@ const titleVariants = {
     },
 };
 
-export const Cover = memo(function Cover({
-    openingHours,
-    dimensions: { width, vh },
-    breakpoints: { mobile },
-    scrollYProgress,
-}: CoverProps) {
+export function Cover({ openingHours, scrollYProgress }: CoverProps) {
+    const { width, vh } = useViewportDimensions();
+    const { mobile } = breakpoints;
     const isMobile = width < mobile;
     const heroImageScroll = useTransform(scrollYProgress, [0, 1], isMobile ? [0, 0] : [0, vh * 59]);
 
@@ -148,4 +144,4 @@ export const Cover = memo(function Cover({
             </button>
         </div>
     );
-});
+}

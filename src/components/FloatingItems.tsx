@@ -1,23 +1,20 @@
 import { motion, type MotionValue, useTransform } from "motion/react";
-import React, { memo } from "react";
+import React from "react";
 
 import ciabattaImg from "@/assets/images/ciabatta.jpg?w=360;540;720;960;1200&format=avif;webp;jpg&as=picture";
 import coffeePourImg from "@/assets/images/coffee-pour.jpg?w=360;540;720;960;1200&format=avif;webp;jpg&as=picture";
 import shelvesImg from "@/assets/images/shelves.jpg?w=360;540;720;960;1200&format=avif;webp;jpg&as=picture";
 import shopChristmasImg from "@/assets/images/shop-christmas.jpg?w=360;540;720;960;1200&format=avif;webp;jpg&as=picture";
 import { OptimizedImage } from "@/components/OptimizedImage";
+import { useViewportDimensions, breakpoints } from "@/hooks/useViewportDimensions";
 
 interface FloatingItemsProps {
-    dimensions: { width: number; vw: number };
-    breakpoints: { mobile: number };
     scrollYProgress: MotionValue<number>;
 }
 
-export const FloatingItems = memo(function FloatingItems({
-    dimensions: { width, vw },
-    breakpoints: { mobile },
-    scrollYProgress,
-}: FloatingItemsProps) {
+export function FloatingItems({ scrollYProgress }: FloatingItemsProps) {
+    const { width, vw } = useViewportDimensions();
+    const { mobile } = breakpoints;
     const item1Scroll = useTransform(scrollYProgress, [0, 1], [0, vw * -59]);
     const item2Scroll = useTransform(scrollYProgress, [0, 1], [0, vw * -118]);
     const item3Scroll = useTransform(scrollYProgress, [0, 1], [0, vw * -59]);
@@ -119,4 +116,4 @@ export const FloatingItems = memo(function FloatingItems({
             </motion.article>
         </section>
     );
-});
+}

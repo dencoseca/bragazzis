@@ -1,5 +1,5 @@
 import { motion, useAnimation } from "motion/react";
-import { memo, useCallback } from "react";
+import { useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import { quickTransition } from "@/constants/animations";
@@ -31,7 +31,7 @@ interface HeaderProps {
     setMenuIsOpen: (open: boolean) => void;
 }
 
-export const Header = memo(function Header({ menuIsOpen, setMenuIsOpen }: HeaderProps) {
+export function Header({ menuIsOpen, setMenuIsOpen }: HeaderProps) {
     const location = useLocation();
     const pageIsLastoria = location.pathname.includes("/lastoria");
 
@@ -103,4 +103,4 @@ export const Header = memo(function Header({ menuIsOpen, setMenuIsOpen }: Header
             </button>
         </div>
     );
-});
+}

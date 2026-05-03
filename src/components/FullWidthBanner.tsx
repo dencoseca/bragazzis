@@ -1,20 +1,17 @@
 import { motion, type MotionValue, useTransform } from "motion/react";
-import React, { memo } from "react";
+import React from "react";
 
 import eggImg from "@/assets/images/egg.jpg?w=480;768;1024;1440;1920&format=avif;webp;jpg&as=picture";
 import { OptimizedImage } from "@/components/OptimizedImage";
+import { useViewportDimensions, breakpoints } from "@/hooks/useViewportDimensions";
 
 interface FullWidthBannerProps {
-    dimensions: { width: number; vh: number };
-    breakpoints: { mobile: number; tablet: number };
     scrollYProgress: MotionValue<number>;
 }
 
-export const FullWidthBanner = memo(function FullWidthBanner({
-    dimensions: { width, vh },
-    breakpoints: { mobile, tablet },
-    scrollYProgress,
-}: FullWidthBannerProps) {
+export function FullWidthBanner({ scrollYProgress }: FullWidthBannerProps) {
+    const { width, vh } = useViewportDimensions();
+    const { mobile, tablet } = breakpoints;
     const textScrollLaptop = useTransform(scrollYProgress, [0.7, 1], [vh * -2, vh * 6]);
     const textScrollTablet = useTransform(scrollYProgress, [0.7, 1], [vh * -1, vh * 3]);
     const textScrollTranslateYValue =
@@ -52,4 +49,4 @@ export const FullWidthBanner = memo(function FullWidthBanner({
             </motion.article>
         </section>
     );
-});
+}
