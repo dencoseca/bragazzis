@@ -1,0 +1,13 @@
+@use "variables" as *;
+
+.hide-mobile {
+    @media (max-width: $mobile) {
+        display: none !important;
+    }
+}
+
+.show-mobile {
+    @media (min-width: #{$mobile + 1px}) {
+        display: none !important;
+    }
+}

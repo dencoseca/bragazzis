@@ -22,7 +22,7 @@ application with multiple routes, built with **React 19**, **TypeScript**, and *
 src/
 ├── assets/images/     # Static image assets (jpg, png, svg — high-quality originals)
 ├── components/        # Shared React components (Layout, Header, Footer, Menu, Cover, etc.)
-├── constants/         # Shared constants (breakpoints.json, animations.ts, openingHours.ts)
+├── constants/         # Shared constants (breakpoints.ts, animations.ts, openingHours.ts)
 ├── data/              # Data files (galleryImages.ts)
 ├── hooks/             # Custom React hooks (useSmoothScroll, useViewportDimensions)
 ├── pages/             # Route-level page components (Home, LaStoria, IlGiorno, NotFound)
@@ -53,7 +53,7 @@ src/
 - **Hooks:** Custom hooks live in `src/hooks/`. Prefix with `use`.
 - **Styles:** SCSS partials follow the convention `_componentName.scss` or `_pageName.scss`. Import new partials into
   `src/styles/main.scss`.
-- **Constants:** Shared values go in `src/constants/`. Breakpoints are defined in `breakpoints.json` and shared between
+- **Constants:** Shared values go in `src/constants/`. Breakpoints are defined in `breakpoints.ts` and shared between
   JS and SCSS.
 - **Images:** Keep high-quality `.jpg` originals in `src/assets/images/`; do not overwrite or resize them. Use
   `vite-imagetools` import queries to generate responsive AVIF/WebP/fallback variants at build time. Use the shared
@@ -67,7 +67,7 @@ src/
 - **Routing** is handled by React Router in `src/App.tsx` with lazy-loaded page components.
 - **Smooth scrolling** is powered by Lenis via the `useSmoothScroll` hook, used in `Layout.tsx`.
 - **Viewport dimensions** are shared via the `useViewportDimensions` hook rather than prop-drilling.
-- **Breakpoints** are defined once in `src/constants/breakpoints.json` and consumed by both JS and SCSS.
+- **Breakpoints** are defined once in `src/constants/breakpoints.ts` and consumed by both JS and SCSS.
 - **`plan.md`** contains a codebase improvement plan organized into phases. Check it for context on past changes and any
   remaining work.
 
@@ -98,4 +98,4 @@ This project is using Vite+, a unified toolchain built on top of Vite, Rolldown,
 - [ ] Check if there are tasks or `package.json` scripts necessary for validation, run via `vp run <script>`.
 
 * Docs: https://viteplus.dev/guide/
-    <!--VITE PLUS END-->
+      <!--VITE PLUS END-->

@@ -3,19 +3,23 @@ import React from "react";
 
 import eggImg from "@/assets/images/egg.jpg?w=480;768;1024;1440;1920&format=avif;webp;jpg&as=picture";
 import { OptimizedImage } from "@/components/OptimizedImage";
-import { useViewportDimensions, breakpoints } from "@/hooks/useViewportDimensions";
+import { useViewportDimensions, useIsMobile, useIsTablet } from "@/hooks/useViewportDimensions";
 
 interface FullWidthBannerProps {
     scrollYProgress: MotionValue<number>;
 }
 
 export function FullWidthBanner({ scrollYProgress }: FullWidthBannerProps) {
-    const { width, vh } = useViewportDimensions();
-    const { mobile, tablet } = breakpoints;
+    const { vh } = useViewportDimensions();
+    const isMobile = useIsMobile();
+    const isTablet = useIsTablet();
     const textScrollLaptop = useTransform(scrollYProgress, [0.7, 1], [vh * -2, vh * 6]);
     const textScrollTablet = useTransform(scrollYProgress, [0.7, 1], [vh * -1, vh * 3]);
-    const textScrollTranslateYValue =
-        width >= tablet ? textScrollLaptop : width >= mobile ? textScrollTablet : 0;
+    const textScrollTranslateYValue = !isTablet
+        ? textScrollLaptop
+        : !isMobile
+          ? textScrollTablet
+          : 0;
 
     return (
         <section className="full-width-banner">
@@ -33,19 +37,12 @@ export function FullWidthBanner({ scrollYProgress }: FullWidthBannerProps) {
                     translateX: "-50%",
                 }}
             >
-                {width >= mobile ? (
-                    <>
-                        <span className="text--display">Each season brings a selection of</span>
-                        <span className="text--display">well considered products</span>
-                    </>
-                ) : (
-                    <>
-                        <span className="text--display">Each season</span>
-                        <span className="text--display">brings a selection</span>
-                        <span className="text--display">of well considered</span>
-                        <span className="text--display">products</span>
-                    </>
-                )}
+                <span className="text--display hide-mobile">Each season brings a selection of</span>
+                <span className="text--display hide-mobile">well considered products</span>
+                <span className="text--display show-mobile">Each season</span>
+                <span className="text--display show-mobile">brings a selection</span>
+                <span className="text--display show-mobile">of well considered</span>
+                <span className="text--display show-mobile">products</span>
             </motion.article>
         </section>
     );

@@ -4,7 +4,7 @@ import React, { useCallback } from "react";
 import parmesanImg from "@/assets/images/parmesan.jpg?w=480;768;1024;1440;1920&format=avif;webp;jpg&as=picture";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { smoothTransition } from "@/constants/animations";
-import { useViewportDimensions, breakpoints } from "@/hooks/useViewportDimensions";
+import { useViewportDimensions, useIsMobile } from "@/hooks/useViewportDimensions";
 
 interface CoverProps {
     openingHours: string[];
@@ -55,16 +55,15 @@ const titleVariants = {
 };
 
 export function Cover({ openingHours, scrollYProgress }: CoverProps) {
-    const { width, vh } = useViewportDimensions();
-    const { mobile } = breakpoints;
-    const isMobile = width < mobile;
+    const { vh } = useViewportDimensions();
+    const isMobile = useIsMobile();
     const heroImageScroll = useTransform(scrollYProgress, [0, 1], isMobile ? [0, 0] : [0, vh * 59]);
 
     const handleScrollDown = useCallback(() => {
-        const targetId = width >= mobile ? "statement" : "mobile-cover";
+        const targetId = isMobile ? "mobile-cover" : "statement";
         const target = document.getElementById(targetId);
         target?.scrollIntoView({ behavior: "smooth" });
-    }, [width, mobile]);
+    }, [isMobile]);
 
     return (
         <div className="cover" id="cover">

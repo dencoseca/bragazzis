@@ -6,15 +6,15 @@ import coffeePourImg from "@/assets/images/coffee-pour.jpg?w=360;540;720;960;120
 import shelvesImg from "@/assets/images/shelves.jpg?w=360;540;720;960;1200&format=avif;webp;jpg&as=picture";
 import shopChristmasImg from "@/assets/images/shop-christmas.jpg?w=360;540;720;960;1200&format=avif;webp;jpg&as=picture";
 import { OptimizedImage } from "@/components/OptimizedImage";
-import { useViewportDimensions, breakpoints } from "@/hooks/useViewportDimensions";
+import { useViewportDimensions, useIsMobile } from "@/hooks/useViewportDimensions";
 
 interface FloatingItemsProps {
     scrollYProgress: MotionValue<number>;
 }
 
 export function FloatingItems({ scrollYProgress }: FloatingItemsProps) {
-    const { width, vw } = useViewportDimensions();
-    const { mobile } = breakpoints;
+    const { vw } = useViewportDimensions();
+    const isMobile = useIsMobile();
     const item1Scroll = useTransform(scrollYProgress, [0, 1], [0, vw * -59]);
     const item2Scroll = useTransform(scrollYProgress, [0, 1], [0, vw * -118]);
     const item3Scroll = useTransform(scrollYProgress, [0, 1], [0, vw * -59]);
@@ -24,7 +24,7 @@ export function FloatingItems({ scrollYProgress }: FloatingItemsProps) {
         <section className="floating-items">
             <motion.article
                 className="item item--1"
-                style={{ translateY: width >= mobile ? item1Scroll : 0 }}
+                style={{ translateY: !isMobile ? item1Scroll : 0 }}
             >
                 <OptimizedImage
                     className="item__image"
@@ -54,7 +54,7 @@ export function FloatingItems({ scrollYProgress }: FloatingItemsProps) {
             </motion.article>
             <motion.article
                 className="item item--2"
-                style={{ translateY: width >= mobile ? item2Scroll : 0 }}
+                style={{ translateY: !isMobile ? item2Scroll : 0 }}
             >
                 <OptimizedImage
                     className="item__image"
@@ -75,7 +75,7 @@ export function FloatingItems({ scrollYProgress }: FloatingItemsProps) {
             </motion.article>
             <motion.article
                 className="item item--3"
-                style={{ translateY: width >= mobile ? item3Scroll : 0 }}
+                style={{ translateY: !isMobile ? item3Scroll : 0 }}
             >
                 <OptimizedImage
                     className="item__image"
@@ -95,7 +95,7 @@ export function FloatingItems({ scrollYProgress }: FloatingItemsProps) {
             </motion.article>
             <motion.article
                 className="item item--4"
-                style={{ translateY: width >= mobile ? item4Scroll : 0 }}
+                style={{ translateY: !isMobile ? item4Scroll : 0 }}
             >
                 <OptimizedImage
                     className="item__image"
