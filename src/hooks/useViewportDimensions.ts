@@ -1,8 +1,6 @@
 import debounce from "debounce";
 import { useEffect, useState } from "react";
 
-import breakpointsJson from "@/constants/breakpoints.json";
-
 export interface ViewportDimensions {
     height: number;
     width: number;
@@ -10,7 +8,10 @@ export interface ViewportDimensions {
     vw: number;
 }
 
-export const breakpoints = breakpointsJson;
+export const breakpoints = {
+    mobile: 760,
+    tablet: 1080,
+};
 
 function getViewportDimensions(): ViewportDimensions {
     if (typeof window === "undefined") {
