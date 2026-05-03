@@ -1,4 +1,4 @@
-function LoadingFallback() {
+export function LoadingFallback() {
     return (
         <div
             style={{
@@ -8,5 +8,3 @@ function LoadingFallback() {
         ></div>
     );
 }
-
-export default LoadingFallback;

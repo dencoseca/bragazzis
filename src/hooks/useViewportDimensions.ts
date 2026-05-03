@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-import breakpoints from "@/constants/breakpoints.json";
-import debounce from "@/utils/debounce";
+import breakpointsJson from "@/constants/breakpoints.json";
+import { debounce } from "@/utils/debounce";
 
 export interface ViewportDimensions {
     height: number;
@@ -10,7 +10,7 @@ export interface ViewportDimensions {
     vw: number;
 }
 
-export { breakpoints };
+export const breakpoints = breakpointsJson;
 
 function getViewportDimensions(): ViewportDimensions {
     if (typeof window === "undefined") {
@@ -24,7 +24,7 @@ function getViewportDimensions(): ViewportDimensions {
     };
 }
 
-export default function useViewportDimensions(): ViewportDimensions {
+export function useViewportDimensions(): ViewportDimensions {
     const [dimensions, setDimensions] = useState<ViewportDimensions>(getViewportDimensions);
 
     useEffect(() => {

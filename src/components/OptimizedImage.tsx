@@ -11,7 +11,7 @@ export interface OptimizedImageProps {
     onContextMenu?: React.MouseEventHandler<HTMLImageElement>;
 }
 
-export default function OptimizedImage({
+export function OptimizedImage({
     image,
     alt,
     sizes,

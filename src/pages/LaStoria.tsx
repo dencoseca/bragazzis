@@ -3,8 +3,8 @@ import { motion } from "motion/react";
 import earlyDaysImg from "@/assets/images/early-days.jpg?w=360;540;720;960;1200&format=avif;webp;jpg&as=picture";
 import ticketPisaImg from "@/assets/images/ticket-pisa.jpg?w=360;540;720;960;1200&format=avif;webp;jpg&as=picture";
 import ticketRomaImg from "@/assets/images/ticket-roma.jpg?w=360;540;720;960;1200&format=avif;webp;jpg&as=picture";
-import Layout from "@/components/Layout";
-import OptimizedImage from "@/components/OptimizedImage";
+import { Layout } from "@/components/Layout";
+import { OptimizedImage } from "@/components/OptimizedImage";
 import { smoothTransition } from "@/constants/animations";
 
 const laStoriaTransition = {
@@ -44,7 +44,7 @@ const rightTicketVariants = {
     },
 };
 
-export default function LaStoria() {
+export function LaStoria() {
     return (
         <Layout
             pageTitle="La Storia"

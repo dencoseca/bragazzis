@@ -9,7 +9,21 @@ export default defineConfig({
     staged: {
         "*": "vp check --fix",
     },
-    lint: { options: { typeAware: true, typeCheck: true } },
+    lint: {
+        plugins: ["import"],
+        options: { typeAware: true, typeCheck: true },
+        rules: {
+            "import/no-default-export": "error",
+        },
+        overrides: [
+            {
+                files: ["vite.config.ts"],
+                rules: {
+                    "import/no-default-export": "off",
+                },
+            },
+        ],
+    },
     fmt: {
         tabWidth: 4,
         semi: true,

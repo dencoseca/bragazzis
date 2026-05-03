@@ -1,10 +1,10 @@
 import React from "react";
 
-import Layout from "@/components/Layout";
-import OptimizedImage from "@/components/OptimizedImage";
+import { Layout } from "@/components/Layout";
+import { OptimizedImage } from "@/components/OptimizedImage";
 import { galleryImages } from "@/data/galleryImages";
 
-export default function IlGiorno() {
+export function IlGiorno() {
     return (
         <Layout pageTitle="Il Giorno" description="Il Giorno — a day at Bragazzi's.">
             <div className="ilgiorno__title text--page-title">IL GIORNO</div>

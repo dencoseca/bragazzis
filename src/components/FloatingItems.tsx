@@ -5,7 +5,7 @@ import ciabattaImg from "@/assets/images/ciabatta.jpg?w=360;540;720;960;1200&for
 import coffeePourImg from "@/assets/images/coffee-pour.jpg?w=360;540;720;960;1200&format=avif;webp;jpg&as=picture";
 import shelvesImg from "@/assets/images/shelves.jpg?w=360;540;720;960;1200&format=avif;webp;jpg&as=picture";
 import shopChristmasImg from "@/assets/images/shop-christmas.jpg?w=360;540;720;960;1200&format=avif;webp;jpg&as=picture";
-import OptimizedImage from "@/components/OptimizedImage";
+import { OptimizedImage } from "@/components/OptimizedImage";
 
 interface FloatingItemsProps {
     dimensions: { width: number; vw: number };
@@ -13,7 +13,7 @@ interface FloatingItemsProps {
     scrollYProgress: MotionValue<number>;
 }
 
-const FloatingItems = memo(function FloatingItems({
+export const FloatingItems = memo(function FloatingItems({
     dimensions: { width, vw },
     breakpoints: { mobile },
     scrollYProgress,
@@ -120,5 +120,3 @@ const FloatingItems = memo(function FloatingItems({
         </section>
     );
 });
-
-export default FloatingItems;

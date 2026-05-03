@@ -42,7 +42,7 @@ const linkVariants = {
     },
 };
 
-export default function Menu() {
+export function Menu() {
     return (
         <motion.div
             className="menu"

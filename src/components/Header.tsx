@@ -31,7 +31,7 @@ interface HeaderProps {
     setMenuIsOpen: (open: boolean) => void;
 }
 
-const Header = memo(function Header({ menuIsOpen, setMenuIsOpen }: HeaderProps) {
+export const Header = memo(function Header({ menuIsOpen, setMenuIsOpen }: HeaderProps) {
     const location = useLocation();
     const pageIsLastoria = location.pathname.includes("/lastoria");
 
@@ -104,5 +104,3 @@ const Header = memo(function Header({ menuIsOpen, setMenuIsOpen }: HeaderProps) 
         </div>
     );
 });
-
-export default Header;

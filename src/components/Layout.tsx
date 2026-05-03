@@ -3,9 +3,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useLocation } from "react-router-dom";
 
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
-import Menu from "@/components/Menu";
+import { Footer } from "@/components/Footer";
+import { Header } from "@/components/Header";
+import { Menu } from "@/components/Menu";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 
 interface LayoutProps {
@@ -49,7 +49,7 @@ const LOCAL_BUSINESS_JSONLD = {
     sameAs: [],
 };
 
-export default function Layout({
+export function Layout({
     children,
     pageTitle,
     description = "Bragazzi's — an Italian deli, café in Sheffield, serving authentic Italian food and coffee.",

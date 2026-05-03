@@ -1,13 +1,13 @@
 import { useScroll } from "motion/react";
 
-import Cover from "@/components/Cover";
-import FloatingItems from "@/components/FloatingItems";
-import FullWidthBanner from "@/components/FullWidthBanner";
-import Layout from "@/components/Layout";
+import { Cover } from "@/components/Cover";
+import { FloatingItems } from "@/components/FloatingItems";
+import { FullWidthBanner } from "@/components/FullWidthBanner";
+import { Layout } from "@/components/Layout";
 import { openingHours } from "@/constants/openingHours";
-import useViewportDimensions, { breakpoints } from "@/hooks/useViewportDimensions";
+import { useViewportDimensions, breakpoints } from "@/hooks/useViewportDimensions";
 
-export default function Home() {
+export function Home() {
     const dimensions = useViewportDimensions();
     const { scrollYProgress } = useScroll();
 
