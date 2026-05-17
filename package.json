@@ -32,7 +32,7 @@
     "vite-plus": "latest"
   },
   "devEngines": {
-    "node": ">=24.13.0 <24.16.0"
+    "node": ">=24.13.0 <=24.15.0"
   },
   "packageManager": "pnpm@11.0.9"
 }
