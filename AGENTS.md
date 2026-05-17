@@ -9,7 +9,7 @@ application with multiple routes, built with **React 19**, **TypeScript**, and *
 
 ## Tech Stack
 
-- **Runtime/Framework:** React 19, React Router 7, TypeScript 5.9
+- **Runtime/Framework:** React 19, React Router 7, TypeScript 6.0
 - **Build Tool:** Vite 8 (managed via Vite+)
 - **Styling:** Sass/SCSS (no CSS modules — global styles in `src/styles/`)
 - **Animation:** Motion (Framer Motion), Lenis (smooth scroll)
@@ -20,7 +20,9 @@ application with multiple routes, built with **React 19**, **TypeScript**, and *
 
 ```
 src/
-├── assets/images/     # Static image assets (jpg, png, svg — high-quality originals)
+├── assets/            # Static assets
+│   ├── fonts/         # Project fonts (ttf, woff2, etc.)
+│   └── images/        # Static image assets (jpg, png, svg — high-quality originals)
 ├── components/        # Shared React components (Layout, Header, Footer, Menu, Cover, etc.)
 ├── constants/         # Shared constants (breakpoints.ts, animations.ts, openingHours.ts)
 ├── data/              # Data files (galleryImages.ts)
@@ -34,11 +36,12 @@ src/
 │   ├── _typography.scss
 │   ├── _breakpoints.scss
 │   └── _normalize.scss
+├── types/             # TypeScript type definitions (imagetools.ts, etc.)
 ├── App.tsx            # Router setup
 └── main.tsx           # App entry point
 ```
 
-- **Path alias:** `@` maps to `src/` (configured in `vite.config.ts` and `tsconfig.app.json`). Always use `@/` imports
+- **Path alias:** `@` maps to `src/` (configured in `vite.config.ts` and `tsconfig.json`). Always use `@/` imports
   instead of relative paths.
 - **Config files:** `vite.config.ts`, `tsconfig.json`
 
@@ -48,8 +51,7 @@ src/
 - **TypeScript:** Strict mode. Do not use `any` — prefer explicit types or `unknown`. All files use `.ts` or `.tsx`
   extensions.
 - **Imports:** Use the `@/` path alias for all imports from `src/`. Example: `import { OptimizedImage } from "@/components/OptimizedImage"`.
-- **Components:** Functional components only. Use named exports for types/interfaces, default exports for components and
-  hooks.
+- **Components:** Functional components only. Use named exports for everything (components, hooks, types, interfaces).
 - **Hooks:** Custom hooks live in `src/hooks/`. Prefix with `use`.
 - **Styles:** SCSS partials follow the convention `_componentName.scss` or `_pageName.scss`. Import new partials into
   `src/styles/main.scss`.
@@ -64,12 +66,10 @@ src/
 
 - **No SSR** — this is a client-side SPA, but hooks like `useViewportDimensions` include `typeof window` guards for
   SSR-safety as a best practice.
-- **Routing** is handled by React Router in `src/App.tsx` with lazy-loaded page components.
+- **Routing** is handled by React Router in `src/App.tsx` with lazy-loaded page components. Pages use named exports; `App.tsx` maps them to default exports for `React.lazy`.
 - **Smooth scrolling** is powered by Lenis via the `useSmoothScroll` hook, used in `Layout.tsx`.
 - **Viewport dimensions** are shared via the `useViewportDimensions` hook rather than prop-drilling.
 - **Breakpoints** are defined once in `src/constants/breakpoints.ts` and consumed by both JS and SCSS.
-- **`plan.md`** contains a codebase improvement plan organized into phases. Check it for context on past changes and any
-  remaining work.
 
 ## Important Warnings
 
@@ -78,6 +78,7 @@ src/
 - **Do NOT delete or modify `.jpg` originals** in `src/assets/images/`. Responsive variants are generated at build time
   by `vite-imagetools`.
 - **Keep bundle size in mind.** Lazy-load routes (already done in `App.tsx`) and avoid large eager imports.
+- **No default exports.** The project enforces named exports via linting.
 
 <!--VITE PLUS START-->
 
@@ -98,4 +99,4 @@ This project is using Vite+, a unified toolchain built on top of Vite, Rolldown,
 - [ ] Check if there are tasks or `package.json` scripts necessary for validation, run via `vp run <script>`.
 
 * Docs: https://viteplus.dev/guide/
-    <!--VITE PLUS END-->
+  <!--VITE PLUS END-->
