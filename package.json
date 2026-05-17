@@ -31,8 +31,8 @@
     "vite-imagetools": "10.0.0",
     "vite-plus": "latest"
   },
-  "engines": {
-    "node": "24.15.0"
+  "devEngines": {
+    "node": ">=24.13.0 <24.16.0"
   },
   "packageManager": "pnpm@11.0.9"
 }
