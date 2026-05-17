@@ -79,6 +79,7 @@ src/
   by `vite-imagetools`.
 - **Keep bundle size in mind.** Lazy-load routes (already done in `App.tsx`) and avoid large eager imports.
 - **No default exports.** The project enforces named exports via linting.
+- **Keep AGENTS.md updated.** After finishing a task, update this file if any of your changes make its current content invalid or outdated.
 
 <!--VITE PLUS START-->
 
@@ -99,4 +100,4 @@ This project is using Vite+, a unified toolchain built on top of Vite, Rolldown,
 - [ ] Check if there are tasks or `package.json` scripts necessary for validation, run via `vp run <script>`.
 
 * Docs: https://viteplus.dev/guide/
-  <!--VITE PLUS END-->
+      <!--VITE PLUS END-->
