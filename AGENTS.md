@@ -99,5 +99,6 @@ This project is using Vite+, a unified toolchain built on top of Vite, Rolldown,
 - [ ] Run `vp check` and `vp test` to format, lint, type check and test changes.
 - [ ] Check if there are tasks or `package.json` scripts necessary for validation, run via `vp run <script>`.
 
-* Docs: https://viteplus.dev/guide/
-      <!--VITE PLUS END-->
+- Docs: https://viteplus.dev/guide/
+
+<!--VITE PLUS END-->

@@ -4,17 +4,20 @@ import { Cover } from "@/components/Cover";
 import { FloatingItems } from "@/components/FloatingItems";
 import { FullWidthBanner } from "@/components/FullWidthBanner";
 import { Layout } from "@/components/Layout";
-import { openingHours } from "@/constants/openingHours";
+import { siteConfig } from "@/constants/siteConfig";
+
+const PAGE_TITLE = "Home";
+const PAGE_DESCRIPTION = "Bragazzi's — an Italian deli, café in Sheffield.";
 
 export function Home() {
     const { scrollYProgress } = useScroll();
 
     return (
-        <Layout pageTitle="Home" description="Bragazzi's — an Italian deli, café in Sheffield.">
-            <Cover openingHours={openingHours} scrollYProgress={scrollYProgress} />
+        <Layout pageTitle={PAGE_TITLE} description={PAGE_DESCRIPTION}>
+            <Cover scrollYProgress={scrollYProgress} />
             <section className="home__mobile-cover" id="mobile-cover">
                 <ul className="opening-hours">
-                    {openingHours.map((line, index) => (
+                    {siteConfig.openingHours.display.map((line, index) => (
                         <li key={index}>{line}</li>
                     ))}
                 </ul>

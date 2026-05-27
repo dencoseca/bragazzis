@@ -1,9 +1,12 @@
 import { useCallback } from "react";
 import { useLocation } from "react-router-dom";
 
+import { siteConfig } from "@/constants/siteConfig";
+
 export function Footer() {
     const location = useLocation();
     const pageIsIlgiorno = location.pathname.includes("/ilgiorno");
+    const { address, email, phone } = siteConfig.business;
 
     const footerClassName = pageIsIlgiorno ? "footer footer--light" : "footer";
     const textLinkClassName = pageIsIlgiorno ? "text--link-light" : "text--link-dark";
@@ -25,23 +28,23 @@ export function Footer() {
                         <li className="text--sm">
                             <a
                                 className={textLinkClassName}
-                                href="https://goo.gl/maps/n4uLGJGtaqSjSfoo6"
+                                href={address.mapsUrl}
                                 target="_blank"
                                 rel="noreferrer"
                             >
-                                <p>224-228 Abbeydale Road</p>
-                                <p>Sheffield</p>
-                                <p>S7 1FL</p>
+                                <p>{address.streetAddress}</p>
+                                <p>{address.addressLocality}</p>
+                                <p>{address.postalCode}</p>
                             </a>
                         </li>
                         <li className="text--sm">
-                            <a className={textLinkClassName} href="mailto:info@bragazzis.co.uk">
-                                info@bragazzis.co.uk
+                            <a className={textLinkClassName} href={`mailto:${email}`}>
+                                {email}
                             </a>
                         </li>
                         <li className="text--sm">
-                            <a className={textLinkClassName} href="tel:+441142581483">
-                                0114 258 1483
+                            <a className={textLinkClassName} href={phone.href}>
+                                {phone.display}
                             </a>
                         </li>
                     </ul>
@@ -50,66 +53,40 @@ export function Footer() {
                     <h4 className="text--heading-sm">Site</h4>
                     <ul>
                         <li className="text--sm">
-                            &copy; 2021–{new Date().getFullYear()} Bragazzi&apos;s Ltd
+                            &copy;{" "}
+                            {`${siteConfig.credits.copyrightStartYear}–${new Date().getFullYear()} ${siteConfig.business.legalName}`}
                         </li>
-                        <li className="text--sm">
-                            photography by{" "}
-                            <a
-                                className={textLinkClassName}
-                                href="https://www.maytreephotography.co.uk"
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                Maytree
-                            </a>
-                        </li>
-                        <li className="text--sm">
-                            &amp;{" "}
-                            <a
-                                className={textLinkClassName}
-                                href="https://www.elliegracephotography.co.uk/"
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                Ellie Grace Photography
-                            </a>
-                        </li>
-                        <li className="text--sm">site by Leon Brown</li>
+                        {siteConfig.links.photographyCredits.map((credit, index) => (
+                            <li key={credit.url} className="text--sm">
+                                {index === 0 ? "photography by " : "& "}
+                                <a
+                                    className={textLinkClassName}
+                                    href={credit.url}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    {credit.label}
+                                </a>
+                            </li>
+                        ))}
+                        <li className="text--sm">site by {siteConfig.credits.siteBy}</li>
                     </ul>
                 </div>
                 <div className="list social">
                     <h4 className="text--heading-sm">Social</h4>
                     <ul>
-                        <li className="text--sm">
-                            <a
-                                className={textLinkClassName}
-                                href="https://www.facebook.com/bragazzis/"
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                Facebook
-                            </a>
-                        </li>
-                        <li className="text--sm">
-                            <a
-                                className={textLinkClassName}
-                                href="https://www.instagram.com/bragazzis/"
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                Instagram
-                            </a>
-                        </li>
-                        <li className="text--sm">
-                            <a
-                                className={textLinkClassName}
-                                href="https://www.tripadvisor.co.uk/Restaurant_Review-g186364-d3435970-Reviews-Bragazzis-Sheffield_South_Yorkshire_England.html"
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                TripAdvisor
-                            </a>
-                        </li>
+                        {siteConfig.links.social.map((link) => (
+                            <li key={link.url} className="text--sm">
+                                <a
+                                    className={textLinkClassName}
+                                    href={link.url}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    {link.label}
+                                </a>
+                            </li>
+                        ))}
                     </ul>
                 </div>
             </div>

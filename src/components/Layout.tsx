@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Menu } from "@/components/Menu";
+import { localBusinessJsonLd, siteConfig } from "@/constants/siteConfig";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 
 interface LayoutProps {
@@ -14,45 +15,10 @@ interface LayoutProps {
     description?: string;
 }
 
-const LOCAL_BUSINESS_JSONLD = {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "@id": "https://bragazzis.co.uk/#localbusiness",
-    name: "Bragazzi's",
-    description: "An Italian deli, café in Sheffield, serving authentic Italian food and coffee.",
-    url: "https://bragazzis.co.uk",
-    telephone: "+44 114 258 1483",
-    address: {
-        "@type": "PostalAddress",
-        streetAddress: "224-228 Abbeydale Road",
-        addressLocality: "Sheffield",
-        addressRegion: "South Yorkshire",
-        postalCode: "S7 1FL",
-        addressCountry: "GB",
-    },
-    image: "https://bragazzis.co.uk/og-image.png",
-    logo: "https://bragazzis.co.uk/favicon.svg",
-    openingHoursSpecification: [
-        {
-            "@type": "OpeningHoursSpecification",
-            dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday"],
-            opens: "09:00",
-            closes: "15:00",
-        },
-        {
-            "@type": "OpeningHoursSpecification",
-            dayOfWeek: ["Friday", "Saturday"],
-            opens: "09:00",
-            closes: "16:15",
-        },
-    ],
-    sameAs: [],
-};
-
 export function Layout({
     children,
     pageTitle,
-    description = "Bragazzi's — an Italian deli, café in Sheffield, serving authentic Italian food and coffee.",
+    description = siteConfig.business.description,
 }: LayoutProps) {
     const location = useLocation();
     const isPageIlgiorno = location.pathname.includes("/ilgiorno");
@@ -74,8 +40,10 @@ export function Layout({
         if (mainRef.current) mainRef.current.classList.add("visible");
     }, []);
 
-    const fullTitle = pageTitle ? `${pageTitle} | Bragazzi's` : "Bragazzi's";
-    const canonicalUrl = `https://bragazzis.co.uk${location.pathname}`;
+    const fullTitle = pageTitle
+        ? `${pageTitle} | ${siteConfig.business.name}`
+        : siteConfig.business.name;
+    const canonicalUrl = `${siteConfig.business.origin}${location.pathname}`;
 
     return (
         <>
@@ -87,11 +55,11 @@ export function Layout({
                 <meta property="og:description" content={description} />
                 <meta property="og:url" content={canonicalUrl} />
                 <meta property="og:type" content="website" />
-                <meta property="og:image" content="https://bragazzis.co.uk/og-image.png" />
+                <meta property="og:image" content={siteConfig.assets.ogImage} />
                 <meta name="twitter:card" content="summary" />
                 <meta name="twitter:title" content={fullTitle} />
                 <meta name="twitter:description" content={description} />
-                <script type="application/ld+json">{JSON.stringify(LOCAL_BUSINESS_JSONLD)}</script>
+                <script type="application/ld+json">{JSON.stringify(localBusinessJsonLd)}</script>
             </Helmet>
             <a href="#main-content" className="skip-to-content">
                 Skip to content

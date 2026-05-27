@@ -4,9 +4,12 @@ import { Layout } from "@/components/Layout";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { galleryImages } from "@/data/galleryImages";
 
+const PAGE_TITLE = "Il Giorno";
+const PAGE_DESCRIPTION = "Il Giorno — a day at Bragazzi's.";
+
 export function IlGiorno() {
     return (
-        <Layout pageTitle="Il Giorno" description="Il Giorno — a day at Bragazzi's.">
+        <Layout pageTitle={PAGE_TITLE} description={PAGE_DESCRIPTION}>
             <div className="ilgiorno__title text--page-title">IL GIORNO</div>
             <div className="ilgiorno__gallery">
                 <div className="ilgiorno__caption ilgiorno__caption--aperto text--display">
