@@ -7,6 +7,10 @@ import { Layout } from "@/components/Layout";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { smoothTransition } from "@/constants/animations";
 
+const PAGE_TITLE = "La Storia";
+const PAGE_DESCRIPTION =
+    "La Storia — the story of Bragazzi's. Learn about our Italian roots and how we first started.";
+
 const laStoriaTransition = {
     ...smoothTransition,
     delay: 0.3,
@@ -46,10 +50,7 @@ const rightTicketVariants = {
 
 export function LaStoria() {
     return (
-        <Layout
-            pageTitle="La Storia"
-            description="La Storia — the story of Bragazzi's. Learn about our Italian roots and how we first started."
-        >
+        <Layout pageTitle={PAGE_TITLE} description={PAGE_DESCRIPTION}>
             <div className="lastoria">
                 <div className="lastoria__title-wrapper">
                     <div className="lastoria__title text--page-title">La Storia</div>

@@ -4,10 +4,10 @@ import React, { useCallback } from "react";
 import parmesanImg from "@/assets/images/parmesan.jpg?w=480;768;1024;1440;1920&format=avif;webp;jpg&as=picture";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { smoothTransition } from "@/constants/animations";
+import { siteConfig } from "@/constants/siteConfig";
 import { useViewportDimensions, useIsMobile } from "@/hooks/useViewportDimensions";
 
 interface CoverProps {
-    openingHours: string[];
     scrollYProgress: MotionValue<number>;
 }
 
@@ -54,10 +54,11 @@ const titleVariants = {
     },
 };
 
-export function Cover({ openingHours, scrollYProgress }: CoverProps) {
+export function Cover({ scrollYProgress }: CoverProps) {
     const { vh } = useViewportDimensions();
     const isMobile = useIsMobile();
     const heroImageScroll = useTransform(scrollYProgress, [0, 1], isMobile ? [0, 0] : [0, vh * 59]);
+    const { address } = siteConfig.business;
 
     const handleScrollDown = useCallback(() => {
         const targetId = isMobile ? "mobile-cover" : "statement";
@@ -101,18 +102,14 @@ export function Cover({ openingHours, scrollYProgress }: CoverProps) {
                 animate="animate"
             >
                 <ul className="opening-hours">
-                    {openingHours.map((line, index) => (
+                    {siteConfig.openingHours.display.map((line, index) => (
                         <li key={index}>{line}</li>
                     ))}
                 </ul>
                 <div className="address">
-                    <a
-                        href="https://goo.gl/maps/n4uLGJGtaqSjSfoo6"
-                        target="_blank"
-                        rel="noreferrer"
-                    >
-                        <p>224-228 Abbeydale Road</p>
-                        <p>Sheffield</p>
+                    <a href={address.mapsUrl} target="_blank" rel="noreferrer">
+                        <p>{address.streetAddress}</p>
+                        <p>{address.addressLocality}</p>
                     </a>
                 </div>
             </motion.div>
