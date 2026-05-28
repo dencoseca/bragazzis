@@ -9,6 +9,10 @@ export default defineConfig({
     staged: {
         "*": "vp check --fix",
     },
+    test: {
+        exclude: ["tests/visual/**"],
+        passWithNoTests: true,
+    },
     lint: {
         plugins: ["import"],
         options: { typeAware: true, typeCheck: true },
@@ -18,6 +22,12 @@ export default defineConfig({
         overrides: [
             {
                 files: ["vite.config.ts"],
+                rules: {
+                    "import/no-default-export": "off",
+                },
+            },
+            {
+                files: ["playwright.config.ts"],
                 rules: {
                     "import/no-default-export": "off",
                 },
