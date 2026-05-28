@@ -67,6 +67,7 @@ src/
 
 - **Start issue branches from an up-to-date `main`.** Before branching from `main`, fetch the latest remote changes and
   fast-forward or pull `main`.
+- **Raise pull requests as ready for review.** Do not create draft PRs unless the user explicitly asks for a draft.
 - **Close completed issues from PR descriptions.** When a pull request completes one or more GitHub issues, include a
   closing keyword for each issue in the PR description, such as `Closes #3`.
 
