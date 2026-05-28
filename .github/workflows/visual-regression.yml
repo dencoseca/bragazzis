@@ -1,4 +1,4 @@
-name: Visual Regression
+name: CI
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   chromium:
-    name: Chromium visual tests
+    name: Checks and Chromium visual tests
     runs-on: ubuntu-latest
 
     steps:
@@ -21,6 +21,12 @@ jobs:
 
       - name: Install dependencies
         run: vp install --frozen-lockfile
+
+      - name: Run Vite+ checks
+        run: vp check
+
+      - name: Build production app
+        run: vp run build
 
       - name: Install Chromium
         run: vp exec playwright install --with-deps chromium
