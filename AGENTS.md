@@ -15,6 +15,7 @@ application with multiple routes, built with **React 19**, **TypeScript**, and *
 - **Animation:** Motion (Framer Motion), Lenis (smooth scroll)
 - **SEO:** react-helmet-async
 - **Image Optimization:** vite-imagetools (build-time responsive AVIF/WebP/fallback generation via sharp)
+- **Visual Testing:** Playwright visual regression tests (Chromium only)
 
 ## Project Structure
 
@@ -66,6 +67,7 @@ src/
 
 - **Start issue branches from an up-to-date `main`.** Before branching from `main`, fetch the latest remote changes and
   fast-forward or pull `main`.
+- **Raise pull requests as ready for review.** Do not create draft PRs unless the user explicitly asks for a draft.
 - **Close completed issues from PR descriptions.** When a pull request completes one or more GitHub issues, include a
   closing keyword for each issue in the PR description, such as `Closes #3`.
 
@@ -77,6 +79,24 @@ src/
 - **Smooth scrolling** is powered by Lenis via the `useSmoothScroll` hook, used in `Layout.tsx`.
 - **Viewport dimensions** are shared via the `useViewportDimensions` hook rather than prop-drilling.
 - **Breakpoints** are defined once in `src/constants/breakpoints.ts` and consumed by both JS and SCSS.
+
+## Visual Regression Troubleshooting
+
+- When `vp run test:visual` fails, do not update baselines automatically. Treat baseline updates as approval of an
+  intentional visual change.
+- Inspect the Playwright output in `test-results/` and `playwright-report/` to compare expected, actual, and diff
+  images.
+- Decide whether the difference is an intentional visual change or an unintended regression.
+- If it is a regression, fix the source code, styles, or assets and rerun `vp check --fix`, `vp test`, and
+  `vp run test:visual`.
+- If the visual change is intentional, update baselines with `vp run test:visual:update`, then review the changed PNGs
+  before committing them.
+- Do not loosen screenshot thresholds or add broad waits unless the failure is proven to be nondeterministic rendering
+  noise.
+- CI runs on Linux with centralized Chromium baselines. Local macOS runs may differ slightly, so CI diffs should be
+  treated as the source of truth when platform rendering differences appear.
+- Do not commit `playwright-report/` or `test-results/`; only commit intentional baseline images under
+  `tests/visual/__screenshots__/`.
 
 ## Important Warnings
 
@@ -104,6 +124,7 @@ This project is using Vite+, a unified toolchain built on top of Vite, Rolldown,
 
 - [ ] Run `vp install` after pulling remote changes and before getting started.
 - [ ] Run `vp check` and `vp test` to format, lint, type check and test changes.
+- [ ] Run `vp run test:visual` when changing layout, typography, imagery, animation, or scroll behavior.
 - [ ] Check if there are tasks or `package.json` scripts necessary for validation, run via `vp run <script>`.
 
 - Docs: https://viteplus.dev/guide/

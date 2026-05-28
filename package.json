@@ -7,7 +7,9 @@
     "dev": "vp dev",
     "check": "vp check --fix",
     "build": "tsc && vp build",
-    "preview": "vp preview"
+    "preview": "vp preview",
+    "test:visual": "playwright test",
+    "test:visual:update": "playwright test --update-snapshots"
   },
   "dependencies": {
     "debounce": "3.0.0",
@@ -20,6 +22,7 @@
     "sass": "1.99.0"
   },
   "devDependencies": {
+    "@playwright/test": "1.60.0",
     "@types/node": "24.12.2",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",

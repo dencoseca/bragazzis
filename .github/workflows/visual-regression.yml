@@ -1,0 +1,39 @@
+name: Visual Regression
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  chromium:
+    name: Chromium visual tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Vite+
+        uses: voidzero-dev/setup-vp@v1
+        with:
+          node-version: "24"
+          cache: true
+
+      - name: Install dependencies
+        run: vp install --frozen-lockfile
+
+      - name: Install Chromium
+        run: vp exec playwright install --with-deps chromium
+
+      - name: Run visual regression tests
+        run: vp run test:visual
+
+      - name: Upload visual failure artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-visual-artifacts
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
