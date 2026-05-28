@@ -62,6 +62,13 @@ src/
   `OptimizedImage` component for rendering images where possible. Existing `.webp` files are not source assets and
   should not be imported directly.
 
+## GitHub Workflow
+
+- **Start issue branches from an up-to-date `main`.** Before branching from `main`, fetch the latest remote changes and
+  fast-forward or pull `main`.
+- **Close completed issues from PR descriptions.** When a pull request completes one or more GitHub issues, include a
+  closing keyword for each issue in the PR description, such as `Closes #3`.
+
 ## Key Architecture Notes
 
 - **No SSR** — this is a client-side SPA, but hooks like `useViewportDimensions` include `typeof window` guards for
