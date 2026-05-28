@@ -5,6 +5,7 @@ import { FloatingItems } from "@/components/FloatingItems";
 import { FullWidthBanner } from "@/components/FullWidthBanner";
 import { Layout } from "@/components/Layout";
 import { siteConfig } from "@/constants/siteConfig";
+import { theme } from "@/constants/themes";
 
 const PAGE_TITLE = "Home";
 const PAGE_DESCRIPTION = "Bragazzi's — an Italian deli, café in Sheffield.";
@@ -13,7 +14,12 @@ export function Home() {
     const { scrollYProgress } = useScroll();
 
     return (
-        <Layout pageTitle={PAGE_TITLE} description={PAGE_DESCRIPTION}>
+        <Layout
+            pageTitle={PAGE_TITLE}
+            description={PAGE_DESCRIPTION}
+            theme={theme.light}
+            headerTheme={theme.dark}
+        >
             <Cover scrollYProgress={scrollYProgress} />
             <section className="home__mobile-cover" id="mobile-cover">
                 <ul className="opening-hours">

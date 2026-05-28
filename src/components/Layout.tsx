@@ -1,4 +1,5 @@
 import { AnimatePresence } from "motion/react";
+import type { CSSProperties, ReactNode } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useLocation } from "react-router-dom";
@@ -7,34 +8,46 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Menu } from "@/components/Menu";
 import { localBusinessJsonLd, siteConfig } from "@/constants/siteConfig";
+import { theme, type Theme } from "@/constants/themes";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 
 interface LayoutProps {
-    children: React.ReactNode;
+    children: ReactNode;
     pageTitle: string;
+    theme: Theme;
+    headerTheme?: Theme;
+    footerTheme?: Theme;
+    menuTheme?: Theme;
+    scrollToTopBehavior?: ScrollBehavior;
     description?: string;
 }
 
 export function Layout({
     children,
     pageTitle,
+    theme: pageTheme,
+    headerTheme = pageTheme,
+    footerTheme = pageTheme,
+    menuTheme = theme.dark,
+    scrollToTopBehavior = "smooth",
     description = siteConfig.business.description,
 }: LayoutProps) {
     const location = useLocation();
-    const isPageIlgiorno = location.pathname.includes("/ilgiorno");
-    const mainBackgroundColor = isPageIlgiorno ? "#1d1d1d" : "#f6f4f1";
 
     const [menuIsOpen, setMenuIsOpen] = useState(false);
-    const [prevPathname, setPrevPathname] = useState(location.pathname);
-    if (location.pathname !== prevPathname) {
-        setPrevPathname(location.pathname);
+    useEffect(() => {
         setMenuIsOpen(false);
-    }
+    }, [location.pathname]);
+
     const handleSetMenuIsOpen = useCallback((open: boolean) => setMenuIsOpen(open), []);
 
     useSmoothScroll();
 
     const mainRef = useRef<HTMLElement>(null);
+    const mainThemeStyle = {
+        "--theme-background-color": pageTheme.palette.background,
+        "--theme-content-color": pageTheme.palette.content.primary,
+    } as CSSProperties;
 
     useEffect(() => {
         if (mainRef.current) mainRef.current.classList.add("visible");
@@ -64,11 +77,16 @@ export function Layout({
             <a href="#main-content" className="skip-to-content">
                 Skip to content
             </a>
-            <AnimatePresence>{menuIsOpen && <Menu />}</AnimatePresence>
-            <main id="main-content" ref={mainRef} style={{ backgroundColor: mainBackgroundColor }}>
-                <Header menuIsOpen={menuIsOpen} setMenuIsOpen={handleSetMenuIsOpen} />
+            <AnimatePresence>{menuIsOpen && <Menu theme={menuTheme} />}</AnimatePresence>
+            <main id="main-content" ref={mainRef} style={mainThemeStyle}>
+                <Header
+                    menuIsOpen={menuIsOpen}
+                    setMenuIsOpen={handleSetMenuIsOpen}
+                    theme={headerTheme}
+                    menuTheme={menuTheme}
+                />
                 {children}
-                <Footer />
+                <Footer theme={footerTheme} scrollToTopBehavior={scrollToTopBehavior} />
             </main>
         </>
     );

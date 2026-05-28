@@ -1,6 +1,6 @@
 @use "../variables" as *;
 .footer {
-    color: $black;
+    color: var(--footer-content-color, $black);
 
     // ====================
     // General List Styles
@@ -87,7 +87,30 @@
         }
     }
 
-    &--light {
-        color: $white;
+    .footer__link {
+        position: relative;
+        display: inline-block;
+        text-decoration: none;
+        color: var(--footer-content-color, $black);
+
+        &:after {
+            content: "";
+            position: absolute;
+            height: 1px;
+            width: 0;
+            display: block;
+            margin-top: 2px;
+            right: 0;
+            background-color: var(--footer-content-color, $black);
+            transition: 0.4s ease;
+        }
+
+        &:hover {
+            &:after {
+                width: 100%;
+                left: 0;
+                background-color: var(--footer-content-color, $black);
+            }
+        }
     }
 }

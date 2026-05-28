@@ -1,7 +1,9 @@
 import { motion } from "motion/react";
+import type { CSSProperties } from "react";
 import { Link } from "react-router-dom";
 
 import { menuSlideTransition } from "@/constants/animations";
+import type { Theme } from "@/constants/themes";
 
 const menuVariants = {
     closed: {
@@ -42,10 +44,20 @@ const linkVariants = {
     },
 };
 
-export function Menu() {
+interface MenuProps {
+    theme: Theme;
+}
+
+export function Menu({ theme }: MenuProps) {
+    const menuStyle = {
+        "--menu-background-color": theme.palette.background,
+        "--menu-content-color": theme.palette.content.primary,
+    } as CSSProperties;
+
     return (
         <motion.div
             className="menu"
+            style={menuStyle}
             initial="closed"
             animate="open"
             exit="closed"

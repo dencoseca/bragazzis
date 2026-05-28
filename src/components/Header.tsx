@@ -1,8 +1,10 @@
 import { motion, useAnimation } from "motion/react";
+import type { CSSProperties } from "react";
 import { useCallback } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { quickTransition } from "@/constants/animations";
+import type { Theme } from "@/constants/themes";
 
 const topLineVariants = {
     closed: {
@@ -29,15 +31,19 @@ const bottomLineVariants = {
 interface HeaderProps {
     menuIsOpen: boolean;
     setMenuIsOpen: (open: boolean) => void;
+    theme: Theme;
+    menuTheme: Theme;
 }
 
-export function Header({ menuIsOpen, setMenuIsOpen }: HeaderProps) {
-    const location = useLocation();
-    const pageIsLastoria = location.pathname.includes("/lastoria");
-
-    const headerClassName = pageIsLastoria ? "header header--dark" : "header";
-    const menuColor = pageIsLastoria && !menuIsOpen ? "#1d1d1d" : "#f6f4f1";
+export function Header({ menuIsOpen, setMenuIsOpen, theme, menuTheme }: HeaderProps) {
+    const menuColor = menuIsOpen
+        ? menuTheme.palette.content.primary
+        : theme.palette.content.primary;
     const headerPosition = menuIsOpen ? "fixed" : "absolute";
+    const headerStyle = {
+        "--header-content-color": theme.palette.content.primary,
+        position: headerPosition,
+    } as CSSProperties;
 
     const controls = useAnimation();
 
@@ -52,7 +58,7 @@ export function Header({ menuIsOpen, setMenuIsOpen }: HeaderProps) {
     }, [menuIsOpen, setMenuIsOpen, controls]);
 
     return (
-        <div className={headerClassName} id="header" style={{ position: headerPosition }}>
+        <div className="header" id="header" style={headerStyle}>
             <div className="header__tag">Purveyors of quality Italian goods</div>
             <div className="header__logo-wrapper">
                 <Link to="/" aria-label="home">

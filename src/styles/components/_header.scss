@@ -11,6 +11,7 @@
     font-size: 1vw;
     font-weight: 400;
     line-height: 0.95vw;
+    color: var(--header-content-color, $white);
 
     @media (max-width: $tablet) {
         padding: 5vw;
@@ -19,7 +20,7 @@
 
     .header__tag {
         text-transform: uppercase;
-        color: $white;
+        color: var(--header-content-color, $white);
 
         @media (max-width: $mobile) {
             display: none;
@@ -51,7 +52,7 @@
         position: relative;
         display: inline-block;
         text-decoration: none;
-        color: $white;
+        color: var(--header-content-color, $white);
         text-transform: uppercase;
 
         &:first-of-type {
@@ -66,7 +67,7 @@
             display: block;
             margin-top: 0.3vw;
             right: 0;
-            background-color: $white;
+            background-color: var(--header-content-color, $white);
             transition: 0.4s ease;
         }
 
@@ -74,32 +75,12 @@
             &:after {
                 width: 100%;
                 left: 0;
-                background-color: $white;
+                background-color: var(--header-content-color, $white);
             }
         }
 
         @media (max-width: $mobile) {
             display: none;
-        }
-    }
-
-    &--dark {
-        .header__tag {
-            color: $black;
-        }
-
-        .header__link {
-            color: $black;
-
-            &:after {
-                background-color: $black;
-            }
-
-            &:hover {
-                &:after {
-                    background-color: $black;
-                }
-            }
         }
     }
 }
