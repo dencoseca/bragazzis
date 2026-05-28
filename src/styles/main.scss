@@ -61,6 +61,8 @@ html {
 // Prevent flashing by making 'main' element hidden until after page is loaded
 main {
     visibility: hidden;
+    color: var(--theme-content-color, $black);
+    background-color: var(--theme-background-color, $white);
 }
 .visible {
     visibility: visible;
