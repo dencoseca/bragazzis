@@ -58,7 +58,7 @@
     }
 
     p {
-        width: 45vw;
+        width: min(45rem, 45vw);
         margin: 3vw auto;
 
         @media (max-width: $mobile) {

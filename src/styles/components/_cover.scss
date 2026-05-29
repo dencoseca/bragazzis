@@ -62,18 +62,18 @@
     width: 100%;
     position: relative;
     color: $white;
-    font-size: 1vw;
+    font-size: clamp(0.875rem, 1vw, 1.125rem);
     font-weight: 400;
-    line-height: 0.95vw;
+    line-height: 1.1;
     z-index: 3;
 
     @media (max-width: $tablet) {
-        font-size: 1.25vw;
+        font-size: clamp(0.875rem, 1.25vw, 1.125rem);
     }
 
     @media (max-width: $mobile) {
-        font-size: 3vw;
-        line-height: 2.9vw;
+        font-size: clamp(1rem, 3vw, 1.25rem);
+        line-height: 1.15;
         text-align: center;
     }
 
@@ -99,7 +99,7 @@
         }
 
         @media (max-width: $tablet) {
-            font-size: 1.6vw;
+            font-size: clamp(0.875rem, 1.6vw, 1.125rem);
             right: 5vw;
             bottom: 5vw;
         }
@@ -115,7 +115,7 @@
         bottom: 3vw;
 
         @media (max-width: $tablet) {
-            font-size: 1.6vw;
+            font-size: clamp(0.875rem, 1.6vw, 1.125rem);
             left: 5vw;
             bottom: 5vw;
         }
@@ -137,7 +137,7 @@
             p {
                 @media (max-width: $mobile) {
                     margin: 2.5vw 0;
-                    font-size: 3vw;
+                    font-size: clamp(1rem, 3vw, 1.25rem);
                 }
             }
         }

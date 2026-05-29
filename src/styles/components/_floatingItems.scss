@@ -5,15 +5,15 @@
 
 .floating-items {
     position: relative;
-    padding: 3vw;
-    height: 195vw;
+    padding: clamp(1.5rem, 3vw, 4rem);
+    min-height: clamp(120rem, 195vw, 230rem);
 
     @media (max-width: $tablet) {
-        height: 240vw;
+        min-height: clamp(100rem, 240vw, 145rem);
     }
 
     @media (max-width: $mobile) {
-        height: 740vw;
+        min-height: 0;
         padding: 0;
     }
 }
@@ -23,7 +23,7 @@
     display: flex;
 
     @media (max-width: $mobile) {
-        margin: 10vw 0;
+        margin: clamp(2.5rem, 10vw, 4rem) 0;
     }
 }
 
@@ -37,8 +37,8 @@
 
 .item__text {
     @media (max-width: $mobile) {
-        margin: 3vw 0;
-        padding: 0 3vw;
+        margin: clamp(1rem, 3vw, 1.5rem) 0;
+        padding: 0 clamp(1rem, 3vw, 1.5rem);
         width: auto;
     }
 }
@@ -49,10 +49,10 @@
 
 .item--1 {
     flex-direction: row-reverse;
-    top: 10vw;
+    top: clamp(5rem, 10vw, 10rem);
 
     @media (max-width: $tablet) {
-        margin-top: 5vw;
+        margin-top: clamp(2rem, 5vw, 4rem);
     }
 
     @media (max-width: $mobile) {
@@ -62,10 +62,10 @@
     }
 
     .item__image {
-        width: 40vw;
+        width: clamp(24rem, 40vw, 48rem);
 
         @media (max-width: $tablet) {
-            width: 45vw;
+            width: clamp(20rem, 45vw, 34rem);
         }
 
         @media (max-width: $mobile) {
@@ -74,8 +74,8 @@
     }
 
     .item__text {
-        width: 30vw;
-        margin-right: 3vw;
+        width: clamp(20rem, 30vw, 36rem);
+        margin-right: clamp(1.5rem, 3vw, 4rem);
         text-align: right;
 
         @media (max-width: $mobile) {
@@ -88,10 +88,10 @@
 
 .item--2 {
     flex-direction: column;
-    top: 20vw;
+    top: clamp(8rem, 20vw, 18rem);
 
     @media (max-width: $tablet) {
-        margin-top: 15vw;
+        margin-top: clamp(5rem, 15vw, 8rem);
     }
 
     @media (max-width: $mobile) {
@@ -99,10 +99,10 @@
     }
 
     .item__image {
-        width: 30vw;
+        width: clamp(18rem, 30vw, 36rem);
 
         @media (max-width: $tablet) {
-            width: 35vw;
+            width: clamp(18rem, 35vw, 30rem);
         }
 
         @media (max-width: $mobile) {
@@ -111,11 +111,11 @@
     }
 
     .item__text {
-        width: 25vw;
-        margin-top: 3vw;
+        width: clamp(16rem, 25vw, 30rem);
+        margin-top: clamp(1.5rem, 3vw, 4rem);
 
         @media (max-width: $tablet) {
-            width: 34vw;
+            width: clamp(18rem, 34vw, 30rem);
         }
 
         @media (max-width: $mobile) {
@@ -128,12 +128,12 @@
 .item--3 {
     flex-direction: column;
     align-items: flex-end;
-    right: 10vw;
-    top: -35vw;
+    right: clamp(3rem, 10vw, 10rem);
+    top: clamp(-28rem, -35vw, -16rem);
 
     @media (max-width: $tablet) {
-        top: -45vw;
-        right: 5vw;
+        top: clamp(-28rem, -45vw, -18rem);
+        right: clamp(2rem, 5vw, 5rem);
     }
 
     @media (max-width: $mobile) {
@@ -143,10 +143,10 @@
     }
 
     .item__image {
-        width: 40vw;
+        width: clamp(24rem, 40vw, 48rem);
 
         @media (max-width: $tablet) {
-            width: 45vw;
+            width: clamp(20rem, 45vw, 34rem);
         }
 
         @media (max-width: $mobile) {
@@ -155,12 +155,12 @@
     }
 
     .item__text {
-        width: 35vw;
-        margin-top: 3vw;
+        width: clamp(20rem, 35vw, 42rem);
+        margin-top: clamp(1.5rem, 3vw, 4rem);
         text-align: right;
 
         @media (max-width: $tablet) {
-            width: 40vw;
+            width: clamp(20rem, 40vw, 34rem);
         }
 
         @media (max-width: $mobile) {
@@ -173,11 +173,11 @@
 .item--4 {
     flex-direction: column;
     justify-content: flex-end;
-    top: -35vw;
-    left: 5vw;
+    top: clamp(-28rem, -35vw, -16rem);
+    left: clamp(2rem, 5vw, 5rem);
 
     @media (max-width: $tablet) {
-        top: -45vw;
+        top: clamp(-28rem, -45vw, -18rem);
     }
 
     @media (max-width: $mobile) {
@@ -187,7 +187,7 @@
     }
 
     .item__image {
-        width: 65vw;
+        width: clamp(40rem, 65vw, 76rem);
 
         @media (max-width: $mobile) {
             width: 100%;
@@ -195,8 +195,8 @@
     }
 
     .item__text {
-        width: 35vw;
-        margin-top: 3vw;
+        width: clamp(20rem, 35vw, 42rem);
+        margin-top: clamp(1.5rem, 3vw, 4rem);
 
         @media (max-width: $mobile) {
             width: auto;
