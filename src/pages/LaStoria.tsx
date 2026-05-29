@@ -55,37 +55,26 @@ export function LaStoria() {
             <div className="lastoria">
                 <div className="lastoria__title-wrapper">
                     <div className="lastoria__title text--page-title">La Storia</div>
-                    <motion.div
-                        className="ticket left"
-                        initial="initial"
-                        animate="animate"
-                        variants={leftTicketVariants}
-                    >
-                        <OptimizedImage
-                            image={ticketRomaImg}
-                            alt="plane ticket"
-                            sizes="(max-width: 768px) 100vw, 50vw"
-                        />
-                    </motion.div>
-                    <motion.div
-                        className="ticket right"
-                        initial="initial"
-                        animate="animate"
-                        variants={rightTicketVariants}
-                    >
-                        <OptimizedImage
-                            image={ticketPisaImg}
-                            alt="plane ticket"
-                            sizes="(max-width: 768px) 100vw, 50vw"
-                        />
-                    </motion.div>
                 </div>
                 <div className="lastoria__story">
                     <p className="text--lg">
                         Bragazzi's opened in Sheffield in 2003 and is owned by Matteo Bragazzi. It
                         is an outlier and safe haven for people who enjoy the "qualcosa in più".
                     </p>
-                    <div className="line"></div>
+                    <div className="line line--ticket-left">
+                        <motion.div
+                            className="ticket left"
+                            initial="initial"
+                            animate="animate"
+                            variants={leftTicketVariants}
+                        >
+                            <OptimizedImage
+                                image={ticketRomaImg}
+                                alt="plane ticket"
+                                sizes="(max-width: 768px) 100vw, 50vw"
+                            />
+                        </motion.div>
+                    </div>
                     <p className="text--lg">
                         Matteo has a brother, Dino, they often holiday together. In Rome one
                         evening, enjoying a Shakerato, Matteo's mind drifted. Sorry to see him this
@@ -93,7 +82,20 @@ export function LaStoria() {
                         in London. Their father had come over, like so many others, and made a
                         business of selling food.
                     </p>
-                    <div className="line"></div>
+                    <div className="line line--ticket-right">
+                        <motion.div
+                            className="ticket right"
+                            initial="initial"
+                            animate="animate"
+                            variants={rightTicketVariants}
+                        >
+                            <OptimizedImage
+                                image={ticketPisaImg}
+                                alt="plane ticket"
+                                sizes="(max-width: 768px) 100vw, 50vw"
+                            />
+                        </motion.div>
+                    </div>
                     <p className="text--lg">
                         As Dino reached a point about the Corradi brothers, Matteo recognised his
                         fate as the same. And so, the bet was placed over a plastic table, outside a
