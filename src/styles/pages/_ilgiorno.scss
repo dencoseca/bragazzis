@@ -49,41 +49,35 @@
     // ===================
     // Image Size Classes
     // ===================
-    .image--40 {
+    .image[data-size="40"] {
         width: 40vw;
     }
 
-    .image--45 {
+    .image[data-size="45"] {
         width: 45vw;
     }
 
-    .image--50 {
+    .image[data-size="50"] {
         width: 50vw;
     }
 
-    .image--55 {
+    .image[data-size="55"] {
         width: 55vw;
     }
 
-    .image--60 {
+    .image[data-size="60"] {
         width: 60vw;
     }
 
-    .image--65 {
+    .image[data-size="65"] {
         width: 65vw;
     }
 
-    .image--70 {
+    .image[data-size="70"] {
         width: 70vw;
     }
 
-    .image--40,
-    .image--45,
-    .image--50,
-    .image--55,
-    .image--60,
-    .image--65,
-    .image--70 {
+    .image[data-size] {
         @media (max-width: $mobile) {
             width: 100%;
         }

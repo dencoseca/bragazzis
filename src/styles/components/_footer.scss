@@ -1,6 +1,6 @@
 @use "../variables" as *;
 .footer {
-    color: var(--footer-content-color, $black);
+    color: var(--theme-content-color, $black);
 
     // ====================
     // General List Styles
@@ -73,6 +73,7 @@
         width: 100%;
         background: none;
         border: none;
+        color: inherit;
         padding: 0;
         padding-bottom: 3vw;
 
@@ -93,7 +94,7 @@
         position: relative;
         display: inline-block;
         text-decoration: none;
-        color: var(--footer-content-color, $black);
+        color: currentColor;
 
         &:after {
             content: "";
@@ -103,7 +104,7 @@
             display: block;
             margin-top: 2px;
             right: 0;
-            background-color: var(--footer-content-color, $black);
+            background-color: currentColor;
             transition: 0.4s ease;
         }
 
@@ -111,7 +112,7 @@
             &:after {
                 width: 100%;
                 left: 0;
-                background-color: var(--footer-content-color, $black);
+                background-color: currentColor;
             }
         }
     }

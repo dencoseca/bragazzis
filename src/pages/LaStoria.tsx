@@ -6,7 +6,7 @@ import ticketRomaImg from "@/assets/images/ticket-roma.jpg?w=360;540;720;960;120
 import { Layout } from "@/components/Layout";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { smoothTransition } from "@/constants/animations";
-import { theme } from "@/constants/themes";
+import { themeNames } from "@/constants/themes";
 
 const PAGE_TITLE = "La Storia";
 const PAGE_DESCRIPTION =
@@ -51,7 +51,7 @@ const rightTicketVariants = {
 
 export function LaStoria() {
     return (
-        <Layout pageTitle={PAGE_TITLE} description={PAGE_DESCRIPTION} theme={theme.light}>
+        <Layout pageTitle={PAGE_TITLE} description={PAGE_DESCRIPTION} theme={themeNames.light}>
             <div className="lastoria">
                 <div className="lastoria__title-wrapper">
                     <div className="lastoria__title text--page-title">La Storia</div>

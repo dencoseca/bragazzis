@@ -7,6 +7,7 @@ export interface OptimizedImageProps {
     alt: string;
     sizes: string;
     className?: string;
+    "data-size"?: number;
     imgClassName?: string;
     pictureRef?: Ref<HTMLPictureElement>;
     priority?: boolean;
@@ -26,6 +27,7 @@ export function OptimizedImage({
     alt,
     sizes,
     className,
+    "data-size": dataSize,
     imgClassName,
     pictureRef,
     priority = false,
@@ -37,7 +39,7 @@ export function OptimizedImage({
     const { sources, img } = image;
 
     return (
-        <picture className={className} ref={pictureRef}>
+        <picture className={className} data-size={dataSize} ref={pictureRef}>
             {shouldLoad
                 ? Object.entries(sources).map(([type, srcset]) => (
                       <source key={type} srcSet={srcset} type={type} sizes={sizes} />

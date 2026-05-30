@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type RefCallback, type MouseEvent } from "
 
 import { Layout } from "@/components/Layout";
 import { OptimizedImage } from "@/components/OptimizedImage";
-import { theme } from "@/constants/themes";
+import { themeNames } from "@/constants/themes";
 import { galleryImages } from "@/data/galleryImages";
 
 const PAGE_TITLE = "Il Giorno";
@@ -74,7 +74,7 @@ export function IlGiorno() {
         <Layout
             pageTitle={PAGE_TITLE}
             description={PAGE_DESCRIPTION}
-            theme={theme.dark}
+            theme={themeNames.dark}
             scrollToTopBehavior="auto"
         >
             <div className="ilgiorno__title text--page-title">IL GIORNO</div>
@@ -89,7 +89,8 @@ export function IlGiorno() {
                         <OptimizedImage
                             key={index}
                             pictureRef={getGalleryImageElementRef(index)}
-                            className={`image ${image.sizeClass}`}
+                            className="image"
+                            data-size={image.size}
                             image={image.image}
                             alt={image.alt}
                             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"

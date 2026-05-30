@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 
-import { breakpoints } from "@/constants/breakpoints";
-
 export interface ViewportDimensions {
     height: number;
     width: number;
@@ -9,7 +7,13 @@ export interface ViewportDimensions {
     vw: number;
 }
 
-export { breakpoints };
+type BreakpointName = "mobile" | "tablet";
+
+const neverMatchesMediaQuery = "not all";
+const breakpointCustomProperties: Record<BreakpointName, `--breakpoint-${BreakpointName}`> = {
+    mobile: "--breakpoint-mobile",
+    tablet: "--breakpoint-tablet",
+};
 
 function getViewportDimensions(): ViewportDimensions {
     if (typeof window === "undefined") {
@@ -84,6 +88,17 @@ function getMediaQueryMatches(query: string): boolean {
     return window.matchMedia(query).matches;
 }
 
+function getBreakpointMediaQuery(breakpoint: BreakpointName): string {
+    if (typeof window === "undefined") return neverMatchesMediaQuery;
+
+    const breakpointValue = window
+        .getComputedStyle(window.document.documentElement)
+        .getPropertyValue(breakpointCustomProperties[breakpoint])
+        .trim();
+
+    return breakpointValue ? `(max-width: ${breakpointValue})` : neverMatchesMediaQuery;
+}
+
 export function useMediaQuery(query: string): boolean {
     const [matches, setMatches] = useState(() => getMediaQueryMatches(query));
 
@@ -101,12 +116,22 @@ export function useMediaQuery(query: string): boolean {
     return matches;
 }
 
+function useBreakpointMediaQuery(breakpoint: BreakpointName): boolean {
+    const [query, setQuery] = useState(() => getBreakpointMediaQuery(breakpoint));
+
+    useEffect(() => {
+        setQuery(getBreakpointMediaQuery(breakpoint));
+    }, [breakpoint]);
+
+    return useMediaQuery(query);
+}
+
 export function useIsMobile(): boolean {
-    return useMediaQuery(`(max-width: ${breakpoints.mobile}px)`);
+    return useBreakpointMediaQuery("mobile");
 }
 
 export function useIsTablet(): boolean {
-    return useMediaQuery(`(max-width: ${breakpoints.tablet}px)`);
+    return useBreakpointMediaQuery("tablet");
 }
 
 export function usePrefersReducedMotion(): boolean {

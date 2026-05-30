@@ -11,7 +11,11 @@
     font-size: clamp(0.875rem, 1vw, 1.125rem);
     font-weight: 400;
     line-height: 1.1;
-    color: var(--header-content-color, $white);
+    color: var(--theme-content-color, $white);
+
+    &[data-menu-open="true"] {
+        position: fixed;
+    }
 
     @media (max-width: $tablet) {
         padding: 5vw;
@@ -20,7 +24,7 @@
 
     .header__tag {
         text-transform: uppercase;
-        color: var(--header-content-color, $white);
+        color: currentColor;
 
         @media (max-width: $mobile) {
             display: none;
@@ -46,13 +50,17 @@
             left: 0;
             top: 0;
         }
+
+        a {
+            color: inherit;
+        }
     }
 
     .header__link {
         position: relative;
         display: inline-block;
         text-decoration: none;
-        color: var(--header-content-color, $white);
+        color: currentColor;
         text-transform: uppercase;
 
         &:first-of-type {
@@ -67,7 +75,7 @@
             display: block;
             margin-top: 0.3vw;
             right: 0;
-            background-color: var(--header-content-color, $white);
+            background-color: currentColor;
             transition: 0.4s ease;
         }
 
@@ -75,7 +83,7 @@
             &:after {
                 width: 100%;
                 left: 0;
-                background-color: var(--header-content-color, $white);
+                background-color: currentColor;
             }
         }
 
@@ -90,6 +98,7 @@
     width: 30px;
     background: none;
     border: none;
+    color: inherit;
     padding: 0;
     cursor: pointer;
 
@@ -99,7 +108,7 @@
 
     .line {
         height: 1px;
-        background-color: $white;
+        background-color: currentColor;
         width: 100%;
         margin: 10px 0;
     }

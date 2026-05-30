@@ -11,6 +11,7 @@ import { siteConfig } from "@/constants/siteConfig";
 interface MockOptimizedImageProps {
     alt: string;
     className?: string;
+    "data-size"?: number;
     imgClassName?: string;
     onContextMenu?: MouseEventHandler<HTMLImageElement>;
     pictureRef?: Ref<HTMLPictureElement>;
@@ -40,12 +41,13 @@ vi.mock("@/components/OptimizedImage", () => ({
     OptimizedImage({
         alt,
         className,
+        "data-size": dataSize,
         imgClassName,
         onContextMenu,
         pictureRef,
     }: MockOptimizedImageProps) {
         return (
-            <picture className={className} ref={pictureRef}>
+            <picture className={className} data-size={dataSize} ref={pictureRef}>
                 <img
                     alt={alt}
                     className={imgClassName}
@@ -115,7 +117,7 @@ vi.mock("@/data/galleryImages", () => ({
                 },
                 sources: {},
             },
-            sizeClass: "image--60",
+            size: 60,
         },
     ],
 }));

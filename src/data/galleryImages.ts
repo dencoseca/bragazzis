@@ -72,7 +72,7 @@ interface GalleryImageMetadata {
 export interface GalleryImage {
     image: OptimizedPicture;
     alt: string;
-    sizeClass: `image--${GalleryImageSize}`;
+    size: GalleryImageSize;
 }
 
 const galleryImageMetadata = [
@@ -265,6 +265,6 @@ export const galleryImages: GalleryImage[] = galleryImageMetadata.map(
     ({ filename, alt, size }) => ({
         image: getGalleryImage(filename),
         alt,
-        sizeClass: `image--${size}`,
+        size,
     }),
 );

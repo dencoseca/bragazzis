@@ -2,7 +2,8 @@
 .menu {
     position: fixed;
     z-index: 998;
-    background-color: var(--menu-background-color, $black);
+    color: var(--theme-content-color, $white);
+    background-color: var(--theme-background-color, $black);
     top: 0;
     right: 0;
     bottom: 0;
@@ -19,5 +20,5 @@
 
 .menu__link {
     text-decoration: none;
-    color: var(--menu-content-color, $white);
+    color: currentColor;
 }

@@ -1,17 +1,25 @@
-@forward "breakpoints";
+@use "tokens" as tokens;
+@forward "tokens";
 
 // ===============
 // Colors
 // ===============
 
-$white: #f6f4f1;
-$black: #1d1d1d;
-$trueBlack: #000;
-$textShadowColor: #666;
+$white: tokens.$color-paper;
+$black: tokens.$color-ink;
+$trueBlack: tokens.$color-true-black;
+$textShadowColor: tokens.$color-text-shadow;
 
 // ===============
 // Fonts
 // ===============
 
-$displayFont: "Abril Fatface", cursive;
-$textFont: "Josefin Sans", sans-serif;
+$displayFont: tokens.$font-display;
+$textFont: tokens.$font-text;
+
+// ===============
+// Breakpoints
+// ===============
+
+$mobile: tokens.$breakpoint-mobile;
+$tablet: tokens.$breakpoint-tablet;

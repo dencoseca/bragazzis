@@ -25,7 +25,7 @@ src/
 │   ├── fonts/         # Project fonts (ttf, woff2, etc.)
 │   └── images/        # Static image assets (jpg, png, svg — high-quality originals)
 ├── components/        # Shared React components (Layout, Header, Footer, Menu, Cover, etc.)
-├── constants/         # Shared constants (breakpoints.ts, animations.ts, openingHours.ts)
+├── constants/         # Shared TypeScript constants (animations.ts, siteConfig.ts, etc.)
 ├── data/              # Data files (galleryImages.ts)
 ├── hooks/             # Custom React hooks (useSmoothScroll, useViewportDimensions)
 ├── pages/             # Route-level page components (Home, LaStoria, IlGiorno, NotFound)
@@ -33,6 +33,8 @@ src/
 │   ├── components/    # Component-specific SCSS partials
 │   ├── pages/         # Page-specific SCSS partials
 │   ├── main.scss      # Entry point that imports all partials
+│   ├── _tokens.scss
+│   ├── _themes.scss
 │   ├── _variables.scss
 │   ├── _typography.scss
 │   ├── _breakpoints.scss
@@ -56,8 +58,8 @@ src/
 - **Hooks:** Custom hooks live in `src/hooks/`. Prefix with `use`.
 - **Styles:** SCSS partials follow the convention `_componentName.scss` or `_pageName.scss`. Import new partials into
   `src/styles/main.scss`.
-- **Constants:** Shared values go in `src/constants/`. Breakpoints are defined in `breakpoints.ts` and shared between
-  JS and SCSS.
+- **Constants:** Shared TypeScript values go in `src/constants/`. Visual design tokens, theme colors, and breakpoints
+  live in `src/styles/_tokens.scss`; JS reads breakpoint custom properties through hooks when behavior requires it.
 - **Images:** Keep high-quality `.jpg` originals in `src/assets/images/`; do not overwrite or resize them. Use
   `vite-imagetools` import queries to generate responsive AVIF/WebP/fallback variants at build time. Use the shared
   `OptimizedImage` component for rendering images where possible. Existing `.webp` files are not source assets and
@@ -79,7 +81,9 @@ src/
 - **Routing** is handled by React Router in `src/App.tsx` with lazy-loaded page components. Pages use named exports; `App.tsx` maps them to default exports for `React.lazy`.
 - **Smooth scrolling** is powered by Lenis via the `useSmoothScroll` hook, used in `Layout.tsx`.
 - **Viewport dimensions** are shared via the `useViewportDimensions` hook rather than prop-drilling.
-- **Breakpoints** are defined once in `src/constants/breakpoints.ts` and consumed by both JS and SCSS.
+- **Themes** are semantic in React (`data-theme="light"` / `data-theme="dark"`) and mapped to actual colors in Sass.
+- **Breakpoints** are owned by Sass tokens in `src/styles/_tokens.scss`; JS breakpoint hooks read the emitted CSS
+  custom properties instead of mirroring the numbers in TypeScript.
 
 ## Visual Regression Troubleshooting
 

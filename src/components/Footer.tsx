@@ -1,19 +1,15 @@
-import type { CSSProperties } from "react";
 import { useCallback } from "react";
 
 import { siteConfig } from "@/constants/siteConfig";
-import type { Theme } from "@/constants/themes";
+import type { ThemeName } from "@/constants/themes";
 
 interface FooterProps {
-    theme: Theme;
+    theme: ThemeName;
     scrollToTopBehavior?: ScrollBehavior;
 }
 
 export function Footer({ theme, scrollToTopBehavior = "smooth" }: FooterProps) {
     const { address, email, phone } = siteConfig.business;
-    const footerStyle = {
-        "--footer-content-color": theme.palette.content.primary,
-    } as CSSProperties;
 
     const scrollToTop = useCallback(() => {
         window.scrollTo({
@@ -23,7 +19,7 @@ export function Footer({ theme, scrollToTopBehavior = "smooth" }: FooterProps) {
     }, [scrollToTopBehavior]);
 
     return (
-        <footer className="footer" style={footerStyle}>
+        <footer className="footer" data-theme={theme}>
             <div className="footer__lists">
                 <div className="list contact">
                     <h4 className="text--heading-sm">Contact</h4>
@@ -110,7 +106,7 @@ export function Footer({ theme, scrollToTopBehavior = "smooth" }: FooterProps) {
                         fillRule="evenodd"
                         clipRule="evenodd"
                         d="M25.989 1.00001C12.1818 1.01574 1.00172 12.2214 1.01745 26.0285C1.03318 39.8356 12.2388 51.0157 26.0459 51C39.853 50.9842 51.0331 39.7786 51.0174 25.9715C51.0017 12.1644 39.7961 0.98428 25.989 1.00001ZM27.4162 12.4126L34.0095 18.9909L32.5969 20.4067L27.0047 14.8273L27.0357 41.9988L25.0357 42.0011L25.0047 14.8296L19.4253 20.4217L18.0095 19.0091L24.5877 12.4158L25.0015 12.0011L26.0003 11L27.0015 11.9989L27.4162 12.4126Z"
-                        fill={theme.palette.content.primary}
+                        fill="currentColor"
                     />
                 </svg>
             </button>
