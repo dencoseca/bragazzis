@@ -5,7 +5,11 @@ import parmesanImg from "@/assets/images/parmesan.jpg?w=480;768;1024;1440;1920&f
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { smoothTransition } from "@/constants/animations";
 import { siteConfig } from "@/constants/siteConfig";
-import { useViewportDimensions, useIsMobile } from "@/hooks/useViewportDimensions";
+import {
+    useViewportDimensions,
+    useIsMobile,
+    usePrefersReducedMotion,
+} from "@/hooks/useViewportDimensions";
 
 interface CoverProps {
     scrollYProgress: MotionValue<number>;
@@ -57,14 +61,21 @@ const titleVariants = {
 export function Cover({ scrollYProgress }: CoverProps) {
     const { vh } = useViewportDimensions();
     const isMobile = useIsMobile();
-    const heroImageScroll = useTransform(scrollYProgress, [0, 1], isMobile ? [0, 0] : [0, vh * 59]);
+    const prefersReducedMotion = usePrefersReducedMotion();
+    const heroImageScroll = useTransform(
+        scrollYProgress,
+        [0, 1],
+        isMobile || prefersReducedMotion ? [0, 0] : [0, vh * 59],
+    );
     const { address } = siteConfig.business;
+    const initialAnimationState = prefersReducedMotion ? false : "initial";
+    const animateAnimationState = prefersReducedMotion ? undefined : "animate";
 
     const handleScrollDown = useCallback(() => {
         const targetId = isMobile ? "mobile-cover" : "statement";
         const target = document.getElementById(targetId);
-        target?.scrollIntoView({ behavior: "smooth" });
-    }, [isMobile]);
+        target?.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth" });
+    }, [isMobile, prefersReducedMotion]);
 
     return (
         <div className="cover" id="cover">
@@ -72,8 +83,8 @@ export function Cover({ scrollYProgress }: CoverProps) {
                 <motion.div
                     className="cover__title text--page-title"
                     variants={titleVariants}
-                    initial="initial"
-                    animate="animate"
+                    initial={initialAnimationState}
+                    animate={animateAnimationState}
                 >
                     BRAGAZZI'S
                 </motion.div>
@@ -98,8 +109,8 @@ export function Cover({ scrollYProgress }: CoverProps) {
             <motion.div
                 className="cover__content"
                 variants={contentVariants}
-                initial="initial"
-                animate="animate"
+                initial={initialAnimationState}
+                animate={animateAnimationState}
             >
                 <ul className="opening-hours">
                     {siteConfig.openingHours.display.map((line, index) => (
@@ -122,8 +133,8 @@ export function Cover({ scrollYProgress }: CoverProps) {
                 <motion.svg
                     className="cover__down-arrow"
                     variants={downArrowVariants}
-                    initial="initial"
-                    animate="animate"
+                    initial={initialAnimationState}
+                    animate={animateAnimationState}
                     width="50"
                     height="50"
                     viewBox="0 0 50 50"

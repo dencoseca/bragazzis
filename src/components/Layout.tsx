@@ -10,6 +10,7 @@ import { Menu } from "@/components/Menu";
 import { localBusinessJsonLd, siteConfig } from "@/constants/siteConfig";
 import { theme, type Theme } from "@/constants/themes";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
+import { usePrefersReducedMotion } from "@/hooks/useViewportDimensions";
 
 interface LayoutProps {
     children: ReactNode;
@@ -41,7 +42,10 @@ export function Layout({
 
     const handleSetMenuIsOpen = useCallback((open: boolean) => setMenuIsOpen(open), []);
 
-    useSmoothScroll();
+    const prefersReducedMotion = usePrefersReducedMotion();
+    const resolvedScrollToTopBehavior = prefersReducedMotion ? "auto" : scrollToTopBehavior;
+
+    useSmoothScroll(!prefersReducedMotion);
 
     const mainRef = useRef<HTMLElement>(null);
     const mainThemeStyle = {
@@ -86,7 +90,7 @@ export function Layout({
                     menuTheme={menuTheme}
                 />
                 {children}
-                <Footer theme={footerTheme} scrollToTopBehavior={scrollToTopBehavior} />
+                <Footer theme={footerTheme} scrollToTopBehavior={resolvedScrollToTopBehavior} />
             </main>
         </>
     );
