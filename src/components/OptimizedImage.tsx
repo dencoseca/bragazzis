@@ -1,3 +1,5 @@
+import type { MouseEventHandler, Ref } from "react";
+
 import type { OptimizedPicture } from "@/types/imagetools";
 
 export interface OptimizedImageProps {
@@ -6,9 +8,17 @@ export interface OptimizedImageProps {
     sizes: string;
     className?: string;
     imgClassName?: string;
+    pictureRef?: Ref<HTMLPictureElement>;
     priority?: boolean;
     loading?: "eager" | "lazy";
-    onContextMenu?: React.MouseEventHandler<HTMLImageElement>;
+    shouldLoad?: boolean;
+    onContextMenu?: MouseEventHandler<HTMLImageElement>;
+}
+
+function getPlaceholderImageSrc(width: number, height: number) {
+    return `data:image/svg+xml,${encodeURIComponent(
+        `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"></svg>`,
+    )}`;
 }
 
 export function OptimizedImage({
@@ -17,28 +27,32 @@ export function OptimizedImage({
     sizes,
     className,
     imgClassName,
+    pictureRef,
     priority = false,
     loading,
+    shouldLoad = true,
     onContextMenu,
 }: OptimizedImageProps) {
     const resolvedLoading = loading ?? (priority ? "eager" : "lazy");
     const { sources, img } = image;
 
     return (
-        <picture className={className}>
-            {Object.entries(sources).map(([type, srcset]) => (
-                <source key={type} srcSet={srcset} type={type} sizes={sizes} />
-            ))}
+        <picture className={className} ref={pictureRef}>
+            {shouldLoad
+                ? Object.entries(sources).map(([type, srcset]) => (
+                      <source key={type} srcSet={srcset} type={type} sizes={sizes} />
+                  ))
+                : null}
             <img
                 className={imgClassName}
-                src={img.src}
+                src={shouldLoad ? img.src : getPlaceholderImageSrc(img.w, img.h)}
                 alt={alt}
                 width={img.w}
                 height={img.h}
                 sizes={sizes}
                 loading={resolvedLoading}
-                decoding={priority ? "sync" : "async"}
-                fetchPriority={priority ? "high" : undefined}
+                decoding={shouldLoad && priority ? "sync" : "async"}
+                fetchPriority={shouldLoad && priority ? "high" : undefined}
                 onContextMenu={onContextMenu}
             />
         </picture>
