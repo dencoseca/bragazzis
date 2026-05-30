@@ -15,6 +15,7 @@ function getViewportDimensions(): ViewportDimensions {
     if (typeof window === "undefined") {
         return { height: 0, width: 0, vh: 0, vw: 0 };
     }
+
     return {
         height: window.innerHeight,
         width: window.innerWidth,
@@ -23,38 +24,79 @@ function getViewportDimensions(): ViewportDimensions {
     };
 }
 
+function viewportDimensionsAreEqual(
+    currentDimensions: ViewportDimensions,
+    nextDimensions: ViewportDimensions,
+): boolean {
+    return (
+        currentDimensions.height === nextDimensions.height &&
+        currentDimensions.width === nextDimensions.width
+    );
+}
+
 /**
- * Hook to get viewport dimensions. Now only updates once on mount to avoid jitter during resize.
- * Use useIsMobile/useIsTablet for conditional rendering.
+ * Hook to get viewport dimensions. Updates on resize/orientation changes with
+ * requestAnimationFrame. Use useIsMobile/useIsTablet for breakpoint-based conditional rendering.
  */
 export function useViewportDimensions(): ViewportDimensions {
     const [dimensions, setDimensions] = useState<ViewportDimensions>(getViewportDimensions);
 
     useEffect(() => {
-        setDimensions(getViewportDimensions());
+        if (typeof window === "undefined") return;
+
+        let animationFrame: number | null = null;
+
+        const updateDimensions = () => {
+            animationFrame = null;
+            setDimensions((currentDimensions) => {
+                const nextDimensions = getViewportDimensions();
+
+                return viewportDimensionsAreEqual(currentDimensions, nextDimensions)
+                    ? currentDimensions
+                    : nextDimensions;
+            });
+        };
+
+        const requestUpdate = () => {
+            if (animationFrame !== null) return;
+            animationFrame = window.requestAnimationFrame(updateDimensions);
+        };
+
+        requestUpdate();
+        window.addEventListener("resize", requestUpdate);
+        window.addEventListener("orientationchange", requestUpdate);
+
+        return () => {
+            if (animationFrame !== null) {
+                window.cancelAnimationFrame(animationFrame);
+            }
+
+            window.removeEventListener("resize", requestUpdate);
+            window.removeEventListener("orientationchange", requestUpdate);
+        };
     }, []);
 
     return dimensions;
 }
 
+function getMediaQueryMatches(query: string): boolean {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia(query).matches;
+}
+
 export function useMediaQuery(query: string): boolean {
-    const [matches, setMatches] = useState(() => {
-        if (typeof window === "undefined") return false;
-        return window.matchMedia(query).matches;
-    });
+    const [matches, setMatches] = useState(() => getMediaQueryMatches(query));
 
     useEffect(() => {
+        if (typeof window === "undefined") return;
+
         const media = window.matchMedia(query);
-        const listener = () => setMatches(media.matches);
+        const updateMatches = () => setMatches(media.matches);
 
-        // Initial check in case it changed between initialization and effect
-        if (media.matches !== matches) {
-            setMatches(media.matches);
-        }
-
-        media.addEventListener("change", listener);
-        return () => media.removeEventListener("change", listener);
-    }, [query, matches]);
+        updateMatches();
+        media.addEventListener("change", updateMatches);
+        return () => media.removeEventListener("change", updateMatches);
+    }, [query]);
 
     return matches;
 }
@@ -65,4 +107,8 @@ export function useIsMobile(): boolean {
 
 export function useIsTablet(): boolean {
     return useMediaQuery(`(max-width: ${breakpoints.tablet}px)`);
+}
+
+export function usePrefersReducedMotion(): boolean {
+    return useMediaQuery("(prefers-reduced-motion: reduce)");
 }

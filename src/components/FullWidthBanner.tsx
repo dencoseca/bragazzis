@@ -3,7 +3,12 @@ import React from "react";
 
 import eggImg from "@/assets/images/egg.jpg?w=480;768;1024;1440;1920&format=avif;webp;jpg&as=picture";
 import { OptimizedImage } from "@/components/OptimizedImage";
-import { useViewportDimensions, useIsMobile, useIsTablet } from "@/hooks/useViewportDimensions";
+import {
+    useViewportDimensions,
+    useIsMobile,
+    useIsTablet,
+    usePrefersReducedMotion,
+} from "@/hooks/useViewportDimensions";
 
 interface FullWidthBannerProps {
     scrollYProgress: MotionValue<number>;
@@ -13,13 +18,11 @@ export function FullWidthBanner({ scrollYProgress }: FullWidthBannerProps) {
     const { vh } = useViewportDimensions();
     const isMobile = useIsMobile();
     const isTablet = useIsTablet();
+    const prefersReducedMotion = usePrefersReducedMotion();
     const textScrollLaptop = useTransform(scrollYProgress, [0.7, 1], [vh * -2, vh * 6]);
     const textScrollTablet = useTransform(scrollYProgress, [0.7, 1], [vh * -1, vh * 3]);
-    const textScrollTranslateYValue = !isTablet
-        ? textScrollLaptop
-        : !isMobile
-          ? textScrollTablet
-          : 0;
+    const textScrollTranslateYValue =
+        prefersReducedMotion || isMobile ? 0 : !isTablet ? textScrollLaptop : textScrollTablet;
 
     return (
         <section className="full-width-banner">

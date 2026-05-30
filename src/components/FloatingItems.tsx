@@ -6,7 +6,11 @@ import coffeePourImg from "@/assets/images/coffee-pour.jpg?w=360;540;720;960;120
 import shelvesImg from "@/assets/images/shelves.jpg?w=360;540;720;960;1200&format=avif;webp;jpg&as=picture";
 import shopChristmasImg from "@/assets/images/shop-christmas.jpg?w=360;540;720;960;1200&format=avif;webp;jpg&as=picture";
 import { OptimizedImage } from "@/components/OptimizedImage";
-import { useViewportDimensions, useIsMobile } from "@/hooks/useViewportDimensions";
+import {
+    useViewportDimensions,
+    useIsMobile,
+    usePrefersReducedMotion,
+} from "@/hooks/useViewportDimensions";
 import type { OptimizedPicture } from "@/types/imagetools";
 
 interface FloatingItemsProps {
@@ -34,6 +38,7 @@ interface FloatingItemCardProps {
     item: FloatingItem;
     scrollYProgress: MotionValue<number>;
     isMobile: boolean;
+    prefersReducedMotion: boolean;
     vw: number;
 }
 
@@ -113,13 +118,19 @@ const preventImageContextMenu: MouseEventHandler<HTMLImageElement> = (event) => 
     event.preventDefault();
 };
 
-function FloatingItemCard({ item, scrollYProgress, isMobile, vw }: FloatingItemCardProps) {
+function FloatingItemCard({
+    item,
+    scrollYProgress,
+    isMobile,
+    prefersReducedMotion,
+    vw,
+}: FloatingItemCardProps) {
     const itemScroll = useTransform(scrollYProgress, [0, 1], [0, vw * item.parallaxVw]);
 
     return (
         <motion.article
             className={`item ${floatingItemLayoutClasses[item.layout]}`}
-            style={{ translateY: !isMobile ? itemScroll : 0 }}
+            style={{ translateY: !isMobile && !prefersReducedMotion ? itemScroll : 0 }}
         >
             <OptimizedImage
                 className="item__image"
@@ -145,6 +156,7 @@ function FloatingItemCard({ item, scrollYProgress, isMobile, vw }: FloatingItemC
 export function FloatingItems({ scrollYProgress }: FloatingItemsProps) {
     const { vw } = useViewportDimensions();
     const isMobile = useIsMobile();
+    const prefersReducedMotion = usePrefersReducedMotion();
 
     return (
         <section className="floating-items">
@@ -154,6 +166,7 @@ export function FloatingItems({ scrollYProgress }: FloatingItemsProps) {
                     item={item}
                     scrollYProgress={scrollYProgress}
                     isMobile={isMobile}
+                    prefersReducedMotion={prefersReducedMotion}
                     vw={vw}
                 />
             ))}
