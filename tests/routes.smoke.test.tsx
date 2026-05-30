@@ -1,11 +1,82 @@
 import { PassThrough } from "node:stream";
 
+import type { MouseEventHandler, Ref } from "react";
 import { renderToPipeableStream, type PipeableStream } from "react-dom/server";
 import { MemoryRouter } from "react-router-dom";
-import { describe, expect, test } from "vite-plus/test";
+import { describe, expect, test, vi } from "vite-plus/test";
 
 import { App } from "@/App";
 import { siteConfig } from "@/constants/siteConfig";
+
+interface MockOptimizedImageProps {
+    alt: string;
+    className?: string;
+    imgClassName?: string;
+    onContextMenu?: MouseEventHandler<HTMLImageElement>;
+    pictureRef?: Ref<HTMLPictureElement>;
+}
+
+// Keep route smoke tests focused on routing, content, and metadata without
+// forcing CI to transform every responsive image variant.
+vi.mock("@/components/Cover", () => ({
+    Cover() {
+        return null;
+    },
+}));
+
+vi.mock("@/components/FloatingItems", () => ({
+    FloatingItems() {
+        return null;
+    },
+}));
+
+vi.mock("@/components/FullWidthBanner", () => ({
+    FullWidthBanner() {
+        return null;
+    },
+}));
+
+vi.mock("@/components/OptimizedImage", () => ({
+    OptimizedImage({
+        alt,
+        className,
+        imgClassName,
+        onContextMenu,
+        pictureRef,
+    }: MockOptimizedImageProps) {
+        return (
+            <picture className={className} ref={pictureRef}>
+                <img
+                    alt={alt}
+                    className={imgClassName}
+                    decoding="async"
+                    height="1"
+                    loading="lazy"
+                    onContextMenu={onContextMenu}
+                    src="/mock-image.jpg"
+                    width="1"
+                />
+            </picture>
+        );
+    },
+}));
+
+vi.mock("@/data/galleryImages", () => ({
+    galleryImages: [
+        {
+            alt: "sandwich board sign outside cafe",
+            image: {
+                img: {
+                    h: 1,
+                    src: "/mock-image.jpg",
+                    w: 1,
+                },
+                sources: {},
+            },
+            sizeClass: "image--60",
+        },
+    ],
+}));
 
 interface RouteSmokeCase {
     description: string;
