@@ -164,6 +164,7 @@
 
 .cover__down-arrow {
     display: block;
+    color: $white;
 
     @media (max-width: $tablet) {
         width: 10vw;

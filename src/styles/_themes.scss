@@ -1,0 +1,10 @@
+:root,
+[data-theme="light"] {
+    --theme-background-color: var(--color-paper);
+    --theme-content-color: var(--color-ink);
+}
+
+[data-theme="dark"] {
+    --theme-background-color: var(--color-ink);
+    --theme-content-color: var(--color-paper);
+}

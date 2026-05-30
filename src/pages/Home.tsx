@@ -5,7 +5,7 @@ import { FloatingItems } from "@/components/FloatingItems";
 import { FullWidthBanner } from "@/components/FullWidthBanner";
 import { Layout } from "@/components/Layout";
 import { siteConfig } from "@/constants/siteConfig";
-import { theme } from "@/constants/themes";
+import { themeNames } from "@/constants/themes";
 
 const PAGE_TITLE = "Home";
 const PAGE_DESCRIPTION = "Bragazzi's — an Italian deli, café in Sheffield.";
@@ -17,8 +17,8 @@ export function Home() {
         <Layout
             pageTitle={PAGE_TITLE}
             description={PAGE_DESCRIPTION}
-            theme={theme.light}
-            headerTheme={theme.dark}
+            theme={themeNames.light}
+            headerTheme={themeNames.dark}
         >
             <Cover scrollYProgress={scrollYProgress} />
             <section className="home__mobile-cover" id="mobile-cover">

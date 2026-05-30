@@ -1,4 +1,4 @@
-// Single source of truth: src/constants/breakpoints.ts
-// Keep these values in sync with the TS file.
-$mobile: 760px;
-$tablet: 1080px;
+@use "tokens" as tokens;
+
+$mobile: tokens.$breakpoint-mobile;
+$tablet: tokens.$breakpoint-tablet;

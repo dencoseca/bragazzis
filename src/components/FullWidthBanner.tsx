@@ -37,7 +37,6 @@ export function FullWidthBanner({ scrollYProgress }: FullWidthBannerProps) {
                 className="full-width-banner__text"
                 style={{
                     translateY: textScrollTranslateYValue,
-                    translateX: "-50%",
                 }}
             >
                 <span className="text--display hide-mobile">Each season brings a selection of</span>
