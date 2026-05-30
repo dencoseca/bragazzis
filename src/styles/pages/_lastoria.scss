@@ -1,38 +1,6 @@
 @use "../variables" as *;
 .lastoria__title-wrapper {
     position: relative;
-
-    .ticket {
-        position: absolute;
-        top: 65%;
-        width: 30vw;
-
-        img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        &.left {
-            left: -5vw;
-            transform: rotate(-25deg);
-            top: 50vw;
-
-            @media (max-width: $mobile) {
-                top: 70vw;
-            }
-        }
-
-        &.right {
-            right: -5vw;
-            transform: rotate(25deg);
-            top: 90vw;
-
-            @media (max-width: $mobile) {
-                top: 133vw;
-            }
-        }
-    }
 }
 
 .lastoria__title {
@@ -58,7 +26,9 @@
     }
 
     p {
-        width: 45vw;
+        position: relative;
+        z-index: 1;
+        width: min(45rem, 45vw);
         margin: 3vw auto;
 
         @media (max-width: $mobile) {
@@ -67,10 +37,41 @@
     }
 
     .line {
+        position: relative;
         width: 1px;
         height: 15vw;
         background-color: #aaa;
         margin: 0 auto;
+
+        @media (max-width: $mobile) {
+            height: clamp(6.25rem, 26vw, 13rem);
+        }
+    }
+
+    .ticket {
+        position: absolute;
+        top: 0;
+        width: 30vw;
+        pointer-events: none;
+
+        @media (max-width: $mobile) {
+            top: clamp(1.25rem, 5.5vw, 2.5rem);
+            width: clamp(7rem, 30vw, 12rem);
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        &.left {
+            left: -55vw;
+        }
+
+        &.right {
+            left: 25vw;
+        }
     }
 }
 
