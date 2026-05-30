@@ -25,5 +25,8 @@ jobs:
       - name: Run Vite+ checks
         run: vp check
 
+      - name: Run tests
+        run: vp test
+
       - name: Build production app
-        run: vp run build
+        run: vp build
