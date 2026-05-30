@@ -68,6 +68,7 @@ src/
 - **Start issue branches from an up-to-date `main`.** Before branching from `main`, fetch the latest remote changes and
   fast-forward or pull `main`.
 - **Raise pull requests as ready for review.** Do not create draft PRs unless the user explicitly asks for a draft.
+- **Use squash merges only when merging pull requests.** Merge commits are not allowed in this repository.
 - **Close completed issues from PR descriptions.** When a pull request completes one or more GitHub issues, include a
   closing keyword for each issue in the PR description, such as `Closes #3`.
 
@@ -119,6 +120,10 @@ This project is using Vite+, a unified toolchain built on top of Vite, Rolldown,
 - **Running scripts:** Vite+ built-in commands (`vp lint`, `vp dev`, `vp build`, `vp test`, etc.) always run the Vite+ built-in tool. Use `vp run <script>` to run `package.json` scripts or tasks defined in `vite.config.ts`
 - **Do not install Vitest, Oxlint, Oxfmt, or tsdown directly:** Vite+ wraps these tools. Do not install or upgrade them, use Vite+ directly.
 - **Import JavaScript modules from `vite-plus`:** Import modules from the `vite-plus` dependency, not from `vite` or `vitest`. For example, `import { defineConfig } from 'vite-plus';` or `import { expect, test, vi } from 'vite-plus/test';`. You must not install `vitest` to import test utilities.
+
+### Codex Sandbox Note
+
+When starting the local dev server in Codex, `vp dev --host 127.0.0.1` may fail with `listen EPERM` because binding a localhost port requires approval. If that happens, rerun the same command with escalated permission rather than changing the host, port, or dev tooling.
 
 ### Review Checklist
 

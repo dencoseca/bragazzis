@@ -6,14 +6,14 @@
 .floating-items {
     position: relative;
     padding: clamp(1.5rem, 3vw, 4rem);
-    min-height: clamp(120rem, 195vw, 230rem);
+    height: clamp(120rem, 195vw, 230rem);
 
     @media (max-width: $tablet) {
-        min-height: clamp(100rem, 240vw, 145rem);
+        height: clamp(100rem, 240vw, 145rem);
     }
 
     @media (max-width: $mobile) {
-        min-height: 0;
+        height: auto;
         padding: 0;
     }
 }
