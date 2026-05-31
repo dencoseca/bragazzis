@@ -55,7 +55,7 @@ const galleryImageModules = import.meta.glob<OptimizedPicture>(
     {
         eager: true,
         import: "default",
-        query: "?w=240;360;480;720;960&format=avif;webp;jpg&as=picture",
+        query: "?preset=gallery",
     },
 );
 

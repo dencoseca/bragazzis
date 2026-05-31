@@ -1,8 +1,9 @@
 import { fileURLToPath, URL } from "node:url";
 
 import react from "@vitejs/plugin-react";
-import { imagetools } from "vite-imagetools";
 import { defineConfig } from "vite-plus";
+
+import { imageOptimizationPlugin } from "./vite.imagetools";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -51,7 +52,7 @@ export default defineConfig({
             },
         ],
     },
-    plugins: [react(), imagetools()],
+    plugins: [react(), imageOptimizationPlugin],
     resolve: {
         alias: {
             "@": fileURLToPath(new URL("./src", import.meta.url)),

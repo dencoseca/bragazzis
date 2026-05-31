@@ -1,7 +1,7 @@
 import { motion, type MotionValue, useTransform } from "motion/react";
 import React, { useCallback } from "react";
 
-import parmesanImg from "@/assets/images/parmesan.jpg?w=480;768;1024;1440;1920&format=avif;webp;jpg&as=picture";
+import parmesanImg from "@/assets/images/parmesan.jpg?preset=fullWidth";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { smoothTransition } from "@/constants/animations";
 import { siteConfig } from "@/constants/siteConfig";
