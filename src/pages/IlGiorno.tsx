@@ -3,16 +3,21 @@ import { useEffect, useRef, useState, type RefCallback, type MouseEvent } from "
 import { Layout } from "@/components/Layout";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { themeNames } from "@/constants/themes";
-import { galleryImages } from "@/data/galleryImages";
+import { galleryImages, type GalleryImageSize } from "@/data/galleryImages";
 
 const PAGE_TITLE = "Il Giorno";
 const PAGE_DESCRIPTION = "Il Giorno — a day at Bragazzi's.";
 const INITIAL_EAGER_GALLERY_IMAGE_COUNT = 8;
 const GALLERY_IMAGE_LOAD_AHEAD_COUNT = 5;
 const GALLERY_IMAGE_PRELOAD_ROOT_MARGIN = "1200px 0px";
+const GALLERY_MOBILE_BREAKPOINT_PX = 760;
 
 function getGalleryLoadIndex(index: number) {
     return Math.min(galleryImages.length - 1, index + GALLERY_IMAGE_LOAD_AHEAD_COUNT);
+}
+
+function getGalleryImageSizes(size: GalleryImageSize) {
+    return `(max-width: ${GALLERY_MOBILE_BREAKPOINT_PX}px) 100vw, ${size}vw`;
 }
 
 export function IlGiorno() {
@@ -93,7 +98,7 @@ export function IlGiorno() {
                             data-size={image.size}
                             image={image.image}
                             alt={image.alt}
-                            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                            sizes={getGalleryImageSizes(image.size)}
                             loading={shouldLoadImage ? "eager" : "lazy"}
                             shouldLoad={shouldLoadImage}
                             onContextMenu={(e: MouseEvent) => e.preventDefault()}

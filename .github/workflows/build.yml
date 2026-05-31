@@ -22,6 +22,14 @@ jobs:
       - name: Install dependencies
         run: vp install --frozen-lockfile
 
+      - name: Cache imagetools transforms
+        uses: actions/cache@v4
+        with:
+          path: node_modules/.cache/imagetools
+          key: ${{ runner.os }}-imagetools-${{ hashFiles('src/assets/images/**/*.jpg', 'src/**/*.{ts,tsx}', 'vite.config.ts', 'vite.imagetools.ts', 'package.json', 'pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-imagetools-
+
       - name: Run Vite+ checks
         run: vp check
 

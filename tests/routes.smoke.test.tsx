@@ -63,47 +63,38 @@ vi.mock("@/components/OptimizedImage", () => ({
     },
 }));
 
-vi.mock(
-    "@/assets/images/early-days.jpg?w=360;540;720;960;1200&format=avif;webp;jpg&as=picture",
-    () => ({
-        default: {
-            img: {
-                h: 1,
-                src: "/mock-image.jpg",
-                w: 1,
-            },
-            sources: {},
+vi.mock("@/assets/images/early-days.jpg?preset=editorial", () => ({
+    default: {
+        img: {
+            h: 1,
+            src: "/mock-image.jpg",
+            w: 1,
         },
-    }),
-);
+        sources: {},
+    },
+}));
 
-vi.mock(
-    "@/assets/images/ticket-pisa.jpg?w=360;540;720;960;1200&format=avif;webp;jpg&as=picture",
-    () => ({
-        default: {
-            img: {
-                h: 1,
-                src: "/mock-image.jpg",
-                w: 1,
-            },
-            sources: {},
+vi.mock("@/assets/images/ticket-pisa.jpg?preset=editorial", () => ({
+    default: {
+        img: {
+            h: 1,
+            src: "/mock-image.jpg",
+            w: 1,
         },
-    }),
-);
+        sources: {},
+    },
+}));
 
-vi.mock(
-    "@/assets/images/ticket-roma.jpg?w=360;540;720;960;1200&format=avif;webp;jpg&as=picture",
-    () => ({
-        default: {
-            img: {
-                h: 1,
-                src: "/mock-image.jpg",
-                w: 1,
-            },
-            sources: {},
+vi.mock("@/assets/images/ticket-roma.jpg?preset=editorial", () => ({
+    default: {
+        img: {
+            h: 1,
+            src: "/mock-image.jpg",
+            w: 1,
         },
-    }),
-);
+        sources: {},
+    },
+}));
 
 vi.mock("@/data/galleryImages", () => ({
     galleryImages: [

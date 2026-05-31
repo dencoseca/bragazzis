@@ -1,10 +1,10 @@
 import { motion, type MotionValue, useTransform } from "motion/react";
 import type { MouseEventHandler } from "react";
 
-import ciabattaImg from "@/assets/images/ciabatta.jpg?w=360;540;720;960;1200&format=avif;webp;jpg&as=picture";
-import coffeePourImg from "@/assets/images/coffee-pour.jpg?w=360;540;720;960;1200&format=avif;webp;jpg&as=picture";
-import shelvesImg from "@/assets/images/shelves.jpg?w=360;540;720;960;1200&format=avif;webp;jpg&as=picture";
-import shopChristmasImg from "@/assets/images/shop-christmas.jpg?w=360;540;720;960;1200&format=avif;webp;jpg&as=picture";
+import ciabattaImg from "@/assets/images/ciabatta.jpg?preset=editorial";
+import coffeePourImg from "@/assets/images/coffee-pour.jpg?preset=editorial";
+import shelvesImg from "@/assets/images/shelves.jpg?preset=editorial";
+import shopChristmasImg from "@/assets/images/shop-christmas.jpg?preset=editorial";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import {
     useViewportDimensions,
