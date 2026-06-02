@@ -1,8 +1,3 @@
-export interface OptimizedPictureSource {
-    srcset: string;
-    type: string;
-}
-
 export interface OptimizedPictureImg {
     src: string;
     w: number;

@@ -74,10 +74,6 @@ main {
 .visible {
     visibility: visible;
 }
-.unscrollable {
-    overflow: hidden;
-}
-
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,

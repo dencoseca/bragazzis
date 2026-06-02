@@ -12,7 +12,6 @@ interface MockOptimizedImageProps {
     alt: string;
     className?: string;
     "data-size"?: number;
-    imgClassName?: string;
     onContextMenu?: MouseEventHandler<HTMLImageElement>;
     pictureRef?: Ref<HTMLPictureElement>;
 }
@@ -42,7 +41,6 @@ vi.mock("@/components/OptimizedImage", () => ({
         alt,
         className,
         "data-size": dataSize,
-        imgClassName,
         onContextMenu,
         pictureRef,
     }: MockOptimizedImageProps) {
@@ -50,7 +48,6 @@ vi.mock("@/components/OptimizedImage", () => ({
             <picture className={className} data-size={dataSize} ref={pictureRef}>
                 <img
                     alt={alt}
-                    className={imgClassName}
                     decoding="async"
                     height="1"
                     loading="lazy"
