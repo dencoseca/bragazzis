@@ -8,7 +8,6 @@ export interface OptimizedImageProps {
     sizes: string;
     className?: string;
     "data-size"?: number;
-    imgClassName?: string;
     pictureRef?: Ref<HTMLPictureElement>;
     priority?: boolean;
     loading?: "eager" | "lazy";
@@ -28,7 +27,6 @@ export function OptimizedImage({
     sizes,
     className,
     "data-size": dataSize,
-    imgClassName,
     pictureRef,
     priority = false,
     loading,
@@ -46,7 +44,6 @@ export function OptimizedImage({
                   ))
                 : null}
             <img
-                className={imgClassName}
                 src={shouldLoad ? img.src : getPlaceholderImageSrc(img.w, img.h)}
                 alt={alt}
                 width={img.w}

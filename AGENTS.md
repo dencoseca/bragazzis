@@ -37,7 +37,6 @@ src/
 │   ├── _themes.scss
 │   ├── _variables.scss
 │   ├── _typography.scss
-│   ├── _breakpoints.scss
 │   └── _normalize.scss
 ├── types/             # TypeScript type definitions (imagetools.ts, etc.)
 ├── App.tsx            # Router setup
