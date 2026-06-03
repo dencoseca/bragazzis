@@ -1,5 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
+import { publicPageRoutes } from "@/constants/routes";
+
 const VIEWPORTS = [
     { name: "mobile", width: 390, height: 844 },
     { name: "tablet", width: 768, height: 1024 },
@@ -7,9 +9,9 @@ const VIEWPORTS = [
 ] as const;
 
 const ROUTES = [
-    { name: "home", path: "/", settleMs: 5_200 },
-    { name: "lastoria", path: "/lastoria", settleMs: 1_800 },
-    { name: "ilgiorno", path: "/ilgiorno", settleMs: 1_200 },
+    { name: "home", path: publicPageRoutes.home.path, settleMs: 5_200 },
+    { name: "lastoria", path: publicPageRoutes.laStoria.path, settleMs: 1_800 },
+    { name: "ilgiorno", path: publicPageRoutes.ilGiorno.path, settleMs: 1_200 },
 ] as const;
 
 const NOT_FOUND_ROUTE = {
@@ -80,7 +82,7 @@ test.describe("home floating section handoff", () => {
             page,
         }) => {
             await page.setViewportSize(viewport);
-            await gotoRouteAndSettle(page, "/", 5_200);
+            await gotoRouteAndSettle(page, publicPageRoutes.home.path, 5_200);
             await scrollToFloatingBannerHandoff(page);
 
             const gap = await measureFloatingItemToBannerGap(page);

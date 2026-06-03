@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import { LoadingFallback } from "@/components/LoadingFallback";
+import { notFoundRoute, publicPageRoutes } from "@/constants/routes";
 
 const Home = lazy(() => import("@/pages/Home").then((m) => ({ default: m.Home })));
 const LaStoria = lazy(() => import("@/pages/LaStoria").then((m) => ({ default: m.LaStoria })));
@@ -12,10 +13,10 @@ export function App() {
     return (
         <Suspense fallback={<LoadingFallback />}>
             <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/lastoria" element={<LaStoria />} />
-                <Route path="/ilgiorno" element={<IlGiorno />} />
-                <Route path="*" element={<NotFound />} />
+                <Route path={publicPageRoutes.home.path} element={<Home />} />
+                <Route path={publicPageRoutes.laStoria.path} element={<LaStoria />} />
+                <Route path={publicPageRoutes.ilGiorno.path} element={<IlGiorno />} />
+                <Route path={notFoundRoute.path} element={<NotFound />} />
             </Routes>
         </Suspense>
     );

@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet-async";
 
+import { getPageDocumentTitle } from "@/constants/routes";
 import { localBusinessJsonLd, siteConfig } from "@/constants/siteConfig";
 
 interface PageMetaProps {
@@ -21,9 +22,7 @@ export function PageMeta({
     includeTwitter = false,
     robots,
 }: PageMetaProps) {
-    const fullTitle = pageTitle
-        ? `${pageTitle} | ${siteConfig.business.name}`
-        : siteConfig.business.name;
+    const fullTitle = getPageDocumentTitle(pageTitle);
 
     return (
         <Helmet>

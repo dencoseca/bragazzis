@@ -6,11 +6,10 @@ import ticketRomaImg from "@/assets/images/ticket-roma.jpg?preset=editorial";
 import { Layout } from "@/components/Layout";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { smoothTransition } from "@/constants/animations";
+import { publicPageRoutes } from "@/constants/routes";
 import { themeNames } from "@/constants/themes";
 
-const PAGE_TITLE = "La Storia";
-const PAGE_DESCRIPTION =
-    "La Storia — the story of Bragazzi's. Learn about our Italian roots and how we first started.";
+const LA_STORIA_ROUTE = publicPageRoutes.laStoria;
 
 const laStoriaTransition = {
     ...smoothTransition,
@@ -51,10 +50,14 @@ const rightTicketVariants = {
 
 export function LaStoria() {
     return (
-        <Layout pageTitle={PAGE_TITLE} description={PAGE_DESCRIPTION} theme={themeNames.light}>
+        <Layout
+            pageTitle={LA_STORIA_ROUTE.pageTitle}
+            description={LA_STORIA_ROUTE.description}
+            theme={themeNames.light}
+        >
             <div className="lastoria">
                 <div className="lastoria__title-wrapper">
-                    <div className="lastoria__title text--page-title">La Storia</div>
+                    <div className="lastoria__title text--page-title">{LA_STORIA_ROUTE.label}</div>
                 </div>
                 <div className="lastoria__story">
                     <p className="text--lg">

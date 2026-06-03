@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import { Link } from "react-router-dom";
 
 import { menuSlideTransition } from "@/constants/animations";
+import { menuNavRoutes } from "@/constants/routes";
 import type { ThemeName } from "@/constants/themes";
 
 const menuVariants = {
@@ -57,21 +58,13 @@ export function Menu({ theme }: MenuProps) {
             exit="closed"
             variants={menuVariants}
         >
-            <motion.div className="menu__link-wrapper" variants={linkVariants}>
-                <Link className="menu__link text--menu-link" to="/">
-                    Il Caffè
-                </Link>
-            </motion.div>
-            <motion.div className="menu__link-wrapper" variants={linkVariants}>
-                <Link className="menu__link text--menu-link" to="/lastoria">
-                    La Storia
-                </Link>
-            </motion.div>
-            <motion.div className="menu__link-wrapper" variants={linkVariants}>
-                <Link className="menu__link text--menu-link" to="/ilgiorno">
-                    Il Giorno
-                </Link>
-            </motion.div>
+            {menuNavRoutes.map((route) => (
+                <motion.div key={route.path} className="menu__link-wrapper" variants={linkVariants}>
+                    <Link className="menu__link text--menu-link" to={route.path}>
+                        {route.label}
+                    </Link>
+                </motion.div>
+            ))}
         </motion.div>
     );
 }

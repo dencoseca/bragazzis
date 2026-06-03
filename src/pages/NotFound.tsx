@@ -1,21 +1,23 @@
 import { Link } from "react-router-dom";
 
 import { PageMeta } from "@/components/PageMeta";
+import { notFoundRoute, publicPageRoutes } from "@/constants/routes";
 import { siteConfig } from "@/constants/siteConfig";
-
-const PAGE_TITLE = "404 — Page Not Found";
-const PAGE_DESCRIPTION = "Page not found.";
 
 export function NotFound() {
     return (
         <div className="page-not-found">
-            <PageMeta pageTitle={PAGE_TITLE} description={PAGE_DESCRIPTION} robots="noindex" />
-            <Link to="/" className="logo">
+            <PageMeta
+                pageTitle={notFoundRoute.pageTitle}
+                description={notFoundRoute.description}
+                robots="noindex"
+            />
+            <Link to={publicPageRoutes.home.path} className="logo">
                 {siteConfig.business.name}
             </Link>
             <h1>404</h1>
             <p>Page not found</p>
-            <Link to="/" className="back-button">
+            <Link to={publicPageRoutes.home.path} className="back-button">
                 ← Back to Home
             </Link>
         </div>

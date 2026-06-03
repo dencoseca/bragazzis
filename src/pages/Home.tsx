@@ -4,19 +4,19 @@ import { Cover } from "@/components/Cover";
 import { FloatingItems } from "@/components/FloatingItems";
 import { FullWidthBanner } from "@/components/FullWidthBanner";
 import { Layout } from "@/components/Layout";
+import { publicPageRoutes } from "@/constants/routes";
 import { siteConfig } from "@/constants/siteConfig";
 import { themeNames } from "@/constants/themes";
 
-const PAGE_TITLE = "Home";
-const PAGE_DESCRIPTION = "Bragazzi's — an Italian deli, café in Sheffield.";
+const HOME_ROUTE = publicPageRoutes.home;
 
 export function Home() {
     const { scrollYProgress } = useScroll();
 
     return (
         <Layout
-            pageTitle={PAGE_TITLE}
-            description={PAGE_DESCRIPTION}
+            pageTitle={HOME_ROUTE.pageTitle}
+            description={HOME_ROUTE.description}
             theme={themeNames.light}
             headerTheme={themeNames.dark}
         >
