@@ -1,21 +1,15 @@
-import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 
+import { PageMeta } from "@/components/PageMeta";
 import { siteConfig } from "@/constants/siteConfig";
 
 const PAGE_TITLE = "404 — Page Not Found";
 const PAGE_DESCRIPTION = "Page not found.";
 
 export function NotFound() {
-    const fullTitle = `${PAGE_TITLE} | ${siteConfig.business.name}`;
-
     return (
         <div className="page-not-found">
-            <Helmet>
-                <title>{fullTitle}</title>
-                <meta name="description" content={PAGE_DESCRIPTION} />
-                <meta name="robots" content="noindex" />
-            </Helmet>
+            <PageMeta pageTitle={PAGE_TITLE} description={PAGE_DESCRIPTION} robots="noindex" />
             <Link to="/" className="logo">
                 {siteConfig.business.name}
             </Link>

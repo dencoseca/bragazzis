@@ -111,21 +111,25 @@ vi.mock("@/data/galleryImages", () => ({
 }));
 
 interface RouteSmokeCase {
+    canonicalUrl?: string;
     description: string;
     expectedTexts: string[];
     path: string;
+    robots?: string;
     title: string;
 }
 
 const ROUTE_SMOKE_CASES: RouteSmokeCase[] = [
     {
         path: "/",
+        canonicalUrl: `${siteConfig.business.origin}/`,
         title: `Home | ${siteConfig.business.name}`,
         description: "Bragazzi's — an Italian deli, café in Sheffield.",
         expectedTexts: ["Roam freely and find inspiration", "Monday: 9:00 AM"],
     },
     {
         path: "/lastoria",
+        canonicalUrl: `${siteConfig.business.origin}/lastoria`,
         title: `La Storia | ${siteConfig.business.name}`,
         description:
             "La Storia — the story of Bragazzi's. Learn about our Italian roots and how we first started.",
@@ -133,6 +137,7 @@ const ROUTE_SMOKE_CASES: RouteSmokeCase[] = [
     },
     {
         path: "/ilgiorno",
+        canonicalUrl: `${siteConfig.business.origin}/ilgiorno`,
         title: `Il Giorno | ${siteConfig.business.name}`,
         description: "Il Giorno — a day at Bragazzi's.",
         expectedTexts: ["IL GIORNO", "Aperto", "Chiuso"],
@@ -141,6 +146,7 @@ const ROUTE_SMOKE_CASES: RouteSmokeCase[] = [
         path: "/missing-page",
         title: `404 — Page Not Found | ${siteConfig.business.name}`,
         description: "Page not found.",
+        robots: "noindex",
         expectedTexts: ["404", "Page not found", "Back to Home"],
     },
 ];
@@ -217,6 +223,46 @@ describe("core route smoke tests", () => {
             expect(markup).toContain(
                 `<meta name="description" content="${escapeHelmetValue(route.description)}"/>`,
             );
+
+            if (route.canonicalUrl) {
+                expect(markup).toContain(
+                    `<link rel="canonical" href="${escapeHelmetValue(route.canonicalUrl)}"/>`,
+                );
+                expect(markup).toContain(
+                    `<meta property="og:title" content="${escapeHelmetValue(route.title)}"/>`,
+                );
+                expect(markup).toContain(
+                    `<meta property="og:description" content="${escapeHelmetValue(
+                        route.description,
+                    )}"/>`,
+                );
+                expect(markup).toContain(
+                    `<meta property="og:url" content="${escapeHelmetValue(route.canonicalUrl)}"/>`,
+                );
+                expect(markup).toContain(`<meta property="og:type" content="website"/>`);
+                expect(markup).toContain(
+                    `<meta property="og:image" content="${escapeHelmetValue(
+                        siteConfig.assets.ogImage,
+                    )}"/>`,
+                );
+                expect(markup).toContain(`<meta name="twitter:card" content="summary"/>`);
+                expect(markup).toContain(
+                    `<meta name="twitter:title" content="${escapeHelmetValue(route.title)}"/>`,
+                );
+                expect(markup).toContain(
+                    `<meta name="twitter:description" content="${escapeHelmetValue(
+                        route.description,
+                    )}"/>`,
+                );
+                expect(markup).toContain(`type="application/ld+json"`);
+                expect(markup).toContain(`"@type":"LocalBusiness"`);
+            }
+
+            if (route.robots) {
+                expect(markup).toContain(
+                    `<meta name="robots" content="${escapeHelmetValue(route.robots)}"/>`,
+                );
+            }
         });
     }
 });
