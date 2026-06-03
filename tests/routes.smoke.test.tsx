@@ -6,6 +6,12 @@ import { MemoryRouter } from "react-router-dom";
 import { describe, expect, test, vi } from "vite-plus/test";
 
 import { App } from "@/App";
+import {
+    getCanonicalUrl,
+    getPageDocumentTitle,
+    notFoundRoute,
+    publicPageRoutes,
+} from "@/constants/routes";
 import { siteConfig } from "@/constants/siteConfig";
 
 interface MockOptimizedImageProps {
@@ -121,31 +127,30 @@ interface RouteSmokeCase {
 
 const ROUTE_SMOKE_CASES: RouteSmokeCase[] = [
     {
-        path: "/",
-        canonicalUrl: `${siteConfig.business.origin}/`,
-        title: `Home | ${siteConfig.business.name}`,
-        description: "Bragazzi's — an Italian deli, café in Sheffield.",
+        path: publicPageRoutes.home.path,
+        canonicalUrl: getCanonicalUrl(publicPageRoutes.home.path),
+        title: getPageDocumentTitle(publicPageRoutes.home.pageTitle),
+        description: publicPageRoutes.home.description,
         expectedTexts: ["Roam freely and find inspiration", "Monday: 9:00 AM"],
     },
     {
-        path: "/lastoria",
-        canonicalUrl: `${siteConfig.business.origin}/lastoria`,
-        title: `La Storia | ${siteConfig.business.name}`,
-        description:
-            "La Storia — the story of Bragazzi's. Learn about our Italian roots and how we first started.",
+        path: publicPageRoutes.laStoria.path,
+        canonicalUrl: getCanonicalUrl(publicPageRoutes.laStoria.path),
+        title: getPageDocumentTitle(publicPageRoutes.laStoria.pageTitle),
+        description: publicPageRoutes.laStoria.description,
         expectedTexts: ["La Storia", "Bragazzi's opened in Sheffield in 2003"],
     },
     {
-        path: "/ilgiorno",
-        canonicalUrl: `${siteConfig.business.origin}/ilgiorno`,
-        title: `Il Giorno | ${siteConfig.business.name}`,
-        description: "Il Giorno — a day at Bragazzi's.",
+        path: publicPageRoutes.ilGiorno.path,
+        canonicalUrl: getCanonicalUrl(publicPageRoutes.ilGiorno.path),
+        title: getPageDocumentTitle(publicPageRoutes.ilGiorno.pageTitle),
+        description: publicPageRoutes.ilGiorno.description,
         expectedTexts: ["IL GIORNO", "Aperto", "Chiuso"],
     },
     {
         path: "/missing-page",
-        title: `404 — Page Not Found | ${siteConfig.business.name}`,
-        description: "Page not found.",
+        title: getPageDocumentTitle(notFoundRoute.pageTitle),
+        description: notFoundRoute.description,
         robots: "noindex",
         expectedTexts: ["404", "Page not found", "Back to Home"],
     },

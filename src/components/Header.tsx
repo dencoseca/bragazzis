@@ -3,6 +3,7 @@ import { useCallback } from "react";
 import { Link } from "react-router-dom";
 
 import { quickTransition } from "@/constants/animations";
+import { headerNavRoutes, publicPageRoutes } from "@/constants/routes";
 import type { ThemeName } from "@/constants/themes";
 
 const topLineVariants = {
@@ -52,7 +53,7 @@ export function Header({ menuIsOpen, setMenuIsOpen, theme, menuTheme }: HeaderPr
         <div className="header" id="header" data-theme={headerTheme} data-menu-open={menuIsOpen}>
             <div className="header__tag">Purveyors of quality Italian goods</div>
             <div className="header__logo-wrapper">
-                <Link to="/" aria-label="home">
+                <Link to={publicPageRoutes.home.path} aria-label="home">
                     <svg
                         width="100%"
                         viewBox="0 0 50 50"
@@ -67,12 +68,11 @@ export function Header({ menuIsOpen, setMenuIsOpen, theme, menuTheme }: HeaderPr
                 </Link>
             </div>
             <nav className="header__nav">
-                <Link className="header__link" to="/lastoria">
-                    La Storia
-                </Link>
-                <Link className="header__link" to="/ilgiorno">
-                    Il Giorno
-                </Link>
+                {headerNavRoutes.map((route) => (
+                    <Link key={route.path} className="header__link" to={route.path}>
+                        {route.label}
+                    </Link>
+                ))}
             </nav>
             <button
                 type="button"

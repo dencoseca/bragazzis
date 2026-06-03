@@ -2,11 +2,11 @@ import { useEffect, useRef, useState, type RefCallback, type MouseEvent } from "
 
 import { Layout } from "@/components/Layout";
 import { OptimizedImage } from "@/components/OptimizedImage";
+import { publicPageRoutes } from "@/constants/routes";
 import { themeNames } from "@/constants/themes";
 import { galleryImages, type GalleryImageSize } from "@/data/galleryImages";
 
-const PAGE_TITLE = "Il Giorno";
-const PAGE_DESCRIPTION = "Il Giorno — a day at Bragazzi's.";
+const IL_GIORNO_ROUTE = publicPageRoutes.ilGiorno;
 const INITIAL_EAGER_GALLERY_IMAGE_COUNT = 8;
 const GALLERY_IMAGE_LOAD_AHEAD_COUNT = 5;
 const GALLERY_IMAGE_PRELOAD_ROOT_MARGIN = "1200px 0px";
@@ -77,8 +77,8 @@ export function IlGiorno() {
 
     return (
         <Layout
-            pageTitle={PAGE_TITLE}
-            description={PAGE_DESCRIPTION}
+            pageTitle={IL_GIORNO_ROUTE.pageTitle}
+            description={IL_GIORNO_ROUTE.description}
             theme={themeNames.dark}
             scrollToTopBehavior="auto"
         >

@@ -7,7 +7,7 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Menu } from "@/components/Menu";
 import { PageMeta } from "@/components/PageMeta";
-import { siteConfig } from "@/constants/siteConfig";
+import { getCanonicalUrl } from "@/constants/routes";
 import { themeNames, type ThemeName } from "@/constants/themes";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 import { usePrefersReducedMotion } from "@/hooks/useViewportDimensions";
@@ -31,7 +31,7 @@ export function Layout({
     footerTheme = pageTheme,
     menuTheme = themeNames.dark,
     scrollToTopBehavior = "smooth",
-    description = siteConfig.business.description,
+    description,
 }: LayoutProps) {
     const location = useLocation();
 
@@ -53,7 +53,7 @@ export function Layout({
         if (mainRef.current) mainRef.current.classList.add("visible");
     }, []);
 
-    const canonicalUrl = `${siteConfig.business.origin}${location.pathname}`;
+    const canonicalUrl = getCanonicalUrl(location.pathname);
 
     return (
         <>
