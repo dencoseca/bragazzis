@@ -3,6 +3,18 @@ allowBuilds:
   esbuild: false
   sharp: false
 overrides:
-  vite: npm:@voidzero-dev/vite-plus-core@0.1.23
-  vitest: npm:@voidzero-dev/vite-plus-test@0.1.23
+  vite: "catalog:"
+  vitest: "catalog:"
 savePrefix: ""
+catalog:
+  vite: npm:@voidzero-dev/vite-plus-core@0.2.2
+  vitest: 4.1.9
+  vite-plus: 0.2.2
+  "@vitest/coverage-v8": 4.1.9
+peerDependencyRules:
+  allowAny:
+    - vite
+    - vitest
+  allowedVersions:
+    vite: "*"
+    vitest: "*"
