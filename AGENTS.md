@@ -122,8 +122,22 @@ This project is using Vite+, a unified toolchain built on top of Vite, Rolldown,
 ### Common Pitfalls
 
 - **Running scripts:** Vite+ built-in commands (`vp lint`, `vp dev`, `vp build`, `vp test`, etc.) always run the Vite+ built-in tool. Use `vp run <script>` to run `package.json` scripts or tasks defined in `vite.config.ts`
-- **Do not install Vitest, Oxlint, Oxfmt, or tsdown directly:** Vite+ wraps these tools. Do not install or upgrade them, use Vite+ directly.
-- **Import JavaScript modules from `vite-plus`:** Import modules from the `vite-plus` dependency, not from `vite` or `vitest`. For example, `import { defineConfig } from 'vite-plus';` or `import { expect, test, vi } from 'vite-plus/test';`. You must not install `vitest` to import test utilities.
+- **Do not manage Vitest, Oxlint, Oxfmt, or tsdown directly:** Vite+ owns these tool versions. Do not
+  install or upgrade them by hand; use Vite+ commands so its pins, catalogs, and overrides stay aligned.
+- **Import JavaScript modules from `vite-plus`:** Import modules from the `vite-plus` dependency, not from
+  `vite` or `vitest`. For example, `import { defineConfig } from 'vite-plus';` or
+  `import { expect, test, vi } from 'vite-plus/test';`. Do not add `vitest` just to import test utilities;
+  `vp migrate` owns any required Vitest pin.
+
+### Upgrading Vite+
+
+- For existing Vite+ projects, prefer `vp migrate` when upgrading the local Vite+ toolchain. It repins
+  `vite-plus`, the `vite` alias, Vitest, pnpm catalogs/overrides, and peer dependency rules according to the
+  current global `vp`.
+- After `vp migrate`, run `vp install`, `vp check`, `vp test`, and `vp build`. Run `vp run test:visual` when
+  changing layout, typography, imagery, animation, or scroll behavior.
+- In Codex/non-TTY environments, if `vp migrate` updates files but its internal install fails with a pnpm
+  confirmation prompt, rerun install with `env CI=true vp install --no-frozen-lockfile`.
 
 ### Codex Sandbox Note
 
