@@ -2,10 +2,16 @@ import { expect, test, type Page } from "@playwright/test";
 
 import { publicPageRoutes } from "@/constants/routes";
 
+const MOBILE_VIEWPORT = { name: "mobile", width: 390, height: 844 } as const;
+const TABLET_VIEWPORT = { name: "tablet", width: 768, height: 1024 } as const;
+const TABLET_WIDE_VIEWPORT = { name: "tablet-wide", width: 1024, height: 768 } as const;
+const DESKTOP_VIEWPORT = { name: "desktop", width: 1280, height: 900 } as const;
+
 const VIEWPORTS = [
-    { name: "mobile", width: 390, height: 844 },
-    { name: "tablet", width: 768, height: 1024 },
-    { name: "desktop", width: 1280, height: 900 },
+    MOBILE_VIEWPORT,
+    TABLET_VIEWPORT,
+    TABLET_WIDE_VIEWPORT,
+    DESKTOP_VIEWPORT,
 ] as const;
 
 const ROUTES = [
@@ -27,8 +33,9 @@ const SCROLL_STATES = [
 ] as const;
 
 const FLOATING_HANDOFF_VIEWPORTS = [
-    { name: "tablet", width: 768, height: 1024 },
-    { name: "desktop", width: 1280, height: 900 },
+    TABLET_VIEWPORT,
+    TABLET_WIDE_VIEWPORT,
+    DESKTOP_VIEWPORT,
 ] as const;
 
 const VIEWPORT_IMAGE_MARGIN = 240;
@@ -76,6 +83,19 @@ test.describe("404 visuals", () => {
     }
 });
 
+test.describe("mobile menu visuals", () => {
+    test("menu overlay open at mobile", async ({ page }) => {
+        await page.setViewportSize(MOBILE_VIEWPORT);
+        await gotoRouteAndSettle(page, publicPageRoutes.laStoria.path, 1_800);
+        await openMobileMenuAndSettle(page);
+        await waitForViewportAssets(page);
+
+        await expect(page).toHaveScreenshot("menu-mobile-open.png", {
+            fullPage: false,
+        });
+    });
+});
+
 test.describe("home floating section handoff", () => {
     for (const viewport of FLOATING_HANDOFF_VIEWPORTS) {
         test(`final floating item leads naturally into seasonal banner at ${viewport.name}`, async ({
@@ -117,6 +137,29 @@ async function scrollToRatio(page: Page, ratio: number) {
         (expectedTop) => Math.abs(window.scrollY - expectedTop) <= 2,
         targetTop,
     );
+}
+
+async function openMobileMenuAndSettle(page: Page) {
+    await page.getByRole("button", { name: "Toggle menu" }).click();
+    await page.waitForFunction(() => {
+        const header = document.querySelector("#header");
+        const menu = document.querySelector<HTMLElement>(".menu");
+        const linkWrappers = Array.from(
+            document.querySelectorAll<HTMLElement>(".menu__link-wrapper"),
+        );
+
+        if (!header || !menu || linkWrappers.length === 0) {
+            return false;
+        }
+
+        const menuRect = menu.getBoundingClientRect();
+        const menuIsOpen = menuRect.left >= -1 && header.getAttribute("data-menu-open") === "true";
+        const linksAreVisible = linkWrappers.every(
+            (linkWrapper) => Number(getComputedStyle(linkWrapper).opacity) > 0.99,
+        );
+
+        return menuIsOpen && linksAreVisible;
+    });
 }
 
 async function scrollToFloatingBannerHandoff(page: Page) {
