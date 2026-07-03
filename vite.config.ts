@@ -12,7 +12,12 @@ export default defineConfig({
     },
     test: {
         exclude: ["tests/visual/**"],
-        passWithNoTests: true,
+        coverage: {
+            exclude: ["src/**/*.d.ts", "src/main.tsx", "src/types/**"],
+            include: ["src/**/*.{ts,tsx}"],
+            provider: "v8",
+            reporter: ["text", "json", "html"],
+        },
     },
     lint: {
         plugins: ["import"],
