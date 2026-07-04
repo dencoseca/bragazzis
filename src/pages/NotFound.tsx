@@ -17,13 +17,13 @@ export function NotFound() {
             </Link>
             <div className="page-not-found__content">
                 <h1>404</h1>
-                <p className="page-not-found__headline">This table's empty.</p>
+                <p className="page-not-found__headline">There's no more bread.</p>
                 <p className="page-not-found__message">
-                    Looks like this page nipped out for an espresso before the tiramisu arrived.
+                    D'you do soup? Nope... no, we don't do soup.
                 </p>
             </div>
             <Link to={publicPageRoutes.home.path} className="back-button">
-                Take me home
+                I'll come back
             </Link>
         </div>
     );
