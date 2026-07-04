@@ -15,10 +15,15 @@ export function NotFound() {
             <Link to={publicPageRoutes.home.path} className="logo">
                 {siteConfig.business.name}
             </Link>
-            <h1>404</h1>
-            <p>Page not found</p>
+            <div className="page-not-found__content">
+                <h1>404</h1>
+                <p className="page-not-found__headline">There's no more bread.</p>
+                <p className="page-not-found__message">
+                    D'you do soup? Nope... no, we don't do soup.
+                </p>
+            </div>
             <Link to={publicPageRoutes.home.path} className="back-button">
-                ← Back to Home
+                I'll come back
             </Link>
         </div>
     );
