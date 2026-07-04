@@ -152,7 +152,7 @@ const ROUTE_SMOKE_CASES: RouteSmokeCase[] = [
         title: getPageDocumentTitle(notFoundRoute.pageTitle),
         description: notFoundRoute.description,
         robots: "noindex",
-        expectedTexts: ["404", "Page not found", "Back to Home"],
+        expectedTexts: ["404", "This table's empty.", "Take me home"],
     },
 ];
 
