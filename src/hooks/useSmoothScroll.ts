@@ -15,21 +15,9 @@ export function useSmoothScroll(enabled = true) {
             return destroyLenis;
         }
 
-        lenisRef.current = new Lenis();
-        let rafId: number | null = null;
-
-        function raf(time: number) {
-            lenisRef.current?.raf(time);
-            rafId = requestAnimationFrame(raf);
-        }
-
-        rafId = requestAnimationFrame(raf);
+        lenisRef.current = new Lenis({ autoRaf: true });
 
         return () => {
-            if (rafId !== null) {
-                cancelAnimationFrame(rafId);
-            }
-
             destroyLenis();
         };
     }, [enabled]);
