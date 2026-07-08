@@ -9,7 +9,7 @@ application with multiple routes, built with **React 19**, **TypeScript**, and *
 
 ## Tech Stack
 
-- **Runtime/Framework:** React 19, React Router 7, TypeScript 6.0
+- **Runtime/Framework:** React 19, React Router 7, TypeScript 7.0
 - **Build Tool:** Vite 8 (managed via Vite+)
 - **Styling:** Sass/SCSS (no CSS modules — global styles in `src/styles/`)
 - **Animation:** Motion (Framer Motion), Lenis (smooth scroll)
