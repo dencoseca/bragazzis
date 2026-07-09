@@ -1,15 +1,15 @@
-@use "../variables" as *;
+@use "../tokens" as tokens;
 .home__mobile-cover {
     display: none;
     justify-content: center;
     align-items: center;
-    color: $black;
+    color: tokens.$color-ink;
     font-weight: 300;
     font-size: 4vw;
     text-align: center;
     height: 50dvh;
 
-    @media (max-width: $mobile) {
+    @media (max-width: tokens.$breakpoint-mobile) {
         display: flex;
     }
 
@@ -27,13 +27,13 @@
     align-items: center;
     flex-direction: column;
 
-    @media (max-width: $mobile) {
+    @media (max-width: tokens.$breakpoint-mobile) {
         display: none;
     }
 
     span {
-        font-family: $displayFont;
+        font-family: tokens.$font-display;
         margin-bottom: 0.6vw;
-        color: $black;
+        color: tokens.$color-ink;
     }
 }

@@ -1,6 +1,6 @@
-@use "../variables" as *;
+@use "../tokens" as tokens;
 .footer {
-    color: var(--theme-content-color, $black);
+    color: var(--theme-content-color, tokens.$color-ink);
 
     // ====================
     // General List Styles
@@ -11,7 +11,7 @@
         column-gap: clamp(1.5rem, 5vw, 6rem);
         padding: 3vw 6vw 2vw;
 
-        @media (max-width: $mobile) {
+        @media (max-width: tokens.$breakpoint-mobile) {
             display: flex;
             flex-direction: column;
             margin-bottom: 10vw;
@@ -20,7 +20,7 @@
         .list {
             min-width: 0;
 
-            @media (max-width: $mobile) {
+            @media (max-width: tokens.$breakpoint-mobile) {
                 width: 100%;
             }
         }
@@ -32,7 +32,7 @@
             li {
                 margin-bottom: 1vw;
 
-                @media (max-width: $mobile) {
+                @media (max-width: tokens.$breakpoint-mobile) {
                     margin-bottom: 3.4vw;
                 }
 
@@ -40,7 +40,7 @@
                     margin: 0;
                     margin-bottom: 0.2vw;
 
-                    @media (max-width: $mobile) {
+                    @media (max-width: tokens.$breakpoint-mobile) {
                         margin-bottom: 1vw;
                     }
                 }
@@ -61,7 +61,7 @@
         .contact,
         .site,
         .social {
-            @media (max-width: $mobile) {
+            @media (max-width: tokens.$breakpoint-mobile) {
                 text-align: center;
             }
         }
@@ -77,11 +77,11 @@
         padding: 0;
         padding-bottom: 3vw;
 
-        @media (max-width: $tablet) {
+        @media (max-width: tokens.$breakpoint-tablet) {
             transform: scale(0.9);
         }
 
-        @media (max-width: $mobile) {
+        @media (max-width: tokens.$breakpoint-mobile) {
             padding-bottom: 10vw;
         }
 

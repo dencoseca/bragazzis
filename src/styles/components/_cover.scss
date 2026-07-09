@@ -1,4 +1,4 @@
-@use "../variables" as *;
+@use "../tokens" as tokens;
 // ===============
 // General Styles
 // ===============
@@ -44,11 +44,11 @@
     left: 50%;
     top: 10%;
     transform: translateX(-50%);
-    color: $white;
+    color: tokens.$color-paper;
     z-index: 2;
     overflow: hidden;
 
-    @media (max-width: $tablet) {
+    @media (max-width: tokens.$breakpoint-tablet) {
         top: 15%;
     }
 }
@@ -61,17 +61,17 @@
     height: 100%;
     width: 100%;
     position: relative;
-    color: $white;
+    color: tokens.$color-paper;
     font-size: clamp(0.875rem, 1vw, 1.125rem);
     font-weight: 400;
     line-height: 1.1;
     z-index: 3;
 
-    @media (max-width: $tablet) {
+    @media (max-width: tokens.$breakpoint-tablet) {
         font-size: clamp(0.875rem, 1.25vw, 1.125rem);
     }
 
-    @media (max-width: $mobile) {
+    @media (max-width: tokens.$breakpoint-mobile) {
         font-size: clamp(1rem, 3vw, 1.25rem);
         line-height: 1.15;
         text-align: center;
@@ -93,18 +93,18 @@
                 margin-bottom: 0;
             }
 
-            @media (max-width: $tablet) {
+            @media (max-width: tokens.$breakpoint-tablet) {
                 margin-bottom: 1.5vw;
             }
         }
 
-        @media (max-width: $tablet) {
+        @media (max-width: tokens.$breakpoint-tablet) {
             font-size: clamp(0.875rem, 1.6vw, 1.125rem);
             right: 5vw;
             bottom: 5vw;
         }
 
-        @media (max-width: $mobile) {
+        @media (max-width: tokens.$breakpoint-mobile) {
             display: none;
         }
     }
@@ -114,13 +114,13 @@
         left: 3vw;
         bottom: 3vw;
 
-        @media (max-width: $tablet) {
+        @media (max-width: tokens.$breakpoint-tablet) {
             font-size: clamp(0.875rem, 1.6vw, 1.125rem);
             left: 5vw;
             bottom: 5vw;
         }
 
-        @media (max-width: $mobile) {
+        @media (max-width: tokens.$breakpoint-mobile) {
             left: 50%;
             transform: translateX(-50%);
             top: calc(15% + 17vw);
@@ -131,11 +131,11 @@
         }
 
         a {
-            color: $white;
+            color: tokens.$color-paper;
             text-decoration: none;
 
             p {
-                @media (max-width: $mobile) {
+                @media (max-width: tokens.$breakpoint-mobile) {
                     margin: 2.5vw 0;
                     font-size: clamp(1rem, 3vw, 1.25rem);
                 }
@@ -157,16 +157,16 @@
     cursor: pointer;
     z-index: 100;
 
-    @media (max-width: $tablet) {
+    @media (max-width: tokens.$breakpoint-tablet) {
         bottom: 7vw;
     }
 }
 
 .cover__down-arrow {
     display: block;
-    color: $white;
+    color: tokens.$color-paper;
 
-    @media (max-width: $tablet) {
+    @media (max-width: tokens.$breakpoint-tablet) {
         width: 10vw;
     }
 }

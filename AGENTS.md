@@ -35,7 +35,6 @@ src/
 │   ├── main.scss      # Entry point that imports all partials
 │   ├── _tokens.scss
 │   ├── _themes.scss
-│   ├── _variables.scss
 │   ├── _typography.scss
 │   └── _normalize.scss
 ├── types/             # TypeScript type definitions (imagetools.ts, etc.)

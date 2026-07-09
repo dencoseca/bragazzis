@@ -1,4 +1,4 @@
-@use "../variables" as *;
+@use "../tokens" as tokens;
 .lastoria__title-wrapper {
     position: relative;
 }
@@ -8,7 +8,7 @@
     position: relative;
     z-index: 1;
 
-    @media (max-width: $mobile) {
+    @media (max-width: tokens.$breakpoint-mobile) {
         padding-top: 20vw;
     }
 }
@@ -17,7 +17,7 @@
     margin: 10vw 20vw 4vw;
     text-align: center;
 
-    @media (max-width: $mobile) {
+    @media (max-width: tokens.$breakpoint-mobile) {
         margin: 10vw;
     }
 
@@ -27,7 +27,7 @@
         width: min(45rem, 45vw);
         margin: 3vw auto;
 
-        @media (max-width: $mobile) {
+        @media (max-width: tokens.$breakpoint-mobile) {
             width: 80vw;
         }
     }
@@ -39,7 +39,7 @@
         background-color: #aaa;
         margin: 0 auto;
 
-        @media (max-width: $mobile) {
+        @media (max-width: tokens.$breakpoint-mobile) {
             height: clamp(6.25rem, 26vw, 13rem);
         }
     }
@@ -50,7 +50,7 @@
         width: 30vw;
         pointer-events: none;
 
-        @media (max-width: $mobile) {
+        @media (max-width: tokens.$breakpoint-mobile) {
             top: clamp(1.25rem, 5.5vw, 2.5rem);
             width: clamp(7rem, 30vw, 12rem);
         }
@@ -81,7 +81,7 @@
         display: block;
     }
 
-    @media (max-width: $mobile) {
+    @media (max-width: tokens.$breakpoint-mobile) {
         width: 100%;
         margin-bottom: 10vw;
     }
