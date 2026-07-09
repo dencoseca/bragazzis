@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type RefCallback, type MouseEvent } from "react";
+import { useEffect, useRef, useState, type RefCallback } from "react";
 
 import { Layout } from "@/components/Layout";
 import { OptimizedImage } from "@/components/OptimizedImage";
@@ -101,7 +101,6 @@ export function IlGiorno() {
                             sizes={getGalleryImageSizes(image.size)}
                             loading={shouldLoadImage ? "eager" : "lazy"}
                             shouldLoad={shouldLoadImage}
-                            onContextMenu={(e: MouseEvent) => e.preventDefault()}
                         />
                     );
                 })}
