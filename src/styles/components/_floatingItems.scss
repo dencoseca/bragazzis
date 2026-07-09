@@ -1,4 +1,4 @@
-@use "../variables" as *;
+@use "../tokens" as tokens;
 // ===============
 // General Styles
 // ===============
@@ -8,11 +8,11 @@
     padding: clamp(1.5rem, 3vw, 4rem);
     height: clamp(120rem, 195vw, 230rem);
 
-    @media (max-width: $tablet) {
+    @media (max-width: tokens.$breakpoint-tablet) {
         height: clamp(100rem, 240vw, 145rem);
     }
 
-    @media (max-width: $mobile) {
+    @media (max-width: tokens.$breakpoint-mobile) {
         height: auto;
         padding: 0;
     }
@@ -22,7 +22,7 @@
     position: relative;
     display: flex;
 
-    @media (max-width: $mobile) {
+    @media (max-width: tokens.$breakpoint-mobile) {
         margin: clamp(2.5rem, 10vw, 4rem) 0;
     }
 }
@@ -36,7 +36,7 @@
 }
 
 .item__text {
-    @media (max-width: $mobile) {
+    @media (max-width: tokens.$breakpoint-mobile) {
         margin: clamp(1rem, 3vw, 1.5rem) 0;
         padding: 0 clamp(1rem, 3vw, 1.5rem);
         width: auto;
@@ -51,11 +51,11 @@
     flex-direction: row-reverse;
     top: clamp(5rem, 10vw, 10rem);
 
-    @media (max-width: $tablet) {
+    @media (max-width: tokens.$breakpoint-tablet) {
         margin-top: clamp(2rem, 5vw, 4rem);
     }
 
-    @media (max-width: $mobile) {
+    @media (max-width: tokens.$breakpoint-mobile) {
         flex-direction: column;
         align-items: flex-end;
         top: 0;
@@ -64,11 +64,11 @@
     .item__image {
         width: clamp(24rem, 40vw, 48rem);
 
-        @media (max-width: $tablet) {
+        @media (max-width: tokens.$breakpoint-tablet) {
             width: clamp(20rem, 45vw, 34rem);
         }
 
-        @media (max-width: $mobile) {
+        @media (max-width: tokens.$breakpoint-mobile) {
             width: 100%;
         }
     }
@@ -78,7 +78,7 @@
         margin-right: clamp(1.5rem, 3vw, 4rem);
         text-align: right;
 
-        @media (max-width: $mobile) {
+        @media (max-width: tokens.$breakpoint-mobile) {
             width: auto;
             text-align: center;
             margin-right: 0;
@@ -90,22 +90,22 @@
     flex-direction: column;
     top: clamp(8rem, 20vw, 18rem);
 
-    @media (max-width: $tablet) {
+    @media (max-width: tokens.$breakpoint-tablet) {
         margin-top: clamp(5rem, 15vw, 8rem);
     }
 
-    @media (max-width: $mobile) {
+    @media (max-width: tokens.$breakpoint-mobile) {
         top: 0;
     }
 
     .item__image {
         width: clamp(18rem, 30vw, 36rem);
 
-        @media (max-width: $tablet) {
+        @media (max-width: tokens.$breakpoint-tablet) {
             width: clamp(18rem, 35vw, 30rem);
         }
 
-        @media (max-width: $mobile) {
+        @media (max-width: tokens.$breakpoint-mobile) {
             width: 100%;
         }
     }
@@ -114,11 +114,11 @@
         width: clamp(16rem, 25vw, 30rem);
         margin-top: clamp(1.5rem, 3vw, 4rem);
 
-        @media (max-width: $tablet) {
+        @media (max-width: tokens.$breakpoint-tablet) {
             width: clamp(18rem, 34vw, 30rem);
         }
 
-        @media (max-width: $mobile) {
+        @media (max-width: tokens.$breakpoint-mobile) {
             width: auto;
             text-align: center;
         }
@@ -131,12 +131,12 @@
     right: clamp(3rem, 10vw, 10rem);
     top: clamp(-28rem, -35vw, -16rem);
 
-    @media (max-width: $tablet) {
+    @media (max-width: tokens.$breakpoint-tablet) {
         top: clamp(-28rem, -45vw, -18rem);
         right: clamp(2rem, 5vw, 5rem);
     }
 
-    @media (max-width: $mobile) {
+    @media (max-width: tokens.$breakpoint-mobile) {
         flex-direction: column;
         right: 0;
         top: 0;
@@ -145,11 +145,11 @@
     .item__image {
         width: clamp(24rem, 40vw, 48rem);
 
-        @media (max-width: $tablet) {
+        @media (max-width: tokens.$breakpoint-tablet) {
             width: clamp(20rem, 45vw, 34rem);
         }
 
-        @media (max-width: $mobile) {
+        @media (max-width: tokens.$breakpoint-mobile) {
             width: 100%;
         }
     }
@@ -159,11 +159,11 @@
         margin-top: clamp(1.5rem, 3vw, 4rem);
         text-align: right;
 
-        @media (max-width: $tablet) {
+        @media (max-width: tokens.$breakpoint-tablet) {
             width: clamp(20rem, 40vw, 34rem);
         }
 
-        @media (max-width: $mobile) {
+        @media (max-width: tokens.$breakpoint-mobile) {
             width: auto;
             text-align: center;
         }
@@ -176,11 +176,11 @@
     top: clamp(-28rem, -35vw, -16rem);
     left: clamp(2rem, 5vw, 5rem);
 
-    @media (max-width: $tablet) {
+    @media (max-width: tokens.$breakpoint-tablet) {
         top: clamp(-28rem, -45vw, -18rem);
     }
 
-    @media (max-width: $mobile) {
+    @media (max-width: tokens.$breakpoint-mobile) {
         flex-direction: column;
         top: 0;
         left: 0;
@@ -189,7 +189,7 @@
     .item__image {
         width: clamp(40rem, 65vw, 76rem);
 
-        @media (max-width: $mobile) {
+        @media (max-width: tokens.$breakpoint-mobile) {
             width: 100%;
         }
     }
@@ -198,7 +198,7 @@
         width: clamp(20rem, 35vw, 42rem);
         margin-top: clamp(1.5rem, 3vw, 4rem);
 
-        @media (max-width: $mobile) {
+        @media (max-width: tokens.$breakpoint-mobile) {
             width: auto;
             text-align: center;
         }

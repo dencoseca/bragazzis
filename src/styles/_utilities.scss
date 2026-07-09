@@ -1,13 +1,13 @@
-@use "variables" as *;
+@use "tokens" as tokens;
 
 .hide-mobile {
-    @media (max-width: $mobile) {
+    @media (max-width: tokens.$breakpoint-mobile) {
         display: none !important;
     }
 }
 
 .show-mobile {
-    @media (min-width: #{$mobile + 1px}) {
+    @media (min-width: #{tokens.$breakpoint-mobile + 1px}) {
         display: none !important;
     }
 }
