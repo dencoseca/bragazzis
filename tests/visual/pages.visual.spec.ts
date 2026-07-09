@@ -115,7 +115,7 @@ test.describe("home floating section handoff", () => {
 async function gotoRouteAndSettle(page: Page, path: string, settleMs: number) {
     await page.goto(path, { waitUntil: "networkidle" });
     await page.waitForFunction(() =>
-        Boolean(document.querySelector("main.visible, .page-not-found")),
+        Boolean(document.querySelector("#main-content, .page-not-found")),
     );
     await page.evaluate(() => document.fonts.ready);
     await waitForViewportAssets(page);

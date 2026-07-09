@@ -60,9 +60,7 @@ html {
 ::-webkit-scrollbar {
     display: none;
 }
-// Prevent flashing by making 'main' element hidden until after page is loaded
 main {
-    visibility: hidden;
     color: var(--theme-content-color, $black);
     background-color: var(--theme-background-color, $white);
 }
@@ -70,9 +68,6 @@ main {
 .loading-fallback {
     min-height: 100vh;
     background-color: var(--color-ink);
-}
-.visible {
-    visibility: visible;
 }
 @media (prefers-reduced-motion: reduce) {
     *,
