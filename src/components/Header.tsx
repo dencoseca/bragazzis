@@ -1,5 +1,4 @@
-import { motion, useAnimation } from "motion/react";
-import { useCallback } from "react";
+import { motion } from "motion/react";
 import { Link } from "react-router-dom";
 
 import { quickTransition } from "@/constants/animations";
@@ -37,17 +36,10 @@ interface HeaderProps {
 
 export function Header({ menuIsOpen, setMenuIsOpen, theme, menuTheme }: HeaderProps) {
     const headerTheme = menuIsOpen ? menuTheme : theme;
-    const controls = useAnimation();
 
-    const toggleMenu = useCallback(() => {
-        if (menuIsOpen) {
-            setMenuIsOpen(false);
-            void controls.start("closed");
-        } else {
-            setMenuIsOpen(true);
-            void controls.start("open");
-        }
-    }, [menuIsOpen, setMenuIsOpen, controls]);
+    function toggleMenu() {
+        setMenuIsOpen(!menuIsOpen);
+    }
 
     return (
         <div className="header" id="header" data-theme={headerTheme} data-menu-open={menuIsOpen}>
@@ -84,14 +76,14 @@ export function Header({ menuIsOpen, setMenuIsOpen, theme, menuTheme }: HeaderPr
                 <motion.div
                     className="line"
                     initial="closed"
-                    animate={controls}
+                    animate={menuIsOpen ? "open" : "closed"}
                     variants={topLineVariants}
                     transition={quickTransition}
                 />
                 <motion.div
                     className="line"
                     initial="closed"
-                    animate={controls}
+                    animate={menuIsOpen ? "open" : "closed"}
                     variants={bottomLineVariants}
                     transition={quickTransition}
                 />
