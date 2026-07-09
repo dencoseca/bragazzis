@@ -2,7 +2,7 @@
 
 import type { HTMLAttributes } from "react";
 import { MemoryRouter } from "react-router-dom";
-import { afterEach, beforeEach, describe, expect, test, vi } from "vite-plus/test";
+import { afterEach, describe, expect, test, vi } from "vite-plus/test";
 
 import { Header } from "@/components/Header";
 import { publicPageRoutes } from "@/constants/routes";
@@ -17,31 +17,19 @@ interface MotionDivProps extends HTMLAttributes<HTMLDivElement> {
     variants?: unknown;
 }
 
-const animationStart = vi.hoisted(() => vi.fn());
-
 vi.mock("motion/react", () => ({
     motion: {
         div({ animate, initial, transition, variants, ...props }: MotionDivProps) {
-            void animate;
             void initial;
             void transition;
             void variants;
 
-            return <div {...props} />;
+            return <div {...props} data-animate={String(animate)} />;
         },
-    },
-    useAnimation() {
-        return {
-            start: animationStart,
-        };
     },
 }));
 
 describe("Header", () => {
-    beforeEach(() => {
-        animationStart.mockClear();
-    });
-
     afterEach(async () => {
         await cleanupRenderedTrees();
     });
@@ -64,10 +52,15 @@ describe("Header", () => {
             ".header__mobile-menu-button",
         );
         const links = Array.from(container.querySelectorAll<HTMLAnchorElement>(".header__link"));
+        const hamburgerLines = Array.from(container.querySelectorAll(".line"));
 
         expect(header?.getAttribute("data-theme")).toBe(themeNames.light);
         expect(header?.getAttribute("data-menu-open")).toBe("false");
         expect(menuButton?.getAttribute("aria-expanded")).toBe("false");
+        expect(hamburgerLines.map((line) => line.getAttribute("data-animate"))).toEqual([
+            "closed",
+            "closed",
+        ]);
         expect(links.map((link) => link.getAttribute("href"))).toEqual([
             publicPageRoutes.laStoria.path,
             publicPageRoutes.ilGiorno.path,
@@ -80,7 +73,6 @@ describe("Header", () => {
         await clickElement(menuButton);
 
         expect(setMenuIsOpen).toHaveBeenCalledWith(true);
-        expect(animationStart).toHaveBeenCalledWith("open");
     });
 
     test("uses the menu theme while open and closes the mobile menu", async () => {
@@ -100,10 +92,15 @@ describe("Header", () => {
         const menuButton = container.querySelector<HTMLButtonElement>(
             ".header__mobile-menu-button",
         );
+        const hamburgerLines = Array.from(container.querySelectorAll(".line"));
 
         expect(header?.getAttribute("data-theme")).toBe(themeNames.dark);
         expect(header?.getAttribute("data-menu-open")).toBe("true");
         expect(menuButton?.getAttribute("aria-expanded")).toBe("true");
+        expect(hamburgerLines.map((line) => line.getAttribute("data-animate"))).toEqual([
+            "open",
+            "open",
+        ]);
 
         if (!menuButton) {
             throw new Error("Expected mobile menu button to be rendered");
@@ -112,6 +109,5 @@ describe("Header", () => {
         await clickElement(menuButton);
 
         expect(setMenuIsOpen).toHaveBeenCalledWith(false);
-        expect(animationStart).toHaveBeenCalledWith("closed");
     });
 });
