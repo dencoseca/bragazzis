@@ -1,5 +1,5 @@
 import { motion, type MotionValue, useTransform } from "motion/react";
-import React, { useCallback } from "react";
+import { useCallback } from "react";
 
 import parmesanImg from "@/assets/images/parmesan.jpg?preset=fullWidth";
 import { OptimizedImage } from "@/components/OptimizedImage";
@@ -102,7 +102,6 @@ export function Cover({ scrollYProgress }: CoverProps) {
                         alt="a busy Italian cafe"
                         sizes="100vw"
                         priority
-                        onContextMenu={(e: React.MouseEvent) => e.preventDefault()}
                     />
                 </motion.div>
             </div>

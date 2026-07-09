@@ -1,5 +1,4 @@
 import { motion, type MotionValue, useTransform } from "motion/react";
-import type { MouseEventHandler } from "react";
 
 import ciabattaImg from "@/assets/images/ciabatta.jpg?preset=editorial";
 import coffeePourImg from "@/assets/images/coffee-pour.jpg?preset=editorial";
@@ -114,10 +113,6 @@ const floatingItems: FloatingItem[] = [
     },
 ];
 
-const preventImageContextMenu: MouseEventHandler<HTMLImageElement> = (event) => {
-    event.preventDefault();
-};
-
 function FloatingItemCard({
     item,
     scrollYProgress,
@@ -137,7 +132,6 @@ function FloatingItemCard({
                 image={item.image}
                 alt={item.alt}
                 sizes={item.sizes}
-                onContextMenu={preventImageContextMenu}
             />
             <div className="item__text">
                 {item.paragraphs.map((paragraph, paragraphIndex) => (

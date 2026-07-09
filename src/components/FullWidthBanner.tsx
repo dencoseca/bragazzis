@@ -1,5 +1,4 @@
 import { motion, type MotionValue, useTransform } from "motion/react";
-import React from "react";
 
 import eggImg from "@/assets/images/egg.jpg?preset=fullWidth";
 import { OptimizedImage } from "@/components/OptimizedImage";
@@ -31,7 +30,6 @@ export function FullWidthBanner({ scrollYProgress }: FullWidthBannerProps) {
                 image={eggImg}
                 alt="a gigantic italian chocolate easter egg"
                 sizes="100vw"
-                onContextMenu={(e: React.MouseEvent) => e.preventDefault()}
             />
             <motion.article
                 className="full-width-banner__text"
