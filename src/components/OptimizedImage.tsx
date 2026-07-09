@@ -1,4 +1,4 @@
-import type { MouseEventHandler, Ref } from "react";
+import type { Ref } from "react";
 
 import type { OptimizedPicture } from "@/types/imagetools";
 
@@ -12,7 +12,6 @@ export interface OptimizedImageProps {
     priority?: boolean;
     loading?: "eager" | "lazy";
     shouldLoad?: boolean;
-    onContextMenu?: MouseEventHandler<HTMLImageElement>;
 }
 
 function getPlaceholderImageSrc(width: number, height: number) {
@@ -31,7 +30,6 @@ export function OptimizedImage({
     priority = false,
     loading,
     shouldLoad = true,
-    onContextMenu,
 }: OptimizedImageProps) {
     const resolvedLoading = loading ?? (priority ? "eager" : "lazy");
     const { sources, img } = image;
@@ -52,7 +50,6 @@ export function OptimizedImage({
                 loading={resolvedLoading}
                 decoding={shouldLoad && priority ? "sync" : "async"}
                 fetchPriority={shouldLoad && priority ? "high" : undefined}
-                onContextMenu={onContextMenu}
             />
         </picture>
     );

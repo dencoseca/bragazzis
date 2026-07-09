@@ -1,6 +1,6 @@
 import { PassThrough } from "node:stream";
 
-import type { MouseEventHandler, Ref } from "react";
+import type { Ref } from "react";
 import { renderToPipeableStream, type PipeableStream } from "react-dom/server";
 import { MemoryRouter } from "react-router-dom";
 import { describe, expect, test, vi } from "vite-plus/test";
@@ -18,7 +18,6 @@ interface MockOptimizedImageProps {
     alt: string;
     className?: string;
     "data-size"?: number;
-    onContextMenu?: MouseEventHandler<HTMLImageElement>;
     pictureRef?: Ref<HTMLPictureElement>;
 }
 
@@ -43,13 +42,7 @@ vi.mock("@/components/FullWidthBanner", () => ({
 }));
 
 vi.mock("@/components/OptimizedImage", () => ({
-    OptimizedImage({
-        alt,
-        className,
-        "data-size": dataSize,
-        onContextMenu,
-        pictureRef,
-    }: MockOptimizedImageProps) {
+    OptimizedImage({ alt, className, "data-size": dataSize, pictureRef }: MockOptimizedImageProps) {
         return (
             <picture className={className} data-size={dataSize} ref={pictureRef}>
                 <img
@@ -57,7 +50,6 @@ vi.mock("@/components/OptimizedImage", () => ({
                     decoding="async"
                     height="1"
                     loading="lazy"
-                    onContextMenu={onContextMenu}
                     src="/mock-image.jpg"
                     width="1"
                 />
