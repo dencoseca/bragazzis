@@ -47,14 +47,7 @@ export function Layout({
 
     return (
         <>
-            <PageMeta
-                pageTitle={pageTitle}
-                description={description}
-                canonicalUrl={canonicalUrl}
-                includeLocalBusinessJsonLd
-                includeOpenGraph
-                includeTwitter
-            />
+            <PageMeta pageTitle={pageTitle} description={description} canonicalUrl={canonicalUrl} />
             <a href="#main-content" className="skip-to-content">
                 Skip to content
             </a>

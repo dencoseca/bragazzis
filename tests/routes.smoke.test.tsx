@@ -1,9 +1,11 @@
-import { PassThrough } from "node:stream";
+/** @vitest-environment happy-dom */
 
-import type { Ref } from "react";
-import { renderToPipeableStream, type PipeableStream } from "react-dom/server";
-import { MemoryRouter } from "react-router-dom";
-import { describe, expect, test, vi } from "vite-plus/test";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+
+import { act, useEffect, type Ref } from "react";
+import { MemoryRouter, useNavigate, type NavigateFunction } from "react-router-dom";
+import { afterEach, describe, expect, test, vi } from "vite-plus/test";
 
 import { App } from "@/App";
 import {
@@ -12,7 +14,14 @@ import {
     notFoundRoute,
     publicPageRoutes,
 } from "@/constants/routes";
-import { siteConfig } from "@/constants/siteConfig";
+import { localBusinessJsonLd, siteConfig } from "@/constants/siteConfig";
+
+import { cleanupRenderedTrees, renderWithAct } from "./testUtils";
+
+vi.stubGlobal("IS_REACT_ACT_ENVIRONMENT", true);
+
+const INDEX_HTML = readFileSync(resolve("index.html"), "utf8");
+const ROUTE_RENDER_TIMEOUT_MS = 5_000;
 
 interface MockOptimizedImageProps {
     alt: string;
@@ -113,7 +122,6 @@ interface RouteSmokeCase {
     description: string;
     expectedTexts: string[];
     path: string;
-    robots?: string;
     title: string;
 }
 
@@ -143,123 +151,158 @@ const ROUTE_SMOKE_CASES: RouteSmokeCase[] = [
         path: "/missing-page",
         title: getPageDocumentTitle(notFoundRoute.pageTitle),
         description: notFoundRoute.description,
-        robots: "noindex",
         expectedTexts: ["404", "There's no more bread.", "I'll come back"],
     },
 ];
 
-function escapeHelmetValue(value: string): string {
-    return value
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#x27;");
+interface NavigationControllerProps {
+    onReady: (navigate: NavigateFunction) => void;
 }
 
-async function renderRoute(path: string): Promise<string> {
-    return new Promise((resolve, reject) => {
-        const chunks: Buffer[] = [];
-        const stream = new PassThrough();
-        let renderer: PipeableStream | undefined;
-        let hasSettled = false;
+function NavigationController({ onReady }: NavigationControllerProps) {
+    const navigate = useNavigate();
 
-        const timeout = setTimeout(() => {
-            renderer?.abort(new Error(`Timed out rendering ${path}`));
-        }, 5000);
+    useEffect(() => {
+        onReady(navigate);
+    }, [navigate, onReady]);
 
-        const fail = (error: unknown) => {
-            if (hasSettled) return;
+    return <App />;
+}
 
-            hasSettled = true;
-            clearTimeout(timeout);
-            reject(error instanceof Error ? error : new Error(String(error)));
-        };
+function loadDocumentHeadFromTemplate() {
+    const templateDocument = new DOMParser().parseFromString(INDEX_HTML, "text/html");
 
-        stream.on("data", (chunk: Buffer) => {
-            chunks.push(chunk);
-        });
-        stream.on("error", fail);
-        stream.on("end", () => {
-            if (hasSettled) return;
+    document.head.innerHTML = templateDocument.head.innerHTML;
+}
 
-            hasSettled = true;
-            clearTimeout(timeout);
-            resolve(Buffer.concat(chunks).toString("utf8"));
-        });
+async function preloadRouteModules() {
+    await Promise.all([
+        import("@/pages/Home"),
+        import("@/pages/LaStoria"),
+        import("@/pages/IlGiorno"),
+        import("@/pages/NotFound"),
+    ]);
+}
 
-        renderer = renderToPipeableStream(
-            <MemoryRouter initialEntries={[path]}>
-                <App />
-            </MemoryRouter>,
-            {
-                onAllReady() {
-                    renderer?.pipe(stream);
-                },
-                onError(error) {
-                    fail(error);
-                },
-                onShellError(error) {
-                    fail(error);
-                },
-            },
-        );
-    });
+function expectSingleElement(selector: string): Element {
+    const matches = document.head.querySelectorAll(selector);
+
+    expect(matches).toHaveLength(1);
+
+    return matches[0];
+}
+
+function expectStaticDocumentMetadata() {
+    expectSingleElement("meta[charset]");
+    expect(expectSingleElement('meta[name="viewport"]').getAttribute("content")).toBe(
+        "width=device-width, initial-scale=1.0",
+    );
+    expect(expectSingleElement('link[rel="icon"]').getAttribute("href")).toBe("/favicon.svg");
+    expect(expectSingleElement('meta[name="theme-color"]').getAttribute("content")).toBe("#f6f4f1");
+}
+
+function expectPublicPageMetadata(route: RouteSmokeCase) {
+    if (!route.canonicalUrl) {
+        throw new Error(`Expected ${route.path} to have a canonical URL`);
+    }
+
+    expect(expectSingleElement('meta[name="description"]').getAttribute("content")).toBe(
+        route.description,
+    );
+    expect(expectSingleElement('link[rel="canonical"]').getAttribute("href")).toBe(
+        route.canonicalUrl,
+    );
+    expect(expectSingleElement('meta[property="og:title"]').getAttribute("content")).toBe(
+        route.title,
+    );
+    expect(expectSingleElement('meta[property="og:description"]').getAttribute("content")).toBe(
+        route.description,
+    );
+    expect(expectSingleElement('meta[property="og:url"]').getAttribute("content")).toBe(
+        route.canonicalUrl,
+    );
+    expect(expectSingleElement('meta[property="og:type"]').getAttribute("content")).toBe("website");
+    expect(expectSingleElement('meta[property="og:image"]').getAttribute("content")).toBe(
+        siteConfig.assets.ogImage,
+    );
+    expect(expectSingleElement('meta[name="twitter:card"]').getAttribute("content")).toBe(
+        "summary",
+    );
+    expect(expectSingleElement('meta[name="twitter:title"]').getAttribute("content")).toBe(
+        route.title,
+    );
+    expect(expectSingleElement('meta[name="twitter:description"]').getAttribute("content")).toBe(
+        route.description,
+    );
+    const structuredDataScripts = document.querySelectorAll('script[type="application/ld+json"]');
+
+    expect(structuredDataScripts).toHaveLength(1);
+    expect(JSON.parse(structuredDataScripts[0].textContent ?? "")).toEqual(localBusinessJsonLd);
+    expect(document.head.querySelectorAll('meta[name="robots"]')).toHaveLength(0);
+}
+
+function expectNoIndexMetadata(route: RouteSmokeCase) {
+    expect(expectSingleElement('meta[name="description"]').getAttribute("content")).toBe(
+        route.description,
+    );
+    expect(expectSingleElement('meta[name="robots"]').getAttribute("content")).toBe("noindex");
+    expect(document.head.querySelectorAll('link[rel="canonical"]')).toHaveLength(0);
+    expect(document.head.querySelectorAll('meta[property^="og:"]')).toHaveLength(0);
+    expect(document.head.querySelectorAll('meta[name^="twitter:"]')).toHaveLength(0);
+    expect(document.querySelectorAll('script[type="application/ld+json"]')).toHaveLength(0);
 }
 
 describe("core route smoke tests", () => {
-    for (const route of ROUTE_SMOKE_CASES) {
-        test(`${route.path} renders expected content and metadata`, async () => {
-            const markup = await renderRoute(route.path);
+    afterEach(async () => {
+        await cleanupRenderedTrees();
+        document.head.replaceChildren();
+    });
 
-            for (const expectedText of route.expectedTexts) {
-                expect(markup).toContain(escapeHelmetValue(expectedText));
+    test("renders route content and keeps document metadata current across navigation", async () => {
+        loadDocumentHeadFromTemplate();
+        expectStaticDocumentMetadata();
+        await preloadRouteModules();
+
+        let navigate: NavigateFunction | undefined;
+        const handleNavigationReady = (readyNavigate: NavigateFunction) => {
+            navigate = readyNavigate;
+        };
+        const container = await renderWithAct(
+            <MemoryRouter initialEntries={[ROUTE_SMOKE_CASES[0].path]}>
+                <NavigationController onReady={handleNavigationReady} />
+            </MemoryRouter>,
+        );
+        const navigationCases = [...ROUTE_SMOKE_CASES, ROUTE_SMOKE_CASES[0]];
+
+        for (const route of navigationCases) {
+            const navigateTo = navigate;
+
+            if (!navigateTo) {
+                throw new Error("Expected client-side navigation to be ready");
             }
 
-            expect(markup).toContain(`<title>${escapeHelmetValue(route.title)}</title>`);
-            expect(markup).toContain(
-                `<meta name="description" content="${escapeHelmetValue(route.description)}"/>`,
+            await act(async () => {
+                await navigateTo(route.path);
+            });
+
+            await vi.waitFor(
+                () => {
+                    expect(expectSingleElement("title").textContent).toBe(route.title);
+
+                    for (const expectedText of route.expectedTexts) {
+                        expect(container.textContent).toContain(expectedText);
+                    }
+                },
+                { timeout: ROUTE_RENDER_TIMEOUT_MS },
             );
 
-            if (route.canonicalUrl) {
-                expect(markup).toContain(
-                    `<link rel="canonical" href="${escapeHelmetValue(route.canonicalUrl)}"/>`,
-                );
-                expect(markup).toContain(
-                    `<meta property="og:title" content="${escapeHelmetValue(route.title)}"/>`,
-                );
-                expect(markup).toContain(
-                    `<meta property="og:description" content="${escapeHelmetValue(
-                        route.description,
-                    )}"/>`,
-                );
-                expect(markup).toContain(
-                    `<meta property="og:url" content="${escapeHelmetValue(route.canonicalUrl)}"/>`,
-                );
-                expect(markup).toContain(`<meta property="og:type" content="website"/>`);
-                expect(markup).toContain(
-                    `<meta property="og:image" content="${escapeHelmetValue(
-                        siteConfig.assets.ogImage,
-                    )}"/>`,
-                );
-                expect(markup).toContain(`<meta name="twitter:card" content="summary"/>`);
-                expect(markup).toContain(
-                    `<meta name="twitter:title" content="${escapeHelmetValue(route.title)}"/>`,
-                );
-                expect(markup).toContain(
-                    `<meta name="twitter:description" content="${escapeHelmetValue(
-                        route.description,
-                    )}"/>`,
-                );
-                expect(markup).toContain(`type="application/ld+json"`);
-                expect(markup).toContain(`"@type":"LocalBusiness"`);
-            }
+            expectStaticDocumentMetadata();
 
-            if (route.robots) {
-                expect(markup).toContain(
-                    `<meta name="robots" content="${escapeHelmetValue(route.robots)}"/>`,
-                );
+            if (route.canonicalUrl) {
+                expectPublicPageMetadata(route);
+            } else {
+                expectNoIndexMetadata(route);
             }
-        });
-    }
+        }
+    }, 30_000);
 });
