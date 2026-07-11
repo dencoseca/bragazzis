@@ -1,26 +1,14 @@
 import Lenis from "lenis";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
-export function useSmoothScroll(enabled = true) {
-    const lenisRef = useRef<Lenis | null>(null);
-
+export function useSmoothScroll(enabled = true): void {
     useEffect(() => {
-        const destroyLenis = () => {
-            lenisRef.current?.destroy();
-            lenisRef.current = null;
-        };
+        if (!enabled) return;
 
-        if (!enabled) {
-            destroyLenis();
-            return destroyLenis;
-        }
-
-        lenisRef.current = new Lenis({ autoRaf: true });
+        const lenis = new Lenis({ autoRaf: true });
 
         return () => {
-            destroyLenis();
+            lenis.destroy();
         };
     }, [enabled]);
-
-    return lenisRef;
 }
