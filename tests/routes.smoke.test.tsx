@@ -1,5 +1,8 @@
 /** @vitest-environment happy-dom */
 
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+
 import { act, useEffect, type Ref } from "react";
 import { MemoryRouter, useNavigate, type NavigateFunction } from "react-router-dom";
 import { afterEach, describe, expect, test, vi } from "vite-plus/test";
@@ -16,6 +19,9 @@ import { localBusinessJsonLd, siteConfig } from "@/constants/siteConfig";
 import { cleanupRenderedTrees, renderWithAct } from "./testUtils";
 
 vi.stubGlobal("IS_REACT_ACT_ENVIRONMENT", true);
+
+const INDEX_HTML = readFileSync(resolve("index.html"), "utf8");
+const ROUTE_RENDER_TIMEOUT_MS = 5_000;
 
 interface MockOptimizedImageProps {
     alt: string;
@@ -163,12 +169,36 @@ function NavigationController({ onReady }: NavigationControllerProps) {
     return <App />;
 }
 
+function loadDocumentHeadFromTemplate() {
+    const templateDocument = new DOMParser().parseFromString(INDEX_HTML, "text/html");
+
+    document.head.innerHTML = templateDocument.head.innerHTML;
+}
+
+async function preloadRouteModules() {
+    await Promise.all([
+        import("@/pages/Home"),
+        import("@/pages/LaStoria"),
+        import("@/pages/IlGiorno"),
+        import("@/pages/NotFound"),
+    ]);
+}
+
 function expectSingleElement(selector: string): Element {
     const matches = document.head.querySelectorAll(selector);
 
     expect(matches).toHaveLength(1);
 
     return matches[0];
+}
+
+function expectStaticDocumentMetadata() {
+    expectSingleElement("meta[charset]");
+    expect(expectSingleElement('meta[name="viewport"]').getAttribute("content")).toBe(
+        "width=device-width, initial-scale=1.0",
+    );
+    expect(expectSingleElement('link[rel="icon"]').getAttribute("href")).toBe("/favicon.svg");
+    expect(expectSingleElement('meta[name="theme-color"]').getAttribute("content")).toBe("#f6f4f1");
 }
 
 function expectPublicPageMetadata(route: RouteSmokeCase) {
@@ -225,9 +255,14 @@ function expectNoIndexMetadata(route: RouteSmokeCase) {
 describe("core route smoke tests", () => {
     afterEach(async () => {
         await cleanupRenderedTrees();
+        document.head.replaceChildren();
     });
 
     test("renders route content and keeps document metadata current across navigation", async () => {
+        loadDocumentHeadFromTemplate();
+        expectStaticDocumentMetadata();
+        await preloadRouteModules();
+
         let navigate: NavigateFunction | undefined;
         const handleNavigationReady = (readyNavigate: NavigateFunction) => {
             navigate = readyNavigate;
@@ -250,13 +285,18 @@ describe("core route smoke tests", () => {
                 await navigateTo(route.path);
             });
 
-            await vi.waitFor(() => {
-                expect(document.title).toBe(route.title);
+            await vi.waitFor(
+                () => {
+                    expect(expectSingleElement("title").textContent).toBe(route.title);
 
-                for (const expectedText of route.expectedTexts) {
-                    expect(container.textContent).toContain(expectedText);
-                }
-            });
+                    for (const expectedText of route.expectedTexts) {
+                        expect(container.textContent).toContain(expectedText);
+                    }
+                },
+                { timeout: ROUTE_RENDER_TIMEOUT_MS },
+            );
+
+            expectStaticDocumentMetadata();
 
             if (route.canonicalUrl) {
                 expectPublicPageMetadata(route);
@@ -264,5 +304,5 @@ describe("core route smoke tests", () => {
                 expectNoIndexMetadata(route);
             }
         }
-    });
+    }, 30_000);
 });
