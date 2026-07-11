@@ -10,7 +10,7 @@ export function NotFound() {
             <PageMeta
                 pageTitle={notFoundRoute.pageTitle}
                 description={notFoundRoute.description}
-                robots="noindex"
+                noIndex
             />
             <Link to={publicPageRoutes.home.path} className="logo">
                 {siteConfig.business.name}

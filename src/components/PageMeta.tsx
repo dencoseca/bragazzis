@@ -1,46 +1,51 @@
-import { Helmet } from "react-helmet-async";
-
 import { getPageDocumentTitle } from "@/constants/routes";
 import { localBusinessJsonLd, siteConfig } from "@/constants/siteConfig";
 
-interface PageMetaProps {
+interface BasePageMetaProps {
     pageTitle: string;
-    description?: string;
-    canonicalUrl?: string;
-    includeLocalBusinessJsonLd?: boolean;
-    includeOpenGraph?: boolean;
-    includeTwitter?: boolean;
-    robots?: string;
+    description: string;
 }
 
-export function PageMeta({
-    pageTitle,
-    description = siteConfig.business.description,
-    canonicalUrl,
-    includeLocalBusinessJsonLd = false,
-    includeOpenGraph = false,
-    includeTwitter = false,
-    robots,
-}: PageMetaProps) {
+interface PublicPageMetaProps extends BasePageMetaProps {
+    canonicalUrl: string;
+    noIndex?: never;
+}
+
+interface NoIndexPageMetaProps extends BasePageMetaProps {
+    canonicalUrl?: never;
+    noIndex: true;
+}
+
+type PageMetaProps = NoIndexPageMetaProps | PublicPageMetaProps;
+
+export function PageMeta(props: PageMetaProps) {
+    const { description, pageTitle } = props;
     const fullTitle = getPageDocumentTitle(pageTitle);
 
+    if (props.noIndex) {
+        return (
+            <>
+                <title>{fullTitle}</title>
+                <meta name="description" content={description} />
+                <meta name="robots" content="noindex" />
+            </>
+        );
+    }
+
     return (
-        <Helmet>
+        <>
             <title>{fullTitle}</title>
             <meta name="description" content={description} />
-            {robots && <meta name="robots" content={robots} />}
-            {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
-            {includeOpenGraph && <meta property="og:title" content={fullTitle} />}
-            {includeOpenGraph && <meta property="og:description" content={description} />}
-            {includeOpenGraph && canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
-            {includeOpenGraph && <meta property="og:type" content="website" />}
-            {includeOpenGraph && <meta property="og:image" content={siteConfig.assets.ogImage} />}
-            {includeTwitter && <meta name="twitter:card" content="summary" />}
-            {includeTwitter && <meta name="twitter:title" content={fullTitle} />}
-            {includeTwitter && <meta name="twitter:description" content={description} />}
-            {includeLocalBusinessJsonLd && (
-                <script type="application/ld+json">{JSON.stringify(localBusinessJsonLd)}</script>
-            )}
-        </Helmet>
+            <link rel="canonical" href={props.canonicalUrl} />
+            <meta property="og:title" content={fullTitle} />
+            <meta property="og:description" content={description} />
+            <meta property="og:url" content={props.canonicalUrl} />
+            <meta property="og:type" content="website" />
+            <meta property="og:image" content={siteConfig.assets.ogImage} />
+            <meta name="twitter:card" content="summary" />
+            <meta name="twitter:title" content={fullTitle} />
+            <meta name="twitter:description" content={description} />
+            <script type="application/ld+json">{JSON.stringify(localBusinessJsonLd)}</script>
+        </>
     );
 }

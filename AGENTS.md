@@ -13,7 +13,7 @@ application with multiple routes, built with **React 19**, **TypeScript**, and *
 - **Build Tool:** Vite 8 (managed via Vite+)
 - **Styling:** Sass/SCSS (no CSS modules — global styles in `src/styles/`)
 - **Animation:** Motion (Framer Motion), Lenis (smooth scroll)
-- **SEO:** react-helmet-async
+- **SEO:** React 19 native document metadata
 - **Image Optimization:** vite-imagetools (build-time responsive AVIF/JPEG fallback generation via sharp)
 - **Visual Testing:** Playwright visual regression tests (Chromium only)
 
