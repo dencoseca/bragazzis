@@ -1,4 +1,4 @@
-import { AnimatePresence } from "motion/react";
+import { AnimatePresence, useReducedMotion } from "motion/react";
 import type { ReactNode } from "react";
 import { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -10,7 +10,6 @@ import { PageMeta } from "@/components/PageMeta";
 import { getCanonicalUrl } from "@/constants/routes";
 import { themeNames, type ThemeName } from "@/constants/themes";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
-import { usePrefersReducedMotion } from "@/hooks/useViewportDimensions";
 
 interface LayoutProps {
     children: ReactNode;
@@ -38,7 +37,7 @@ export function Layout({
 
     const handleSetMenuIsOpen = useCallback((open: boolean) => setMenuIsOpen(open), []);
 
-    const prefersReducedMotion = usePrefersReducedMotion();
+    const prefersReducedMotion = useReducedMotion();
     const resolvedScrollToTopBehavior = prefersReducedMotion ? "auto" : scrollToTopBehavior;
 
     useSmoothScroll(!prefersReducedMotion);

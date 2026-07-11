@@ -1,25 +1,19 @@
-import { motion, type MotionValue, useTransform } from "motion/react";
+import { motion, type MotionValue, useReducedMotion, useTransform } from "motion/react";
 
 import eggImg from "@/assets/images/egg.jpg?preset=fullWidth";
 import { OptimizedImage } from "@/components/OptimizedImage";
-import {
-    useViewportDimensions,
-    useIsMobile,
-    useIsTablet,
-    usePrefersReducedMotion,
-} from "@/hooks/useViewportDimensions";
+import { useIsMobile, useIsTablet } from "@/hooks/useMediaQuery";
 
 interface FullWidthBannerProps {
     scrollYProgress: MotionValue<number>;
 }
 
 export function FullWidthBanner({ scrollYProgress }: FullWidthBannerProps) {
-    const { vh } = useViewportDimensions();
     const isMobile = useIsMobile();
     const isTablet = useIsTablet();
-    const prefersReducedMotion = usePrefersReducedMotion();
-    const textScrollLaptop = useTransform(scrollYProgress, [0.7, 1], [vh * -2, vh * 6]);
-    const textScrollTablet = useTransform(scrollYProgress, [0.7, 1], [vh * -1, vh * 3]);
+    const prefersReducedMotion = useReducedMotion();
+    const textScrollLaptop = useTransform(scrollYProgress, [0.7, 1], ["-2vh", "6vh"]);
+    const textScrollTablet = useTransform(scrollYProgress, [0.7, 1], ["-1vh", "3vh"]);
     const textScrollTranslateYValue =
         prefersReducedMotion || isMobile ? 0 : !isTablet ? textScrollLaptop : textScrollTablet;
 
