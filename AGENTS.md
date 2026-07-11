@@ -27,7 +27,7 @@ src/
 ├── components/        # Shared React components (Layout, Header, Footer, Menu, Cover, etc.)
 ├── constants/         # Shared TypeScript constants (animations.ts, siteConfig.ts, etc.)
 ├── data/              # Data files (galleryImages.ts)
-├── hooks/             # Custom React hooks (useSmoothScroll, useViewportDimensions)
+├── hooks/             # Custom React hooks (useSmoothScroll, useMediaQuery)
 ├── pages/             # Route-level page components (Home, LaStoria, IlGiorno, NotFound)
 ├── styles/            # Global SCSS files
 │   ├── components/    # Component-specific SCSS partials
@@ -75,11 +75,12 @@ src/
 
 ## Key Architecture Notes
 
-- **No SSR** — this is a client-side SPA, but hooks like `useViewportDimensions` include `typeof window` guards for
-  SSR-safety as a best practice.
+- **No SSR** — this is a client-side SPA, but browser-dependent hooks include `typeof window` guards for SSR-safety as
+  a best practice.
 - **Routing** is handled by React Router in `src/App.tsx` with lazy-loaded page components. Pages use named exports; `App.tsx` maps them to default exports for `React.lazy`.
 - **Smooth scrolling** is powered by Lenis via the `useSmoothScroll` hook, used in `Layout.tsx`.
-- **Viewport dimensions** are shared via the `useViewportDimensions` hook rather than prop-drilling.
+- **Responsive JS behavior** uses the Sass-backed media-query helpers in `useMediaQuery`; viewport-relative Motion
+  transforms use CSS units directly so resizing does not require React state.
 - **Themes** are semantic in React (`data-theme="light"` / `data-theme="dark"`) and mapped to actual colors in Sass.
 - **Breakpoints** are owned by Sass tokens in `src/styles/_tokens.scss`; JS breakpoint hooks read the emitted CSS
   custom properties instead of mirroring the numbers in TypeScript.

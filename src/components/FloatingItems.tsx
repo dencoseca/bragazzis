@@ -1,15 +1,11 @@
-import { motion, type MotionValue, useTransform } from "motion/react";
+import { motion, type MotionValue, useReducedMotion, useTransform } from "motion/react";
 
 import ciabattaImg from "@/assets/images/ciabatta.jpg?preset=editorial";
 import coffeePourImg from "@/assets/images/coffee-pour.jpg?preset=editorial";
 import shelvesImg from "@/assets/images/shelves.jpg?preset=editorial";
 import shopChristmasImg from "@/assets/images/shop-christmas.jpg?preset=editorial";
 import { OptimizedImage } from "@/components/OptimizedImage";
-import {
-    useViewportDimensions,
-    useIsMobile,
-    usePrefersReducedMotion,
-} from "@/hooks/useViewportDimensions";
+import { useIsMobile } from "@/hooks/useMediaQuery";
 import type { OptimizedPicture } from "@/types/imagetools";
 
 interface FloatingItemsProps {
@@ -38,7 +34,6 @@ interface FloatingItemCardProps {
     scrollYProgress: MotionValue<number>;
     isMobile: boolean;
     prefersReducedMotion: boolean;
-    vw: number;
 }
 
 const floatingItemLayoutClasses: Record<FloatingItemLayout, string> = {
@@ -118,9 +113,8 @@ function FloatingItemCard({
     scrollYProgress,
     isMobile,
     prefersReducedMotion,
-    vw,
 }: FloatingItemCardProps) {
-    const itemScroll = useTransform(scrollYProgress, [0, 1], [0, vw * item.parallaxVw]);
+    const itemScroll = useTransform(scrollYProgress, [0, 1], ["0vw", `${item.parallaxVw}vw`]);
 
     return (
         <motion.article
@@ -148,9 +142,8 @@ function FloatingItemCard({
 }
 
 export function FloatingItems({ scrollYProgress }: FloatingItemsProps) {
-    const { vw } = useViewportDimensions();
     const isMobile = useIsMobile();
-    const prefersReducedMotion = usePrefersReducedMotion();
+    const prefersReducedMotion = useReducedMotion();
 
     return (
         <section className="floating-items">
@@ -160,8 +153,7 @@ export function FloatingItems({ scrollYProgress }: FloatingItemsProps) {
                     item={item}
                     scrollYProgress={scrollYProgress}
                     isMobile={isMobile}
-                    prefersReducedMotion={prefersReducedMotion}
-                    vw={vw}
+                    prefersReducedMotion={Boolean(prefersReducedMotion)}
                 />
             ))}
         </section>

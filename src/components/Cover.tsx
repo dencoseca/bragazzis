@@ -1,15 +1,11 @@
-import { motion, type MotionValue, useTransform } from "motion/react";
+import { motion, type MotionValue, useReducedMotion, useTransform } from "motion/react";
 import { useCallback } from "react";
 
 import parmesanImg from "@/assets/images/parmesan.jpg?preset=fullWidth";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { smoothTransition } from "@/constants/animations";
 import { siteConfig } from "@/constants/siteConfig";
-import {
-    useViewportDimensions,
-    useIsMobile,
-    usePrefersReducedMotion,
-} from "@/hooks/useViewportDimensions";
+import { useIsMobile } from "@/hooks/useMediaQuery";
 
 interface CoverProps {
     scrollYProgress: MotionValue<number>;
@@ -59,14 +55,9 @@ const titleVariants = {
 };
 
 export function Cover({ scrollYProgress }: CoverProps) {
-    const { vh } = useViewportDimensions();
     const isMobile = useIsMobile();
-    const prefersReducedMotion = usePrefersReducedMotion();
-    const heroImageScroll = useTransform(
-        scrollYProgress,
-        [0, 1],
-        isMobile || prefersReducedMotion ? [0, 0] : [0, vh * 59],
-    );
+    const prefersReducedMotion = useReducedMotion();
+    const heroImageScroll = useTransform(scrollYProgress, [0, 1], ["0vh", "59vh"]);
     const { address } = siteConfig.business;
     const initialAnimationState = prefersReducedMotion ? false : "initial";
     const animateAnimationState = prefersReducedMotion ? undefined : "animate";
@@ -93,7 +84,7 @@ export function Cover({ scrollYProgress }: CoverProps) {
                 <motion.div
                     className="cover__image-inner"
                     style={{
-                        translateY: heroImageScroll,
+                        translateY: isMobile || prefersReducedMotion ? 0 : heroImageScroll,
                     }}
                 >
                     <OptimizedImage
