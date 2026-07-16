@@ -48,7 +48,7 @@ const floatingItems: FloatingItem[] = [
         id: "intro",
         layout: "intro",
         image: shelvesImg,
-        alt: "delicious focaccia sandwiches",
+        alt: "Italian food and drink displayed on shop shelves",
         sizes: "(max-width: 768px) 100vw, 50vw",
         parallaxVw: -59,
         paragraphs: [
@@ -82,7 +82,7 @@ const floatingItems: FloatingItem[] = [
         id: "suppliers",
         layout: "suppliers",
         image: ciabattaImg,
-        alt: "fresh salad being plated",
+        alt: "ciabatta sandwiches being prepared",
         sizes: "(max-width: 768px) 100vw, 50vw",
         parallaxVw: -59,
         paragraphs: [

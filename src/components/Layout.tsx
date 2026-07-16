@@ -36,6 +36,7 @@ export function Layout({
     }, [location.pathname]);
 
     const handleSetMenuIsOpen = useCallback((open: boolean) => setMenuIsOpen(open), []);
+    const handleMenuNavigate = useCallback(() => setMenuIsOpen(false), []);
 
     const prefersReducedMotion = useReducedMotion();
     const resolvedScrollToTopBehavior = prefersReducedMotion ? "auto" : scrollToTopBehavior;
@@ -50,7 +51,9 @@ export function Layout({
             <a href="#main-content" className="skip-to-content">
                 Skip to content
             </a>
-            <AnimatePresence>{menuIsOpen && <Menu theme={themeNames.dark} />}</AnimatePresence>
+            <AnimatePresence>
+                {menuIsOpen && <Menu theme={themeNames.dark} onNavigate={handleMenuNavigate} />}
+            </AnimatePresence>
             <main id="main-content" data-theme={pageTheme}>
                 <Header
                     menuIsOpen={menuIsOpen}

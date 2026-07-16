@@ -82,7 +82,7 @@ export function IlGiorno() {
             theme={themeNames.dark}
             scrollToTopBehavior="auto"
         >
-            <div className="ilgiorno__title text--page-title">IL GIORNO</div>
+            <h1 className="ilgiorno__title text--page-title">IL GIORNO</h1>
             <div className="ilgiorno__gallery">
                 <div className="ilgiorno__caption ilgiorno__caption--aperto text--display">
                     Aperto

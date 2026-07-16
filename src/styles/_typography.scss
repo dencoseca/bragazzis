@@ -30,6 +30,8 @@
 .text--page-title {
     font-family: tokens.$font-display;
     font-size: clamp(5.5rem, 16.5vw, 20rem);
+    font-weight: 400;
+    margin: 0;
     text-align: center;
     text-transform: uppercase;
 
