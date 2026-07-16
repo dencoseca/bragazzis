@@ -71,14 +71,14 @@ export function Cover({ scrollYProgress }: CoverProps) {
     return (
         <div className="cover" id="cover">
             <div className="cover__title-wrapper">
-                <motion.div
+                <motion.h1
                     className="cover__title text--page-title"
                     variants={titleVariants}
                     initial={initialAnimationState}
                     animate={animateAnimationState}
                 >
                     BRAGAZZI'S
-                </motion.div>
+                </motion.h1>
             </div>
             <div className="cover__image-wrapper">
                 <motion.div
@@ -90,7 +90,7 @@ export function Cover({ scrollYProgress }: CoverProps) {
                     <OptimizedImage
                         className="cover__image"
                         image={parmesanImg}
-                        alt="a busy Italian cafe"
+                        alt="an amaretti tin displayed on wheels of Parmesan cheese"
                         sizes="100vw"
                         priority
                     />

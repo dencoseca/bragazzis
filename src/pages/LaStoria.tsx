@@ -57,7 +57,7 @@ export function LaStoria() {
         >
             <div className="lastoria">
                 <div className="lastoria__title-wrapper">
-                    <div className="lastoria__title text--page-title">{LA_STORIA_ROUTE.label}</div>
+                    <h1 className="lastoria__title text--page-title">{LA_STORIA_ROUTE.label}</h1>
                 </div>
                 <div className="lastoria__story">
                     <p className="text--lg">

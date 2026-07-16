@@ -46,9 +46,10 @@ const linkVariants = {
 
 interface MenuProps {
     theme: ThemeName;
+    onNavigate: () => void;
 }
 
-export function Menu({ theme }: MenuProps) {
+export function Menu({ theme, onNavigate }: MenuProps) {
     return (
         <motion.div
             className="menu"
@@ -60,7 +61,11 @@ export function Menu({ theme }: MenuProps) {
         >
             {menuNavRoutes.map((route) => (
                 <motion.div key={route.path} className="menu__link-wrapper" variants={linkVariants}>
-                    <Link className="menu__link text--menu-link" to={route.path}>
+                    <Link
+                        className="menu__link text--menu-link"
+                        to={route.path}
+                        onClick={onNavigate}
+                    >
                         {route.label}
                     </Link>
                 </motion.div>
