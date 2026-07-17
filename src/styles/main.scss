@@ -61,6 +61,7 @@ html {
     display: none;
 }
 main {
+    display: flow-root;
     color: var(--theme-content-color, tokens.$color-ink);
     background-color: var(--theme-background-color, tokens.$color-paper);
 }

@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import type { Ref } from "react";
 import { Link } from "react-router-dom";
 
 import { quickTransition } from "@/constants/animations";
@@ -29,20 +30,25 @@ const bottomLineVariants = {
 
 interface HeaderProps {
     menuIsOpen: boolean;
-    setMenuIsOpen: (open: boolean) => void;
+    onMenuToggle: () => void;
+    menuButtonRef: Ref<HTMLButtonElement>;
+    menuId: string;
     theme: ThemeName;
     menuTheme: ThemeName;
 }
 
-export function Header({ menuIsOpen, setMenuIsOpen, theme, menuTheme }: HeaderProps) {
+export function Header({
+    menuIsOpen,
+    onMenuToggle,
+    menuButtonRef,
+    menuId,
+    theme,
+    menuTheme,
+}: HeaderProps) {
     const headerTheme = menuIsOpen ? menuTheme : theme;
 
-    function toggleMenu() {
-        setMenuIsOpen(!menuIsOpen);
-    }
-
     return (
-        <div className="header" id="header" data-theme={headerTheme} data-menu-open={menuIsOpen}>
+        <header className="header" id="header" data-theme={headerTheme} data-menu-open={menuIsOpen}>
             <div className="header__tag">Purveyors of quality Italian goods</div>
             <div className="header__logo-wrapper">
                 <Link to={publicPageRoutes.home.path} aria-label="home">
@@ -59,7 +65,7 @@ export function Header({ menuIsOpen, setMenuIsOpen, theme, menuTheme }: HeaderPr
                     </svg>
                 </Link>
             </div>
-            <nav className="header__nav">
+            <nav className="header__nav" aria-label="Primary navigation">
                 {headerNavRoutes.map((route) => (
                     <Link key={route.path} className="header__link" to={route.path}>
                         {route.label}
@@ -69,9 +75,11 @@ export function Header({ menuIsOpen, setMenuIsOpen, theme, menuTheme }: HeaderPr
             <button
                 type="button"
                 className="header__mobile-menu-button"
-                onClick={toggleMenu}
-                aria-label="Toggle menu"
+                onClick={onMenuToggle}
+                ref={menuButtonRef}
+                aria-label={menuIsOpen ? "Close menu" : "Open menu"}
                 aria-expanded={menuIsOpen}
+                aria-controls={menuId}
             >
                 <motion.div
                     className="line"
@@ -88,6 +96,6 @@ export function Header({ menuIsOpen, setMenuIsOpen, theme, menuTheme }: HeaderPr
                     transition={quickTransition}
                 />
             </button>
-        </div>
+        </header>
     );
 }

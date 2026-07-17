@@ -2,7 +2,7 @@
 
 import { afterEach, describe, expect, test, vi } from "vite-plus/test";
 
-import { Footer } from "@/components/Footer";
+import { Footer } from "@/components/layout/Footer";
 import { siteConfig } from "@/constants/siteConfig";
 import { themeNames } from "@/constants/themes";
 

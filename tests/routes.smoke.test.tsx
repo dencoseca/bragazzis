@@ -300,6 +300,10 @@ describe("core route smoke tests", () => {
 
             if (route.canonicalUrl) {
                 expectPublicPageMetadata(route);
+                expect(container.querySelector("header")).not.toBeNull();
+                expect(container.querySelector("footer")).not.toBeNull();
+                expect(container.querySelector("main > header")).toBeNull();
+                expect(container.querySelector("main > footer")).toBeNull();
             } else {
                 expectNoIndexMetadata(route);
             }

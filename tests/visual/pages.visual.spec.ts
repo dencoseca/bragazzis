@@ -140,7 +140,7 @@ async function scrollToRatio(page: Page, ratio: number) {
 }
 
 async function openMobileMenuAndSettle(page: Page) {
-    await page.getByRole("button", { name: "Toggle menu" }).click();
+    await page.getByRole("button", { name: "Open menu" }).click();
     await page.waitForFunction(() => {
         const header = document.querySelector("#header");
         const menu = document.querySelector<HTMLElement>(".menu");

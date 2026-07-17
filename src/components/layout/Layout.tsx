@@ -1,11 +1,9 @@
-import { AnimatePresence, useReducedMotion } from "motion/react";
+import { useReducedMotion } from "motion/react";
 import type { ReactNode } from "react";
-import { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
-import { Menu } from "@/components/Menu";
+import { Footer } from "@/components/layout/Footer";
+import { SiteNavigation } from "@/components/layout/SiteNavigation";
 import { PageMeta } from "@/components/PageMeta";
 import { getCanonicalUrl } from "@/constants/routes";
 import { themeNames, type ThemeName } from "@/constants/themes";
@@ -29,15 +27,6 @@ export function Layout({
     scrollToTopBehavior = "smooth",
 }: LayoutProps) {
     const location = useLocation();
-
-    const [menuIsOpen, setMenuIsOpen] = useState(false);
-    useEffect(() => {
-        setMenuIsOpen(false);
-    }, [location.pathname]);
-
-    const handleSetMenuIsOpen = useCallback((open: boolean) => setMenuIsOpen(open), []);
-    const handleMenuNavigate = useCallback(() => setMenuIsOpen(false), []);
-
     const prefersReducedMotion = useReducedMotion();
     const resolvedScrollToTopBehavior = prefersReducedMotion ? "auto" : scrollToTopBehavior;
 
@@ -51,19 +40,11 @@ export function Layout({
             <a href="#main-content" className="skip-to-content">
                 Skip to content
             </a>
-            <AnimatePresence>
-                {menuIsOpen && <Menu theme={themeNames.dark} onNavigate={handleMenuNavigate} />}
-            </AnimatePresence>
+            <SiteNavigation theme={headerTheme} menuTheme={themeNames.dark} />
             <main id="main-content" data-theme={pageTheme}>
-                <Header
-                    menuIsOpen={menuIsOpen}
-                    setMenuIsOpen={handleSetMenuIsOpen}
-                    theme={headerTheme}
-                    menuTheme={themeNames.dark}
-                />
                 {children}
-                <Footer theme={pageTheme} scrollToTopBehavior={resolvedScrollToTopBehavior} />
             </main>
+            <Footer theme={pageTheme} scrollToTopBehavior={resolvedScrollToTopBehavior} />
         </>
     );
 }

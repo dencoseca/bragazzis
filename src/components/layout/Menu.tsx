@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
 import { menuSlideTransition } from "@/constants/animations";
@@ -45,15 +46,24 @@ const linkVariants = {
 };
 
 interface MenuProps {
+    id: string;
     theme: ThemeName;
     onNavigate: () => void;
 }
 
-export function Menu({ theme, onNavigate }: MenuProps) {
+export function Menu({ id, theme, onNavigate }: MenuProps) {
+    const firstLinkRef = useRef<HTMLAnchorElement>(null);
+
+    useEffect(() => {
+        firstLinkRef.current?.focus();
+    }, []);
+
     return (
-        <motion.div
+        <motion.nav
+            id={id}
             className="menu"
             data-theme={theme}
+            aria-label="Mobile navigation"
             initial="closed"
             animate="open"
             exit="closed"
@@ -65,11 +75,12 @@ export function Menu({ theme, onNavigate }: MenuProps) {
                         className="menu__link text--menu-link"
                         to={route.path}
                         onClick={onNavigate}
+                        ref={route === menuNavRoutes[0] ? firstLinkRef : undefined}
                     >
                         {route.label}
                     </Link>
                 </motion.div>
             ))}
-        </motion.div>
+        </motion.nav>
     );
 }

@@ -1,6 +1,7 @@
 @use "../tokens" as tokens;
 .footer {
     color: var(--theme-content-color, tokens.$color-ink);
+    background-color: var(--theme-background-color, tokens.$color-paper);
 
     // ====================
     // General List Styles

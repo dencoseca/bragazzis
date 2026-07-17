@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 import earlyDaysImg from "@/assets/images/early-days.jpg?preset=editorial";
 import ticketPisaImg from "@/assets/images/ticket-pisa.jpg?preset=editorial";
 import ticketRomaImg from "@/assets/images/ticket-roma.jpg?preset=editorial";
-import { Layout } from "@/components/Layout";
+import { Layout } from "@/components/layout/Layout";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { smoothTransition } from "@/constants/animations";
 import { publicPageRoutes } from "@/constants/routes";
