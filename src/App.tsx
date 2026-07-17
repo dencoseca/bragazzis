@@ -4,7 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import { LoadingFallback } from "@/components/LoadingFallback";
 import { notFoundRoute, publicPageRoutes } from "@/constants/routes";
 
-const Home = lazy(() => import("@/pages/Home").then((m) => ({ default: m.Home })));
+const Home = lazy(() => import("@/pages/home/Home").then((m) => ({ default: m.Home })));
 const LaStoria = lazy(() => import("@/pages/LaStoria").then((m) => ({ default: m.LaStoria })));
 const IlGiorno = lazy(() => import("@/pages/IlGiorno").then((m) => ({ default: m.IlGiorno })));
 const NotFound = lazy(() => import("@/pages/NotFound").then((m) => ({ default: m.NotFound })));
