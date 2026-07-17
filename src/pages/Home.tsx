@@ -3,7 +3,7 @@ import { useScroll } from "motion/react";
 import { Cover } from "@/components/Cover";
 import { FloatingItems } from "@/components/FloatingItems";
 import { FullWidthBanner } from "@/components/FullWidthBanner";
-import { Layout } from "@/components/Layout";
+import { Layout } from "@/components/layout/Layout";
 import { publicPageRoutes } from "@/constants/routes";
 import { siteConfig } from "@/constants/siteConfig";
 import { themeNames } from "@/constants/themes";

@@ -1,5 +1,3 @@
-import { useCallback } from "react";
-
 import { siteConfig } from "@/constants/siteConfig";
 import type { ThemeName } from "@/constants/themes";
 
@@ -11,12 +9,12 @@ interface FooterProps {
 export function Footer({ theme, scrollToTopBehavior = "smooth" }: FooterProps) {
     const { address, email, phone } = siteConfig.business;
 
-    const scrollToTop = useCallback(() => {
+    function scrollToTop() {
         window.scrollTo({
             top: 0,
             behavior: scrollToTopBehavior,
         });
-    }, [scrollToTopBehavior]);
+    }
 
     return (
         <footer className="footer" data-theme={theme}>

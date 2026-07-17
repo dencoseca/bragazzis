@@ -38,7 +38,7 @@ const galleryImages = vi.hoisted(() =>
     })),
 );
 
-vi.mock("@/components/Layout", () => ({
+vi.mock("@/components/layout/Layout", () => ({
     Layout({ children, scrollToTopBehavior, theme }: MockLayoutProps) {
         return (
             <main data-scroll-to-top-behavior={scrollToTopBehavior} data-theme={theme}>

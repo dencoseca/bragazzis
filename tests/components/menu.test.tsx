@@ -4,13 +4,20 @@ import type { HTMLAttributes } from "react";
 import { MemoryRouter } from "react-router-dom";
 import { afterEach, describe, expect, test, vi } from "vite-plus/test";
 
-import { Menu } from "@/components/Menu";
+import { Menu } from "@/components/layout/Menu";
 import { publicPageRoutes } from "@/constants/routes";
 import { themeNames } from "@/constants/themes";
 
 import { cleanupRenderedTrees, clickElement, renderWithAct } from "../testUtils";
 
 interface MotionDivProps extends HTMLAttributes<HTMLDivElement> {
+    animate?: unknown;
+    exit?: unknown;
+    initial?: unknown;
+    variants?: unknown;
+}
+
+interface MotionNavProps extends HTMLAttributes<HTMLElement> {
     animate?: unknown;
     exit?: unknown;
     initial?: unknown;
@@ -27,6 +34,14 @@ vi.mock("motion/react", () => ({
 
             return <div {...props} />;
         },
+        nav({ animate, exit, initial, variants, ...props }: MotionNavProps) {
+            void animate;
+            void exit;
+            void initial;
+            void variants;
+
+            return <nav {...props} />;
+        },
     },
 }));
 
@@ -39,12 +54,16 @@ describe("Menu", () => {
         const onNavigate = vi.fn<() => void>();
         const container = await renderWithAct(
             <MemoryRouter initialEntries={[publicPageRoutes.laStoria.path]}>
-                <Menu theme={themeNames.dark} onNavigate={onNavigate} />
+                <Menu id="mobile-menu" theme={themeNames.dark} onNavigate={onNavigate} />
             </MemoryRouter>,
         );
         const currentRouteLink = Array.from(
             container.querySelectorAll<HTMLAnchorElement>(".menu__link"),
         ).find((link) => link.getAttribute("href") === publicPageRoutes.laStoria.path);
+
+        expect(container.querySelector("nav")?.getAttribute("aria-label")).toBe(
+            "Mobile navigation",
+        );
 
         if (!currentRouteLink) {
             throw new Error("Expected the current route link to be rendered");

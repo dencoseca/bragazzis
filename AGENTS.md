@@ -24,7 +24,7 @@ src/
 ├── assets/            # Static assets
 │   ├── fonts/         # Project fonts (ttf, woff2, etc.)
 │   └── images/        # Static image assets (jpg, png, svg — high-quality originals)
-├── components/        # Shared React components (Layout, Header, Footer, Menu, Cover, etc.)
+├── components/        # Shared React components, with site shell/navigation under components/layout/
 ├── constants/         # Shared TypeScript constants (animations.ts, siteConfig.ts, etc.)
 ├── data/              # Data files (galleryImages.ts)
 ├── hooks/             # Custom React hooks (useSmoothScroll, useMediaQuery)
@@ -78,7 +78,7 @@ src/
 - **No SSR** — this is a client-side SPA, but browser-dependent hooks include `typeof window` guards for SSR-safety as
   a best practice.
 - **Routing** is handled by React Router in `src/App.tsx` with lazy-loaded page components. Pages use named exports; `App.tsx` maps them to default exports for `React.lazy`.
-- **Smooth scrolling** is powered by Lenis via the `useSmoothScroll` hook, used in `Layout.tsx`.
+- **Smooth scrolling** is powered by Lenis via the `useSmoothScroll` hook, used in `components/layout/Layout.tsx`.
 - **Responsive JS behavior** uses the Sass-backed media-query helpers in `useMediaQuery`; viewport-relative Motion
   transforms use CSS units directly so resizing does not require React state.
 - **Themes** are semantic in React (`data-theme="light"` / `data-theme="dark"`) and mapped to actual colors in Sass.

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type RefCallback } from "react";
 
-import { Layout } from "@/components/Layout";
+import { Layout } from "@/components/layout/Layout";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { publicPageRoutes } from "@/constants/routes";
 import { themeNames } from "@/constants/themes";
