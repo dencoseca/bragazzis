@@ -8,7 +8,7 @@ import { OptimizedImage } from "@/components/OptimizedImage";
 import { useIsMobile } from "@/hooks/useMediaQuery";
 import type { OptimizedPicture } from "@/types/imagetools";
 
-interface FloatingItemsProps {
+interface HomeEditorialProps {
     scrollYProgress: MotionValue<number>;
 }
 
@@ -141,7 +141,7 @@ function FloatingItemCard({
     );
 }
 
-export function FloatingItems({ scrollYProgress }: FloatingItemsProps) {
+export function HomeEditorial({ scrollYProgress }: HomeEditorialProps) {
     const isMobile = useIsMobile();
     const prefersReducedMotion = useReducedMotion();
 

@@ -32,20 +32,25 @@ interface MockOptimizedImageProps {
 
 // Keep route smoke tests focused on routing, content, and metadata without
 // forcing CI to transform every responsive image variant.
-vi.mock("@/components/Cover", () => ({
-    Cover() {
+vi.mock("@/pages/home/HomeHero", () => ({
+    HomeHero() {
+        return (
+            <>
+                <div>Monday: 9:00 AM</div>
+                <div>Roam freely and find inspiration</div>
+            </>
+        );
+    },
+}));
+
+vi.mock("@/pages/home/HomeEditorial", () => ({
+    HomeEditorial() {
         return null;
     },
 }));
 
-vi.mock("@/components/FloatingItems", () => ({
-    FloatingItems() {
-        return null;
-    },
-}));
-
-vi.mock("@/components/FullWidthBanner", () => ({
-    FullWidthBanner() {
+vi.mock("@/pages/home/HomeSeasonalBanner", () => ({
+    HomeSeasonalBanner() {
         return null;
     },
 }));
@@ -177,7 +182,7 @@ function loadDocumentHeadFromTemplate() {
 
 async function preloadRouteModules() {
     await Promise.all([
-        import("@/pages/Home"),
+        import("@/pages/home/Home"),
         import("@/pages/LaStoria"),
         import("@/pages/IlGiorno"),
         import("@/pages/NotFound"),

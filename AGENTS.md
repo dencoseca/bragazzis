@@ -28,7 +28,7 @@ src/
 ├── constants/         # Shared TypeScript constants (animations.ts, siteConfig.ts, etc.)
 ├── data/              # Data files (galleryImages.ts)
 ├── hooks/             # Custom React hooks (useSmoothScroll, useMediaQuery)
-├── pages/             # Route-level page components (Home, LaStoria, IlGiorno, NotFound)
+├── pages/             # Route-level pages and their feature-local components (for example pages/home/)
 ├── styles/            # Global SCSS files
 │   ├── components/    # Component-specific SCSS partials
 │   ├── pages/         # Page-specific SCSS partials
@@ -53,6 +53,8 @@ src/
   extensions.
 - **Imports:** Use the `@/` path alias for all imports from `src/`. Example: `import { OptimizedImage } from "@/components/OptimizedImage"`.
 - **Components:** Functional components only. Use named exports for everything (components, hooks, types, interfaces).
+- **Feature colocation:** Keep page-specific components beside their route under `src/pages/<feature>/`; reserve
+  `src/components/` for components shared across routes.
 - **Hooks:** Custom hooks live in `src/hooks/`. Prefix with `use`.
 - **Styles:** SCSS partials follow the convention `_componentName.scss` or `_pageName.scss`. Import new partials into
   `src/styles/main.scss`.

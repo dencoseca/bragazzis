@@ -4,11 +4,11 @@ import eggImg from "@/assets/images/egg.jpg?preset=fullWidth";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { useIsMobile, useIsTablet } from "@/hooks/useMediaQuery";
 
-interface FullWidthBannerProps {
+interface HomeSeasonalBannerProps {
     scrollYProgress: MotionValue<number>;
 }
 
-export function FullWidthBanner({ scrollYProgress }: FullWidthBannerProps) {
+export function HomeSeasonalBanner({ scrollYProgress }: HomeSeasonalBannerProps) {
     const isMobile = useIsMobile();
     const isTablet = useIsTablet();
     const prefersReducedMotion = useReducedMotion();
