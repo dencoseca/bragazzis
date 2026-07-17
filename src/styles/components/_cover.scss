@@ -36,7 +36,7 @@
 }
 
 // ==================================
-// Pagr title and loading background
+// Page title and loading background
 // ==================================
 
 .cover__title-wrapper {
@@ -51,6 +51,10 @@
     @media (max-width: tokens.$breakpoint-tablet) {
         top: 15%;
     }
+}
+
+.cover__title {
+    text-transform: uppercase;
 }
 
 // ==========================
@@ -113,6 +117,7 @@
         position: absolute;
         left: 3vw;
         bottom: 3vw;
+        font-style: normal;
 
         @media (max-width: tokens.$breakpoint-tablet) {
             font-size: clamp(0.875rem, 1.6vw, 1.125rem);
@@ -134,7 +139,9 @@
             color: tokens.$color-paper;
             text-decoration: none;
 
-            p {
+            span {
+                display: block;
+
                 @media (max-width: tokens.$breakpoint-mobile) {
                     margin: 2.5vw 0;
                     font-size: clamp(1rem, 3vw, 1.25rem);
@@ -156,6 +163,11 @@
     bottom: 3vw;
     cursor: pointer;
     z-index: 100;
+
+    &:focus-visible {
+        outline: 2px solid currentColor;
+        outline-offset: 4px;
+    }
 
     @media (max-width: tokens.$breakpoint-tablet) {
         bottom: 7vw;
