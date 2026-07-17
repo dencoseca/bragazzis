@@ -1,7 +1,7 @@
 import { motion, type MotionValue, useReducedMotion, useTransform } from "motion/react";
+import { useCallback } from "react";
 
 import parmesanImg from "@/assets/images/parmesan.jpg?preset=fullWidth";
-import { OpeningHours } from "@/components/OpeningHours";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { smoothTransition } from "@/constants/animations";
 import { siteConfig } from "@/constants/siteConfig";
@@ -9,7 +9,6 @@ import { useIsMobile } from "@/hooks/useMediaQuery";
 
 interface CoverProps {
     scrollYProgress: MotionValue<number>;
-    onScrollDown: () => void;
 }
 
 const contentVariants = {
@@ -55,13 +54,19 @@ const titleVariants = {
     },
 };
 
-export function Cover({ scrollYProgress, onScrollDown }: CoverProps) {
+export function Cover({ scrollYProgress }: CoverProps) {
     const isMobile = useIsMobile();
     const prefersReducedMotion = useReducedMotion();
     const heroImageScroll = useTransform(scrollYProgress, [0, 1], ["0vh", "59vh"]);
     const { address } = siteConfig.business;
     const initialAnimationState = prefersReducedMotion ? false : "initial";
     const animateAnimationState = prefersReducedMotion ? undefined : "animate";
+
+    const handleScrollDown = useCallback(() => {
+        const targetId = isMobile ? "mobile-cover" : "statement";
+        const target = document.getElementById(targetId);
+        target?.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth" });
+    }, [isMobile, prefersReducedMotion]);
 
     return (
         <div className="cover" id="cover">
@@ -72,7 +77,7 @@ export function Cover({ scrollYProgress, onScrollDown }: CoverProps) {
                     initial={initialAnimationState}
                     animate={animateAnimationState}
                 >
-                    {siteConfig.business.name}
+                    BRAGAZZI'S
                 </motion.h1>
             </div>
             <div className="cover__image-wrapper">
@@ -97,24 +102,26 @@ export function Cover({ scrollYProgress, onScrollDown }: CoverProps) {
                 initial={initialAnimationState}
                 animate={animateAnimationState}
             >
-                <OpeningHours />
-                <address className="address">
+                <ul className="opening-hours">
+                    {siteConfig.openingHours.display.map((line, index) => (
+                        <li key={index}>{line}</li>
+                    ))}
+                </ul>
+                <div className="address">
                     <a href={address.mapsUrl} target="_blank" rel="noreferrer">
-                        <span>{address.streetAddress}</span>
-                        <span>{address.addressLocality}</span>
+                        <p>{address.streetAddress}</p>
+                        <p>{address.addressLocality}</p>
                     </a>
-                </address>
+                </div>
             </motion.div>
             <button
                 type="button"
                 className="cover__down-arrow-btn"
-                onClick={onScrollDown}
+                onClick={handleScrollDown}
                 aria-label="Scroll down"
             >
                 <motion.svg
                     className="cover__down-arrow"
-                    aria-hidden="true"
-                    focusable="false"
                     variants={downArrowVariants}
                     initial={initialAnimationState}
                     animate={animateAnimationState}
