@@ -1,7 +1,7 @@
 /** @vitest-environment happy-dom */
 
-import { act, StrictMode } from "react";
-import { createRoot } from "react-dom/client";
+import { render } from "@testing-library/react";
+import { StrictMode } from "react";
 import { afterEach, describe, expect, test, vi } from "vite-plus/test";
 
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
@@ -34,82 +34,52 @@ describe("useSmoothScroll", () => {
         vi.clearAllMocks();
     });
 
-    test("creates and destroys a local Lenis instance", async () => {
-        const container = document.createElement("div");
-        const root = createRoot(container);
-
-        await act(async () => {
-            root.render(<SmoothScrollHarness />);
-        });
+    test("creates and destroys a local Lenis instance", () => {
+        const { unmount } = render(<SmoothScrollHarness />);
 
         expect(lenisMocks.construct).toHaveBeenCalledOnce();
         expect(lenisMocks.construct).toHaveBeenCalledWith({ autoRaf: true });
         expect(lenisMocks.destroy).not.toHaveBeenCalled();
 
-        await act(async () => {
-            root.unmount();
-        });
+        unmount();
 
         expect(lenisMocks.destroy).toHaveBeenCalledOnce();
     });
 
-    test("does not create Lenis when smooth scrolling is disabled", async () => {
-        const container = document.createElement("div");
-        const root = createRoot(container);
-
-        await act(async () => {
-            root.render(<SmoothScrollHarness enabled={false} />);
-        });
+    test("does not create Lenis when smooth scrolling is disabled", () => {
+        const { unmount } = render(<SmoothScrollHarness enabled={false} />);
 
         expect(lenisMocks.construct).not.toHaveBeenCalled();
 
-        await act(async () => {
-            root.unmount();
-        });
+        unmount();
 
         expect(lenisMocks.destroy).not.toHaveBeenCalled();
     });
 
-    test("destroys Lenis when smooth scrolling becomes disabled", async () => {
-        const container = document.createElement("div");
-        const root = createRoot(container);
+    test("destroys Lenis when smooth scrolling becomes disabled", () => {
+        const { rerender, unmount } = render(<SmoothScrollHarness />);
 
-        await act(async () => {
-            root.render(<SmoothScrollHarness />);
-        });
-
-        await act(async () => {
-            root.render(<SmoothScrollHarness enabled={false} />);
-        });
+        rerender(<SmoothScrollHarness enabled={false} />);
 
         expect(lenisMocks.construct).toHaveBeenCalledOnce();
         expect(lenisMocks.destroy).toHaveBeenCalledOnce();
 
-        await act(async () => {
-            root.unmount();
-        });
+        unmount();
 
         expect(lenisMocks.destroy).toHaveBeenCalledOnce();
     });
 
-    test("cleans up each Lenis instance under Strict Mode", async () => {
-        const container = document.createElement("div");
-        const root = createRoot(container);
-
-        await act(async () => {
-            root.render(
-                <StrictMode>
-                    <SmoothScrollHarness />
-                </StrictMode>,
-            );
-        });
+    test("cleans up each Lenis instance under Strict Mode", () => {
+        const { unmount } = render(
+            <StrictMode>
+                <SmoothScrollHarness />
+            </StrictMode>,
+        );
 
         expect(lenisMocks.construct).toHaveBeenCalledTimes(2);
         expect(lenisMocks.destroy).toHaveBeenCalledOnce();
 
-        await act(async () => {
-            root.unmount();
-        });
+        unmount();
 
         expect(lenisMocks.destroy).toHaveBeenCalledTimes(2);
     });

@@ -1,12 +1,12 @@
 /** @vitest-environment happy-dom */
 
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import type { MotionValue } from "motion/react";
 import type { HTMLAttributes, SVGProps } from "react";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vite-plus/test";
 
 import { HomeHero } from "@/pages/home/HomeHero";
-
-import { cleanupRenderedTrees, clickElement, renderWithAct } from "../testUtils";
 
 const { useIsMobileMock, useReducedMotionMock } = vi.hoisted(() => ({
     useIsMobileMock: vi.fn<() => boolean>(),
@@ -97,54 +97,53 @@ describe("HomeHero", () => {
         useReducedMotionMock.mockReturnValue(false);
     });
 
-    afterEach(async () => {
+    afterEach(() => {
         vi.clearAllMocks();
-        await cleanupRenderedTrees();
     });
 
     test("owns the desktop statement target and shared opening hours", async () => {
-        const container = await renderWithAct(<HomeHero scrollYProgress={scrollYProgress} />);
-        const mobileCover = container.querySelector<HTMLElement>("#mobile-cover");
-        const statement = container.querySelector<HTMLElement>("#statement");
-        const scrollButton = container.querySelector<HTMLButtonElement>(".cover__down-arrow-btn");
+        const user = userEvent.setup();
+        render(<HomeHero scrollYProgress={scrollYProgress} />);
+        const mobileCover = document.querySelector<HTMLElement>("#mobile-cover");
+        const statement = document.querySelector<HTMLElement>("#statement");
         const mobileScrollIntoView = vi.fn();
         const statementScrollIntoView = vi.fn();
 
-        if (!mobileCover || !statement || !scrollButton) {
+        if (!mobileCover || !statement) {
             throw new Error("Expected the complete Home hero to be rendered");
         }
 
         mobileCover.scrollIntoView = mobileScrollIntoView;
         statement.scrollIntoView = statementScrollIntoView;
 
-        expect(container.querySelectorAll(".opening-hours")).toHaveLength(2);
-        expect(container.textContent).toContain("Roam freely and find inspiration");
+        expect(screen.getAllByRole("list")).toHaveLength(2);
+        expect(screen.getByText("Roam freely and find inspiration...")).toBeDefined();
 
-        await clickElement(scrollButton);
+        await user.click(screen.getByRole("button", { name: "Scroll down" }));
 
         expect(statementScrollIntoView).toHaveBeenCalledWith({ behavior: "smooth" });
         expect(mobileScrollIntoView).not.toHaveBeenCalled();
     });
 
     test("uses the mobile target and reduced-motion scroll behaviour", async () => {
+        const user = userEvent.setup();
         useIsMobileMock.mockReturnValue(true);
         useReducedMotionMock.mockReturnValue(true);
 
-        const container = await renderWithAct(<HomeHero scrollYProgress={scrollYProgress} />);
-        const mobileCover = container.querySelector<HTMLElement>("#mobile-cover");
-        const statement = container.querySelector<HTMLElement>("#statement");
-        const scrollButton = container.querySelector<HTMLButtonElement>(".cover__down-arrow-btn");
+        render(<HomeHero scrollYProgress={scrollYProgress} />);
+        const mobileCover = document.querySelector<HTMLElement>("#mobile-cover");
+        const statement = document.querySelector<HTMLElement>("#statement");
         const mobileScrollIntoView = vi.fn();
         const statementScrollIntoView = vi.fn();
 
-        if (!mobileCover || !statement || !scrollButton) {
+        if (!mobileCover || !statement) {
             throw new Error("Expected the complete Home hero to be rendered");
         }
 
         mobileCover.scrollIntoView = mobileScrollIntoView;
         statement.scrollIntoView = statementScrollIntoView;
 
-        await clickElement(scrollButton);
+        await user.click(screen.getByRole("button", { name: "Scroll down" }));
 
         expect(mobileScrollIntoView).toHaveBeenCalledWith({ behavior: "auto" });
         expect(statementScrollIntoView).not.toHaveBeenCalled();

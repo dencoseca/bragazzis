@@ -1,46 +1,34 @@
 /** @vitest-environment happy-dom */
 
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, test, vi } from "vite-plus/test";
 
 import { Footer } from "@/components/layout/Footer";
 import { siteConfig } from "@/constants/siteConfig";
 import { themeNames } from "@/constants/themes";
 
-import { cleanupRenderedTrees, clickElement, renderWithAct } from "../testUtils";
-
 describe("Footer", () => {
-    afterEach(async () => {
+    afterEach(() => {
         vi.restoreAllMocks();
-        await cleanupRenderedTrees();
     });
 
     test("renders contact links and scrolls to the top with the configured behavior", async () => {
+        const user = userEvent.setup();
         const scrollTo = vi.spyOn(window, "scrollTo").mockImplementation(() => undefined);
-        const container = await renderWithAct(
-            <Footer theme={themeNames.dark} scrollToTopBehavior="auto" />,
-        );
+        render(<Footer theme={themeNames.dark} scrollToTopBehavior="auto" />);
 
-        expect(container.querySelector(".footer")?.getAttribute("data-theme")).toBe(
-            themeNames.dark,
-        );
+        expect(screen.getByRole("contentinfo").getAttribute("data-theme")).toBe(themeNames.dark);
         expect(
-            container.querySelector<HTMLAnchorElement>(
-                `a[href="mailto:${siteConfig.business.email}"]`,
-            ),
-        ).not.toBeNull();
+            screen.getByRole("link", { name: siteConfig.business.email }).getAttribute("href"),
+        ).toBe(`mailto:${siteConfig.business.email}`);
         expect(
-            container.querySelector<HTMLAnchorElement>(
-                `a[href="${siteConfig.business.phone.href}"]`,
-            ),
-        ).not.toBeNull();
+            screen
+                .getByRole("link", { name: siteConfig.business.phone.display })
+                .getAttribute("href"),
+        ).toBe(siteConfig.business.phone.href);
 
-        const scrollButton = container.querySelector<HTMLButtonElement>(".footer__scroll-to-top");
-
-        if (!scrollButton) {
-            throw new Error("Expected scroll-to-top button to be rendered");
-        }
-
-        await clickElement(scrollButton);
+        await user.click(screen.getByRole("button", { name: "Scroll to top" }));
 
         expect(scrollTo).toHaveBeenCalledWith({
             behavior: "auto",
