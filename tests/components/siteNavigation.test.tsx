@@ -1,13 +1,13 @@
 /** @vitest-environment happy-dom */
 
-import { act, type HTMLAttributes, type ReactNode } from "react";
+import { cleanup, render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import type { HTMLAttributes, ReactNode } from "react";
 import { MemoryRouter } from "react-router-dom";
 import { afterEach, describe, expect, test, vi } from "vite-plus/test";
 
 import { SiteNavigation } from "@/components/layout/SiteNavigation";
 import { themeNames } from "@/constants/themes";
-
-import { cleanupRenderedTrees, clickElement, renderWithAct } from "../testUtils";
 
 interface MotionElementProps extends HTMLAttributes<HTMLElement> {
     animate?: unknown;
@@ -44,60 +44,48 @@ vi.mock("motion/react", () => ({
 }));
 
 describe("SiteNavigation", () => {
-    afterEach(async () => {
-        await cleanupRenderedTrees();
+    afterEach(() => {
+        cleanup();
         document.body.style.overflow = "";
         document.documentElement.style.overflow = "";
     });
 
     test("owns menu state, focus, Escape handling, and scroll locking", async () => {
+        const user = userEvent.setup();
         document.body.style.overflow = "clip";
         document.documentElement.style.overflow = "auto";
 
-        const container = await renderWithAct(
+        render(
             <MemoryRouter>
                 <SiteNavigation theme={themeNames.light} menuTheme={themeNames.dark} />
             </MemoryRouter>,
         );
-        const menuButton = container.querySelector<HTMLButtonElement>(
-            ".header__mobile-menu-button",
-        );
+        const menuButton = screen.getByRole("button", { name: "Open menu" });
 
-        if (!menuButton) {
-            throw new Error("Expected mobile menu button to be rendered");
-        }
+        expect(screen.queryByRole("navigation", { name: "Mobile navigation" })).toBeNull();
 
-        expect(container.querySelector("#mobile-menu")).toBeNull();
+        await user.click(menuButton);
 
-        await clickElement(menuButton);
+        const mobileNavigation = screen.getByRole("navigation", { name: "Mobile navigation" });
+        const firstMenuLink = within(mobileNavigation).getAllByRole("link")[0];
 
-        const firstMenuLink = container.querySelector<HTMLAnchorElement>(".menu__link");
-
-        expect(container.querySelector("#mobile-menu")).not.toBeNull();
+        expect(mobileNavigation.id).toBe("mobile-menu");
         expect(menuButton.getAttribute("aria-expanded")).toBe("true");
         expect(document.body.style.overflow).toBe("hidden");
         expect(document.documentElement.style.overflow).toBe("hidden");
         expect(document.activeElement).toBe(firstMenuLink);
 
-        await act(async () => {
-            document.dispatchEvent(
-                new KeyboardEvent("keydown", { cancelable: true, key: "Tab", shiftKey: true }),
-            );
-        });
+        await user.tab({ shift: true });
 
         expect(document.activeElement).toBe(menuButton);
 
-        await act(async () => {
-            document.dispatchEvent(new KeyboardEvent("keydown", { cancelable: true, key: "Tab" }));
-        });
+        await user.tab();
 
         expect(document.activeElement).toBe(firstMenuLink);
 
-        await act(async () => {
-            document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
-        });
+        await user.keyboard("{Escape}");
 
-        expect(container.querySelector("#mobile-menu")).toBeNull();
+        expect(screen.queryByRole("navigation", { name: "Mobile navigation" })).toBeNull();
         expect(menuButton.getAttribute("aria-expanded")).toBe("false");
         expect(document.body.style.overflow).toBe("clip");
         expect(document.documentElement.style.overflow).toBe("auto");

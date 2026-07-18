@@ -1,14 +1,14 @@
 /** @vitest-environment happy-dom */
 
+import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import type { HTMLAttributes } from "react";
 import { MemoryRouter } from "react-router-dom";
-import { afterEach, describe, expect, test, vi } from "vite-plus/test";
+import { describe, expect, test, vi } from "vite-plus/test";
 
 import { Menu } from "@/components/layout/Menu";
 import { publicPageRoutes } from "@/constants/routes";
 import { themeNames } from "@/constants/themes";
-
-import { cleanupRenderedTrees, clickElement, renderWithAct } from "../testUtils";
 
 interface MotionDivProps extends HTMLAttributes<HTMLDivElement> {
     animate?: unknown;
@@ -46,30 +46,20 @@ vi.mock("motion/react", () => ({
 }));
 
 describe("Menu", () => {
-    afterEach(async () => {
-        await cleanupRenderedTrees();
-    });
-
     test("closes after selecting the current route", async () => {
+        const user = userEvent.setup();
         const onNavigate = vi.fn<() => void>();
-        const container = await renderWithAct(
+        render(
             <MemoryRouter initialEntries={[publicPageRoutes.laStoria.path]}>
                 <Menu id="mobile-menu" theme={themeNames.dark} onNavigate={onNavigate} />
             </MemoryRouter>,
         );
-        const currentRouteLink = Array.from(
-            container.querySelectorAll<HTMLAnchorElement>(".menu__link"),
-        ).find((link) => link.getAttribute("href") === publicPageRoutes.laStoria.path);
+        const navigation = screen.getByRole("navigation", { name: "Mobile navigation" });
+        const currentRouteLink = within(navigation).getByRole("link", {
+            name: publicPageRoutes.laStoria.label,
+        });
 
-        expect(container.querySelector("nav")?.getAttribute("aria-label")).toBe(
-            "Mobile navigation",
-        );
-
-        if (!currentRouteLink) {
-            throw new Error("Expected the current route link to be rendered");
-        }
-
-        await clickElement(currentRouteLink);
+        await user.click(currentRouteLink);
 
         expect(onNavigate).toHaveBeenCalledOnce();
     });

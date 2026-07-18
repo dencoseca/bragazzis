@@ -3,7 +3,8 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
-import { act, useEffect, type Ref } from "react";
+import { act, cleanup, render, waitFor } from "@testing-library/react";
+import { useEffect, type Ref } from "react";
 import { MemoryRouter, useNavigate, type NavigateFunction } from "react-router-dom";
 import { afterEach, describe, expect, test, vi } from "vite-plus/test";
 
@@ -15,8 +16,6 @@ import {
     publicPageRoutes,
 } from "@/constants/routes";
 import { localBusinessJsonLd, siteConfig } from "@/constants/siteConfig";
-
-import { cleanupRenderedTrees, renderWithAct } from "./testUtils";
 
 const INDEX_HTML = readFileSync(resolve("index.html"), "utf8");
 const ROUTE_RENDER_TIMEOUT_MS = 5_000;
@@ -256,8 +255,8 @@ function expectNoIndexMetadata(route: RouteSmokeCase) {
 }
 
 describe("core route smoke tests", () => {
-    afterEach(async () => {
-        await cleanupRenderedTrees();
+    afterEach(() => {
+        cleanup();
         document.head.replaceChildren();
     });
 
@@ -270,7 +269,7 @@ describe("core route smoke tests", () => {
         const handleNavigationReady = (readyNavigate: NavigateFunction) => {
             navigate = readyNavigate;
         };
-        const container = await renderWithAct(
+        const { container } = render(
             <MemoryRouter initialEntries={[ROUTE_SMOKE_CASES[0].path]}>
                 <NavigationController onReady={handleNavigationReady} />
             </MemoryRouter>,
@@ -288,7 +287,7 @@ describe("core route smoke tests", () => {
                 await navigateTo(route.path);
             });
 
-            await vi.waitFor(
+            await waitFor(
                 () => {
                     expect(expectSingleElement("title").textContent).toBe(route.title);
 

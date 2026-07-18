@@ -1,11 +1,10 @@
 /** @vitest-environment happy-dom */
 
-import { act, type Ref } from "react";
+import { act, render, screen } from "@testing-library/react";
+import type { Ref } from "react";
 import { afterEach, describe, expect, test, vi } from "vite-plus/test";
 
 import { IlGiornoGallery } from "@/pages/il-giorno/IlGiornoGallery";
-
-import { cleanupRenderedTrees, renderWithAct } from "../testUtils";
 
 interface MockOptimizedImageProps {
     alt: string;
@@ -110,7 +109,15 @@ function removeIntersectionObserver() {
 }
 
 function getGalleryPictures() {
-    return Array.from(document.querySelectorAll<HTMLPictureElement>(".ilgiorno__gallery .image"));
+    return screen.getAllByRole("img").map((image) => {
+        const picture = image.closest("picture");
+
+        if (!picture) {
+            throw new Error("Expected each gallery image to be wrapped in a picture");
+        }
+
+        return picture;
+    });
 }
 
 function getLoadStates() {
@@ -121,15 +128,14 @@ function getLoadStates() {
 }
 
 describe("IlGiornoGallery", () => {
-    afterEach(async () => {
+    afterEach(() => {
         removeIntersectionObserver();
-        await cleanupRenderedTrees();
     });
 
-    test("preserves captions, image ordering, and responsive sizes", async () => {
-        await renderWithAct(<IlGiornoGallery />);
+    test("preserves captions, image ordering, and responsive sizes", () => {
+        render(<IlGiornoGallery />);
 
-        const gallery = document.querySelector(".ilgiorno__gallery");
+        const gallery = screen.getByText("Aperto").parentElement;
         const pictures = getGalleryPictures();
 
         expect(gallery?.firstElementChild?.textContent).toBe("Aperto");
@@ -142,10 +148,10 @@ describe("IlGiornoGallery", () => {
         );
     });
 
-    test("loads every gallery image when IntersectionObserver is unavailable", async () => {
+    test("loads every gallery image when IntersectionObserver is unavailable", () => {
         removeIntersectionObserver();
 
-        await renderWithAct(<IlGiornoGallery />);
+        render(<IlGiornoGallery />);
 
         const pictures = getGalleryPictures();
 
@@ -161,7 +167,7 @@ describe("IlGiornoGallery", () => {
     test("starts with the initial eager set and loads ahead after intersection", async () => {
         installIntersectionObserverMock();
 
-        await renderWithAct(<IlGiornoGallery />);
+        render(<IlGiornoGallery />);
 
         const observer = MockIntersectionObserver.instances[0];
         const initialPictures = getGalleryPictures();
@@ -201,14 +207,14 @@ describe("IlGiornoGallery", () => {
         );
     });
 
-    test("disconnects the observer when the gallery unmounts", async () => {
+    test("disconnects the observer when the gallery unmounts", () => {
         installIntersectionObserverMock();
 
-        await renderWithAct(<IlGiornoGallery />);
+        const { unmount } = render(<IlGiornoGallery />);
 
         const observer = MockIntersectionObserver.instances[0];
 
-        await cleanupRenderedTrees();
+        unmount();
 
         expect(observer.disconnect).toHaveBeenCalledOnce();
     });

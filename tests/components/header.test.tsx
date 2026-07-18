@@ -1,14 +1,14 @@
 /** @vitest-environment happy-dom */
 
+import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import type { HTMLAttributes } from "react";
 import { MemoryRouter } from "react-router-dom";
-import { afterEach, describe, expect, test, vi } from "vite-plus/test";
+import { describe, expect, test, vi } from "vite-plus/test";
 
 import { Header } from "@/components/layout/Header";
 import { publicPageRoutes } from "@/constants/routes";
 import { themeNames } from "@/constants/themes";
-
-import { cleanupRenderedTrees, clickElement, renderWithAct } from "../testUtils";
 
 interface MotionDivProps extends HTMLAttributes<HTMLDivElement> {
     animate?: unknown;
@@ -30,13 +30,10 @@ vi.mock("motion/react", () => ({
 }));
 
 describe("Header", () => {
-    afterEach(async () => {
-        await cleanupRenderedTrees();
-    });
-
     test("renders navigation and opens the mobile menu", async () => {
+        const user = userEvent.setup();
         const onMenuToggle = vi.fn<() => void>();
-        const container = await renderWithAct(
+        render(
             <MemoryRouter>
                 <Header
                     menuIsOpen={false}
@@ -49,12 +46,12 @@ describe("Header", () => {
             </MemoryRouter>,
         );
 
-        const header = container.querySelector(".header");
-        const menuButton = container.querySelector<HTMLButtonElement>(
-            ".header__mobile-menu-button",
-        );
-        const links = Array.from(container.querySelectorAll<HTMLAnchorElement>(".header__link"));
-        const hamburgerLines = Array.from(container.querySelectorAll(".line"));
+        const header = screen.getByRole("banner");
+        const menuButton = screen.getByRole("button", { name: "Open menu" });
+        const links = within(
+            screen.getByRole("navigation", { name: "Primary navigation" }),
+        ).getAllByRole("link");
+        const hamburgerLines = Array.from(menuButton.querySelectorAll(".line"));
 
         expect(header?.getAttribute("data-theme")).toBe(themeNames.light);
         expect(header?.getAttribute("data-menu-open")).toBe("false");
@@ -70,18 +67,15 @@ describe("Header", () => {
             publicPageRoutes.ilGiorno.path,
         ]);
 
-        if (!menuButton) {
-            throw new Error("Expected mobile menu button to be rendered");
-        }
-
-        await clickElement(menuButton);
+        await user.click(menuButton);
 
         expect(onMenuToggle).toHaveBeenCalledOnce();
     });
 
     test("uses the menu theme while open and closes the mobile menu", async () => {
+        const user = userEvent.setup();
         const onMenuToggle = vi.fn<() => void>();
-        const container = await renderWithAct(
+        render(
             <MemoryRouter>
                 <Header
                     menuIsOpen
@@ -94,11 +88,9 @@ describe("Header", () => {
             </MemoryRouter>,
         );
 
-        const header = container.querySelector(".header");
-        const menuButton = container.querySelector<HTMLButtonElement>(
-            ".header__mobile-menu-button",
-        );
-        const hamburgerLines = Array.from(container.querySelectorAll(".line"));
+        const header = screen.getByRole("banner");
+        const menuButton = screen.getByRole("button", { name: "Close menu" });
+        const hamburgerLines = Array.from(menuButton.querySelectorAll(".line"));
 
         expect(header?.getAttribute("data-theme")).toBe(themeNames.dark);
         expect(header?.getAttribute("data-menu-open")).toBe("true");
@@ -109,11 +101,7 @@ describe("Header", () => {
             "open",
         ]);
 
-        if (!menuButton) {
-            throw new Error("Expected mobile menu button to be rendered");
-        }
-
-        await clickElement(menuButton);
+        await user.click(menuButton);
 
         expect(onMenuToggle).toHaveBeenCalledOnce();
     });
