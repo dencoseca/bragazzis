@@ -12,6 +12,7 @@ export default defineConfig({
     },
     test: {
         exclude: ["tests/visual/**"],
+        setupFiles: ["./tests/setup.ts"],
         coverage: {
             exclude: ["src/**/*.d.ts", "src/main.tsx", "src/types/**"],
             include: ["src/**/*.{ts,tsx}"],

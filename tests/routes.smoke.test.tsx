@@ -18,8 +18,6 @@ import { localBusinessJsonLd, siteConfig } from "@/constants/siteConfig";
 
 import { cleanupRenderedTrees, renderWithAct } from "./testUtils";
 
-vi.stubGlobal("IS_REACT_ACT_ENVIRONMENT", true);
-
 const INDEX_HTML = readFileSync(resolve("index.html"), "utf8");
 const ROUTE_RENDER_TIMEOUT_MS = 5_000;
 
