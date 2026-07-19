@@ -37,10 +37,10 @@ interface FloatingItemCardProps {
 }
 
 const floatingItemLayoutClasses: Record<FloatingItemLayout, string> = {
-    intro: "item--1",
-    coffee: "item--2",
-    suppliers: "item--3",
-    shop: "item--4",
+    intro: "home-editorial__item--intro",
+    coffee: "home-editorial__item--coffee",
+    suppliers: "home-editorial__item--suppliers",
+    shop: "home-editorial__item--shop",
 };
 
 const floatingItems: FloatingItem[] = [
@@ -118,16 +118,16 @@ function FloatingItemCard({
 
     return (
         <motion.article
-            className={`item ${floatingItemLayoutClasses[item.layout]}`}
+            className={`home-editorial__item ${floatingItemLayoutClasses[item.layout]}`}
             style={{ translateY: !isMobile && !prefersReducedMotion ? itemScroll : 0 }}
         >
             <OptimizedImage
-                className="item__image"
+                className="home-editorial__image"
                 image={item.image}
                 alt={item.alt}
                 sizes={item.sizes}
             />
-            <div className="item__text">
+            <div className="home-editorial__text">
                 {item.paragraphs.map((paragraph, paragraphIndex) => (
                     <p className="text--md" key={paragraphIndex}>
                         {paragraph.initial ? (
@@ -146,7 +146,7 @@ export function HomeEditorial({ scrollYProgress }: HomeEditorialProps) {
     const prefersReducedMotion = useReducedMotion();
 
     return (
-        <section className="floating-items">
+        <section className="home-editorial">
             {floatingItems.map((item) => (
                 <FloatingItemCard
                     key={item.id}
