@@ -18,15 +18,15 @@ export function HomeSeasonalBanner({ scrollYProgress }: HomeSeasonalBannerProps)
         prefersReducedMotion || isMobile ? 0 : !isTablet ? textScrollLaptop : textScrollTablet;
 
     return (
-        <section className="full-width-banner">
+        <section className="home-seasonal-banner">
             <OptimizedImage
-                className="full-width-banner__image"
+                className="home-seasonal-banner__image"
                 image={eggImg}
                 alt="a gigantic italian chocolate easter egg"
                 sizes="100vw"
             />
             <motion.article
-                className="full-width-banner__text"
+                className="home-seasonal-banner__text"
                 style={{
                     translateY: textScrollTranslateYValue,
                 }}

@@ -56,7 +56,7 @@ const titleVariants = {
 
 function OpeningHours() {
     return (
-        <ul className="opening-hours">
+        <ul className="home-hero__opening-hours">
             {siteConfig.openingHours.display.map((line, index) => (
                 <li key={index}>{line}</li>
             ))}
@@ -81,10 +81,10 @@ export function HomeHero({ scrollYProgress }: HomeHeroProps) {
 
     return (
         <>
-            <div className="cover" id="cover">
-                <div className="cover__title-wrapper">
+            <div className="home-hero" id="cover">
+                <div className="home-hero__title-wrapper">
                     <motion.h1
-                        className="cover__title text--page-title"
+                        className="home-hero__title text--page-title"
                         variants={titleVariants}
                         initial={initialAnimationState}
                         animate={animateAnimationState}
@@ -92,15 +92,15 @@ export function HomeHero({ scrollYProgress }: HomeHeroProps) {
                         BRAGAZZI'S
                     </motion.h1>
                 </div>
-                <div className="cover__image-wrapper">
+                <div className="home-hero__image-wrapper">
                     <motion.div
-                        className="cover__image-inner"
+                        className="home-hero__image-inner"
                         style={{
                             translateY: isMobile || prefersReducedMotion ? 0 : heroImageScroll,
                         }}
                     >
                         <OptimizedImage
-                            className="cover__image"
+                            className="home-hero__image"
                             image={parmesanImg}
                             alt="an amaretti tin displayed on wheels of Parmesan cheese"
                             sizes="100vw"
@@ -109,13 +109,13 @@ export function HomeHero({ scrollYProgress }: HomeHeroProps) {
                     </motion.div>
                 </div>
                 <motion.div
-                    className="cover__content"
+                    className="home-hero__content"
                     variants={contentVariants}
                     initial={initialAnimationState}
                     animate={animateAnimationState}
                 >
                     <OpeningHours />
-                    <div className="address">
+                    <div className="home-hero__address">
                         <a href={address.mapsUrl} target="_blank" rel="noreferrer">
                             <p>{address.streetAddress}</p>
                             <p>{address.addressLocality}</p>
@@ -124,12 +124,12 @@ export function HomeHero({ scrollYProgress }: HomeHeroProps) {
                 </motion.div>
                 <button
                     type="button"
-                    className="cover__down-arrow-btn"
+                    className="home-hero__down-arrow-btn"
                     onClick={handleScrollDown}
                     aria-label="Scroll down"
                 >
                     <motion.svg
-                        className="cover__down-arrow"
+                        className="home-hero__down-arrow"
                         variants={downArrowVariants}
                         initial={initialAnimationState}
                         animate={animateAnimationState}
@@ -148,10 +148,14 @@ export function HomeHero({ scrollYProgress }: HomeHeroProps) {
                     </motion.svg>
                 </button>
             </div>
-            <section className="home__mobile-cover" id="mobile-cover" ref={mobileCoverRef}>
+            <section className="home-hero__mobile-cover" id="mobile-cover" ref={mobileCoverRef}>
                 <OpeningHours />
             </section>
-            <section className="home__statement text--display" id="statement" ref={statementRef}>
+            <section
+                className="home-hero__statement text--display"
+                id="statement"
+                ref={statementRef}
+            >
                 <span>Roam freely and find inspiration...</span>
                 <span>or that obscure pasta shape that you've</span>
                 <span>been looking for</span>

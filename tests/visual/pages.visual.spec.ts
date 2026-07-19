@@ -164,7 +164,7 @@ async function openMobileMenuAndSettle(page: Page) {
 
 async function scrollToFloatingBannerHandoff(page: Page) {
     const targetTop = await page.evaluate(() => {
-        const banner = document.querySelector(".full-width-banner");
+        const banner = document.querySelector(".home-seasonal-banner");
         if (!banner) return 0;
 
         const bannerTop = banner.getBoundingClientRect().top + window.scrollY;
@@ -185,8 +185,8 @@ async function scrollToFloatingBannerHandoff(page: Page) {
 
 async function measureFloatingItemToBannerGap(page: Page) {
     return page.evaluate(() => {
-        const item = document.querySelector(".item--4");
-        const banner = document.querySelector(".full-width-banner");
+        const item = document.querySelector(".home-editorial__item--shop");
+        const banner = document.querySelector(".home-seasonal-banner");
 
         if (!item || !banner) {
             throw new Error("Unable to find floating item or full-width banner");
