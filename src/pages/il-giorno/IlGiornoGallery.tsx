@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type RefCallback } from "react";
 
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { getBreakpointMediaQuery } from "@/constants/breakpoints";
-import { galleryImages, type GalleryImageSize } from "@/data/galleryImages";
+import { galleryImages, type GalleryImageSize } from "@/pages/il-giorno/galleryImages";
 
 const INITIAL_EAGER_GALLERY_IMAGE_COUNT = 8;
 const GALLERY_IMAGE_LOAD_AHEAD_COUNT = 5;

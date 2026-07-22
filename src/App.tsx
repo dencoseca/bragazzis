@@ -6,7 +6,9 @@ import { notFoundRoute, publicPageRoutes } from "@/constants/routes";
 
 const Home = lazy(() => import("@/pages/home/Home").then((m) => ({ default: m.Home })));
 const LaStoria = lazy(() => import("@/pages/LaStoria").then((m) => ({ default: m.LaStoria })));
-const IlGiorno = lazy(() => import("@/pages/IlGiorno").then((m) => ({ default: m.IlGiorno })));
+const IlGiorno = lazy(() =>
+    import("@/pages/il-giorno/IlGiorno").then((m) => ({ default: m.IlGiorno })),
+);
 const NotFound = lazy(() => import("@/pages/NotFound").then((m) => ({ default: m.NotFound })));
 
 export function App() {

@@ -102,7 +102,7 @@ vi.mock("@/assets/images/ticket-roma.jpg?preset=editorial", () => ({
     },
 }));
 
-vi.mock("@/data/galleryImages", () => ({
+vi.mock("@/pages/il-giorno/galleryImages", () => ({
     galleryImages: [
         {
             alt: "sandwich board sign outside cafe",
@@ -181,7 +181,7 @@ async function preloadRouteModules() {
     await Promise.all([
         import("@/pages/home/Home"),
         import("@/pages/LaStoria"),
-        import("@/pages/IlGiorno"),
+        import("@/pages/il-giorno/IlGiorno"),
         import("@/pages/NotFound"),
     ]);
 }
