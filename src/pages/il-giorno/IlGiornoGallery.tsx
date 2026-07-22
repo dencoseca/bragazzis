@@ -1,19 +1,19 @@
 import { useEffect, useRef, useState, type RefCallback } from "react";
 
 import { OptimizedImage } from "@/components/OptimizedImage";
+import { getBreakpointMediaQuery } from "@/constants/breakpoints";
 import { galleryImages, type GalleryImageSize } from "@/data/galleryImages";
 
 const INITIAL_EAGER_GALLERY_IMAGE_COUNT = 8;
 const GALLERY_IMAGE_LOAD_AHEAD_COUNT = 5;
 const GALLERY_IMAGE_PRELOAD_ROOT_MARGIN = "1200px 0px";
-const GALLERY_MOBILE_BREAKPOINT_PX = 760;
 
 function getGalleryLoadIndex(index: number) {
     return Math.min(galleryImages.length - 1, index + GALLERY_IMAGE_LOAD_AHEAD_COUNT);
 }
 
 function getGalleryImageSizes(size: GalleryImageSize) {
-    return `(max-width: ${GALLERY_MOBILE_BREAKPOINT_PX}px) 100vw, ${size}vw`;
+    return `${getBreakpointMediaQuery("mobile")} 100vw, ${size}vw`;
 }
 
 export function IlGiornoGallery() {

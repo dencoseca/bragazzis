@@ -1,10 +1,15 @@
 /** @vitest-environment happy-dom */
 
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+
 import { act, render, screen } from "@testing-library/react";
 import type { Ref } from "react";
 import { afterEach, describe, expect, test, vi } from "vite-plus/test";
 
 import { IlGiornoGallery } from "@/pages/il-giorno/IlGiornoGallery";
+
+const tokensScss = readFileSync(resolve(process.cwd(), "src/styles/_tokens.scss"), "utf8");
 
 interface MockOptimizedImageProps {
     alt: string;
@@ -127,6 +132,17 @@ function getLoadStates() {
     }));
 }
 
+function getSassMobileBreakpoint() {
+    const tokenMatch = tokensScss.match(/\$breakpoint-mobile:\s*([^;]+);/);
+    const breakpointValue = tokenMatch?.[1]?.trim();
+
+    if (!breakpointValue) {
+        throw new Error("Expected the Sass mobile breakpoint token");
+    }
+
+    return breakpointValue;
+}
+
 describe("IlGiornoGallery", () => {
     afterEach(() => {
         removeIntersectionObserver();
@@ -144,7 +160,7 @@ describe("IlGiornoGallery", () => {
             galleryImages.map((image) => image.alt),
         );
         expect(pictures.map((picture) => picture.dataset.sizes)).toEqual(
-            galleryImages.map(() => "(max-width: 760px) 100vw, 40vw"),
+            galleryImages.map(() => `(max-width: ${getSassMobileBreakpoint()}) 100vw, 40vw`),
         );
     });
 
