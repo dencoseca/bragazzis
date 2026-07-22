@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { fileURLToPath, URL } from "node:url";
 
 import react from "@vitejs/plugin-react";
@@ -5,8 +6,33 @@ import { defineConfig } from "vite-plus";
 
 import { imageOptimizationPlugin } from "./vite.imagetools";
 
+const breakpointNames = ["mobile", "tablet"] as const;
+const tokensScss = readFileSync(
+    fileURLToPath(new URL("./src/styles/_tokens.scss", import.meta.url)),
+    "utf8",
+);
+
+function getBreakpointValue(breakpoint: (typeof breakpointNames)[number]): string {
+    const tokenName = `$breakpoint-${breakpoint}`;
+    const tokenMatch = tokensScss.match(new RegExp(`\\${tokenName}:\\s*([^;]+);`));
+    const breakpointValue = tokenMatch?.[1]?.trim();
+
+    if (!breakpointValue) {
+        throw new Error(`Missing Sass breakpoint token: ${tokenName}`);
+    }
+
+    return breakpointValue;
+}
+
+const breakpointValues = Object.fromEntries(
+    breakpointNames.map((breakpoint) => [breakpoint, getBreakpointValue(breakpoint)]),
+);
+
 // https://vite.dev/config/
 export default defineConfig({
+    define: {
+        __BREAKPOINTS__: JSON.stringify(breakpointValues),
+    },
     staged: {
         "*": "vp check --fix",
     },

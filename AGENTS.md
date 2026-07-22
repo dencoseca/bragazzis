@@ -84,8 +84,8 @@ src/
 - **Responsive JS behavior** uses the Sass-backed media-query helpers in `useMediaQuery`; viewport-relative Motion
   transforms use CSS units directly so resizing does not require React state.
 - **Themes** are semantic in React (`data-theme="light"` / `data-theme="dark"`) and mapped to actual colors in Sass.
-- **Breakpoints** are owned by Sass tokens in `src/styles/_tokens.scss`; JS breakpoint hooks read the emitted CSS
-  custom properties instead of mirroring the numbers in TypeScript.
+- **Breakpoints** are owned by Sass tokens in `src/styles/_tokens.scss`; `vite.config.ts` injects their values at build
+  time for `src/constants/breakpoints.ts`, so JavaScript never mirrors the numbers in TypeScript.
 
 ## Visual Regression Troubleshooting
 

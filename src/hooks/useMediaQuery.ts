@@ -1,27 +1,10 @@
 import { useEffect, useState } from "react";
 
-type BreakpointName = "mobile" | "tablet";
-
-const neverMatchesMediaQuery = "not all";
-const breakpointCustomProperties: Record<BreakpointName, `--breakpoint-${BreakpointName}`> = {
-    mobile: "--breakpoint-mobile",
-    tablet: "--breakpoint-tablet",
-};
+import { getBreakpointMediaQuery, type BreakpointName } from "@/constants/breakpoints";
 
 function getMediaQueryMatches(query: string): boolean {
     if (typeof window === "undefined") return false;
     return window.matchMedia(query).matches;
-}
-
-function getBreakpointMediaQuery(breakpoint: BreakpointName): string {
-    if (typeof window === "undefined") return neverMatchesMediaQuery;
-
-    const breakpointValue = window
-        .getComputedStyle(window.document.documentElement)
-        .getPropertyValue(breakpointCustomProperties[breakpoint])
-        .trim();
-
-    return breakpointValue ? `(max-width: ${breakpointValue})` : neverMatchesMediaQuery;
 }
 
 function useMediaQuery(query: string): boolean {
@@ -42,13 +25,7 @@ function useMediaQuery(query: string): boolean {
 }
 
 function useBreakpointMediaQuery(breakpoint: BreakpointName): boolean {
-    const [query, setQuery] = useState(() => getBreakpointMediaQuery(breakpoint));
-
-    useEffect(() => {
-        setQuery(getBreakpointMediaQuery(breakpoint));
-    }, [breakpoint]);
-
-    return useMediaQuery(query);
+    return useMediaQuery(getBreakpointMediaQuery(breakpoint));
 }
 
 export function useIsMobile(): boolean {
