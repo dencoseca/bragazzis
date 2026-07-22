@@ -26,9 +26,8 @@ src/
 │   └── images/        # Static image assets (jpg, png, svg — high-quality originals)
 ├── components/        # Shared React components, with site shell/navigation under components/layout/
 ├── constants/         # Shared TypeScript constants (animations.ts, siteConfig.ts, etc.)
-├── data/              # Data files (galleryImages.ts)
 ├── hooks/             # Custom React hooks (useSmoothScroll, useMediaQuery)
-├── pages/             # Route-level pages and their feature-local components (for example pages/home/)
+├── pages/             # Route-level pages and their feature-local components/data (for example pages/home/)
 ├── styles/            # Global SCSS files
 │   ├── components/    # Component-specific SCSS partials
 │   ├── pages/         # Page-specific SCSS partials

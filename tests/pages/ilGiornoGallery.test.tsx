@@ -62,7 +62,7 @@ vi.mock("@/components/OptimizedImage", () => ({
     },
 }));
 
-vi.mock("@/data/galleryImages", () => ({
+vi.mock("@/pages/il-giorno/galleryImages", () => ({
     galleryImages,
 }));
 
