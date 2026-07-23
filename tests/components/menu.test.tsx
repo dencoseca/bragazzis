@@ -54,8 +54,9 @@ describe("Menu", () => {
                 <Menu id="mobile-menu" theme={themeNames.dark} onNavigate={onNavigate} />
             </MemoryRouter>,
         );
-        const navigation = screen.getByRole("navigation", { name: "Mobile navigation" });
-        const currentRouteLink = within(navigation).getByRole("link", {
+        const dialog = screen.getByRole("dialog", { name: "Mobile navigation" });
+        expect(dialog.getAttribute("aria-modal")).toBe("true");
+        const currentRouteLink = within(dialog).getByRole("link", {
             name: publicPageRoutes.laStoria.label,
         });
 

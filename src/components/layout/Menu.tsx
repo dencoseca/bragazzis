@@ -63,6 +63,8 @@ export function Menu({ id, theme, onNavigate }: MenuProps) {
             id={id}
             className="menu"
             data-theme={theme}
+            role="dialog"
+            aria-modal="true"
             aria-label="Mobile navigation"
             initial="closed"
             animate="open"
