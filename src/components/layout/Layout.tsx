@@ -1,5 +1,5 @@
 import { useReducedMotion } from "motion/react";
-import type { ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
 import { useLocation } from "react-router-dom";
 
 import { Footer } from "@/components/layout/Footer";
@@ -27,6 +27,7 @@ export function Layout({
     scrollToTopBehavior = "smooth",
 }: LayoutProps) {
     const location = useLocation();
+    const backgroundContentRef = useRef<HTMLDivElement>(null);
     const prefersReducedMotion = useReducedMotion();
     const resolvedScrollToTopBehavior = prefersReducedMotion ? "auto" : scrollToTopBehavior;
 
@@ -37,14 +38,20 @@ export function Layout({
     return (
         <>
             <PageMeta pageTitle={pageTitle} description={description} canonicalUrl={canonicalUrl} />
-            <a href="#main-content" className="skip-to-content">
-                Skip to content
-            </a>
-            <SiteNavigation theme={headerTheme} menuTheme={themeNames.dark} />
-            <main id="main-content" data-theme={pageTheme}>
-                {children}
-            </main>
-            <Footer theme={pageTheme} scrollToTopBehavior={resolvedScrollToTopBehavior} />
+            <SiteNavigation
+                backgroundContentRef={backgroundContentRef}
+                theme={headerTheme}
+                menuTheme={themeNames.dark}
+            />
+            <div className="layout__background" ref={backgroundContentRef}>
+                <a href="#main-content" className="skip-to-content">
+                    Skip to content
+                </a>
+                <main id="main-content" data-theme={pageTheme}>
+                    {children}
+                </main>
+                <Footer theme={pageTheme} scrollToTopBehavior={resolvedScrollToTopBehavior} />
+            </div>
         </>
     );
 }

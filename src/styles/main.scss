@@ -63,6 +63,10 @@ main {
     background-color: var(--theme-background-color, tokens.$color-paper);
 }
 
+.layout__background {
+    display: contents;
+}
+
 .loading-fallback {
     min-height: 100vh;
     background-color: var(--color-ink);

@@ -49,8 +49,18 @@ export function Header({
 
     return (
         <header className="header" id="header" data-theme={headerTheme} data-menu-open={menuIsOpen}>
-            <div className="header__tag">Purveyors of quality Italian goods</div>
-            <div className="header__logo-wrapper">
+            <div
+                className="header__tag"
+                aria-hidden={menuIsOpen || undefined}
+                inert={menuIsOpen ? true : undefined}
+            >
+                Purveyors of quality Italian goods
+            </div>
+            <div
+                className="header__logo-wrapper"
+                aria-hidden={menuIsOpen || undefined}
+                inert={menuIsOpen ? true : undefined}
+            >
                 <Link to={publicPageRoutes.home.path} aria-label="home">
                     <svg
                         width="100%"
@@ -65,7 +75,12 @@ export function Header({
                     </svg>
                 </Link>
             </div>
-            <nav className="header__nav" aria-label="Primary navigation">
+            <nav
+                className="header__nav"
+                aria-label="Primary navigation"
+                aria-hidden={menuIsOpen || undefined}
+                inert={menuIsOpen ? true : undefined}
+            >
                 {headerNavRoutes.map((route) => (
                     <Link key={route.path} className="header__link" to={route.path}>
                         {route.label}
