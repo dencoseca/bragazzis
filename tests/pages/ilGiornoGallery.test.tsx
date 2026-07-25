@@ -4,22 +4,11 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 import { act, render, screen } from "@testing-library/react";
-import type { Ref } from "react";
 import { afterEach, describe, expect, test, vi } from "vite-plus/test";
 
 import { IlGiornoGallery } from "@/pages/il-giorno/IlGiornoGallery";
 
 const tokensScss = readFileSync(resolve(process.cwd(), "src/styles/_tokens.scss"), "utf8");
-
-interface MockOptimizedImageProps {
-    alt: string;
-    className?: string;
-    "data-size"?: number;
-    loading?: "eager" | "lazy";
-    pictureRef?: Ref<HTMLPictureElement>;
-    shouldLoad?: boolean;
-    sizes: string;
-}
 
 const galleryImages = vi.hoisted(() =>
     Array.from({ length: 12 }, (_, index) => ({
@@ -30,37 +19,13 @@ const galleryImages = vi.hoisted(() =>
                 src: `/gallery-${index}.jpg`,
                 w: 100,
             },
-            sources: {},
+            sources: {
+                "image/avif": `/gallery-${index}.avif`,
+            },
         },
         size: 40,
     })),
 );
-
-vi.mock("@/components/OptimizedImage", () => ({
-    OptimizedImage({
-        alt,
-        className,
-        "data-size": dataSize,
-        loading,
-        pictureRef,
-        shouldLoad = true,
-        sizes,
-    }: MockOptimizedImageProps) {
-        return (
-            <picture
-                className={className}
-                data-alt={alt}
-                data-loading={loading}
-                data-should-load={String(shouldLoad)}
-                data-size={dataSize}
-                data-sizes={sizes}
-                ref={pictureRef}
-            >
-                <img alt={alt} />
-            </picture>
-        );
-    },
-}));
 
 vi.mock("@/pages/il-giorno/galleryImages", () => ({
     galleryImages,
@@ -126,9 +91,9 @@ function getGalleryPictures() {
 }
 
 function getLoadStates() {
-    return getGalleryPictures().map((picture) => ({
-        loading: picture.dataset.loading,
-        shouldLoad: picture.dataset.shouldLoad,
+    return screen.getAllByRole("img").map((image) => ({
+        loading: image.getAttribute("loading"),
+        shouldLoad: image.getAttribute("src")?.startsWith("data:image/svg+xml") ? "false" : "true",
     }));
 }
 
@@ -156,11 +121,14 @@ describe("IlGiornoGallery", () => {
 
         expect(gallery?.firstElementChild?.textContent).toBe("Aperto");
         expect(gallery?.lastElementChild?.textContent).toBe("Chiuso");
-        expect(pictures.map((picture) => picture.dataset.alt)).toEqual(
-            galleryImages.map((image) => image.alt),
+        expect(screen.getAllByRole("img").map((image) => image.getAttribute("alt"))).toEqual(
+            galleryImages.map(({ alt }) => alt),
         );
-        expect(pictures.map((picture) => picture.dataset.sizes)).toEqual(
+        expect(screen.getAllByRole("img").map((image) => image.getAttribute("sizes"))).toEqual(
             galleryImages.map(() => `(max-width: ${getSassMobileBreakpoint()}) 100vw, 40vw`),
+        );
+        expect(pictures.map((picture) => picture.dataset.size)).toEqual(
+            galleryImages.map(({ size }) => String(size)),
         );
     });
 
