@@ -7,7 +7,7 @@ function getMediaQueryMatches(query: string): boolean {
     return window.matchMedia(query).matches;
 }
 
-function useMediaQuery(query: string): boolean {
+export function useMediaQuery(query: string): boolean {
     const [matches, setMatches] = useState(() => getMediaQueryMatches(query));
 
     useEffect(() => {

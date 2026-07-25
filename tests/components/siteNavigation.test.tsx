@@ -43,7 +43,11 @@ vi.mock("motion/react", () => ({
     },
 }));
 
-function NavigationTestHarness() {
+function NavigationTestHarness({
+    backgroundAriaHidden = "false",
+}: {
+    backgroundAriaHidden?: "false" | null;
+}) {
     const backgroundContentRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
 
@@ -54,7 +58,7 @@ function NavigationTestHarness() {
                 theme={themeNames.light}
                 menuTheme={themeNames.dark}
             />
-            <div ref={backgroundContentRef} aria-hidden="false">
+            <div ref={backgroundContentRef} aria-hidden={backgroundAriaHidden ?? undefined}>
                 <button type="button" onClick={() => void navigate("/la-storia")}>
                     Change route
                 </button>
@@ -169,5 +173,28 @@ describe("SiteNavigation", () => {
 
         expect(screen.queryByRole("dialog", { name: "Mobile navigation" })).toBeNull();
         expect(document.activeElement).toBe(menuButton);
+    });
+
+    test("restores an absent background aria-hidden attribute", async () => {
+        const user = userEvent.setup();
+        render(
+            <MemoryRouter>
+                <NavigationTestHarness backgroundAriaHidden={null} />
+            </MemoryRouter>,
+        );
+        const menuButton = screen.getByRole("button", { name: "Open menu" });
+        const backgroundContent = screen.getByRole("button", {
+            name: "Change route",
+        }).parentElement;
+
+        expect(backgroundContent?.hasAttribute("aria-hidden")).toBe(false);
+
+        await user.click(menuButton);
+
+        expect(backgroundContent?.getAttribute("aria-hidden")).toBe("true");
+
+        await user.keyboard("{Escape}");
+
+        expect(backgroundContent?.hasAttribute("aria-hidden")).toBe(false);
     });
 });
