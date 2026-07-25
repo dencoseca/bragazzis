@@ -27,7 +27,7 @@
         transform: translate(-50%, -45%);
     }
 
-    .logo {
+    .page-not-found__logo {
         font-family: tokens.$font-display;
         font-size: 3rem;
         position: absolute;
@@ -67,7 +67,7 @@
         line-height: 1.45;
     }
 
-    .back-button {
+    .page-not-found__back-button {
         position: relative;
         z-index: 1;
         display: inline-block;
@@ -103,7 +103,7 @@
             width: 88vw;
         }
 
-        .logo {
+        .page-not-found__logo {
             font-size: 2rem;
         }
 

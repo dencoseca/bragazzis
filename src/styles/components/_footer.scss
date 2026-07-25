@@ -18,7 +18,7 @@
             margin-bottom: 10vw;
         }
 
-        .list {
+        .footer__list {
             min-width: 0;
 
             @media (max-width: tokens.$breakpoint-mobile) {
@@ -51,17 +51,17 @@
         // =====================
         // Specific List Styles
         // =====================
-        .site {
+        .footer__list--site {
             text-align: center;
         }
 
-        .social {
+        .footer__list--social {
             text-align: right;
         }
 
-        .contact,
-        .site,
-        .social {
+        .footer__list--contact,
+        .footer__list--site,
+        .footer__list--social {
             @media (max-width: tokens.$breakpoint-mobile) {
                 text-align: center;
             }

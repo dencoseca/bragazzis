@@ -57,7 +57,8 @@ src/
 - **Hooks:** Prefix with `use`. Hooks shared across routes live in `src/hooks/`; a hook used by a single feature is
   colocated with it (for example `src/pages/home/useScrollParallax.ts`), and moves to `src/hooks/` when a second route
   needs it.
-- **Styles:** SCSS partials follow the convention `_componentName.scss` or `_pageName.scss`. Import new partials into
+- **Styles:** SCSS partial filenames use kebab case and match their owning component or page feature (for example,
+  `_footer.scss`, `_la-storia.scss`, `_il-giorno.scss`, and `_not-found.scss`). Import new partials into
   `src/styles/main.scss`.
 - **Constants:** Shared TypeScript values go in `src/constants/`. Visual design tokens, theme colors, and breakpoints
   live in `src/styles/_tokens.scss`; JS reads breakpoint custom properties through hooks when behavior requires it.

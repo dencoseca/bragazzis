@@ -51,7 +51,7 @@ describe("Header", () => {
         const links = within(
             screen.getByRole("navigation", { name: "Primary navigation" }),
         ).getAllByRole("link");
-        const hamburgerLines = Array.from(menuButton.querySelectorAll(".line"));
+        const hamburgerLines = Array.from(menuButton.querySelectorAll(".header__mobile-menu-line"));
 
         expect(header?.getAttribute("data-theme")).toBe(themeNames.light);
         expect(header?.getAttribute("data-menu-open")).toBe("false");
@@ -90,7 +90,7 @@ describe("Header", () => {
 
         const header = screen.getByRole("banner");
         const menuButton = screen.getByRole("button", { name: "Close menu" });
-        const hamburgerLines = Array.from(menuButton.querySelectorAll(".line"));
+        const hamburgerLines = Array.from(menuButton.querySelectorAll(".header__mobile-menu-line"));
 
         expect(header?.getAttribute("data-theme")).toBe(themeNames.dark);
         expect(header?.getAttribute("data-menu-open")).toBe("true");

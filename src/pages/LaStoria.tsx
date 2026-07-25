@@ -57,9 +57,9 @@ export function LaStoria() {
                     Bragazzi's opened in Sheffield in 2003 and is owned by Matteo Bragazzi. It is an
                     outlier and safe haven for people who enjoy the "qualcosa in più".
                 </p>
-                <div className="line line--ticket-left">
+                <div className="lastoria__story-line lastoria__story-line--ticket-left">
                     <motion.div
-                        className="ticket left"
+                        className="lastoria__ticket lastoria__ticket--left"
                         initial="initial"
                         animate="animate"
                         variants={leftTicketVariants}
@@ -78,9 +78,9 @@ export function LaStoria() {
                     Their father had come over, like so many others, and made a business of selling
                     food.
                 </p>
-                <div className="line line--ticket-right">
+                <div className="lastoria__story-line lastoria__story-line--ticket-right">
                     <motion.div
-                        className="ticket right"
+                        className="lastoria__ticket lastoria__ticket--right"
                         initial="initial"
                         animate="animate"
                         variants={rightTicketVariants}
@@ -98,7 +98,7 @@ export function LaStoria() {
                     Fiano Romano on that hot evening in 2002. They did a big shop with help from Zia
                     Maria and floated it to England, ready for the cafe to come.
                 </p>
-                <div className="line"></div>
+                <div className="lastoria__story-line"></div>
             </div>
             <div className="lastoria__image">
                 <OptimizedImage
