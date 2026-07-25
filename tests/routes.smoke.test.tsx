@@ -260,6 +260,10 @@ describe("core route smoke tests", () => {
         document.head.replaceChildren();
     });
 
+    test("uses the business name when a page title is empty", () => {
+        expect(getPageDocumentTitle("")).toBe(siteConfig.business.name);
+    });
+
     test("renders route content and keeps document metadata current across navigation", async () => {
         loadDocumentHeadFromTemplate();
         expectStaticDocumentMetadata();
