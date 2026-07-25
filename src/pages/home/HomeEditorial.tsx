@@ -1,11 +1,11 @@
-import { motion, type MotionValue, useReducedMotion, useTransform } from "motion/react";
+import { motion, type MotionValue } from "motion/react";
 
 import ciabattaImg from "@/assets/images/ciabatta.jpg?preset=editorial";
 import coffeePourImg from "@/assets/images/coffee-pour.jpg?preset=editorial";
 import shelvesImg from "@/assets/images/shelves.jpg?preset=editorial";
 import shopChristmasImg from "@/assets/images/shop-christmas.jpg?preset=editorial";
 import { OptimizedImage } from "@/components/OptimizedImage";
-import { useIsMobile } from "@/hooks/useMediaQuery";
+import { useScrollParallax } from "@/pages/home/useScrollParallax";
 import type { OptimizedPicture } from "@/types/imagetools";
 
 interface HomeEditorialProps {
@@ -32,8 +32,6 @@ interface FloatingItem {
 interface FloatingItemCardProps {
     item: FloatingItem;
     scrollYProgress: MotionValue<number>;
-    isMobile: boolean;
-    prefersReducedMotion: boolean;
 }
 
 const floatingItemLayoutClasses: Record<FloatingItemLayout, string> = {
@@ -108,18 +106,16 @@ const floatingItems: FloatingItem[] = [
     },
 ];
 
-function FloatingItemCard({
-    item,
-    scrollYProgress,
-    isMobile,
-    prefersReducedMotion,
-}: FloatingItemCardProps) {
-    const itemScroll = useTransform(scrollYProgress, [0, 1], ["0vw", `${item.parallaxVw}vw`]);
+function FloatingItemCard({ item, scrollYProgress }: FloatingItemCardProps) {
+    const itemParallax = useScrollParallax(scrollYProgress, {
+        input: [0, 1],
+        output: ["0vw", `${item.parallaxVw}vw`],
+    });
 
     return (
         <motion.article
             className={`home-editorial__item ${floatingItemLayoutClasses[item.layout]}`}
-            style={{ translateY: !isMobile && !prefersReducedMotion ? itemScroll : 0 }}
+            style={{ translateY: itemParallax }}
         >
             <OptimizedImage
                 className="home-editorial__image"
@@ -142,19 +138,10 @@ function FloatingItemCard({
 }
 
 export function HomeEditorial({ scrollYProgress }: HomeEditorialProps) {
-    const isMobile = useIsMobile();
-    const prefersReducedMotion = useReducedMotion();
-
     return (
         <section className="home-editorial">
             {floatingItems.map((item) => (
-                <FloatingItemCard
-                    key={item.id}
-                    item={item}
-                    scrollYProgress={scrollYProgress}
-                    isMobile={isMobile}
-                    prefersReducedMotion={Boolean(prefersReducedMotion)}
-                />
+                <FloatingItemCard key={item.id} item={item} scrollYProgress={scrollYProgress} />
             ))}
         </section>
     );

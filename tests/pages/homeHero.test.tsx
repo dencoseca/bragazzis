@@ -8,8 +8,9 @@ import { afterEach, beforeEach, describe, expect, test, vi } from "vite-plus/tes
 
 import { HomeHero } from "@/pages/home/HomeHero";
 
-const { useIsMobileMock, useReducedMotionMock } = vi.hoisted(() => ({
+const { useIsMobileMock, useIsTabletMock, useReducedMotionMock } = vi.hoisted(() => ({
     useIsMobileMock: vi.fn<() => boolean>(),
+    useIsTabletMock: vi.fn<() => boolean>(),
     useReducedMotionMock: vi.fn<() => boolean>(),
 }));
 
@@ -73,6 +74,7 @@ vi.mock("motion/react", () => ({
 
 vi.mock("@/hooks/useMediaQuery", () => ({
     useIsMobile: useIsMobileMock,
+    useIsTablet: useIsTabletMock,
 }));
 
 vi.mock("@/components/OptimizedImage", () => ({
@@ -94,6 +96,7 @@ const scrollYProgress = {} as MotionValue<number>;
 describe("HomeHero", () => {
     beforeEach(() => {
         useIsMobileMock.mockReturnValue(false);
+        useIsTabletMock.mockReturnValue(false);
         useReducedMotionMock.mockReturnValue(false);
     });
 
