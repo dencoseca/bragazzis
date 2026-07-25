@@ -26,5 +26,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src", "tests", "playwright.config.ts", "vite.config.ts"]
+  "include": ["src", "tests", "playwright.config.ts", "vite.config.ts", "vite.gallery-assets.ts"]
 }
