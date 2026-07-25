@@ -86,7 +86,6 @@ export function IlGiornoGallery() {
                         image={image.image}
                         alt={image.alt}
                         sizes={getGalleryImageSizes(image.size)}
-                        loading={shouldLoadImage ? "eager" : "lazy"}
                         shouldLoad={shouldLoadImage}
                     />
                 );

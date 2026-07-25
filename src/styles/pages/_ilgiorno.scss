@@ -1,4 +1,8 @@
 @use "../tokens" as tokens;
+
+// Keep this scale aligned with GalleryImageSize in galleryImageMetadata.ts.
+$gallery-image-sizes: 40, 45, 50, 55, 60, 65, 70;
+
 .ilgiorno__title {
     padding: 8vw 0 0;
     color: tokens.$color-paper;
@@ -49,32 +53,10 @@
     // ===================
     // Image Size Classes
     // ===================
-    .image[data-size="40"] {
-        width: 40vw;
-    }
-
-    .image[data-size="45"] {
-        width: 45vw;
-    }
-
-    .image[data-size="50"] {
-        width: 50vw;
-    }
-
-    .image[data-size="55"] {
-        width: 55vw;
-    }
-
-    .image[data-size="60"] {
-        width: 60vw;
-    }
-
-    .image[data-size="65"] {
-        width: 65vw;
-    }
-
-    .image[data-size="70"] {
-        width: 70vw;
+    @each $size in $gallery-image-sizes {
+        .image[data-size="#{$size}"] {
+            width: #{$size}vw;
+        }
     }
 
     .image[data-size] {

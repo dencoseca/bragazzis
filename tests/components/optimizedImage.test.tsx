@@ -52,4 +52,26 @@ describe("OptimizedImage", () => {
         expect(markup).toContain('decoding="async"');
         expect(markup).not.toContain("fetchPriority");
     });
+
+    test("loads an explicitly available image eagerly and forwards picture attributes", () => {
+        const markup = renderToStaticMarkup(
+            <OptimizedImage
+                image={image}
+                alt="fresh pasta"
+                sizes="60vw"
+                className="gallery-image"
+                data-size={60}
+                aria-label="Gallery image"
+                shouldLoad
+            />,
+        );
+
+        expect(markup).toContain(
+            '<picture class="gallery-image" data-size="60" aria-label="Gallery image">',
+        );
+        expect(markup).toContain('src="/fallback.jpg"');
+        expect(markup).toContain('loading="eager"');
+        expect(markup).toContain('decoding="async"');
+        expect(markup).not.toContain("fetchPriority");
+    });
 });

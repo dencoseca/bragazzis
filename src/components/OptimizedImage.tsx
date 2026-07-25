@@ -1,16 +1,13 @@
-import type { Ref } from "react";
+import type { ComponentPropsWithoutRef, Ref } from "react";
 
 import type { OptimizedPicture } from "@/types/imagetools";
 
-export interface OptimizedImageProps {
+export interface OptimizedImageProps extends Omit<ComponentPropsWithoutRef<"picture">, "children"> {
     image: OptimizedPicture;
     alt: string;
     sizes: string;
-    className?: string;
-    "data-size"?: number;
     pictureRef?: Ref<HTMLPictureElement>;
     priority?: boolean;
-    loading?: "eager" | "lazy";
     shouldLoad?: boolean;
 }
 
@@ -24,32 +21,31 @@ export function OptimizedImage({
     image,
     alt,
     sizes,
-    className,
-    "data-size": dataSize,
     pictureRef,
     priority = false,
-    loading,
-    shouldLoad = true,
+    shouldLoad,
+    ...pictureProps
 }: OptimizedImageProps) {
-    const resolvedLoading = loading ?? (priority ? "eager" : "lazy");
+    const resolvedShouldLoad = shouldLoad ?? true;
+    const loading = priority || shouldLoad === true ? "eager" : "lazy";
     const { sources, img } = image;
 
     return (
-        <picture className={className} data-size={dataSize} ref={pictureRef}>
-            {shouldLoad
+        <picture {...pictureProps} ref={pictureRef}>
+            {resolvedShouldLoad
                 ? Object.entries(sources).map(([type, srcset]) => (
                       <source key={type} srcSet={srcset} type={type} sizes={sizes} />
                   ))
                 : null}
             <img
-                src={shouldLoad ? img.src : getPlaceholderImageSrc(img.w, img.h)}
+                src={resolvedShouldLoad ? img.src : getPlaceholderImageSrc(img.w, img.h)}
                 alt={alt}
                 width={img.w}
                 height={img.h}
                 sizes={sizes}
-                loading={resolvedLoading}
-                decoding={shouldLoad && priority ? "sync" : "async"}
-                fetchPriority={shouldLoad && priority ? "high" : undefined}
+                loading={loading}
+                decoding={resolvedShouldLoad && priority ? "sync" : "async"}
+                fetchPriority={resolvedShouldLoad && priority ? "high" : undefined}
             />
         </picture>
     );
