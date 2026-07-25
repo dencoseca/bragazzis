@@ -4,7 +4,10 @@ import { fileURLToPath, URL } from "node:url";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite-plus";
 
+import { validateGalleryImageAssets } from "./vite.gallery-assets";
 import { imageOptimizationPlugin } from "./vite.imagetools";
+
+validateGalleryImageAssets();
 
 const breakpointNames = ["mobile", "tablet"] as const;
 const tokensScss = readFileSync(
@@ -89,8 +92,5 @@ export default defineConfig({
         alias: {
             "@": fileURLToPath(new URL("./src", import.meta.url)),
         },
-    },
-    server: {
-        open: true,
     },
 });

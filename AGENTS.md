@@ -64,8 +64,10 @@ src/
 - **Images:** Keep high-quality `.jpg` originals in `src/assets/images/`; do not overwrite or resize them. Use the
   named `vite-imagetools` presets from `vite.imagetools.ts` (`?preset=gallery`, `?preset=editorial`, or
   `?preset=fullWidth`) to generate responsive AVIF/JPEG fallback variants at build time. Use the shared
-  `OptimizedImage` component for rendering images where possible. Existing `.webp` files are not source assets and
-  should not be imported directly.
+  `OptimizedImage` component for rendering images where possible. Il Giorno gallery originals live in
+  `src/assets/images/gallery/`; its wildcard import and build-time metadata parity check depend on that directory
+  containing only gallery `.jpg` files. Existing `.webp` files are not source assets and should not be imported
+  directly.
 
 ## GitHub Workflow
 
