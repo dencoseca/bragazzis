@@ -12,7 +12,7 @@ export function NotFound() {
                 description={notFoundRoute.description}
                 noIndex
             />
-            <Link to={publicPageRoutes.home.path} className="logo">
+            <Link to={publicPageRoutes.home.path} className="page-not-found__logo">
                 {siteConfig.business.name}
             </Link>
             <div className="page-not-found__content">
@@ -22,7 +22,7 @@ export function NotFound() {
                     D'you do soup? Nope... no, we don't do soup.
                 </p>
             </div>
-            <Link to={publicPageRoutes.home.path} className="back-button">
+            <Link to={publicPageRoutes.home.path} className="page-not-found__back-button">
                 I'll come back
             </Link>
         </div>

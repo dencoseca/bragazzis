@@ -81,7 +81,7 @@ export function IlGiornoGallery() {
                     <OptimizedImage
                         key={index}
                         pictureRef={getGalleryImageElementRef(index)}
-                        className="image"
+                        className="ilgiorno__gallery-image"
                         data-size={image.size}
                         image={image.image}
                         alt={image.alt}

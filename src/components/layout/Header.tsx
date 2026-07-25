@@ -97,14 +97,14 @@ export function Header({
                 aria-controls={menuId}
             >
                 <motion.div
-                    className="line"
+                    className="header__mobile-menu-line"
                     initial="closed"
                     animate={menuIsOpen ? "open" : "closed"}
                     variants={topLineVariants}
                     transition={quickTransition}
                 />
                 <motion.div
-                    className="line"
+                    className="header__mobile-menu-line"
                     initial="closed"
                     animate={menuIsOpen ? "open" : "closed"}
                     variants={bottomLineVariants}

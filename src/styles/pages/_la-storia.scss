@@ -32,7 +32,7 @@
         }
     }
 
-    .line {
+    .lastoria__story-line {
         position: relative;
         width: 1px;
         height: 15vw;
@@ -44,7 +44,7 @@
         }
     }
 
-    .ticket {
+    .lastoria__ticket {
         position: absolute;
         top: 0;
         width: 30vw;
@@ -61,11 +61,11 @@
             display: block;
         }
 
-        &.left {
+        &.lastoria__ticket--left {
             left: -55vw;
         }
 
-        &.right {
+        &.lastoria__ticket--right {
             left: 25vw;
         }
     }

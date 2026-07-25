@@ -25,7 +25,7 @@ $gallery-image-sizes: 40, 45, 50, 55, 60, 65, 70;
     // =====================
     // General Image Styles
     // =====================
-    .image {
+    .ilgiorno__gallery-image {
         display: block;
         margin: 5vw;
 
@@ -54,12 +54,12 @@ $gallery-image-sizes: 40, 45, 50, 55, 60, 65, 70;
     // Image Size Classes
     // ===================
     @each $size in $gallery-image-sizes {
-        .image[data-size="#{$size}"] {
+        .ilgiorno__gallery-image[data-size="#{$size}"] {
             width: #{$size}vw;
         }
     }
 
-    .image[data-size] {
+    .ilgiorno__gallery-image[data-size] {
         @media (max-width: tokens.$breakpoint-mobile) {
             width: 100%;
         }
