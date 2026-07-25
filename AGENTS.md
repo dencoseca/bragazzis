@@ -26,7 +26,7 @@ src/
 │   └── images/        # Static image assets (jpg, png, svg — high-quality originals)
 ├── components/        # Shared React components, with site shell/navigation under components/layout/
 ├── constants/         # Shared TypeScript constants (animations.ts, siteConfig.ts, etc.)
-├── hooks/             # Custom React hooks (useSmoothScroll, useMediaQuery)
+├── hooks/             # React hooks shared across routes (useSmoothScroll, useMediaQuery)
 ├── pages/             # Route-level pages and their feature-local components/data (for example pages/home/)
 ├── styles/            # Global SCSS files
 │   ├── components/    # Component-specific SCSS partials
@@ -54,7 +54,9 @@ src/
 - **Components:** Functional components only. Use named exports for everything (components, hooks, types, interfaces).
 - **Feature colocation:** Keep page-specific components beside their route under `src/pages/<feature>/`; reserve
   `src/components/` for components shared across routes.
-- **Hooks:** Custom hooks live in `src/hooks/`. Prefix with `use`.
+- **Hooks:** Prefix with `use`. Hooks shared across routes live in `src/hooks/`; a hook used by a single feature is
+  colocated with it (for example `src/pages/home/useScrollParallax.ts`), and moves to `src/hooks/` when a second route
+  needs it.
 - **Styles:** SCSS partials follow the convention `_componentName.scss` or `_pageName.scss`. Import new partials into
   `src/styles/main.scss`.
 - **Constants:** Shared TypeScript values go in `src/constants/`. Visual design tokens, theme colors, and breakpoints
@@ -82,6 +84,9 @@ src/
 - **Smooth scrolling** is powered by Lenis via the `useSmoothScroll` hook, used in `components/layout/Layout.tsx`.
 - **Responsive JS behavior** uses the Sass-backed media-query helpers in `useMediaQuery`; viewport-relative Motion
   transforms use CSS units directly so resizing does not require React state.
+- **Scroll parallax** on Home is gated in one place: `src/pages/home/useScrollParallax.ts` owns the policy that parallax
+  is disabled on mobile and under reduced motion, so sections declare only their input/output ranges. `Home.tsx` keeps a
+  single `useScroll()` subscription that it passes to every section.
 - **Themes** are semantic in React (`data-theme="light"` / `data-theme="dark"`) and mapped to actual colors in Sass.
 - **Breakpoints** are owned by Sass tokens in `src/styles/_tokens.scss`; `vite.config.ts` injects their values at build
   time for `src/constants/breakpoints.ts`, so JavaScript never mirrors the numbers in TypeScript.

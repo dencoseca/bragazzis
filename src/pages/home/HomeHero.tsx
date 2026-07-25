@@ -1,4 +1,4 @@
-import { motion, type MotionValue, useReducedMotion, useTransform } from "motion/react";
+import { motion, type MotionValue, useReducedMotion } from "motion/react";
 import { useRef } from "react";
 
 import parmesanImg from "@/assets/images/parmesan.jpg?preset=fullWidth";
@@ -6,6 +6,7 @@ import { OptimizedImage } from "@/components/OptimizedImage";
 import { smoothTransition } from "@/constants/animations";
 import { siteConfig } from "@/constants/siteConfig";
 import { useIsMobile } from "@/hooks/useMediaQuery";
+import { useScrollParallax } from "@/pages/home/useScrollParallax";
 
 interface HomeHeroProps {
     scrollYProgress: MotionValue<number>;
@@ -69,7 +70,10 @@ export function HomeHero({ scrollYProgress }: HomeHeroProps) {
     const prefersReducedMotion = useReducedMotion();
     const mobileCoverRef = useRef<HTMLElement>(null);
     const statementRef = useRef<HTMLElement>(null);
-    const heroImageScroll = useTransform(scrollYProgress, [0, 1], ["0vh", "59vh"]);
+    const heroImageParallax = useScrollParallax(scrollYProgress, {
+        input: [0, 1],
+        output: ["0vh", "59vh"],
+    });
     const { address } = siteConfig.business;
     const initialAnimationState = prefersReducedMotion ? false : "initial";
     const animateAnimationState = prefersReducedMotion ? undefined : "animate";
@@ -95,9 +99,7 @@ export function HomeHero({ scrollYProgress }: HomeHeroProps) {
                 <div className="home-hero__image-wrapper">
                     <motion.div
                         className="home-hero__image-inner"
-                        style={{
-                            translateY: isMobile || prefersReducedMotion ? 0 : heroImageScroll,
-                        }}
+                        style={{ translateY: heroImageParallax }}
                     >
                         <OptimizedImage
                             className="home-hero__image"
