@@ -1,7 +1,5 @@
 $color-paper: #f6f4f1;
 $color-ink: #1d1d1d;
-$color-true-black: #000;
-$color-text-shadow: #666;
 
 $font-display: "Abril Fatface", cursive;
 $font-text: "Josefin Sans", sans-serif;
@@ -12,10 +10,4 @@ $breakpoint-tablet: 1080px;
 :root {
     --color-paper: #{$color-paper};
     --color-ink: #{$color-ink};
-    --color-true-black: #{$color-true-black};
-    --color-text-shadow: #{$color-text-shadow};
-    --font-display: #{$font-display};
-    --font-text: #{$font-text};
-    --breakpoint-mobile: #{$breakpoint-mobile};
-    --breakpoint-tablet: #{$breakpoint-tablet};
 }

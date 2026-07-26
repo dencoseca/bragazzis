@@ -61,7 +61,7 @@ src/
   `_footer.scss`, `_la-storia.scss`, `_il-giorno.scss`, and `_not-found.scss`). Import new partials into
   `src/styles/main.scss`.
 - **Constants:** Shared TypeScript values go in `src/constants/`. Visual design tokens, theme colors, and breakpoints
-  live in `src/styles/_tokens.scss`; JS reads breakpoint custom properties through hooks when behavior requires it.
+  live in `src/styles/_tokens.scss`; `vite.config.ts` injects Sass breakpoint values into JavaScript at build time.
 - **Images:** Keep high-quality `.jpg` originals in `src/assets/images/`; do not overwrite or resize them. Use the
   named `vite-imagetools` presets from `vite.imagetools.ts` (`?preset=gallery`, `?preset=editorial`, or
   `?preset=fullWidth`) to generate responsive AVIF/JPEG fallback variants at build time. Use the shared
@@ -116,8 +116,8 @@ src/
 
 - **Do NOT add `"use client"` directives.** This is not a Next.js project.
 - **Do NOT introduce CSS-in-JS or CSS modules.** The project uses global SCSS with a partial-based architecture.
-- **Do NOT delete or modify `.jpg` originals** in `src/assets/images/`. Responsive variants are generated at build time
-  by `vite-imagetools` using the named presets in `vite.imagetools.ts`.
+- **Do NOT overwrite, resize, or re-encode `.jpg` originals** in `src/assets/images/`. Responsive variants are generated
+  at build time by `vite-imagetools` using the named presets in `vite.imagetools.ts`.
 - **Keep bundle size in mind.** Lazy-load routes (already done in `App.tsx`) and avoid large eager imports.
 - **No default exports.** The project enforces named exports via linting.
 - **Keep AGENTS.md updated.** After finishing a task, update this file if any of your changes make its current content invalid or outdated.
