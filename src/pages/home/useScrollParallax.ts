@@ -27,10 +27,10 @@ export function useScrollParallax(
     const isMobile = useIsMobile();
     const isTablet = useIsTablet();
     const prefersReducedMotion = useReducedMotion();
-    const laptopParallax = useTransform(scrollYProgress, input, output);
-    const tabletParallax = useTransform(scrollYProgress, input, tabletOutput ?? output);
+    const selectedOutput = isTablet ? (tabletOutput ?? output) : output;
+    const parallax = useTransform(scrollYProgress, input, selectedOutput);
 
     if (isMobile || prefersReducedMotion) return 0;
 
-    return isTablet ? tabletParallax : laptopParallax;
+    return parallax;
 }
