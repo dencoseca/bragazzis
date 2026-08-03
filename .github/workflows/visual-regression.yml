@@ -37,7 +37,7 @@ jobs:
         run: vp exec playwright install --with-deps chromium
 
       - name: Run visual regression tests
-        run: vp run test:visual
+        run: vp run test:visual:ci
 
       - name: Upload visual failure artifacts
         if: failure()

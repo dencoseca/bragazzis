@@ -10,6 +10,7 @@
     "preview": "vp preview",
     "test:coverage": "vp test --coverage",
     "test:visual": "playwright test",
+    "test:visual:ci": "playwright test --grep-invert @local-only",
     "test:visual:update": "playwright test --update-snapshots"
   },
   "dependencies": {

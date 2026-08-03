@@ -96,6 +96,36 @@ test.describe("mobile menu visuals", () => {
     });
 });
 
+test.describe("mobile scrolling", () => {
+    test("home responds to a touch swipe", { tag: "@local-only" }, async ({ baseURL, browser }) => {
+        const context = await browser.newContext({
+            baseURL,
+            hasTouch: true,
+            isMobile: true,
+            viewport: MOBILE_VIEWPORT,
+        });
+        const page = await context.newPage();
+
+        try {
+            await page.goto(publicPageRoutes.home.path, { waitUntil: "networkidle" });
+            await page.waitForFunction(() => Boolean(document.querySelector("#main-content")));
+
+            const client = await context.newCDPSession(page);
+            await client.send("Input.synthesizeScrollGesture", {
+                gestureSourceType: "touch",
+                speed: 800,
+                x: Math.round(MOBILE_VIEWPORT.width / 2),
+                y: Math.round(MOBILE_VIEWPORT.height * 0.8),
+                yDistance: -Math.round(MOBILE_VIEWPORT.height * 0.7),
+            });
+
+            await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
+        } finally {
+            await context.close();
+        }
+    });
+});
+
 test.describe("home floating section handoff", () => {
     for (const viewport of FLOATING_HANDOFF_VIEWPORTS) {
         test(`final floating item leads naturally into seasonal banner at ${viewport.name}`, async ({
