@@ -45,7 +45,7 @@ html {
     width: 100%;
     margin: 0px;
     padding: 0px;
-    overflow-x: hidden;
+    overflow-x: clip;
     overscroll-behavior: none;
 }
 /* Hide scrollbar for IE, Edge and Firefox */
