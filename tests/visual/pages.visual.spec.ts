@@ -97,7 +97,7 @@ test.describe("mobile menu visuals", () => {
 });
 
 test.describe("mobile scrolling", () => {
-    test("home responds to a touch swipe", async ({ baseURL, browser }) => {
+    test("home responds to a touch swipe", { tag: "@local-only" }, async ({ baseURL, browser }) => {
         const context = await browser.newContext({
             baseURL,
             hasTouch: true,

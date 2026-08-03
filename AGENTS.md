@@ -109,6 +109,8 @@ src/
   noise.
 - CI runs on Linux with centralized Chromium baselines. Local macOS runs may differ slightly, so CI diffs should be
   treated as the source of truth when platform rendering differences appear.
+- `vp run test:visual` runs the complete local Playwright suite. CI uses `vp run test:visual:ci`, which excludes tests
+  tagged `@local-only` when their browser input emulation is not portable to Linux.
 - Do not commit `playwright-report/` or `test-results/`; only commit intentional baseline images under
   `tests/visual/__screenshots__/`.
 
