@@ -5,7 +5,12 @@ export function useSmoothScroll(enabled = true): void {
     useEffect(() => {
         if (!enabled) return;
 
-        const lenis = new Lenis({ autoRaf: true });
+        const lenis = new Lenis({
+            anchors: { immediate: true },
+            autoRaf: true,
+            autoToggle: true,
+            stopInertiaOnNavigate: true,
+        });
 
         return () => {
             lenis.destroy();

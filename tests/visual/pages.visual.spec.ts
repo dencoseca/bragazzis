@@ -126,6 +126,72 @@ test.describe("mobile scrolling", () => {
     });
 });
 
+test.describe("smooth-scroll navigation", () => {
+    test("skip link overrides active inertia", async ({ page }) => {
+        await gotoRouteAndSettle(page, publicPageRoutes.home.path, 0);
+        await startWheelInertia(page);
+
+        await page.locator(".skip-to-content").focus();
+        await page.keyboard.press("Enter");
+
+        await expect(page).toHaveURL(/#main-content$/);
+        await expect
+            .poll(() =>
+                page
+                    .locator("#main-content")
+                    .evaluate((main) => Math.abs(main.getBoundingClientRect().top)),
+            )
+            .toBeLessThanOrEqual(2);
+    });
+
+    test("route navigation stops active inertia", async ({ page }) => {
+        await gotoRouteAndSettle(page, publicPageRoutes.laStoria.path, 0);
+        await page.waitForFunction(() => Boolean(document.querySelector(".lastoria")));
+        await startWheelInertia(page);
+
+        await page.getByRole("link", { name: "home" }).click();
+        await expect(page).toHaveURL(new RegExp(`${publicPageRoutes.home.path}$`));
+        await expect(page.locator("html")).not.toHaveClass(/lenis-smooth/);
+        await page.waitForFunction(() => Boolean(document.querySelector(".home-hero")));
+
+        const destinationScrollTop = await page.evaluate(() => window.scrollY);
+
+        await page.waitForTimeout(300);
+
+        await expect
+            .poll(() =>
+                page.evaluate(
+                    (expectedScrollTop) => Math.abs(window.scrollY - expectedScrollTop),
+                    destinationScrollTop,
+                ),
+            )
+            .toBeLessThanOrEqual(2);
+    });
+
+    test("mobile menu stops inertia and restores scrolling", async ({ page }) => {
+        await page.setViewportSize(MOBILE_VIEWPORT);
+        await gotoRouteAndSettle(page, publicPageRoutes.home.path, 0);
+        await startWheelInertia(page);
+
+        await page.getByRole("button", { name: "Open menu" }).click();
+        await expect(page.locator("html")).toHaveClass(/lenis-stopped/);
+
+        const lockedScrollTop = await page.evaluate(() => window.scrollY);
+
+        await page.waitForTimeout(300);
+
+        expect(await page.evaluate(() => window.scrollY)).toBeCloseTo(lockedScrollTop, 0);
+
+        await page.getByRole("button", { name: "Close menu" }).click();
+        await expect(page.locator("html")).not.toHaveClass(/lenis-stopped/);
+        await page.mouse.wheel(0, 1_000);
+
+        await expect
+            .poll(() => page.evaluate(() => window.scrollY))
+            .toBeGreaterThan(lockedScrollTop);
+    });
+});
+
 test.describe("home floating section handoff", () => {
     for (const viewport of FLOATING_HANDOFF_VIEWPORTS) {
         test(`final floating item leads naturally into seasonal banner at ${viewport.name}`, async ({
@@ -150,6 +216,15 @@ async function gotoRouteAndSettle(page: Page, path: string, settleMs: number) {
     await page.evaluate(() => document.fonts.ready);
     await waitForViewportAssets(page);
     await page.waitForTimeout(settleMs);
+}
+
+async function startWheelInertia(page: Page) {
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.mouse.move(100, 300);
+    await page.mouse.wheel(0, 4_500);
+
+    await expect(page.locator("html")).toHaveClass(/lenis-scrolling/);
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
 }
 
 async function scrollToRatio(page: Page, ratio: number) {

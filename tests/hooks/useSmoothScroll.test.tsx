@@ -38,7 +38,12 @@ describe("useSmoothScroll", () => {
         const { unmount } = render(<SmoothScrollHarness />);
 
         expect(lenisMocks.construct).toHaveBeenCalledOnce();
-        expect(lenisMocks.construct).toHaveBeenCalledWith({ autoRaf: true });
+        expect(lenisMocks.construct).toHaveBeenCalledWith({
+            anchors: { immediate: true },
+            autoRaf: true,
+            autoToggle: true,
+            stopInertiaOnNavigate: true,
+        });
         expect(lenisMocks.destroy).not.toHaveBeenCalled();
 
         unmount();
