@@ -31,8 +31,6 @@
     "@vitest/coverage-v8": "catalog:",
     "happy-dom": "20.11.2",
     "sass": "1.102.0",
-    "sharp": "0.35.3",
-    "svgo": "4.0.2",
     "typescript": "7.0.2",
     "vite": "catalog:",
     "vite-imagetools": "12.0.0",
