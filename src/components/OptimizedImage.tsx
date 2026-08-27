@@ -1,4 +1,4 @@
-import type { ComponentPropsWithoutRef, Ref } from "react";
+import { useState, type ComponentPropsWithoutRef, type Ref } from "react";
 
 import type { OptimizedPicture } from "@/types/imagetools";
 
@@ -8,6 +8,7 @@ export interface OptimizedImageProps extends Omit<ComponentPropsWithoutRef<"pict
     sizes: string;
     pictureRef?: Ref<HTMLPictureElement>;
     priority?: boolean;
+    revealOnLoad?: boolean;
     shouldLoad?: boolean;
 }
 
@@ -23,15 +24,21 @@ export function OptimizedImage({
     sizes,
     pictureRef,
     priority = false,
+    revealOnLoad = false,
     shouldLoad,
     ...pictureProps
 }: OptimizedImageProps) {
+    const [hasLoaded, setHasLoaded] = useState(false);
     const resolvedShouldLoad = shouldLoad ?? true;
     const loading = priority || shouldLoad === true ? "eager" : "lazy";
     const { sources, img } = image;
 
     return (
-        <picture {...pictureProps} ref={pictureRef}>
+        <picture
+            {...pictureProps}
+            ref={pictureRef}
+            data-image-loaded={revealOnLoad ? String(hasLoaded) : undefined}
+        >
             {resolvedShouldLoad
                 ? Object.entries(sources).map(([type, srcset]) => (
                       <source key={type} srcSet={srcset} type={type} sizes={sizes} />
@@ -46,6 +53,7 @@ export function OptimizedImage({
                 loading={loading}
                 decoding={resolvedShouldLoad && priority ? "sync" : "async"}
                 fetchPriority={resolvedShouldLoad && priority ? "high" : undefined}
+                onLoad={revealOnLoad && resolvedShouldLoad ? () => setHasLoaded(true) : undefined}
             />
         </picture>
     );

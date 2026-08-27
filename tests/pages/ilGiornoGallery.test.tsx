@@ -3,7 +3,7 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
-import { act, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, test, vi } from "vite-plus/test";
 
 import { IlGiornoGallery } from "@/pages/il-giorno/IlGiornoGallery";
@@ -137,9 +137,11 @@ describe("IlGiornoGallery", () => {
 
         render(<IlGiornoGallery />);
 
-        const pictures = getGalleryPictures();
+        const images = screen.getAllByRole("img");
 
-        expect(pictures).toHaveLength(galleryImages.length);
+        expect(images[0].getAttribute("loading")).toBe("eager");
+        expect(images[0].getAttribute("decoding")).toBe("sync");
+        expect(images[0].getAttribute("fetchpriority")).toBe("high");
         expect(getLoadStates()).toEqual(
             galleryImages.map(() => ({
                 loading: "eager",
@@ -148,7 +150,7 @@ describe("IlGiornoGallery", () => {
         );
     });
 
-    test("starts with the initial eager set and loads ahead after intersection", async () => {
+    test("starts with two images and loads three ahead after intersection", async () => {
         installIntersectionObserverMock();
 
         render(<IlGiornoGallery />);
@@ -160,34 +162,56 @@ describe("IlGiornoGallery", () => {
         expect(observer.rootMargin).toBe("1200px 0px");
         expect(observer.observedElements).toHaveLength(galleryImages.length);
         expect(getLoadStates()).toEqual([
-            ...Array.from({ length: 8 }, () => ({
+            ...Array.from({ length: 2 }, () => ({
                 loading: "eager",
                 shouldLoad: "true",
             })),
-            ...Array.from({ length: 4 }, () => ({
+            ...Array.from({ length: 10 }, () => ({
                 loading: "lazy",
                 shouldLoad: "false",
             })),
         ]);
 
         await act(async () => {
-            observer.trigger(initialPictures[8], false);
+            observer.trigger(initialPictures[2], false);
         });
 
-        expect(getLoadStates()[11]).toEqual({
+        expect(getLoadStates()[5]).toEqual({
             loading: "lazy",
             shouldLoad: "false",
         });
 
         await act(async () => {
-            observer.trigger(initialPictures[8], true);
+            observer.trigger(initialPictures[2], true);
         });
 
-        expect(getLoadStates()).toEqual(
-            galleryImages.map(() => ({
+        expect(getLoadStates()).toEqual([
+            ...Array.from({ length: 6 }, () => ({
                 loading: "eager",
                 shouldLoad: "true",
             })),
+            ...Array.from({ length: 6 }, () => ({
+                loading: "lazy",
+                shouldLoad: "false",
+            })),
+        ]);
+    });
+
+    test("marks each image as loaded for its reveal animation", () => {
+        render(<IlGiornoGallery />);
+
+        const images = screen.getAllByRole("img");
+        const pictures = getGalleryPictures();
+
+        expect(pictures.map((picture) => picture.dataset.imageLoaded)).toEqual(
+            galleryImages.map(() => "false"),
+        );
+
+        fireEvent.load(images[0]);
+
+        expect(pictures[0].dataset.imageLoaded).toBe("true");
+        expect(pictures.slice(1).map((picture) => picture.dataset.imageLoaded)).toEqual(
+            galleryImages.slice(1).map(() => "false"),
         );
     });
 
@@ -195,7 +219,6 @@ describe("IlGiornoGallery", () => {
         installIntersectionObserverMock();
 
         const { unmount } = render(<IlGiornoGallery />);
-
         const observer = MockIntersectionObserver.instances[0];
 
         unmount();

@@ -4,8 +4,8 @@ import { OptimizedImage } from "@/components/OptimizedImage";
 import { getBreakpointMediaQuery } from "@/constants/breakpoints";
 import { galleryImages, type GalleryImageSize } from "@/pages/il-giorno/galleryImages";
 
-const INITIAL_EAGER_GALLERY_IMAGE_COUNT = 8;
-const GALLERY_IMAGE_LOAD_AHEAD_COUNT = 5;
+const INITIAL_EAGER_GALLERY_IMAGE_COUNT = 2;
+const GALLERY_IMAGE_LOAD_AHEAD_COUNT = 3;
 const GALLERY_IMAGE_PRELOAD_ROOT_MARGIN = "1200px 0px";
 
 function getGalleryLoadIndex(index: number) {
@@ -86,6 +86,8 @@ export function IlGiornoGallery() {
                         image={image.image}
                         alt={image.alt}
                         sizes={getGalleryImageSizes(image.size)}
+                        priority={index === 0}
+                        revealOnLoad
                         shouldLoad={shouldLoadImage}
                     />
                 );
