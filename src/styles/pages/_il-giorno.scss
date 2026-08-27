@@ -60,7 +60,7 @@ $gallery-image-sizes: 40, 45, 50, 55, 60, 65, 70;
         }
 
         &[data-image-loaded="true"] img {
-            animation: ilgiorno-image-reveal 0.4s ease both;
+            animation: ilgiorno-image-reveal 0.2s ease both;
         }
     }
 

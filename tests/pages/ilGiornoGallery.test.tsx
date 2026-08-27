@@ -3,8 +3,8 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
-import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, test, vi } from "vite-plus/test";
+import { act, fireEvent, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, test, vi } from "vite-plus/test";
 
 import { IlGiornoGallery } from "@/pages/il-giorno/IlGiornoGallery";
 
@@ -31,6 +31,53 @@ vi.mock("@/pages/il-giorno/galleryImages", () => ({
     galleryImages,
 }));
 
+class MockIntersectionObserver {
+    static instances: MockIntersectionObserver[] = [];
+
+    readonly root = null;
+    readonly rootMargin: string;
+    readonly thresholds: readonly number[] = [];
+
+    readonly disconnect = vi.fn();
+    readonly observe = vi.fn((element: Element) => {
+        this.observedElements.push(element);
+    });
+    readonly takeRecords = vi.fn(() => []);
+    readonly unobserve = vi.fn();
+
+    readonly observedElements: Element[] = [];
+
+    private readonly callback: IntersectionObserverCallback;
+
+    constructor(callback: IntersectionObserverCallback, options?: IntersectionObserverInit) {
+        this.callback = callback;
+        this.rootMargin = options?.rootMargin ?? "";
+        MockIntersectionObserver.instances.push(this);
+    }
+
+    trigger(target: Element, isIntersecting: boolean) {
+        this.callback(
+            [
+                {
+                    isIntersecting,
+                    target,
+                } as IntersectionObserverEntry,
+            ],
+            this as unknown as IntersectionObserver,
+        );
+    }
+}
+
+function installIntersectionObserverMock() {
+    MockIntersectionObserver.instances = [];
+    window.IntersectionObserver =
+        MockIntersectionObserver as unknown as typeof IntersectionObserver;
+}
+
+function removeIntersectionObserver() {
+    Reflect.deleteProperty(window, "IntersectionObserver");
+}
+
 function getGalleryPictures() {
     return screen.getAllByRole("img").map((image) => {
         const picture = image.closest("picture");
@@ -41,6 +88,13 @@ function getGalleryPictures() {
 
         return picture;
     });
+}
+
+function getLoadStates() {
+    return screen.getAllByRole("img").map((image) => ({
+        loading: image.getAttribute("loading"),
+        shouldLoad: image.getAttribute("src")?.startsWith("data:image/svg+xml") ? "false" : "true",
+    }));
 }
 
 function getSassMobileBreakpoint() {
@@ -55,6 +109,10 @@ function getSassMobileBreakpoint() {
 }
 
 describe("IlGiornoGallery", () => {
+    afterEach(() => {
+        removeIntersectionObserver();
+    });
+
     test("preserves captions, image ordering, and responsive sizes", () => {
         render(<IlGiornoGallery />);
 
@@ -74,7 +132,9 @@ describe("IlGiornoGallery", () => {
         );
     });
 
-    test("prioritizes the first image and natively lazy loads the rest", () => {
+    test("loads every gallery image when IntersectionObserver is unavailable", () => {
+        removeIntersectionObserver();
+
         render(<IlGiornoGallery />);
 
         const images = screen.getAllByRole("img");
@@ -82,18 +142,59 @@ describe("IlGiornoGallery", () => {
         expect(images[0].getAttribute("loading")).toBe("eager");
         expect(images[0].getAttribute("decoding")).toBe("sync");
         expect(images[0].getAttribute("fetchpriority")).toBe("high");
-        expect(images.slice(1).map((image) => image.getAttribute("loading"))).toEqual(
-            galleryImages.slice(1).map(() => "lazy"),
+        expect(getLoadStates()).toEqual(
+            galleryImages.map(() => ({
+                loading: "eager",
+                shouldLoad: "true",
+            })),
         );
-        expect(images.slice(1).map((image) => image.getAttribute("decoding"))).toEqual(
-            galleryImages.slice(1).map(() => "async"),
-        );
-        expect(images.map((image) => image.getAttribute("src"))).toEqual(
-            galleryImages.map(({ image }) => image.img.src),
-        );
-        expect(
-            getGalleryPictures().map((picture) => picture.querySelectorAll("source").length),
-        ).toEqual(galleryImages.map(() => 1));
+    });
+
+    test("starts with two images and loads three ahead after intersection", async () => {
+        installIntersectionObserverMock();
+
+        render(<IlGiornoGallery />);
+
+        const observer = MockIntersectionObserver.instances[0];
+        const initialPictures = getGalleryPictures();
+
+        expect(observer).toBeDefined();
+        expect(observer.rootMargin).toBe("1200px 0px");
+        expect(observer.observedElements).toHaveLength(galleryImages.length);
+        expect(getLoadStates()).toEqual([
+            ...Array.from({ length: 2 }, () => ({
+                loading: "eager",
+                shouldLoad: "true",
+            })),
+            ...Array.from({ length: 10 }, () => ({
+                loading: "lazy",
+                shouldLoad: "false",
+            })),
+        ]);
+
+        await act(async () => {
+            observer.trigger(initialPictures[2], false);
+        });
+
+        expect(getLoadStates()[5]).toEqual({
+            loading: "lazy",
+            shouldLoad: "false",
+        });
+
+        await act(async () => {
+            observer.trigger(initialPictures[2], true);
+        });
+
+        expect(getLoadStates()).toEqual([
+            ...Array.from({ length: 6 }, () => ({
+                loading: "eager",
+                shouldLoad: "true",
+            })),
+            ...Array.from({ length: 6 }, () => ({
+                loading: "lazy",
+                shouldLoad: "false",
+            })),
+        ]);
     });
 
     test("marks each image as loaded for its reveal animation", () => {
@@ -112,5 +213,16 @@ describe("IlGiornoGallery", () => {
         expect(pictures.slice(1).map((picture) => picture.dataset.imageLoaded)).toEqual(
             galleryImages.slice(1).map(() => "false"),
         );
+    });
+
+    test("disconnects the observer when the gallery unmounts", () => {
+        installIntersectionObserverMock();
+
+        const { unmount } = render(<IlGiornoGallery />);
+        const observer = MockIntersectionObserver.instances[0];
+
+        unmount();
+
+        expect(observer.disconnect).toHaveBeenCalledOnce();
     });
 });

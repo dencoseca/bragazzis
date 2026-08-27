@@ -55,6 +55,20 @@ describe("OptimizedImage", () => {
         expect(markup).not.toContain("fetchPriority");
     });
 
+    test("uses an intrinsic-size placeholder while deferred", () => {
+        const markup = renderToStaticMarkup(
+            <OptimizedImage image={image} alt="fresh pasta" sizes="100vw" shouldLoad={false} />,
+        );
+
+        expect(markup).not.toContain("<source");
+        expect(markup).toContain("data:image/svg+xml");
+        expect(markup).toContain("width%3D%22640%22");
+        expect(markup).toContain("height%3D%22480%22");
+        expect(markup).toContain('loading="lazy"');
+        expect(markup).toContain('decoding="async"');
+        expect(markup).not.toContain("fetchPriority");
+    });
+
     test("forwards picture attributes", () => {
         const markup = renderToStaticMarkup(
             <OptimizedImage

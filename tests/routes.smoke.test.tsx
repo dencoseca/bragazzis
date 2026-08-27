@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 import { act, cleanup, render, waitFor } from "@testing-library/react";
-import { useEffect } from "react";
+import { useEffect, type Ref } from "react";
 import { MemoryRouter, useNavigate, type NavigateFunction } from "react-router-dom";
 import { afterEach, describe, expect, test, vi } from "vite-plus/test";
 
@@ -24,6 +24,7 @@ interface MockOptimizedImageProps {
     alt: string;
     className?: string;
     "data-size"?: number;
+    pictureRef?: Ref<HTMLPictureElement>;
 }
 
 // Keep route smoke tests focused on routing, content, and metadata without
@@ -52,9 +53,9 @@ vi.mock("@/pages/home/HomeSeasonalBanner", () => ({
 }));
 
 vi.mock("@/components/OptimizedImage", () => ({
-    OptimizedImage({ alt, className, "data-size": dataSize }: MockOptimizedImageProps) {
+    OptimizedImage({ alt, className, "data-size": dataSize, pictureRef }: MockOptimizedImageProps) {
         return (
-            <picture className={className} data-size={dataSize}>
+            <picture className={className} data-size={dataSize} ref={pictureRef}>
                 <img
                     alt={alt}
                     decoding="async"
