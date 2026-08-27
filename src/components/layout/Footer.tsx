@@ -69,7 +69,7 @@ export function Footer({ theme, scrollToTopBehavior = "smooth" }: FooterProps) {
                         <li className="text--sm">site by {siteConfig.credits.siteBy}</li>
                     </ul>
                 </div>
-                <div className="footer__list footer__list--social">
+                <div className="footer__list footer__list--community">
                     <h4 className="text--heading-sm">Social</h4>
                     <ul>
                         {siteConfig.links.social.map((link) => (
