@@ -1,10 +1,11 @@
 /** @vitest-environment happy-dom */
 
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import type { MotionValue } from "motion/react";
 import type { HTMLAttributes } from "react";
 import { beforeEach, describe, expect, test, vi } from "vite-plus/test";
 
+import { Home } from "@/pages/home/Home";
 import { HomeEditorial } from "@/pages/home/HomeEditorial";
 import { HomeSeasonalBanner } from "@/pages/home/HomeSeasonalBanner";
 
@@ -30,6 +31,9 @@ vi.mock("motion/react", () => ({
     useTransform(_scrollYProgress: unknown, _input: readonly number[], output: readonly string[]) {
         return output.join(" to ");
     },
+    useScroll() {
+        return { scrollYProgress: {} };
+    },
 }));
 
 vi.mock("@/hooks/useMediaQuery", () => ({
@@ -38,11 +42,31 @@ vi.mock("@/hooks/useMediaQuery", () => ({
 }));
 
 vi.mock("@/components/OptimizedImage", () => ({
-    OptimizedImage({ alt, className, sizes }: { alt: string; className?: string; sizes: string }) {
+    OptimizedImage({
+        alt,
+        className,
+        shouldLoad,
+        sizes,
+    }: {
+        alt: string;
+        className?: string;
+        shouldLoad?: boolean;
+        sizes: string;
+    }) {
         return (
             <picture className={className}>
-                <img alt={alt} sizes={sizes} />
+                <img alt={alt} sizes={sizes} data-should-load={String(shouldLoad)} />
             </picture>
+        );
+    },
+}));
+
+vi.mock("@/pages/home/HomeHero", () => ({
+    HomeHero({ onSettled }: { onSettled?: () => void }) {
+        return (
+            <button type="button" onClick={onSettled}>
+                Settle hero
+            </button>
         );
     },
 }));
@@ -61,6 +85,20 @@ function getParallaxValues(container: HTMLElement) {
     );
 }
 
+describe("Home image loading", () => {
+    test("starts loading every below-fold image after the hero settles", () => {
+        render(<Home />);
+
+        const images = screen.getAllByRole("img");
+        expect(images).toHaveLength(5);
+        expect(images.map((image) => image.dataset.shouldLoad)).toEqual(images.map(() => "false"));
+
+        fireEvent.click(screen.getByRole("button", { name: "Settle hero" }));
+
+        expect(images.map((image) => image.dataset.shouldLoad)).toEqual(images.map(() => "true"));
+    });
+});
+
 describe("HomeEditorial", () => {
     beforeEach(() => {
         responsiveMocks.useIsMobile.mockReturnValue(false);
@@ -69,7 +107,9 @@ describe("HomeEditorial", () => {
     });
 
     test("renders the editorial content and desktop image treatment", () => {
-        const { container } = render(<HomeEditorial scrollYProgress={scrollYProgress} />);
+        const { container } = render(
+            <HomeEditorial scrollYProgress={scrollYProgress} shouldLoadImages />,
+        );
 
         expect(container.querySelectorAll(".home-editorial__item")).toHaveLength(4);
         expect(
@@ -93,13 +133,15 @@ describe("HomeEditorial", () => {
 
     test("removes editorial parallax on mobile and under reduced motion", () => {
         responsiveMocks.useIsMobile.mockReturnValue(true);
-        const { container, rerender } = render(<HomeEditorial scrollYProgress={scrollYProgress} />);
+        const { container, rerender } = render(
+            <HomeEditorial scrollYProgress={scrollYProgress} shouldLoadImages />,
+        );
 
         expect(getParallaxValues(container)).toEqual(["0", "0", "0", "0"]);
 
         responsiveMocks.useIsMobile.mockReturnValue(false);
         responsiveMocks.useReducedMotion.mockReturnValue(true);
-        rerender(<HomeEditorial scrollYProgress={scrollYProgress} />);
+        rerender(<HomeEditorial scrollYProgress={scrollYProgress} shouldLoadImages />);
 
         expect(getParallaxValues(container)).toEqual(["0", "0", "0", "0"]);
     });
@@ -113,7 +155,9 @@ describe("HomeSeasonalBanner", () => {
     });
 
     test("renders its desktop and mobile copy with the responsive image", () => {
-        const { container } = render(<HomeSeasonalBanner scrollYProgress={scrollYProgress} />);
+        const { container } = render(
+            <HomeSeasonalBanner scrollYProgress={scrollYProgress} shouldLoadImage />,
+        );
 
         expect(
             screen
@@ -132,19 +176,19 @@ describe("HomeSeasonalBanner", () => {
     test("uses tablet parallax and disables it on mobile or under reduced motion", () => {
         responsiveMocks.useIsTablet.mockReturnValue(true);
         const { container, rerender } = render(
-            <HomeSeasonalBanner scrollYProgress={scrollYProgress} />,
+            <HomeSeasonalBanner scrollYProgress={scrollYProgress} shouldLoadImage />,
         );
 
         expect(getParallaxValues(container)).toEqual(["-1vh to 3vh"]);
 
         responsiveMocks.useIsMobile.mockReturnValue(true);
-        rerender(<HomeSeasonalBanner scrollYProgress={scrollYProgress} />);
+        rerender(<HomeSeasonalBanner scrollYProgress={scrollYProgress} shouldLoadImage />);
 
         expect(getParallaxValues(container)).toEqual(["0"]);
 
         responsiveMocks.useIsMobile.mockReturnValue(false);
         responsiveMocks.useReducedMotion.mockReturnValue(true);
-        rerender(<HomeSeasonalBanner scrollYProgress={scrollYProgress} />);
+        rerender(<HomeSeasonalBanner scrollYProgress={scrollYProgress} shouldLoadImage />);
 
         expect(getParallaxValues(container)).toEqual(["0"]);
     });

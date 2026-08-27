@@ -10,6 +10,7 @@ import type { OptimizedPicture } from "@/types/imagetools";
 
 interface HomeEditorialProps {
     scrollYProgress: MotionValue<number>;
+    shouldLoadImages: boolean;
 }
 
 type FloatingItemLayout = "intro" | "coffee" | "suppliers" | "shop";
@@ -32,6 +33,7 @@ interface FloatingItem {
 interface FloatingItemCardProps {
     item: FloatingItem;
     scrollYProgress: MotionValue<number>;
+    shouldLoadImage: boolean;
 }
 
 const floatingItemLayoutClasses: Record<FloatingItemLayout, string> = {
@@ -106,7 +108,7 @@ const floatingItems: FloatingItem[] = [
     },
 ];
 
-function FloatingItemCard({ item, scrollYProgress }: FloatingItemCardProps) {
+function FloatingItemCard({ item, scrollYProgress, shouldLoadImage }: FloatingItemCardProps) {
     const itemParallax = useScrollParallax(scrollYProgress, {
         input: [0, 1],
         output: ["0vw", `${item.parallaxVw}vw`],
@@ -122,6 +124,7 @@ function FloatingItemCard({ item, scrollYProgress }: FloatingItemCardProps) {
                 image={item.image}
                 alt={item.alt}
                 sizes={item.sizes}
+                shouldLoad={shouldLoadImage}
             />
             <div className="home-editorial__text">
                 {item.paragraphs.map((paragraph, paragraphIndex) => (
@@ -137,11 +140,16 @@ function FloatingItemCard({ item, scrollYProgress }: FloatingItemCardProps) {
     );
 }
 
-export function HomeEditorial({ scrollYProgress }: HomeEditorialProps) {
+export function HomeEditorial({ scrollYProgress, shouldLoadImages }: HomeEditorialProps) {
     return (
         <section className="home-editorial">
             {floatingItems.map((item) => (
-                <FloatingItemCard key={item.id} item={item} scrollYProgress={scrollYProgress} />
+                <FloatingItemCard
+                    key={item.id}
+                    item={item}
+                    scrollYProgress={scrollYProgress}
+                    shouldLoadImage={shouldLoadImages}
+                />
             ))}
         </section>
     );

@@ -6,9 +6,10 @@ import { useScrollParallax } from "@/pages/home/useScrollParallax";
 
 interface HomeSeasonalBannerProps {
     scrollYProgress: MotionValue<number>;
+    shouldLoadImage: boolean;
 }
 
-export function HomeSeasonalBanner({ scrollYProgress }: HomeSeasonalBannerProps) {
+export function HomeSeasonalBanner({ scrollYProgress, shouldLoadImage }: HomeSeasonalBannerProps) {
     const textParallax = useScrollParallax(scrollYProgress, {
         input: [0.7, 1],
         output: ["-2vh", "6vh"],
@@ -22,6 +23,7 @@ export function HomeSeasonalBanner({ scrollYProgress }: HomeSeasonalBannerProps)
                 image={eggImg}
                 alt="a gigantic italian chocolate easter egg"
                 sizes="100vw"
+                shouldLoad={shouldLoadImage}
             />
             <motion.article
                 className="home-seasonal-banner__text"

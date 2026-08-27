@@ -8,6 +8,7 @@
 }
 
 .home-hero__image-wrapper {
+    background: #17130f;
     height: 100%;
     width: 100%;
     z-index: -2;
@@ -22,14 +23,25 @@
 }
 
 .home-hero__image {
+    display: block;
     height: 100%;
+    opacity: 0;
+    transition: opacity 400ms ease-out;
     width: 100%;
     object-fit: cover;
+
+    &[data-image-loaded="true"] {
+        opacity: 1;
+    }
 
     img {
         height: 100%;
         width: 100%;
         object-fit: cover;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        transition: none;
     }
 }
 
