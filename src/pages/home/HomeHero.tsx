@@ -11,6 +11,7 @@ import { useScrollParallax } from "@/pages/home/useScrollParallax";
 
 interface HomeHeroProps {
     scrollYProgress: MotionValue<number>;
+    onSettled?: () => void;
 }
 
 const HERO_INTRO_MAX_WAIT_MS = 2_500;
@@ -69,7 +70,7 @@ function OpeningHours() {
     );
 }
 
-export function HomeHero({ scrollYProgress }: HomeHeroProps) {
+export function HomeHero({ scrollYProgress, onSettled }: HomeHeroProps) {
     const isMobile = useIsMobile();
     const prefersReducedMotion = useReducedMotion();
     const [isHeroImageReady, setIsHeroImageReady] = useState(false);
@@ -100,6 +101,12 @@ export function HomeHero({ scrollYProgress }: HomeHeroProps) {
 
         return () => window.clearTimeout(timeoutId);
     }, [isHeroImageReady]);
+
+    useEffect(() => {
+        if (canStartIntro) {
+            onSettled?.();
+        }
+    }, [canStartIntro, onSettled]);
 
     function handleScrollDown() {
         const target = isMobile ? mobileCoverRef.current : statementRef.current;

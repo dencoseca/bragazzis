@@ -114,7 +114,8 @@ describe("HomeHero", () => {
     });
 
     test("holds the intro until the hero image is ready", () => {
-        render(<HomeHero scrollYProgress={scrollYProgress} />);
+        const onSettled = vi.fn();
+        render(<HomeHero scrollYProgress={scrollYProgress} onSettled={onSettled} />);
 
         const title = screen.getByRole("heading", { name: "BRAGAZZI'S" });
         const heroImage = screen.getByRole("img", {
@@ -122,15 +123,18 @@ describe("HomeHero", () => {
         });
 
         expect(title.dataset.animationState).toBe("initial");
+        expect(onSettled).not.toHaveBeenCalled();
 
         fireEvent.load(heroImage);
 
         expect(title.dataset.animationState).toBe("animate");
+        expect(onSettled).toHaveBeenCalledOnce();
     });
 
     test("starts the intro after a bounded wait when the image is slow", () => {
         vi.useFakeTimers();
-        render(<HomeHero scrollYProgress={scrollYProgress} />);
+        const onSettled = vi.fn();
+        render(<HomeHero scrollYProgress={scrollYProgress} onSettled={onSettled} />);
 
         const title = screen.getByRole("heading", { name: "BRAGAZZI'S" });
 
@@ -139,6 +143,7 @@ describe("HomeHero", () => {
         act(() => vi.advanceTimersByTime(2_500));
 
         expect(title.dataset.animationState).toBe("animate");
+        expect(onSettled).toHaveBeenCalledOnce();
     });
 
     test("owns the desktop statement target and shared opening hours", async () => {
