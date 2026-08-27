@@ -125,9 +125,23 @@
             text-decoration: none;
 
             p {
+                margin: 0;
+
+                &:not(:last-child) {
+                    margin-bottom: 0.5vw;
+
+                    @media (max-width: tokens.$breakpoint-tablet) {
+                        margin-bottom: 1.5vw;
+                    }
+                }
+
                 @media (max-width: tokens.$breakpoint-mobile) {
                     margin: 2.5vw 0;
                     font-size: clamp(1rem, 3vw, 1.25rem);
+
+                    &:not(:last-child) {
+                        margin-bottom: 2.5vw;
+                    }
                 }
             }
         }
