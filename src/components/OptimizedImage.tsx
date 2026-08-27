@@ -1,4 +1,4 @@
-import type { ComponentPropsWithoutRef, Ref } from "react";
+import { useState, type ComponentPropsWithoutRef } from "react";
 
 import type { OptimizedPicture } from "@/types/imagetools";
 
@@ -6,46 +6,36 @@ export interface OptimizedImageProps extends Omit<ComponentPropsWithoutRef<"pict
     image: OptimizedPicture;
     alt: string;
     sizes: string;
-    pictureRef?: Ref<HTMLPictureElement>;
     priority?: boolean;
-    shouldLoad?: boolean;
-}
-
-function getPlaceholderImageSrc(width: number, height: number) {
-    return `data:image/svg+xml,${encodeURIComponent(
-        `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"></svg>`,
-    )}`;
+    revealOnLoad?: boolean;
 }
 
 export function OptimizedImage({
     image,
     alt,
     sizes,
-    pictureRef,
     priority = false,
-    shouldLoad,
+    revealOnLoad = false,
     ...pictureProps
 }: OptimizedImageProps) {
-    const resolvedShouldLoad = shouldLoad ?? true;
-    const loading = priority || shouldLoad === true ? "eager" : "lazy";
+    const [hasLoaded, setHasLoaded] = useState(false);
     const { sources, img } = image;
 
     return (
-        <picture {...pictureProps} ref={pictureRef}>
-            {resolvedShouldLoad
-                ? Object.entries(sources).map(([type, srcset]) => (
-                      <source key={type} srcSet={srcset} type={type} sizes={sizes} />
-                  ))
-                : null}
+        <picture {...pictureProps} data-image-loaded={revealOnLoad ? String(hasLoaded) : undefined}>
+            {Object.entries(sources).map(([type, srcset]) => (
+                <source key={type} srcSet={srcset} type={type} sizes={sizes} />
+            ))}
             <img
-                src={resolvedShouldLoad ? img.src : getPlaceholderImageSrc(img.w, img.h)}
+                src={img.src}
                 alt={alt}
                 width={img.w}
                 height={img.h}
                 sizes={sizes}
-                loading={loading}
-                decoding={resolvedShouldLoad && priority ? "sync" : "async"}
-                fetchPriority={resolvedShouldLoad && priority ? "high" : undefined}
+                loading={priority ? "eager" : "lazy"}
+                decoding={priority ? "sync" : "async"}
+                fetchPriority={priority ? "high" : undefined}
+                onLoad={revealOnLoad ? () => setHasLoaded(true) : undefined}
             />
         </picture>
     );
