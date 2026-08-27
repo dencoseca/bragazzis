@@ -3,7 +3,7 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, test, vi } from "vite-plus/test";
 
 import { IlGiornoGallery } from "@/pages/il-giorno/IlGiornoGallery";
@@ -197,7 +197,7 @@ describe("IlGiornoGallery", () => {
         ]);
     });
 
-    test("marks each image as loaded for its reveal animation", () => {
+    test("marks each image as loaded for its reveal animation", async () => {
         render(<IlGiornoGallery />);
 
         const images = screen.getAllByRole("img");
@@ -209,7 +209,7 @@ describe("IlGiornoGallery", () => {
 
         fireEvent.load(images[0]);
 
-        expect(pictures[0].dataset.imageLoaded).toBe("true");
+        await waitFor(() => expect(pictures[0].dataset.imageLoaded).toBe("true"));
         expect(pictures.slice(1).map((picture) => picture.dataset.imageLoaded)).toEqual(
             galleryImages.slice(1).map(() => "false"),
         );

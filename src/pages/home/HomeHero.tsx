@@ -1,9 +1,10 @@
 import { motion, type MotionValue, useReducedMotion } from "motion/react";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import parmesanImg from "@/assets/images/parmesan.jpg?preset=fullWidth";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { smoothTransition } from "@/constants/animations";
+import { getBreakpointMediaQuery } from "@/constants/breakpoints";
 import { siteConfig } from "@/constants/siteConfig";
 import { useIsMobile } from "@/hooks/useMediaQuery";
 import { useScrollParallax } from "@/pages/home/useScrollParallax";
@@ -11,6 +12,9 @@ import { useScrollParallax } from "@/pages/home/useScrollParallax";
 interface HomeHeroProps {
     scrollYProgress: MotionValue<number>;
 }
+
+const HERO_INTRO_MAX_WAIT_MS = 2_500;
+const HERO_IMAGE_SIZES = `${getBreakpointMediaQuery("mobile")} 200vw, 100vw`;
 
 const contentVariants = {
     initial: {
@@ -68,6 +72,8 @@ function OpeningHours() {
 export function HomeHero({ scrollYProgress }: HomeHeroProps) {
     const isMobile = useIsMobile();
     const prefersReducedMotion = useReducedMotion();
+    const [isHeroImageReady, setIsHeroImageReady] = useState(false);
+    const [hasIntroWaitElapsed, setHasIntroWaitElapsed] = useState(false);
     const mobileCoverRef = useRef<HTMLElement>(null);
     const statementRef = useRef<HTMLElement>(null);
     const heroImageParallax = useScrollParallax(scrollYProgress, {
@@ -75,8 +81,25 @@ export function HomeHero({ scrollYProgress }: HomeHeroProps) {
         output: ["0vh", "59vh"],
     });
     const { address } = siteConfig.business;
+    const canStartIntro = isHeroImageReady || hasIntroWaitElapsed;
     const initialAnimationState = prefersReducedMotion ? false : "initial";
-    const animateAnimationState = prefersReducedMotion ? undefined : "animate";
+    const animateAnimationState = prefersReducedMotion
+        ? undefined
+        : canStartIntro
+          ? "animate"
+          : "initial";
+
+    useEffect(() => {
+        if (isHeroImageReady) {
+            return;
+        }
+
+        const timeoutId = window.setTimeout(() => {
+            setHasIntroWaitElapsed(true);
+        }, HERO_INTRO_MAX_WAIT_MS);
+
+        return () => window.clearTimeout(timeoutId);
+    }, [isHeroImageReady]);
 
     function handleScrollDown() {
         const target = isMobile ? mobileCoverRef.current : statementRef.current;
@@ -105,8 +128,10 @@ export function HomeHero({ scrollYProgress }: HomeHeroProps) {
                             className="home-hero__image"
                             image={parmesanImg}
                             alt="an amaretti tin displayed on wheels of Parmesan cheese"
-                            sizes="100vw"
+                            sizes={HERO_IMAGE_SIZES}
                             priority
+                            revealOnLoad
+                            onReady={() => setIsHeroImageReady(true)}
                         />
                     </motion.div>
                 </div>

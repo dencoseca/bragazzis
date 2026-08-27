@@ -1,4 +1,4 @@
-import { useState, type ComponentPropsWithoutRef, type Ref } from "react";
+import { useState, type ComponentPropsWithoutRef, type SyntheticEvent, type Ref } from "react";
 
 import type { OptimizedPicture } from "@/types/imagetools";
 
@@ -10,12 +10,17 @@ export interface OptimizedImageProps extends Omit<ComponentPropsWithoutRef<"pict
     priority?: boolean;
     revealOnLoad?: boolean;
     shouldLoad?: boolean;
+    onReady?: () => void;
 }
 
 function getPlaceholderImageSrc(width: number, height: number) {
     return `data:image/svg+xml,${encodeURIComponent(
         `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"></svg>`,
     )}`;
+}
+
+function getSourceMimeType(format: string) {
+    return format.includes("/") ? format : `image/${format}`;
 }
 
 export function OptimizedImage({
@@ -26,12 +31,24 @@ export function OptimizedImage({
     priority = false,
     revealOnLoad = false,
     shouldLoad,
+    onReady,
     ...pictureProps
 }: OptimizedImageProps) {
     const [hasLoaded, setHasLoaded] = useState(false);
     const resolvedShouldLoad = shouldLoad ?? true;
     const loading = priority || shouldLoad === true ? "eager" : "lazy";
     const { sources, img } = image;
+
+    async function handleLoad(event: SyntheticEvent<HTMLImageElement>) {
+        const renderedImage = event.currentTarget;
+
+        if (typeof renderedImage.decode === "function") {
+            await renderedImage.decode().catch(() => undefined);
+        }
+
+        setHasLoaded(true);
+        onReady?.();
+    }
 
     return (
         <picture
@@ -41,7 +58,12 @@ export function OptimizedImage({
         >
             {resolvedShouldLoad
                 ? Object.entries(sources).map(([type, srcset]) => (
-                      <source key={type} srcSet={srcset} type={type} sizes={sizes} />
+                      <source
+                          key={type}
+                          srcSet={srcset}
+                          type={getSourceMimeType(type)}
+                          sizes={sizes}
+                      />
                   ))
                 : null}
             <img
@@ -53,7 +75,7 @@ export function OptimizedImage({
                 loading={loading}
                 decoding={resolvedShouldLoad && priority ? "sync" : "async"}
                 fetchPriority={resolvedShouldLoad && priority ? "high" : undefined}
-                onLoad={revealOnLoad && resolvedShouldLoad ? () => setHasLoaded(true) : undefined}
+                onLoad={(revealOnLoad || onReady) && resolvedShouldLoad ? handleLoad : undefined}
             />
         </picture>
     );

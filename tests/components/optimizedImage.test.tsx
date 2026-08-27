@@ -1,8 +1,8 @@
 /** @vitest-environment happy-dom */
 
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { describe, expect, test } from "vite-plus/test";
+import { describe, expect, test, vi } from "vite-plus/test";
 
 import { OptimizedImage } from "@/components/OptimizedImage";
 import type { OptimizedPicture } from "@/types/imagetools";
@@ -14,8 +14,8 @@ const image = {
         w: 640,
     },
     sources: {
-        "image/avif": "/image-640.avif 640w, /image-1280.avif 1280w",
-        "image/jpeg": "/image-640.jpg 640w, /image-1280.jpg 1280w",
+        avif: "/image-640.avif 640w, /image-1280.avif 1280w",
+        jpeg: "/image-640.jpg 640w, /image-1280.jpg 1280w",
     },
 } satisfies OptimizedPicture;
 
@@ -90,16 +90,50 @@ describe("OptimizedImage", () => {
         expect(markup).not.toContain("fetchPriority");
     });
 
-    test("marks a revealed image as loaded after its load event", () => {
+    test("marks a revealed image as loaded after its load event", async () => {
         render(<OptimizedImage image={image} alt="fresh pasta" sizes="100vw" revealOnLoad />);
 
-        const renderedImage = screen.getByRole("img");
+        const renderedImage = screen.getByRole<HTMLImageElement>("img");
         const picture = renderedImage.closest("picture");
 
         expect(picture?.dataset.imageLoaded).toBe("false");
 
         fireEvent.load(renderedImage);
 
-        expect(picture?.dataset.imageLoaded).toBe("true");
+        await waitFor(() => expect(picture?.dataset.imageLoaded).toBe("true"));
+    });
+
+    test("waits for decoding before revealing the image and reporting it ready", async () => {
+        let finishDecoding: (() => void) | undefined;
+        const decoding = new Promise<void>((resolve) => {
+            finishDecoding = resolve;
+        });
+        const onReady = vi.fn();
+
+        render(
+            <OptimizedImage
+                image={image}
+                alt="fresh pasta"
+                sizes="100vw"
+                revealOnLoad
+                onReady={onReady}
+            />,
+        );
+
+        const renderedImage = screen.getByRole<HTMLImageElement>("img");
+        const picture = renderedImage.closest("picture");
+        renderedImage.decode = vi.fn(() => decoding);
+
+        fireEvent.load(renderedImage);
+
+        expect(picture?.dataset.imageLoaded).toBe("false");
+        expect(onReady).not.toHaveBeenCalled();
+
+        finishDecoding?.();
+
+        await waitFor(() => {
+            expect(picture?.dataset.imageLoaded).toBe("true");
+            expect(onReady).toHaveBeenCalledOnce();
+        });
     });
 });

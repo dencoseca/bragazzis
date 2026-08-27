@@ -1,6 +1,6 @@
 /** @vitest-environment happy-dom */
 
-import { render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { MotionValue } from "motion/react";
 import type { HTMLAttributes, SVGProps } from "react";
@@ -35,7 +35,7 @@ vi.mock("motion/react", () => ({
             void transition;
             void variants;
 
-            return <div {...props} />;
+            return <div {...props} data-animation-state={String(animate)} />;
         },
         h1({
             animate,
@@ -49,7 +49,7 @@ vi.mock("motion/react", () => ({
             void transition;
             void variants;
 
-            return <h1 {...props} />;
+            return <h1 {...props} data-animation-state={String(animate)} />;
         },
         svg({
             animate,
@@ -63,7 +63,7 @@ vi.mock("motion/react", () => ({
             void transition;
             void variants;
 
-            return <svg {...props} />;
+            return <svg {...props} data-animation-state={String(animate)} />;
         },
     },
     useReducedMotion: useReducedMotionMock,
@@ -78,10 +78,18 @@ vi.mock("@/hooks/useMediaQuery", () => ({
 }));
 
 vi.mock("@/components/OptimizedImage", () => ({
-    OptimizedImage({ className, alt }: { className?: string; alt: string }) {
+    OptimizedImage({
+        className,
+        alt,
+        onReady,
+    }: {
+        className?: string;
+        alt: string;
+        onReady?: () => void;
+    }) {
         return (
             <picture className={className}>
-                <img alt={alt} />
+                <img alt={alt} onLoad={onReady} />
             </picture>
         );
     },
@@ -101,7 +109,36 @@ describe("HomeHero", () => {
     });
 
     afterEach(() => {
+        vi.useRealTimers();
         vi.clearAllMocks();
+    });
+
+    test("holds the intro until the hero image is ready", () => {
+        render(<HomeHero scrollYProgress={scrollYProgress} />);
+
+        const title = screen.getByRole("heading", { name: "BRAGAZZI'S" });
+        const heroImage = screen.getByRole("img", {
+            name: "an amaretti tin displayed on wheels of Parmesan cheese",
+        });
+
+        expect(title.dataset.animationState).toBe("initial");
+
+        fireEvent.load(heroImage);
+
+        expect(title.dataset.animationState).toBe("animate");
+    });
+
+    test("starts the intro after a bounded wait when the image is slow", () => {
+        vi.useFakeTimers();
+        render(<HomeHero scrollYProgress={scrollYProgress} />);
+
+        const title = screen.getByRole("heading", { name: "BRAGAZZI'S" });
+
+        expect(title.dataset.animationState).toBe("initial");
+
+        act(() => vi.advanceTimersByTime(2_500));
+
+        expect(title.dataset.animationState).toBe("animate");
     });
 
     test("owns the desktop statement target and shared opening hours", async () => {
