@@ -16,7 +16,7 @@ const NotFound = lazy(() => import("@/pages/NotFound").then((m) => ({ default: m
 
 export function App() {
     return (
-        <>
+        <Suspense fallback={<LoadingFallback />}>
             <RouteNavigation />
             <Routes>
                 <Route
@@ -40,9 +40,7 @@ export function App() {
                             description={publicPageRoutes.laStoria.description}
                             theme={themeNames.light}
                         >
-                            <Suspense fallback={<LoadingFallback />}>
-                                <LaStoria />
-                            </Suspense>
+                            <LaStoria />
                         </Layout>
                     }
                 />
@@ -55,21 +53,12 @@ export function App() {
                             theme={themeNames.dark}
                             scrollToTopBehavior="auto"
                         >
-                            <Suspense fallback={<LoadingFallback />}>
-                                <IlGiorno />
-                            </Suspense>
+                            <IlGiorno />
                         </Layout>
                     }
                 />
-                <Route
-                    path={notFoundRoute.path}
-                    element={
-                        <Suspense fallback={<LoadingFallback />}>
-                            <NotFound />
-                        </Suspense>
-                    }
-                />
+                <Route path={notFoundRoute.path} element={<NotFound />} />
             </Routes>
-        </>
+        </Suspense>
     );
 }

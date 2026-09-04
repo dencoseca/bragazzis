@@ -1,7 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
 async function scrollTo(page: Page, top: number) {
-    await expect(page.locator("[data-route-loading]")).toHaveCount(0);
+    await expect(page.locator(".loading-fallback")).toHaveCount(0);
     await page.evaluate(() => document.fonts.ready);
     await page.evaluate((y) => window.scrollTo({ top: y, behavior: "instant" }), top);
     await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(top);
@@ -11,7 +11,9 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
     test.describe(`route navigation with ${reducedMotion} motion`, () => {
         test.use({ contextOptions: { reducedMotion }, viewport: { width: 1280, height: 900 } });
 
-        test("starts new pages at the top and restores history positions", async ({ page }) => {
+        test("starts new pages at the top and allows native history restoration", async ({
+            page,
+        }) => {
             await page.goto("/lastoria");
             await expect(page.locator(".loading-fallback")).toHaveCount(0);
             await scrollTo(page, 700);
@@ -57,7 +59,7 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
             ).toBeVisible();
             release();
             await expect(page).toHaveURL(/\/lastoria$/);
-            await expect(page.locator("[data-route-loading]")).toHaveCount(0);
+            await expect(page.locator(".loading-fallback")).toHaveCount(0);
             await expect(page.locator("#main-content")).toBeFocused();
             await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
             await scrollTo(page, 500);
