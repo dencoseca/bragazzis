@@ -5,16 +5,9 @@ import { useLocation, useNavigationType } from "react-router-dom";
 export function RouteNavigation() {
     const location = useLocation();
     const navigationType = useNavigationType();
-    // Native fragment links can reuse React Router's history key.
-    const entryKey = JSON.stringify([
-        location.key,
-        location.pathname,
-        location.search,
-        location.hash,
-    ]);
     const entryUrl = location.pathname + location.search + location.hash;
     const positions = useRef(new Map<string, { left: number; top: number }>());
-    const initialKey = useRef(entryKey);
+    const initialKey = useRef<string | null>(null);
     const hasNavigated = useRef(false);
 
     useEffect(() => {
@@ -26,6 +19,18 @@ export function RouteNavigation() {
     }, []);
 
     useEffect(() => {
+        // Native fragment entries report POP and may share the router's fallback key.
+        // Persist a separate identity so revisiting an entry restores its position,
+        // while a fresh fragment navigation to the same URL follows its target.
+        const state = (window.history.state ?? {}) as Record<string, unknown>;
+        const entryKey =
+            typeof state.bragazzisScrollKey === "string"
+                ? state.bragazzisScrollKey
+                : crypto.randomUUID();
+        if (state.bragazzisScrollKey !== entryKey) {
+            window.history.replaceState({ ...state, bragazzisScrollKey: entryKey }, "");
+        }
+        initialKey.current ??= entryKey;
         if (entryKey !== initialKey.current) hasNavigated.current = true;
         const isInitialEntry = !hasNavigated.current;
         const saved = navigationType === "POP" ? positions.current.get(entryKey) : undefined;
@@ -97,7 +102,7 @@ export function RouteNavigation() {
             observer.disconnect();
             window.removeEventListener("scroll", rememberPosition);
         };
-    }, [entryKey, entryUrl, location.hash, navigationType]);
+    }, [location.key, entryUrl, location.hash, navigationType]);
 
     return null;
 }

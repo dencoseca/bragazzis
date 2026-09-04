@@ -79,6 +79,33 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
             await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
         });
 
+        test("distinguishes fresh fragment navigation from Back and Forward", async ({ page }) => {
+            await page.goto("/lastoria");
+            await scrollTo(page, 500);
+            const skipLink = page.locator(".skip-to-content");
+            await skipLink.evaluate((link: HTMLAnchorElement) => link.click());
+            await expect(page).toHaveURL(/#main-content$/);
+            await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+            await scrollTo(page, 700);
+            await page.goBack();
+            await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(500);
+            await page.goForward();
+            await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(700);
+            await page.goBack();
+            await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(500);
+
+            // This discards the forward entry and creates a new one with the same URL.
+            await skipLink.evaluate((link: HTMLAnchorElement) => link.click());
+            await expect(page).toHaveURL(/#main-content$/);
+            await expect(page.locator("#main-content")).toBeFocused();
+            await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+            await scrollTo(page, 300);
+            await page.goBack();
+            await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(500);
+            await page.goForward();
+            await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(300);
+        });
+
         test("closes the mobile menu on resize and restores usable focus and scrolling", async ({
             page,
         }) => {
