@@ -118,7 +118,7 @@ describe("HomeEditorial", () => {
                     name: "Italian food and drink displayed on shop shelves",
                 })
                 .getAttribute("sizes"),
-        ).toBe("(max-width: 768px) 100vw, 50vw");
+        ).toBe(`(max-width: ${__BREAKPOINTS__.mobile}) 100vw, 50vw`);
         expect(screen.getByText(/Bragazzi's is a cafe, delicatessen and shop/)).toBeDefined();
         expect(screen.getByText(/roasted by Darkwoods Coffee/)).toBeDefined();
         expect(screen.getByText(/trade directly with suppliers in Italy/)).toBeDefined();
