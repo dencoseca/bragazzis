@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import { Header } from "@/components/layout/Header";
 import { Menu } from "@/components/layout/Menu";
 import type { ThemeName } from "@/constants/themes";
+import { useIsMobile } from "@/hooks/useMediaQuery";
 
 const mobileMenuId = "mobile-menu";
 
@@ -16,21 +17,37 @@ interface SiteNavigationProps {
 
 export function SiteNavigation({ backgroundContentRef, theme, menuTheme }: SiteNavigationProps) {
     const location = useLocation();
+    const isMobile = useIsMobile();
+    const previousLocationKey = useRef(location.key);
+    const navigating = useRef(false);
     const menuButtonRef = useRef<HTMLButtonElement>(null);
     const menuWasOpen = useRef(false);
     const [menuIsOpen, setMenuIsOpen] = useState(false);
 
     useEffect(() => {
-        setMenuIsOpen(false);
-    }, [location.pathname]);
+        if (previousLocationKey.current !== location.key) {
+            navigating.current = true;
+            setMenuIsOpen(false);
+            previousLocationKey.current = location.key;
+        }
+    }, [location.key]);
+
+    useEffect(() => {
+        if (!isMobile) setMenuIsOpen(false);
+    }, [isMobile]);
 
     useEffect(() => {
         if (menuWasOpen.current && !menuIsOpen) {
-            menuButtonRef.current?.focus();
+            if (!navigating.current) {
+                const target = isMobile
+                    ? menuButtonRef.current
+                    : document.querySelector<HTMLAnchorElement>(".header__logo-wrapper a");
+                target?.focus({ preventScroll: true });
+            }
         }
 
         menuWasOpen.current = menuIsOpen;
-    }, [menuIsOpen]);
+    }, [isMobile, menuIsOpen]);
 
     useEffect(() => {
         if (!menuIsOpen) return;
@@ -108,6 +125,7 @@ export function SiteNavigation({ backgroundContentRef, theme, menuTheme }: SiteN
     }
 
     function toggleMenu() {
+        navigating.current = false;
         setMenuIsOpen((isOpen) => !isOpen);
     }
 

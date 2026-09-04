@@ -31,7 +31,7 @@ export function Layout({
     const prefersReducedMotion = useReducedMotion();
     const resolvedScrollToTopBehavior = prefersReducedMotion ? "auto" : scrollToTopBehavior;
 
-    useSmoothScroll(!prefersReducedMotion);
+    useSmoothScroll(!prefersReducedMotion, location.key);
 
     const canonicalUrl = getCanonicalUrl(location.pathname);
 
@@ -47,7 +47,7 @@ export function Layout({
                 <a href="#main-content" className="skip-to-content">
                     Skip to content
                 </a>
-                <main id="main-content" data-theme={pageTheme}>
+                <main id="main-content" tabIndex={-1} data-theme={pageTheme}>
                     {children}
                 </main>
                 <Footer theme={pageTheme} scrollToTopBehavior={resolvedScrollToTopBehavior} />

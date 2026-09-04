@@ -23,8 +23,14 @@ vi.mock("lenis", () => ({
     },
 }));
 
-function SmoothScrollHarness({ enabled }: { enabled?: boolean }) {
-    useSmoothScroll(enabled);
+function SmoothScrollHarness({
+    enabled,
+    navigationKey,
+}: {
+    enabled?: boolean;
+    navigationKey?: string;
+}) {
+    useSmoothScroll(enabled, navigationKey);
 
     return null;
 }
@@ -44,6 +50,14 @@ describe("useSmoothScroll", () => {
         unmount();
 
         expect(lenisMocks.destroy).toHaveBeenCalledOnce();
+    });
+
+    test("resets scroll momentum when the history entry changes", () => {
+        const { rerender, unmount } = render(<SmoothScrollHarness navigationKey="first" />);
+        rerender(<SmoothScrollHarness navigationKey="second" />);
+        expect(lenisMocks.destroy).toHaveBeenCalledOnce();
+        expect(lenisMocks.construct).toHaveBeenCalledTimes(2);
+        unmount();
     });
 
     test("does not create Lenis when smooth scrolling is disabled", () => {

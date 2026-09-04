@@ -1,3 +1,3 @@
 export function LoadingFallback() {
-    return <div className="loading-fallback"></div>;
+    return <div className="loading-fallback" data-route-loading></div>;
 }
