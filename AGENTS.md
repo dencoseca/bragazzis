@@ -41,8 +41,8 @@ src/
 └── main.tsx           # App entry point
 ```
 
-- **Path alias:** `@` maps to `src/` (configured in `vite.config.ts` and `tsconfig.json`). Always use `@/` imports
-  instead of relative paths.
+- **Path alias:** `@` maps to `src/` (configured in `vite.config.ts` and `tsconfig.json`). In application code under
+  `src/`, use `@/` imports for other source files. Preserve relative imports in root configuration files.
 - **Config files:** `vite.config.ts`, `vite.imagetools.ts`, `tsconfig.json`
 
 ## Code Style & Conventions
@@ -50,7 +50,7 @@ src/
 - **Follow existing patterns.** Match the style of surrounding code — naming, formatting, file organization.
 - **TypeScript:** Strict mode. Do not use `any` — prefer explicit types or `unknown`. All files use `.ts` or `.tsx`
   extensions.
-- **Imports:** Use the `@/` path alias for all imports from `src/`. Example: `import { OptimizedImage } from "@/components/OptimizedImage"`.
+- **Imports:** In application code under `src/`, use the `@/` path alias for other source files. Example: `import { OptimizedImage } from "@/components/OptimizedImage"`.
 - **Components:** Functional components only. Use named exports for everything (components, hooks, types, interfaces).
 - **Feature colocation:** Keep page-specific components beside their route under `src/pages/<feature>/`; reserve
   `src/components/` for components shared across routes.
@@ -122,7 +122,8 @@ src/
 - **Do NOT overwrite, resize, or re-encode `.jpg` originals** in `src/assets/images/`. Responsive variants are generated
   at build time by `vite-imagetools` using the named presets in `vite.imagetools.ts`.
 - **Keep bundle size in mind.** Lazy-load routes (already done in `App.tsx`) and avoid large eager imports.
-- **No default exports.** The project enforces named exports via linting.
+- **No default exports, except configuration files.** The project enforces named exports via linting, with explicit
+  exceptions for `vite.config.ts` and `playwright.config.ts`; preserve their default exports.
 - **Keep AGENTS.md updated.** After finishing a task, update this file if any of your changes make its current content invalid or outdated.
 
 <!--VITE PLUS START-->
@@ -146,7 +147,8 @@ This project is using Vite+, a unified toolchain built on top of Vite, Rolldown,
 - For existing Vite+ projects, prefer `vp migrate` when upgrading the local Vite+ toolchain. It repins
   `vite-plus`, the `vite` alias, Vitest, pnpm catalogs/overrides, and peer dependency rules according to the
   current global `vp`.
-- After `vp migrate`, run `vp install`, `vp check`, `vp test`, and `vp build`. Run `vp run test:visual` when
+- After `vp migrate`, run `vp install`, `vp check`, `vp test`, and `vp run build`. The build script runs `tsc && vp build`
+  for full build validation. Run `vp run test:visual` when
   changing layout, typography, imagery, animation, or scroll behavior.
 - In Codex/non-TTY environments, if `vp migrate` updates files but its internal install fails with a pnpm
   confirmation prompt, rerun install with `env CI=true vp install --no-frozen-lockfile`.
@@ -159,6 +161,7 @@ When starting the local dev server in Codex, `vp dev --host 127.0.0.1` may fail 
 
 - [ ] Run `vp install` after pulling remote changes and before getting started.
 - [ ] Run `vp check` and `vp test` to format, lint, type check and test changes.
+- [ ] Run `vp run build` for the explicit TypeScript check and production build.
 - [ ] Run `vp run test:visual` when changing layout, typography, imagery, animation, or scroll behavior.
 - [ ] Check if there are tasks or `package.json` scripts necessary for validation, run via `vp run <script>`.
 
