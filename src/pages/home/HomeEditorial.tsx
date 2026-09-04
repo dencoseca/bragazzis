@@ -5,8 +5,11 @@ import coffeePourImg from "@/assets/images/coffee-pour.jpg?preset=editorial";
 import shelvesImg from "@/assets/images/shelves.jpg?preset=editorial";
 import shopChristmasImg from "@/assets/images/shop-christmas.jpg?preset=editorial";
 import { OptimizedImage } from "@/components/OptimizedImage";
+import { getBreakpointMediaQuery } from "@/constants/breakpoints";
 import { useScrollParallax } from "@/pages/home/useScrollParallax";
 import type { OptimizedPicture } from "@/types/imagetools";
+
+const EDITORIAL_IMAGE_SIZES = `${getBreakpointMediaQuery("mobile")} 100vw, 50vw`;
 
 interface HomeEditorialProps {
     scrollYProgress: MotionValue<number>;
@@ -25,7 +28,6 @@ interface FloatingItem {
     layout: FloatingItemLayout;
     image: OptimizedPicture;
     alt: string;
-    sizes: string;
     parallaxVw: number;
     paragraphs: FloatingItemParagraph[];
 }
@@ -49,7 +51,6 @@ const floatingItems: FloatingItem[] = [
         layout: "intro",
         image: shelvesImg,
         alt: "Italian food and drink displayed on shop shelves",
-        sizes: "(max-width: 768px) 100vw, 50vw",
         parallaxVw: -59,
         paragraphs: [
             {
@@ -69,7 +70,6 @@ const floatingItems: FloatingItem[] = [
         layout: "coffee",
         image: coffeePourImg,
         alt: "silky coffee being poured",
-        sizes: "(max-width: 768px) 100vw, 50vw",
         parallaxVw: -118,
         paragraphs: [
             {
@@ -83,7 +83,6 @@ const floatingItems: FloatingItem[] = [
         layout: "suppliers",
         image: ciabattaImg,
         alt: "ciabatta sandwiches being prepared",
-        sizes: "(max-width: 768px) 100vw, 50vw",
         parallaxVw: -59,
         paragraphs: [
             {
@@ -97,7 +96,6 @@ const floatingItems: FloatingItem[] = [
         layout: "shop",
         image: shopChristmasImg,
         alt: "a beautifully stocked italian dry goods shop",
-        sizes: "(max-width: 768px) 100vw, 50vw",
         parallaxVw: -29,
         paragraphs: [
             {
@@ -123,7 +121,7 @@ function FloatingItemCard({ item, scrollYProgress, shouldLoadImage }: FloatingIt
                 className="home-editorial__image"
                 image={item.image}
                 alt={item.alt}
-                sizes={item.sizes}
+                sizes={EDITORIAL_IMAGE_SIZES}
                 shouldLoad={shouldLoadImage}
             />
             <div className="home-editorial__text">

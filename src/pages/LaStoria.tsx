@@ -5,7 +5,10 @@ import ticketPisaImg from "@/assets/images/ticket-pisa.jpg?preset=editorial";
 import ticketRomaImg from "@/assets/images/ticket-roma.jpg?preset=editorial";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { smoothTransition } from "@/constants/animations";
+import { getBreakpointMediaQuery } from "@/constants/breakpoints";
 import { publicPageRoutes } from "@/constants/routes";
+
+const STORY_IMAGE_SIZES = `${getBreakpointMediaQuery("mobile")} 100vw, 50vw`;
 
 const laStoriaTransition = {
     ...smoothTransition,
@@ -67,7 +70,7 @@ export function LaStoria() {
                         <OptimizedImage
                             image={ticketRomaImg}
                             alt="plane ticket"
-                            sizes="(max-width: 768px) 100vw, 50vw"
+                            sizes={STORY_IMAGE_SIZES}
                         />
                     </motion.div>
                 </div>
@@ -88,7 +91,7 @@ export function LaStoria() {
                         <OptimizedImage
                             image={ticketPisaImg}
                             alt="plane ticket"
-                            sizes="(max-width: 768px) 100vw, 50vw"
+                            sizes={STORY_IMAGE_SIZES}
                         />
                     </motion.div>
                 </div>
@@ -101,11 +104,7 @@ export function LaStoria() {
                 <div className="lastoria__story-line"></div>
             </div>
             <div className="lastoria__image">
-                <OptimizedImage
-                    image={earlyDaysImg}
-                    alt="A busy cafe"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                />
+                <OptimizedImage image={earlyDaysImg} alt="A busy cafe" sizes={STORY_IMAGE_SIZES} />
             </div>
         </div>
     );
