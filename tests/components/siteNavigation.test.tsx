@@ -9,6 +9,8 @@ import { afterEach, describe, expect, test, vi } from "vite-plus/test";
 import { SiteNavigation } from "@/components/layout/SiteNavigation";
 import { themeNames } from "@/constants/themes";
 
+vi.mock("@/hooks/useMediaQuery", () => ({ useIsMobile: () => true }));
+
 interface MotionElementProps extends HTMLAttributes<HTMLElement> {
     animate?: unknown;
     exit?: unknown;
@@ -155,7 +157,7 @@ describe("SiteNavigation", () => {
         expect(document.activeElement).toBe(menuButton);
     });
 
-    test("closes and restores focus after the pathname changes", async () => {
+    test("closes without returning focus to the toggle after the route changes", async () => {
         const user = userEvent.setup();
         render(
             <MemoryRouter>
@@ -172,7 +174,7 @@ describe("SiteNavigation", () => {
         });
 
         expect(screen.queryByRole("dialog", { name: "Mobile navigation" })).toBeNull();
-        expect(document.activeElement).toBe(menuButton);
+        expect(document.activeElement).not.toBe(menuButton);
     });
 
     test("restores an absent background aria-hidden attribute", async () => {

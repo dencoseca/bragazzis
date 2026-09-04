@@ -6,7 +6,7 @@ import { siteConfig } from "@/constants/siteConfig";
 
 export function NotFound() {
     return (
-        <div className="page-not-found">
+        <main id="main-content" tabIndex={-1} className="page-not-found">
             <PageMeta
                 pageTitle={notFoundRoute.pageTitle}
                 description={notFoundRoute.description}
@@ -25,6 +25,6 @@ export function NotFound() {
             <Link to={publicPageRoutes.home.path} className="page-not-found__back-button">
                 I'll come back
             </Link>
-        </div>
+        </main>
     );
 }

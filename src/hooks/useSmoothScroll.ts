@@ -1,7 +1,7 @@
 import Lenis from "lenis";
 import { useEffect } from "react";
 
-export function useSmoothScroll(enabled = true): void {
+export function useSmoothScroll(enabled = true, navigationKey?: string): void {
     useEffect(() => {
         if (!enabled) return;
 
@@ -10,5 +10,5 @@ export function useSmoothScroll(enabled = true): void {
         return () => {
             lenis.destroy();
         };
-    }, [enabled]);
+    }, [enabled, navigationKey]);
 }
