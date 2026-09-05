@@ -1,54 +1,50 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
-import { publicPageRoutes } from "@/constants/routes";
+import { ErrorPage } from "@/components/ErrorPage";
+import { PageMeta } from "@/components/PageMeta";
 
 function RouteErrorMessage() {
-    const messageRef = useRef<HTMLDivElement>(null);
+    const mainRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
-        // Wait for the navigation menu to release background inertness.
         const frame = requestAnimationFrame(() => {
-            messageRef.current?.closest("main")?.focus({ preventScroll: true });
+            mainRef.current?.focus({ preventScroll: true });
         });
         return () => cancelAnimationFrame(frame);
     }, []);
 
     return (
-        <div className="route-error" ref={messageRef}>
-            <h1>We couldn’t load this page.</h1>
-            <p>Please check your connection and reload to try again.</p>
-            <button type="button" onClick={() => window.location.reload()}>
-                Reload page
-            </button>
-            <Link to={publicPageRoutes.home.path}>Back to home</Link>
-        </div>
+        <ErrorPage
+            ref={mainRef}
+            title="Oops"
+            variant="recovery"
+            headline="We couldn’t load this page."
+            message="Please check your connection and reload to try again."
+            action={
+                <button
+                    className="error-page__action"
+                    type="button"
+                    onClick={() => window.location.reload()}
+                >
+                    Reload page
+                </button>
+            }
+        >
+            <PageMeta
+                pageTitle="Unable to load page"
+                description="Please reload to try again."
+                noIndex
+            />
+        </ErrorPage>
     );
 }
 
-interface RouteErrorBoundaryProps {
-    children: ReactNode;
-    standalone?: boolean;
-}
-
-export function RouteErrorBoundary({ children, standalone = false }: RouteErrorBoundaryProps) {
+export function RouteErrorBoundary({ children }: { children: ReactNode }) {
     const { pathname } = useLocation();
-    const message = <RouteErrorMessage />;
-
     return (
-        <ErrorBoundary
-            key={pathname}
-            fallback={
-                standalone ? (
-                    <main id="main-content" tabIndex={-1}>
-                        {message}
-                    </main>
-                ) : (
-                    message
-                )
-            }
-        >
+        <ErrorBoundary key={pathname} fallback={<RouteErrorMessage />}>
             {children}
         </ErrorBoundary>
     );

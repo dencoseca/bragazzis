@@ -23,7 +23,7 @@ test("keeps loading UI until an import rejects, then focuses recovery and reload
     render(
         <MemoryRouter>
             <Suspense fallback={<p>Loading page</p>}>
-                <RouteErrorBoundary standalone>
+                <RouteErrorBoundary>
                     <FailedPage />
                 </RouteErrorBoundary>
             </Suspense>
@@ -32,9 +32,7 @@ test("keeps loading UI until an import rejects, then focuses recovery and reload
     expect(screen.getByText("Loading page")).toBeTruthy();
     expect(screen.queryByRole("button", { name: "Reload page" })).toBeNull();
     await act(async () => rejectImport(new Error("Module download failed")));
-    expect(
-        await screen.findByRole("heading", { name: "We couldn’t load this page." }),
-    ).toBeTruthy();
+    expect(await screen.findByRole("heading", { name: "Oops" })).toBeTruthy();
     expect(screen.queryByText("Loading page")).toBeNull();
     await waitFor(() => expect(document.activeElement).toBe(screen.getByRole("main")));
     expect(reload).not.toHaveBeenCalled();
@@ -42,38 +40,32 @@ test("keeps loading UI until an import rejects, then focuses recovery and reload
     expect(reload).toHaveBeenCalledTimes(1);
 });
 
-test("keeps surrounding content and clears failure when navigating to another page", async () => {
+test("clears the standalone failure when navigating home", async () => {
     vi.spyOn(console, "error").mockImplementation(() => {});
     function FailedPage(): never {
         throw new Error("Page failed");
     }
     render(
         <MemoryRouter initialEntries={["/broken"]}>
-            <header>Site navigation</header>
-            <main tabIndex={-1}>
-                <RouteErrorBoundary>
-                    <Routes>
-                        <Route path="/broken" element={<FailedPage />} />
-                        <Route
-                            path="/"
-                            element={
-                                <>
-                                    <h1>Home page</h1>
-                                    <Link to="/broken">Broken page</Link>
-                                </>
-                            }
-                        />
-                    </Routes>
-                </RouteErrorBoundary>
-            </main>
-            <footer>Site footer</footer>
+            <RouteErrorBoundary>
+                <Routes>
+                    <Route path="/broken" element={<FailedPage />} />
+                    <Route
+                        path="/"
+                        element={
+                            <>
+                                <h1>Home page</h1>
+                                <Link to="/broken">Broken page</Link>
+                            </>
+                        }
+                    />
+                </Routes>
+            </RouteErrorBoundary>
         </MemoryRouter>,
     );
-    expect(screen.getByRole("banner").textContent).toBe("Site navigation");
-    expect(screen.getByRole("contentinfo").textContent).toBe("Site footer");
     expect(screen.getAllByRole("main")).toHaveLength(1);
     const user = userEvent.setup();
-    await user.click(screen.getByRole("link", { name: "Back to home" }));
+    await user.click(screen.getByRole("link", { name: "Bragazzi's" }));
     expect(screen.getByRole("heading", { name: "Home page" })).toBeTruthy();
     expect(screen.queryByRole("button", { name: "Reload page" })).toBeNull();
     await user.click(screen.getByRole("link", { name: "Broken page" }));

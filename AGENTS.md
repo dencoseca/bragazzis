@@ -58,7 +58,7 @@ src/
   colocated with it (for example `src/pages/home/useScrollParallax.ts`), and moves to `src/hooks/` when a second route
   needs it.
 - **Styles:** SCSS partial filenames use kebab case and match their owning component or page feature (for example,
-  `_footer.scss`, `_la-storia.scss`, `_il-giorno.scss`, and `_not-found.scss`). Import new partials into
+  `_footer.scss`, `_la-storia.scss`, `_il-giorno.scss`, and `_error-page.scss`). Import new partials into
   `src/styles/main.scss`.
 - **Constants:** Shared TypeScript values go in `src/constants/`. Visual design tokens, theme colors, and breakpoints
   live in `src/styles/_tokens.scss`; `vite.config.ts` injects Sass breakpoint values into JavaScript at build time.
@@ -84,7 +84,7 @@ src/
 - **No SSR** — this is a client-side SPA, but browser-dependent hooks include `typeof window` guards for SSR-safety as
   a best practice.
 - **Routing** is handled by React Router in `src/App.tsx` with lazy-loaded page components. Pages use named exports; `App.tsx` maps them to default exports for `React.lazy`.
-- **Route failures** are caught by `RouteErrorBoundary` inside `Layout`, preserving navigation and the footer. The standalone 404 route has its own boundary. Recovery uses an explicit full-page reload because rejected lazy imports are cached; changing pathname resets the boundary so other pages remain accessible. Keep the shared Suspense boundary and its loading behavior unchanged.
+- **Route failures** are caught around route content by `RouteErrorBoundary`. Its standalone recovery screen shares `ErrorPage` and its styles with the 404 page. Recovery uses an explicit full-page reload because rejected lazy imports are cached; changing pathname resets the boundary so the home link remains usable. Keep the shared Suspense boundary and its loading behavior unchanged.
 - **Smooth scrolling** is powered by Lenis via the `useSmoothScroll` hook, used in `components/layout/Layout.tsx`; history-entry changes reset its momentum.
 - **Route navigation** is coordinated by `components/RouteNavigation.tsx` inside the shared route Suspense boundary: new page links start at the top (or their fragment target), and focus moves after lazy content is ready. Every route supplies a focusable `main#main-content`. Back/Forward scroll restoration and native fragment scrolling are browser-managed; exact positions are not guaranteed across asynchronous layout changes. Do not add custom history state or scroll-position tracking for this policy.
 - **Responsive JS behavior** uses the Sass-backed media-query helpers in `useMediaQuery`; viewport-relative Motion

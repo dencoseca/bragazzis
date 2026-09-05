@@ -5,7 +5,6 @@ import { useLocation } from "react-router-dom";
 import { Footer } from "@/components/layout/Footer";
 import { SiteNavigation } from "@/components/layout/SiteNavigation";
 import { PageMeta } from "@/components/PageMeta";
-import { RouteErrorBoundary } from "@/components/RouteErrorBoundary";
 import { getCanonicalUrl } from "@/constants/routes";
 import { themeNames, type ThemeName } from "@/constants/themes";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
@@ -49,7 +48,7 @@ export function Layout({
                     Skip to content
                 </a>
                 <main id="main-content" tabIndex={-1} data-theme={pageTheme}>
-                    <RouteErrorBoundary>{children}</RouteErrorBoundary>
+                    {children}
                 </main>
                 <Footer theme={pageTheme} scrollToTopBehavior={resolvedScrollToTopBehavior} />
             </div>
