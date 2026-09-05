@@ -1,0 +1,47 @@
+@use "../tokens" as tokens;
+
+.route-error {
+    min-height: 75dvh;
+    padding: 10rem 1.5rem 4rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    text-align: center;
+
+    h1 {
+        margin: 0;
+        font-family: tokens.$font-display;
+        font-size: clamp(2rem, 5vw, 4rem);
+        font-weight: 400;
+    }
+
+    p {
+        margin: 0;
+        font-size: 1.25rem;
+        line-height: 1.5;
+        max-width: 30rem;
+    }
+
+    button {
+        padding: 1rem 1.5rem;
+        border: 1px solid currentColor;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        cursor: pointer;
+    }
+
+    a {
+        color: inherit;
+        text-underline-offset: 0.25em;
+    }
+
+    button:focus-visible,
+    a:focus-visible {
+        outline: 2px solid currentColor;
+        outline-offset: 4px;
+    }
+}

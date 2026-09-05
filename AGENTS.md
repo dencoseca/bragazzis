@@ -84,6 +84,7 @@ src/
 - **No SSR** — this is a client-side SPA, but browser-dependent hooks include `typeof window` guards for SSR-safety as
   a best practice.
 - **Routing** is handled by React Router in `src/App.tsx` with lazy-loaded page components. Pages use named exports; `App.tsx` maps them to default exports for `React.lazy`.
+- **Route failures** are caught by `RouteErrorBoundary` inside `Layout`, preserving navigation and the footer. The standalone 404 route has its own boundary. Recovery uses an explicit full-page reload because rejected lazy imports are cached; changing pathname resets the boundary so other pages remain accessible. Keep the shared Suspense boundary and its loading behavior unchanged.
 - **Smooth scrolling** is powered by Lenis via the `useSmoothScroll` hook, used in `components/layout/Layout.tsx`; history-entry changes reset its momentum.
 - **Route navigation** is coordinated by `components/RouteNavigation.tsx` inside the shared route Suspense boundary: new page links start at the top (or their fragment target), and focus moves after lazy content is ready. Every route supplies a focusable `main#main-content`. Back/Forward scroll restoration and native fragment scrolling are browser-managed; exact positions are not guaranteed across asynchronous layout changes. Do not add custom history state or scroll-position tracking for this policy.
 - **Responsive JS behavior** uses the Sass-backed media-query helpers in `useMediaQuery`; viewport-relative Motion

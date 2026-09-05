@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 
 import { Layout } from "@/components/layout/Layout";
 import { LoadingFallback } from "@/components/LoadingFallback";
+import { RouteErrorBoundary } from "@/components/RouteErrorBoundary";
 import { RouteNavigation } from "@/components/RouteNavigation";
 import { notFoundRoute, publicPageRoutes } from "@/constants/routes";
 import { themeNames } from "@/constants/themes";
@@ -57,7 +58,14 @@ export function App() {
                         </Layout>
                     }
                 />
-                <Route path={notFoundRoute.path} element={<NotFound />} />
+                <Route
+                    path={notFoundRoute.path}
+                    element={
+                        <RouteErrorBoundary standalone>
+                            <NotFound />
+                        </RouteErrorBoundary>
+                    }
+                />
             </Routes>
         </Suspense>
     );
