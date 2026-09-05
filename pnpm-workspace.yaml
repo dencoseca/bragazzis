@@ -3,8 +3,8 @@ allowBuilds:
   esbuild: false
   sharp: false
 overrides:
-  vite: "catalog:"
-  vitest: "catalog:"
+  vite@*: "catalog:"
+  vitest@*: "catalog:"
 savePrefix: ""
 catalog:
   vite: npm:@voidzero-dev/vite-plus-core@0.3.0
