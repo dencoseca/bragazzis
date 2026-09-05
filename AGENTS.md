@@ -140,9 +140,9 @@ This project is using Vite+, a unified toolchain built on top of Vite, Rolldown,
   install or upgrade them by hand; use Vite+ commands so its pins, catalogs, and overrides stay aligned.
 - **Import JavaScript modules from `vite-plus`:** Import modules from the `vite-plus` dependency, not from
   `vite` or `vitest`. For example, `import { defineConfig } from 'vite-plus';` or
-  `import { expect, test, vi } from 'vite-plus/test';`. The direct `vitest` catalog entry satisfies
-  `@vitest/coverage-v8`'s required peer; keep both aligned to Vite+'s bundled version through `vp migrate`,
-  even when `vp outdated` reports a newer standalone Vitest release. See the
+  `import { expect, test, vi } from 'vite-plus/test';`. Tests use Vite+'s bundled Vitest without a direct
+  `vitest` dependency. Let `vp migrate` manage Vitest dependencies and overrides if a future integration
+  requires them. See the
   [direct Vitest dependency rules](https://viteplus.dev/guide/migrate-rules#when-vitest-is-directly-required).
 
 ### Upgrading Vite+
