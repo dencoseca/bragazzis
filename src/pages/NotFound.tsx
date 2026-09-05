@@ -1,30 +1,26 @@
 import { Link } from "react-router-dom";
 
+import { ErrorPage } from "@/components/ErrorPage";
 import { PageMeta } from "@/components/PageMeta";
 import { notFoundRoute, publicPageRoutes } from "@/constants/routes";
-import { siteConfig } from "@/constants/siteConfig";
 
 export function NotFound() {
     return (
-        <main id="main-content" tabIndex={-1} className="page-not-found">
+        <ErrorPage
+            title="404"
+            headline="There's no more bread."
+            message="D'you do soup? Nope... no, we don't do soup."
+            action={
+                <Link to={publicPageRoutes.home.path} className="error-page__action">
+                    I'll come back
+                </Link>
+            }
+        >
             <PageMeta
                 pageTitle={notFoundRoute.pageTitle}
                 description={notFoundRoute.description}
                 noIndex
             />
-            <Link to={publicPageRoutes.home.path} className="page-not-found__logo">
-                {siteConfig.business.name}
-            </Link>
-            <div className="page-not-found__content">
-                <h1>404</h1>
-                <p className="page-not-found__headline">There's no more bread.</p>
-                <p className="page-not-found__message">
-                    D'you do soup? Nope... no, we don't do soup.
-                </p>
-            </div>
-            <Link to={publicPageRoutes.home.path} className="page-not-found__back-button">
-                I'll come back
-            </Link>
-        </main>
+        </ErrorPage>
     );
 }

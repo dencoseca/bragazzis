@@ -15,11 +15,11 @@
 @use "components/header";
 @use "components/footer";
 @use "components/menu";
+@use "components/error-page";
 // Pages
 @use "pages/home";
 @use "pages/la-storia";
 @use "pages/il-giorno";
-@use "pages/not-found";
 // ===============
 // General Styles
 // ===============

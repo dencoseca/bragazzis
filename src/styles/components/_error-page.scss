@@ -1,5 +1,5 @@
 @use "../tokens" as tokens;
-.page-not-found {
+.error-page {
     height: 100dvh;
     min-height: 42rem;
     padding: clamp(1.5rem, 5vw, 4rem);
@@ -27,7 +27,7 @@
         transform: translate(-50%, -45%);
     }
 
-    .page-not-found__logo {
+    .error-page__logo {
         font-family: tokens.$font-display;
         font-size: 3rem;
         position: absolute;
@@ -39,7 +39,7 @@
         transform: translateX(-50%);
     }
 
-    .page-not-found__content {
+    .error-page__content {
         position: relative;
         z-index: 1;
         width: min(44rem, 100%);
@@ -53,21 +53,21 @@
         line-height: 0.82;
     }
 
-    .page-not-found__headline {
+    .error-page__headline {
         margin: clamp(1rem, 2vw, 1.5rem) 0 0;
         font-family: tokens.$font-display;
         font-size: 4rem;
         line-height: 1;
     }
 
-    .page-not-found__message {
+    .error-page__message {
         width: min(28rem, 100%);
         margin: clamp(1rem, 2vw, 1.5rem) auto 0;
         font-size: 1.25rem;
         line-height: 1.45;
     }
 
-    .page-not-found__back-button {
+    .error-page__action {
         position: relative;
         z-index: 1;
         display: inline-block;
@@ -96,6 +96,14 @@
         }
     }
 
+    button.error-page__action {
+        padding: 0;
+        border: 0;
+        background: transparent;
+        font-family: inherit;
+        cursor: pointer;
+    }
+
     @media (max-width: tokens.$breakpoint-mobile) {
         min-height: 40rem;
 
@@ -103,7 +111,7 @@
             width: 88vw;
         }
 
-        .page-not-found__logo {
+        .error-page__logo {
             font-size: 2rem;
         }
 
@@ -111,12 +119,29 @@
             font-size: 7rem;
         }
 
-        .page-not-found__headline {
+        .error-page__headline {
             font-size: 2rem;
         }
 
-        .page-not-found__message {
+        .error-page__message {
             font-size: 1rem;
         }
+    }
+}
+
+// Longer recovery copy needs a quieter scale than the three-digit 404 title.
+.error-page--recovery {
+    &::before {
+        width: min(66vw, 24rem);
+    }
+
+    h1 {
+        font-size: clamp(4rem, 8vw, 7rem);
+        line-height: 1.1;
+    }
+
+    .error-page__headline {
+        font-size: clamp(1.5rem, 3vw, 2.5rem);
+        line-height: 1.15;
     }
 }

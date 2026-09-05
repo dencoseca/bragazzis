@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 
 import { Layout } from "@/components/layout/Layout";
 import { LoadingFallback } from "@/components/LoadingFallback";
+import { RouteErrorBoundary } from "@/components/RouteErrorBoundary";
 import { RouteNavigation } from "@/components/RouteNavigation";
 import { notFoundRoute, publicPageRoutes } from "@/constants/routes";
 import { themeNames } from "@/constants/themes";
@@ -18,47 +19,49 @@ export function App() {
     return (
         <Suspense fallback={<LoadingFallback />}>
             <RouteNavigation />
-            <Routes>
-                <Route
-                    path={publicPageRoutes.home.path}
-                    element={
-                        <Layout
-                            pageTitle={publicPageRoutes.home.pageTitle}
-                            description={publicPageRoutes.home.description}
-                            theme={themeNames.light}
-                            headerTheme={themeNames.dark}
-                        >
-                            <Home />
-                        </Layout>
-                    }
-                />
-                <Route
-                    path={publicPageRoutes.laStoria.path}
-                    element={
-                        <Layout
-                            pageTitle={publicPageRoutes.laStoria.pageTitle}
-                            description={publicPageRoutes.laStoria.description}
-                            theme={themeNames.light}
-                        >
-                            <LaStoria />
-                        </Layout>
-                    }
-                />
-                <Route
-                    path={publicPageRoutes.ilGiorno.path}
-                    element={
-                        <Layout
-                            pageTitle={publicPageRoutes.ilGiorno.pageTitle}
-                            description={publicPageRoutes.ilGiorno.description}
-                            theme={themeNames.dark}
-                            scrollToTopBehavior="auto"
-                        >
-                            <IlGiorno />
-                        </Layout>
-                    }
-                />
-                <Route path={notFoundRoute.path} element={<NotFound />} />
-            </Routes>
+            <RouteErrorBoundary>
+                <Routes>
+                    <Route
+                        path={publicPageRoutes.home.path}
+                        element={
+                            <Layout
+                                pageTitle={publicPageRoutes.home.pageTitle}
+                                description={publicPageRoutes.home.description}
+                                theme={themeNames.light}
+                                headerTheme={themeNames.dark}
+                            >
+                                <Home />
+                            </Layout>
+                        }
+                    />
+                    <Route
+                        path={publicPageRoutes.laStoria.path}
+                        element={
+                            <Layout
+                                pageTitle={publicPageRoutes.laStoria.pageTitle}
+                                description={publicPageRoutes.laStoria.description}
+                                theme={themeNames.light}
+                            >
+                                <LaStoria />
+                            </Layout>
+                        }
+                    />
+                    <Route
+                        path={publicPageRoutes.ilGiorno.path}
+                        element={
+                            <Layout
+                                pageTitle={publicPageRoutes.ilGiorno.pageTitle}
+                                description={publicPageRoutes.ilGiorno.description}
+                                theme={themeNames.dark}
+                                scrollToTopBehavior="auto"
+                            >
+                                <IlGiorno />
+                            </Layout>
+                        }
+                    />
+                    <Route path={notFoundRoute.path} element={<NotFound />} />
+                </Routes>
+            </RouteErrorBoundary>
         </Suspense>
     );
 }
