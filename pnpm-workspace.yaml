@@ -3,22 +3,17 @@ allowBuilds:
   esbuild: false
   sharp: false
 overrides:
-  vite: "catalog:"
-  vitest: "catalog:"
+  vite@*: "catalog:"
 savePrefix: ""
 catalog:
   vite: npm:@voidzero-dev/vite-plus-core@0.3.0
-  vitest: 4.1.11
   vite-plus: 0.3.0
-  "@vitest/coverage-v8": 4.1.11
 peerDependencyRules:
   allowAny:
     - vite
-    - vitest
   allowedVersions:
     typescript: "*"
     vite: "*"
-    vitest: "*"
 minimumReleaseAgeExclude:
   - "@types/node@26.4.0"
   - "happy-dom@20.11.12"
