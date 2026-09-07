@@ -10,12 +10,13 @@ export interface OptimizedImageProps extends Omit<ComponentPropsWithoutRef<"pict
     priority?: boolean;
     revealOnLoad?: boolean;
     shouldLoad?: boolean;
+    loading?: "eager" | "lazy";
     onReady?: () => void;
 }
 
-function getPlaceholderImageSrc(width: number, height: number) {
+function getPlaceholderImageSrc(width: number, height: number, hasFailed = false) {
     return `data:image/svg+xml,${encodeURIComponent(
-        `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"></svg>`,
+        `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">${hasFailed ? '<rect width="100%" height="100%" fill="#333"/><text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="24" fill="#eee">Image unavailable</text>' : ""}</svg>`,
     )}`;
 }
 
@@ -31,12 +32,14 @@ export function OptimizedImage({
     priority = false,
     revealOnLoad = false,
     shouldLoad,
+    loading = "lazy",
     onReady,
     ...pictureProps
 }: OptimizedImageProps) {
     const [hasLoaded, setHasLoaded] = useState(false);
+    const [hasFailed, setHasFailed] = useState(false);
     const resolvedShouldLoad = shouldLoad ?? true;
-    const loading = priority || shouldLoad === true ? "eager" : "lazy";
+    const canRequestImage = resolvedShouldLoad && !hasFailed;
     const { sources, img } = image;
 
     async function handleLoad(event: SyntheticEvent<HTMLImageElement>) {
@@ -55,8 +58,9 @@ export function OptimizedImage({
             {...pictureProps}
             ref={pictureRef}
             data-image-loaded={revealOnLoad ? String(hasLoaded) : undefined}
+            data-image-error={hasFailed ? "true" : undefined}
         >
-            {resolvedShouldLoad
+            {canRequestImage
                 ? Object.entries(sources).map(([type, srcset]) => (
                       <source
                           key={type}
@@ -67,15 +71,16 @@ export function OptimizedImage({
                   ))
                 : null}
             <img
-                src={resolvedShouldLoad ? img.src : getPlaceholderImageSrc(img.w, img.h)}
-                alt={alt}
+                src={canRequestImage ? img.src : getPlaceholderImageSrc(img.w, img.h, hasFailed)}
+                alt={hasFailed && alt ? `Image unavailable: ${alt}` : alt}
                 width={img.w}
                 height={img.h}
                 sizes={sizes}
-                loading={loading}
-                decoding={resolvedShouldLoad && priority ? "sync" : "async"}
-                fetchPriority={resolvedShouldLoad && priority ? "high" : undefined}
-                onLoad={(revealOnLoad || onReady) && resolvedShouldLoad ? handleLoad : undefined}
+                loading={resolvedShouldLoad ? (priority ? "eager" : loading) : "lazy"}
+                decoding={canRequestImage && priority ? "sync" : "async"}
+                fetchPriority={canRequestImage && priority ? "high" : undefined}
+                onLoad={(revealOnLoad || onReady) && canRequestImage ? handleLoad : undefined}
+                onError={canRequestImage ? () => setHasFailed(true) : undefined}
             />
         </picture>
     );
