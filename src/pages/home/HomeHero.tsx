@@ -139,6 +139,7 @@ export function HomeHero({ scrollYProgress, onSettled }: HomeHeroProps) {
                             priority
                             revealOnLoad
                             onReady={() => setIsHeroImageReady(true)}
+                            onError={() => setIsHeroImageReady(true)}
                         />
                     </motion.div>
                 </div>

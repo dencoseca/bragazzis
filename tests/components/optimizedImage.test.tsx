@@ -137,3 +137,84 @@ describe("OptimizedImage", () => {
         });
     });
 });
+
+describe("image eligibility and urgency", () => {
+    test.each([undefined, false, true])(
+        "eligibility %s is independent of urgency",
+        (shouldLoad) => {
+            for (const loading of ["lazy", "eager"] as const) {
+                for (const priority of [false, true]) {
+                    const markup = renderToStaticMarkup(
+                        <OptimizedImage
+                            image={image}
+                            alt="fresh pasta"
+                            sizes="100vw"
+                            shouldLoad={shouldLoad}
+                            loading={loading}
+                            priority={priority}
+                        />,
+                    );
+                    const eligible = shouldLoad !== false;
+                    expect(markup.includes("<source")).toBe(eligible);
+                    expect(markup.includes("/fallback.jpg")).toBe(eligible);
+                    expect(markup).toContain(
+                        `loading="${eligible ? (priority ? "eager" : loading) : "lazy"}"`,
+                    );
+                    expect(markup.includes('fetchPriority="high"')).toBe(eligible && priority);
+                }
+            }
+        },
+    );
+
+    test("replaces deferred sources without making an eligible image eager", () => {
+        const onReady = vi.fn();
+        const { rerender } = render(
+            <OptimizedImage
+                image={image}
+                alt="fresh pasta"
+                sizes="100vw"
+                shouldLoad={false}
+                onReady={onReady}
+            />,
+        );
+        fireEvent.load(screen.getByRole("img"));
+        expect(onReady).not.toHaveBeenCalled();
+        rerender(
+            <OptimizedImage
+                image={image}
+                alt="fresh pasta"
+                sizes="100vw"
+                shouldLoad
+                onReady={onReady}
+            />,
+        );
+        expect(screen.getByRole("img").getAttribute("src")).toBe(image.img.src);
+        expect(screen.getByRole("img").getAttribute("loading")).toBe("lazy");
+    });
+
+    test("reveals an accessible local fallback and reports errors without reporting readiness", () => {
+        const onReady = vi.fn();
+        const onError = vi.fn();
+        render(
+            <OptimizedImage
+                image={image}
+                alt="fresh pasta"
+                sizes="100vw"
+                revealOnLoad
+                onReady={onReady}
+                onError={onError}
+            />,
+        );
+        fireEvent.error(screen.getByRole("img"));
+        const fallback = screen.getByRole("img", { name: "Image unavailable: fresh pasta" });
+        expect(fallback.closest("picture")?.dataset.imageError).toBe("true");
+        expect(fallback.closest("picture")?.dataset.imageLoaded).toBe("false");
+        expect(fallback.closest("picture")?.querySelector("source")).toBeNull();
+        expect(decodeURIComponent(fallback.getAttribute("src") ?? "")).toContain(
+            "Image unavailable</text>",
+        );
+        fireEvent.load(fallback);
+        expect(onReady).not.toHaveBeenCalled();
+        expect(onError).toHaveBeenCalledOnce();
+    });
+});

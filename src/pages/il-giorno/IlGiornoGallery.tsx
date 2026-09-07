@@ -89,6 +89,7 @@ export function IlGiornoGallery() {
                         priority={index === 0}
                         revealOnLoad
                         shouldLoad={shouldLoadImage}
+                        loading="eager"
                     />
                 );
             })}

@@ -69,6 +69,10 @@ src/
   `src/assets/images/gallery/`; its wildcard import and build-time metadata parity check depend on that directory
   containing only gallery `.jpg` files. Existing `.webp` files are not source assets and should not be imported
   directly.
+- **Image loading:** `OptimizedImage.shouldLoad` gates real sources; `loading` independently controls urgency and
+  defaults to lazy. `priority` forces eager/high-priority loading only when eligible. The gallery explicitly opts into
+  eager loading for its observer-driven load-ahead. Failed images show a local accessible fallback and report through
+  picture `onError`; `onReady` is reserved for successful loads. See `docs/image-loading.md` for measured behaviour.
 
 ## GitHub Workflow
 

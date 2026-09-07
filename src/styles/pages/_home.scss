@@ -30,7 +30,8 @@
     width: 100%;
     object-fit: cover;
 
-    &[data-image-loaded="true"] {
+    &[data-image-loaded="true"],
+    &[data-image-error="true"] {
         opacity: 1;
     }
 

@@ -71,6 +71,7 @@ export function LaStoria() {
                             image={ticketRomaImg}
                             alt="plane ticket"
                             sizes={STORY_IMAGE_SIZES}
+                            loading="eager"
                         />
                     </motion.div>
                 </div>
@@ -92,6 +93,7 @@ export function LaStoria() {
                             image={ticketPisaImg}
                             alt="plane ticket"
                             sizes={STORY_IMAGE_SIZES}
+                            loading="eager"
                         />
                     </motion.div>
                 </div>
