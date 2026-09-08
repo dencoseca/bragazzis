@@ -15,7 +15,7 @@ interface HomeHeroProps {
 }
 
 const HERO_INTRO_MAX_WAIT_MS = 2_500;
-const HERO_IMAGE_SIZES = `${getBreakpointMediaQuery("mobile")} 200vw, 100vw`;
+const HERO_IMAGE_SIZES = `${getBreakpointMediaQuery("mobile")} 100vw, 55vw`;
 
 const contentVariants = {
     initial: {
@@ -25,23 +25,7 @@ const contentVariants = {
         opacity: 1,
         transition: {
             ...smoothTransition,
-            delay: 1.5,
-        },
-    },
-};
-
-const downArrowVariants = {
-    initial: {
-        opacity: 0,
-    },
-    animate: {
-        opacity: [0, 1, 1],
-        translateY: [-20, 0, 0],
-        transition: {
-            ...smoothTransition,
-            delay: 1.5,
-            duration: 3,
-            times: [0, 0.6, 1],
+            delay: 0.15,
         },
     },
 };
@@ -54,8 +38,8 @@ const titleVariants = {
         translateY: 0,
         transition: {
             ...smoothTransition,
-            duration: 1.4,
-            delay: 0.3,
+            duration: 0.6,
+            delay: 0,
         },
     },
 };
@@ -76,10 +60,10 @@ export function HomeHero({ scrollYProgress, onSettled }: HomeHeroProps) {
     const [isHeroImageReady, setIsHeroImageReady] = useState(false);
     const [hasIntroWaitElapsed, setHasIntroWaitElapsed] = useState(false);
     const mobileCoverRef = useRef<HTMLElement>(null);
-    const statementRef = useRef<HTMLElement>(null);
+    const statementRef = useRef<HTMLDivElement>(null);
     const heroImageParallax = useScrollParallax(scrollYProgress, {
         input: [0, 1],
-        output: ["0vh", "59vh"],
+        output: ["0vh", "5vh"],
     });
     const { address } = siteConfig.business;
     const canStartIntro = isHeroImageReady || hasIntroWaitElapsed;
@@ -126,75 +110,71 @@ export function HomeHero({ scrollYProgress, onSettled }: HomeHeroProps) {
                         BRAGAZZI'S
                     </motion.h1>
                 </div>
-                <div className="home-hero__image-wrapper">
-                    <motion.div
-                        className="home-hero__image-inner"
-                        style={{ translateY: heroImageParallax }}
-                    >
-                        <OptimizedImage
-                            className="home-hero__image"
-                            image={parmesanImg}
-                            alt="an amaretti tin displayed on wheels of Parmesan cheese"
-                            sizes={HERO_IMAGE_SIZES}
-                            priority
-                            revealOnLoad
-                            onReady={() => setIsHeroImageReady(true)}
-                            onError={() => setIsHeroImageReady(true)}
-                        />
-                    </motion.div>
+                <div className="home-hero__strapline">
+                    <span>Cafe, delicatessen and shop</span>
+                    <span>Sheffield · Est. 2003</span>
                 </div>
-                <motion.div
-                    className="home-hero__content"
-                    variants={contentVariants}
-                    initial={initialAnimationState}
-                    animate={animateAnimationState}
-                >
-                    <OpeningHours />
-                    <div className="home-hero__address">
-                        <a href={address.mapsUrl} target="_blank" rel="noreferrer">
-                            <p>{address.streetAddress}</p>
-                            <p>{address.addressLocality}</p>
-                        </a>
-                    </div>
-                </motion.div>
-                <button
-                    type="button"
-                    className="home-hero__down-arrow-btn"
-                    onClick={handleScrollDown}
-                    aria-label="Scroll down"
-                >
-                    <motion.svg
-                        className="home-hero__down-arrow"
-                        variants={downArrowVariants}
+                <div className="home-hero__spread">
+                    <motion.div
+                        className="home-hero__content"
+                        variants={contentVariants}
                         initial={initialAnimationState}
                         animate={animateAnimationState}
-                        width="50"
-                        height="50"
-                        viewBox="0 0 50 50"
-                        fill="currentColor"
-                        xmlns="http://www.w3.org/2000/svg"
                     >
-                        <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M25 50C38.8071 50 50 38.8071 50 25C50 11.1929 38.8071 0 25 0C11.1929 0 0 11.1929 0 25C0 38.8071 11.1929 50 25 50ZM23.5858 38.5858L17 32L18.4142 30.5858L24 36.1716V9H26V36.1716L31.5858 30.5858L33 32L26.4142 38.5858L26 39L25 40L24 39L23.5858 38.5858Z"
-                            fill="currentColor"
-                        />
-                    </motion.svg>
-                </button>
+                        <p className="home-hero__eyebrow">Il Caffè</p>
+                        <h2 className="home-hero__headline">
+                            Roam freely and find inspiration...
+                            <br />
+                            <em>or that obscure pasta shape that you've been looking for</em>
+                        </h2>
+                        <div className="home-hero__address">
+                            <a href={address.mapsUrl} target="_blank" rel="noreferrer">
+                                <span>{address.streetAddress}</span>
+                                <span>{address.addressLocality} ↗</span>
+                            </a>
+                        </div>
+                        <button
+                            type="button"
+                            className="home-hero__down-arrow-btn"
+                            onClick={handleScrollDown}
+                            aria-label="Scroll down"
+                        >
+                            <span>Il Caffè</span>
+                            <span aria-hidden="true">↓</span>
+                        </button>
+                    </motion.div>
+                    <div className="home-hero__image-wrapper">
+                        <motion.div
+                            className="home-hero__image-inner"
+                            style={{ translateY: heroImageParallax }}
+                        >
+                            <OptimizedImage
+                                className="home-hero__image"
+                                image={parmesanImg}
+                                alt="an amaretti tin displayed on wheels of Parmesan cheese"
+                                sizes={HERO_IMAGE_SIZES}
+                                priority
+                                revealOnLoad
+                                onReady={() => setIsHeroImageReady(true)}
+                                onError={() => setIsHeroImageReady(true)}
+                            />
+                        </motion.div>
+                        <span className="home-hero__image-caption">
+                            All of which are good to eat.
+                        </span>
+                    </div>
+                </div>
             </div>
-            <section className="home-hero__mobile-cover" id="mobile-cover" ref={mobileCoverRef}>
+            <section
+                className="home-hero__mobile-cover"
+                id="mobile-cover"
+                ref={mobileCoverRef}
+                aria-label="Opening hours"
+            >
+                <span className="home-hero__hours-label">Opening hours</span>
                 <OpeningHours />
             </section>
-            <section
-                className="home-hero__statement text--display"
-                id="statement"
-                ref={statementRef}
-            >
-                <span>Roam freely and find inspiration...</span>
-                <span>or that obscure pasta shape that you've</span>
-                <span>been looking for</span>
-            </section>
+            <div id="statement" ref={statementRef} className="home-hero__statement" />
         </>
     );
 }

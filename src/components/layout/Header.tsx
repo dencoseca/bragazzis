@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import type { Ref } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 import { quickTransition } from "@/constants/animations";
 import { headerNavRoutes, publicPageRoutes } from "@/constants/routes";
@@ -82,9 +82,9 @@ export function Header({
                 inert={menuIsOpen ? true : undefined}
             >
                 {headerNavRoutes.map((route) => (
-                    <Link key={route.path} className="header__link" to={route.path}>
+                    <NavLink key={route.path} className="header__link" to={route.path}>
                         {route.label}
-                    </Link>
+                    </NavLink>
                 ))}
             </nav>
             <button

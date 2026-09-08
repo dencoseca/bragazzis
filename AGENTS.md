@@ -93,9 +93,12 @@ src/
 - **Route navigation** is coordinated by `components/RouteNavigation.tsx` inside the shared route Suspense boundary: new page links start at the top (or their fragment target), and focus moves after lazy content is ready. Every route supplies a focusable `main#main-content`. Back/Forward scroll restoration and native fragment scrolling are browser-managed; exact positions are not guaranteed across asynchronous layout changes. Do not add custom history state or scroll-position tracking for this policy.
 - **Responsive JS behavior** uses the Sass-backed media-query helpers in `useMediaQuery`; viewport-relative Motion
   transforms use CSS units directly so resizing does not require React state.
-- **Scroll parallax** on Home is gated in one place: `src/pages/home/useScrollParallax.ts` owns the policy that parallax
-  is disabled on mobile and under reduced motion, so sections declare only their input/output ranges. `Home.tsx` keeps a
-  single `useScroll()` subscription that it passes to every section.
+- **Home motion:** `Home.tsx` keeps one `useScroll()` subscription for the hero photograph. Its restrained parallax is
+  disabled on mobile and under reduced motion by `src/pages/home/useScrollParallax.ts`. Editorial and seasonal sections
+  use normal document flow without scroll transforms.
+- **Visual direction:** butter-yellow paper, vermilion and dark green ink are defined in Sass tokens. The masthead uses
+  the existing Abril Fatface font; editorial headings use Georgia and body copy uses the system sans-serif stack.
+  Home is an editorial grid, La Storia pairs the original story with archival tickets, and Il Giorno is a photo journal.
 - **Themes** are semantic in React (`data-theme="light"` / `data-theme="dark"`) and mapped to actual colors in Sass.
 - **Breakpoints** are owned by Sass tokens in `src/styles/_tokens.scss`; `vite.config.ts` injects their values at build
   time for `src/constants/breakpoints.ts`, so JavaScript never mirrors the numbers in TypeScript.

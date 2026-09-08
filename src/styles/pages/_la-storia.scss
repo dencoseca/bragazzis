@@ -1,88 +1,90 @@
 @use "../tokens" as tokens;
+.lastoria {
+    padding: 3rem 4vw 6rem;
+}
 .lastoria__title-wrapper {
-    position: relative;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid tokens.$color-red;
+    color: tokens.$color-red;
 }
-
+.lastoria__eyebrow {
+    display: block;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+}
 .lastoria__title {
-    padding: 8vw 0 0;
-    position: relative;
-    z-index: 1;
-
-    @media (max-width: tokens.$breakpoint-mobile) {
-        padding-top: 20vw;
-    }
+    font-size: clamp(4rem, 15vw, 17rem);
 }
-
 .lastoria__story {
-    margin: 10vw 20vw 4vw;
-    text-align: center;
-
-    @media (max-width: tokens.$breakpoint-mobile) {
-        margin: 10vw;
-    }
-
-    p {
-        position: relative;
-        z-index: 1;
-        width: min(45rem, 45vw);
-        margin: 3vw auto;
-
-        @media (max-width: tokens.$breakpoint-mobile) {
-            width: 80vw;
-        }
-    }
-
-    .lastoria__story-line {
-        position: relative;
-        width: 1px;
-        height: 15vw;
-        background-color: #aaa;
-        margin: 0 auto;
-
-        @media (max-width: tokens.$breakpoint-mobile) {
-            height: clamp(6.25rem, 26vw, 13rem);
-        }
-    }
-
-    .lastoria__ticket {
-        position: absolute;
-        top: 0;
-        width: 30vw;
-        pointer-events: none;
-
-        @media (max-width: tokens.$breakpoint-mobile) {
-            top: clamp(1.25rem, 5.5vw, 2.5rem);
-            width: clamp(7rem, 30vw, 12rem);
-        }
-
-        img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        &.lastoria__ticket--left {
-            left: -55vw;
-        }
-
-        &.lastoria__ticket--right {
-            left: 25vw;
-        }
-    }
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 4rem 8vw;
+    align-items: center;
+    padding-top: 3rem;
 }
-
-.lastoria__image {
-    margin: 0 auto;
-    width: 50vw;
-
+.lastoria__intro {
+    font:
+        400 clamp(1.75rem, 3.3vw, 3.4rem)/1.25 Georgia,
+        serif;
+    letter-spacing: -0.025em;
+    margin: 0;
+}
+.lastoria__tickets {
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+}
+.lastoria__ticket {
+    display: block;
+    width: 85%;
+    box-shadow: 0 8px 20px #262b241a;
     img {
         width: 100%;
-        height: auto;
         display: block;
     }
-
-    @media (max-width: tokens.$breakpoint-mobile) {
+}
+.lastoria__ticket--left {
+    transform: rotate(-8deg);
+}
+.lastoria__ticket--right {
+    margin: -0.5rem 0 0 auto;
+    transform: rotate(7deg);
+}
+.lastoria__image {
+    padding: 0.8rem;
+    border: 1px solid tokens.$color-red;
+    transform: rotate(-2deg);
+    img {
         width: 100%;
-        margin-bottom: 10vw;
+        display: block;
+    }
+}
+.lastoria__prose {
+    align-self: start;
+    border-top: 1px solid tokens.$color-red;
+    padding-top: 1rem;
+    p + p {
+        margin-top: 2rem;
+    }
+}
+@media (max-width: tokens.$breakpoint-mobile) {
+    .lastoria {
+        padding: 2rem 5vw 4rem;
+    }
+    .lastoria__title {
+        font-size: 17vw;
+    }
+    .lastoria__story {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+        padding-top: 2rem;
+    }
+    .lastoria__tickets {
+        padding: 1rem;
+    }
+    .lastoria__image {
+        grid-row: 4;
     }
 }

@@ -1,120 +1,71 @@
 @use "../tokens" as tokens;
 .footer {
-    color: var(--theme-content-color, tokens.$color-ink);
-    background-color: var(--theme-background-color, tokens.$color-paper);
-
-    // ====================
-    // General List Styles
-    // ====================
+    position: relative;
+    color: tokens.$color-paper;
+    background: tokens.$color-red;
+    padding: 3rem 4vw 2rem;
+    border-top: 1px solid tokens.$color-paper;
+}
+.footer__masthead {
+    font: 400 15vw/1 tokens.$font-display;
+    letter-spacing: -0.045em;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid;
+}
+.footer__lists {
+    display: grid;
+    grid-template-columns: 1.2fr 1.2fr 0.6fr;
+    gap: 3rem;
+    padding: 1rem 0 3rem;
+}
+.footer__list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    li {
+        margin-bottom: 0.75rem;
+    }
+    p {
+        margin: 0;
+    }
+}
+.footer__link {
+    color: inherit;
+    text-decoration: none;
+    text-underline-offset: 4px;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+.footer__scroll-to-top {
+    position: absolute;
+    right: 4vw;
+    bottom: 2rem;
+    display: flex;
+    padding: 0;
+    border: 0;
+    color: inherit;
+    background: none;
+    cursor: pointer;
+}
+@media (max-width: tokens.$breakpoint-mobile) {
+    .footer {
+        padding: 2rem 5vw;
+    }
+    .footer__masthead {
+        font-size: 16vw;
+        padding-bottom: 1.5rem;
+    }
     .footer__lists {
-        display: grid;
-        grid-template-columns: 1fr 1.2fr 1fr;
-        column-gap: clamp(1.5rem, 5vw, 6rem);
-        padding: 3vw 6vw 2vw;
-
-        @media (max-width: tokens.$breakpoint-mobile) {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 10vw;
-        }
-
-        .footer__list {
-            min-width: 0;
-
-            @media (max-width: tokens.$breakpoint-mobile) {
-                width: 100%;
-            }
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-
-            li {
-                margin-bottom: 1vw;
-
-                @media (max-width: tokens.$breakpoint-mobile) {
-                    margin-bottom: 3.4vw;
-                }
-
-                p {
-                    margin: 0;
-                    margin-bottom: 0.2vw;
-
-                    @media (max-width: tokens.$breakpoint-mobile) {
-                        margin-bottom: 1vw;
-                    }
-                }
-            }
-        }
-
-        // =====================
-        // Specific List Styles
-        // =====================
-        .footer__list--site {
-            text-align: center;
-        }
-
-        .footer__list--community {
-            text-align: right;
-        }
-
-        .footer__list--contact,
-        .footer__list--site,
-        .footer__list--community {
-            @media (max-width: tokens.$breakpoint-mobile) {
-                text-align: center;
-            }
-        }
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        padding-bottom: 2rem;
     }
-
+    .footer__list--site {
+        grid-column: 1 / -1;
+        grid-row: 2;
+    }
     .footer__scroll-to-top {
-        display: flex;
-        justify-content: center;
-        width: 100%;
-        background: none;
-        border: none;
-        color: inherit;
-        padding: 0;
-        padding-bottom: 3vw;
-
-        @media (max-width: tokens.$breakpoint-tablet) {
-            transform: scale(0.9);
-        }
-
-        @media (max-width: tokens.$breakpoint-mobile) {
-            padding-bottom: 10vw;
-        }
-
-        svg {
-            cursor: pointer;
-        }
-    }
-
-    .footer__link {
-        position: relative;
-        display: inline-block;
-        text-decoration: none;
-        color: currentColor;
-
-        &:after {
-            content: "";
-            position: absolute;
-            height: 1px;
-            width: 0;
-            display: block;
-            margin-top: 2px;
-            right: 0;
-            background-color: currentColor;
-            transition: 0.4s ease;
-        }
-
-        &:hover {
-            &:after {
-                width: 100%;
-                left: 0;
-                background-color: currentColor;
-            }
-        }
+        right: 5vw;
     }
 }

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type RefCallback } from "react";
 
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { getBreakpointMediaQuery } from "@/constants/breakpoints";
-import { galleryImages, type GalleryImageSize } from "@/pages/il-giorno/galleryImages";
+import { galleryImages } from "@/pages/il-giorno/galleryImages";
 
 const INITIAL_EAGER_GALLERY_IMAGE_COUNT = 2;
 const GALLERY_IMAGE_LOAD_AHEAD_COUNT = 3;
@@ -12,8 +12,10 @@ function getGalleryLoadIndex(index: number) {
     return Math.min(galleryImages.length - 1, index + GALLERY_IMAGE_LOAD_AHEAD_COUNT);
 }
 
-function getGalleryImageSizes(size: GalleryImageSize) {
-    return `${getBreakpointMediaQuery("mobile")} 100vw, ${size}vw`;
+function getGalleryImageSizes(index: number) {
+    // Matches the five-image spreads in _il-giorno.scss, including the page gutters.
+    const desktopSizes = ["74vw", "37vw", "44.5vw", "44.5vw", "44.5vw"];
+    return `${getBreakpointMediaQuery("mobile")} 90vw, ${desktopSizes[index % 5]}`;
 }
 
 export function IlGiornoGallery() {
@@ -85,7 +87,7 @@ export function IlGiornoGallery() {
                         data-size={image.size}
                         image={image.image}
                         alt={image.alt}
-                        sizes={getGalleryImageSizes(image.size)}
+                        sizes={getGalleryImageSizes(index)}
                         priority={index === 0}
                         revealOnLoad
                         shouldLoad={shouldLoadImage}
