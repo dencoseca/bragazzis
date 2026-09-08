@@ -30,6 +30,30 @@ vi.mock("motion/react", () => ({
 }));
 
 describe("Header", () => {
+    test.each([themeNames.light, themeNames.dark])(
+        "keeps the %s page theme when the menu opens",
+        (theme) => {
+            const props = {
+                onMenuToggle: vi.fn(),
+                menuButtonRef: null,
+                menuId: "mobile-menu",
+                theme,
+            };
+            const { rerender } = render(
+                <MemoryRouter>
+                    <Header {...props} menuIsOpen={false} />
+                </MemoryRouter>,
+            );
+            expect(screen.getByRole("banner").getAttribute("data-theme")).toBe(theme);
+            rerender(
+                <MemoryRouter>
+                    <Header {...props} menuIsOpen />
+                </MemoryRouter>,
+            );
+            expect(screen.getByRole("banner").getAttribute("data-theme")).toBe(theme);
+        },
+    );
+
     test("renders navigation and opens the mobile menu", async () => {
         const user = userEvent.setup();
         const onMenuToggle = vi.fn<() => void>();
@@ -41,7 +65,6 @@ describe("Header", () => {
                     menuButtonRef={null}
                     menuId="mobile-menu"
                     theme={themeNames.light}
-                    menuTheme={themeNames.dark}
                 />
             </MemoryRouter>,
         );
@@ -74,7 +97,7 @@ describe("Header", () => {
         expect(onMenuToggle).toHaveBeenCalledOnce();
     });
 
-    test("uses the menu theme while open and closes the mobile menu", async () => {
+    test("preserves the page theme while open and closes the mobile menu", async () => {
         const user = userEvent.setup();
         const onMenuToggle = vi.fn<() => void>();
         render(
@@ -85,7 +108,6 @@ describe("Header", () => {
                     menuButtonRef={null}
                     menuId="mobile-menu"
                     theme={themeNames.light}
-                    menuTheme={themeNames.dark}
                 />
             </MemoryRouter>,
         );
@@ -94,7 +116,7 @@ describe("Header", () => {
         const menuButton = screen.getByRole("button", { name: "Close menu" });
         const hamburgerLines = Array.from(menuButton.querySelectorAll(".header__mobile-menu-line"));
 
-        expect(header?.getAttribute("data-theme")).toBe(themeNames.dark);
+        expect(header?.getAttribute("data-theme")).toBe(themeNames.light);
         expect(header?.getAttribute("data-menu-open")).toBe("true");
         expect(menuButton?.getAttribute("aria-expanded")).toBe("true");
         expect(menuButton?.getAttribute("aria-label")).toBe("Close menu");
