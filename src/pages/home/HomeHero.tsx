@@ -1,7 +1,7 @@
 import { motion, type MotionValue, useReducedMotion } from "motion/react";
 import { useEffect, useState } from "react";
 
-import parmesanImg from "@/assets/images/parmesan.jpg?preset=fullWidth";
+import coffeeDisplayImg from "@/assets/images/coffee-display.jpg?preset=fullWidth";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { smoothTransition } from "@/constants/animations";
 import { getBreakpointMediaQuery } from "@/constants/breakpoints";
@@ -136,8 +136,8 @@ export function HomeHero({ scrollYProgress, onSettled }: HomeHeroProps) {
                         >
                             <OptimizedImage
                                 className="home-hero__image"
-                                image={parmesanImg}
-                                alt="an amaretti tin displayed on wheels of Parmesan cheese"
+                                image={coffeeDisplayImg}
+                                alt="Bragazzi’s coffee bags displayed beside Italian coffee makers"
                                 sizes={HERO_IMAGE_SIZES}
                                 priority
                                 revealOnLoad
@@ -145,9 +145,6 @@ export function HomeHero({ scrollYProgress, onSettled }: HomeHeroProps) {
                                 onError={() => setIsHeroImageReady(true)}
                             />
                         </motion.div>
-                        <span className="home-hero__image-caption">
-                            All of which are good to eat.
-                        </span>
                     </div>
                 </div>
             </div>

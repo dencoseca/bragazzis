@@ -108,21 +108,10 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        object-position: 55% center;
+        object-position: center;
+        transform: scale(1.18);
+        transform-origin: 50% 90%;
     }
-}
-.home-hero__image-caption {
-    position: absolute;
-    bottom: 1.5rem;
-    left: 1.5rem;
-    right: 1.5rem;
-    width: fit-content;
-    background: tokens.$color-yellow;
-    padding: 0.7rem 1rem;
-    font:
-        italic 1.1rem Georgia,
-        serif;
-    transform: rotate(-3deg);
 }
 .home-hero__mobile-cover {
     padding: 1.4rem 4vw;
