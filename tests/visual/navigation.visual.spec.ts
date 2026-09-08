@@ -78,7 +78,15 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
             await page.goBack();
             await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(500);
             await page.goForward();
-            await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+            await expect
+                .poll(() =>
+                    page.evaluate(() =>
+                        Math.round(
+                            document.querySelector("#main-content")!.getBoundingClientRect().top,
+                        ),
+                    ),
+                )
+                .toBe(0);
         });
 
         test("distinguishes fresh fragment navigation from Back and Forward", async ({ page }) => {
@@ -87,7 +95,15 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
             const skipLink = page.locator(".skip-to-content");
             await skipLink.evaluate((link: HTMLAnchorElement) => link.click());
             await expect(page).toHaveURL(/#main-content$/);
-            await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+            await expect
+                .poll(() =>
+                    page.evaluate(() =>
+                        Math.round(
+                            document.querySelector("#main-content")!.getBoundingClientRect().top,
+                        ),
+                    ),
+                )
+                .toBe(0);
             await scrollTo(page, 700);
             await page.goBack();
             await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(500);
@@ -100,7 +116,15 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
             await skipLink.evaluate((link: HTMLAnchorElement) => link.click());
             await expect(page).toHaveURL(/#main-content$/);
             await expect(page.locator("#main-content")).toBeFocused();
-            await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+            await expect
+                .poll(() =>
+                    page.evaluate(() =>
+                        Math.round(
+                            document.querySelector("#main-content")!.getBoundingClientRect().top,
+                        ),
+                    ),
+                )
+                .toBe(0);
             await scrollTo(page, 300);
             await page.goBack();
             await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(500);

@@ -18,6 +18,9 @@ export function Footer({ theme, scrollToTopBehavior = "smooth" }: FooterProps) {
 
     return (
         <footer className="footer" data-theme={theme}>
+            <div className="footer__masthead" aria-hidden="true">
+                Bragazzi's
+            </div>
             <div className="footer__lists">
                 <div className="footer__list footer__list--contact">
                     <h4 className="text--heading-sm">Contact</h4>

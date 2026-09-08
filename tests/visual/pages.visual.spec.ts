@@ -32,7 +32,7 @@ const SCROLL_STATES = [
     { name: "near-footer", ratio: 1 },
 ] as const;
 
-const FLOATING_HANDOFF_VIEWPORTS = [
+const EDITORIAL_HANDOFF_VIEWPORTS = [
     TABLET_VIEWPORT,
     TABLET_WIDE_VIEWPORT,
     DESKTOP_VIEWPORT,
@@ -40,7 +40,7 @@ const FLOATING_HANDOFF_VIEWPORTS = [
 
 const VIEWPORT_IMAGE_MARGIN = 240;
 const SCROLL_SETTLE_MS = 700;
-const FLOATING_HANDOFF_MAX_GAP_RATIO = 0.35;
+const EDITORIAL_HANDOFF_MAX_GAP_RATIO = 0.35;
 
 test.describe("main page visuals", () => {
     for (const route of ROUTES) {
@@ -126,18 +126,18 @@ test.describe("mobile scrolling", () => {
     });
 });
 
-test.describe("home floating section handoff", () => {
-    for (const viewport of FLOATING_HANDOFF_VIEWPORTS) {
-        test(`final floating item leads naturally into seasonal banner at ${viewport.name}`, async ({
+test.describe("home editorial section handoff", () => {
+    for (const viewport of EDITORIAL_HANDOFF_VIEWPORTS) {
+        test(`final editorial item leads naturally into seasonal banner at ${viewport.name}`, async ({
             page,
         }) => {
             await page.setViewportSize(viewport);
             await gotoRouteAndSettle(page, publicPageRoutes.home.path, 5_200);
-            await scrollToFloatingBannerHandoff(page);
+            await scrollToEditorialBannerHandoff(page);
 
-            const gap = await measureFloatingItemToBannerGap(page);
+            const gap = await measureEditorialItemToBannerGap(page);
 
-            expect(gap).toBeLessThanOrEqual(viewport.height * FLOATING_HANDOFF_MAX_GAP_RATIO);
+            expect(gap).toBeLessThanOrEqual(viewport.height * EDITORIAL_HANDOFF_MAX_GAP_RATIO);
         });
     }
 });
@@ -192,7 +192,7 @@ async function openMobileMenuAndSettle(page: Page) {
     });
 }
 
-async function scrollToFloatingBannerHandoff(page: Page) {
+async function scrollToEditorialBannerHandoff(page: Page) {
     const targetTop = await page.evaluate(() => {
         const banner = document.querySelector(".home-seasonal-banner");
         if (!banner) return 0;
@@ -213,13 +213,13 @@ async function scrollToFloatingBannerHandoff(page: Page) {
     await page.waitForTimeout(SCROLL_SETTLE_MS);
 }
 
-async function measureFloatingItemToBannerGap(page: Page) {
+async function measureEditorialItemToBannerGap(page: Page) {
     return page.evaluate(() => {
         const item = document.querySelector(".home-editorial__item--shop");
         const banner = document.querySelector(".home-seasonal-banner");
 
         if (!item || !banner) {
-            throw new Error("Unable to find floating item or full-width banner");
+            throw new Error("Unable to find editorial item or seasonal banner");
         }
 
         return banner.getBoundingClientRect().top - item.getBoundingClientRect().bottom;

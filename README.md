@@ -66,7 +66,7 @@ Image imports use named presets configured in `vite.imagetools.ts` instead of lo
 
 - `?preset=gallery` for the Il Giorno gallery, with widths tuned for the real `40vw` to `70vw` desktop layout and
   full-width mobile layout.
-- `?preset=editorial` for medium story and floating-item images.
+- `?preset=editorial` for medium story and editorial images.
 - `?preset=fullWidth` for full-bleed hero/banner images.
 
 The imagetools cache lives at `node_modules/.cache/imagetools`. CI restores and saves that cache for both build checks

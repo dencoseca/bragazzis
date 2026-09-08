@@ -9,8 +9,8 @@ loading to eager and adds high fetch priority and synchronous decoding only when
 eligible. Home releases its below-fold sources when the hero settles; they retain
 native lazy loading. The gallery explicitly uses `loading="eager"` so its existing
 two initial images and observer-driven three-image load-ahead remain eager.
-La Storia's two animated ticket images also explicitly use `loading="eager"` so
-their requests start without waiting for their entrance transforms to reach the viewport.
+La Storia's two ticket images explicitly use `loading="eager"` because they appear
+in the opening story spread. Their rotations are static, with no entrance animation.
 
 An image error removes remote sources and displays an intrinsic-size local SVG with a dark background and light text
 reading “Image unavailable”. Nonempty alternative text includes the failure and

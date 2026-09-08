@@ -125,7 +125,9 @@ describe("IlGiornoGallery", () => {
             galleryImages.map(({ alt }) => alt),
         );
         expect(screen.getAllByRole("img").map((image) => image.getAttribute("sizes"))).toEqual(
-            galleryImages.map(() => `(max-width: ${getSassMobileBreakpoint()}) 100vw, 40vw`),
+            [74, 37, 44.5, 44.5, 44.5, 74, 37, 44.5, 44.5, 44.5, 74, 37].map(
+                (width) => `(max-width: ${getSassMobileBreakpoint()}) 90vw, ${width}vw`,
+            ),
         );
         expect(pictures.map((picture) => picture.dataset.size)).toEqual(
             galleryImages.map(({ size }) => String(size)),

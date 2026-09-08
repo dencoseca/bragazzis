@@ -15,14 +15,8 @@ export function Home() {
     return (
         <>
             <HomeHero scrollYProgress={scrollYProgress} onSettled={handleHeroSettled} />
-            <HomeEditorial
-                scrollYProgress={scrollYProgress}
-                shouldLoadImages={shouldLoadBelowFoldImages}
-            />
-            <HomeSeasonalBanner
-                scrollYProgress={scrollYProgress}
-                shouldLoadImage={shouldLoadBelowFoldImages}
-            />
+            <HomeEditorial shouldLoadImages={shouldLoadBelowFoldImages} />
+            <HomeSeasonalBanner shouldLoadImage={shouldLoadBelowFoldImages} />
         </>
     );
 }

@@ -1,101 +1,86 @@
 @use "../tokens" as tokens;
-
-// Keep this scale aligned with GalleryImageSize in galleryImageMetadata.ts.
-$gallery-image-sizes: 40, 45, 50, 55, 60, 65, 70;
-
 @keyframes ilgiorno-image-reveal {
     from {
         opacity: 0;
     }
-
     to {
         opacity: 1;
     }
 }
-
+.ilgiorno__heading {
+    padding: 3rem 4vw 2rem;
+    color: tokens.$color-yellow;
+}
+.ilgiorno__eyebrow {
+    display: block;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    margin-bottom: 1rem;
+}
 .ilgiorno__title {
-    padding: 8vw 0 0;
-    color: tokens.$color-paper;
-
-    @media (max-width: tokens.$breakpoint-mobile) {
-        padding-top: 20vw;
-    }
+    font-size: clamp(4rem, 14vw, 16rem);
 }
-
 .ilgiorno__gallery {
-    display: flex;
-    flex-direction: column;
-    margin-top: 8vw;
-    margin-bottom: 5vw;
-
-    @media (max-width: tokens.$breakpoint-mobile) {
-        margin-bottom: 10vw;
-    }
-
-    // =====================
-    // General Image Styles
-    // =====================
-    .ilgiorno__gallery-image {
-        display: block;
-        margin: 5vw;
-
-        @media (max-width: tokens.$breakpoint-mobile) {
-            margin: 0;
-            margin-top: 2vw;
-        }
-
-        &:nth-of-type(odd) {
-            align-self: flex-end;
-        }
-
-        &:nth-of-type(3n - 1) {
-            margin-left: 0vw;
-            margin-right: 0vw;
-        }
-
-        img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        &[data-image-loaded="true"] img {
-            animation: ilgiorno-image-reveal 0.2s ease both;
-        }
-    }
-
-    // ===================
-    // Image Size Classes
-    // ===================
-    @each $size in $gallery-image-sizes {
-        .ilgiorno__gallery-image[data-size="#{$size}"] {
-            width: #{$size}vw;
-        }
-    }
-
-    .ilgiorno__gallery-image[data-size] {
-        @media (max-width: tokens.$breakpoint-mobile) {
-            width: 100%;
-        }
-    }
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 4rem 3vw;
+    padding: 0 4vw 5rem;
+    align-items: center;
 }
-
 .ilgiorno__caption {
-    color: tokens.$color-paper;
+    grid-column: 1 / -1;
+    font-style: italic;
+    color: tokens.$color-yellow;
+    border-block: 1px solid;
+    padding: 1.25rem 0;
+    font-size: 2.5rem;
 }
-
-.ilgiorno__caption--aperto {
-    margin-bottom: 2vw;
-
-    @media (max-width: tokens.$breakpoint-mobile) {
-        margin-bottom: 8vw;
+.ilgiorno__caption--chiuso {
+    text-align: right;
+    margin-top: 1rem;
+}
+.ilgiorno__gallery-image {
+    display: block;
+    grid-column: span 6;
+    margin: 0;
+    img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+    &[data-image-loaded="true"] img {
+        animation: ilgiorno-image-reveal 0.2s ease both;
     }
 }
-
-.ilgiorno__caption--chiuso {
-    margin-top: 5vw;
-
-    @media (max-width: tokens.$breakpoint-mobile) {
-        margin-top: 20vw;
+.ilgiorno__gallery-image:nth-of-type(5n + 1) {
+    grid-column: 1 / -1;
+    margin-inline: 9vw;
+}
+.ilgiorno__gallery-image:nth-of-type(5n + 2) {
+    grid-column: 1 / 6;
+}
+.ilgiorno__gallery-image:nth-of-type(5n + 3) {
+    grid-column: 7 / -1;
+}
+@media (max-width: tokens.$breakpoint-mobile) {
+    .ilgiorno__heading {
+        padding: 2rem 5vw;
+    }
+    .ilgiorno__title {
+        font-size: 14vw;
+    }
+    .ilgiorno__gallery {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        padding: 0 5vw 3rem;
+    }
+    .ilgiorno__gallery-image:nth-of-type(n) {
+        width: 100%;
+        margin: 0;
+    }
+    .ilgiorno__caption {
+        width: 100%;
     }
 }

@@ -161,8 +161,10 @@ describe("HomeHero", () => {
         mobileCover.scrollIntoView = mobileScrollIntoView;
         statement.scrollIntoView = statementScrollIntoView;
 
-        expect(screen.getAllByRole("list")).toHaveLength(2);
-        expect(screen.getByText("Roam freely and find inspiration...")).toBeDefined();
+        expect(screen.getAllByRole("list")).toHaveLength(1);
+        expect(
+            screen.getByRole("heading", { name: /Roam freely and find inspiration/ }),
+        ).toBeDefined();
 
         await user.click(screen.getByRole("button", { name: "Scroll down" }));
 
