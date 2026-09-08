@@ -22,11 +22,7 @@
     font-size: clamp(4rem, 14vw, 16rem);
 }
 .ilgiorno__gallery {
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: 4rem 3vw;
     padding: 0 4vw 5rem;
-    align-items: center;
 }
 .ilgiorno__caption {
     grid-column: 1 / -1;
@@ -40,28 +36,64 @@
     text-align: right;
     margin-top: 1rem;
 }
+.ilgiorno__photo-essay {
+    padding: 2.5rem 0;
+}
+.ilgiorno__spread {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(3, 22vw);
+    gap: 0.65rem;
+    margin-bottom: 4vw;
+    &:last-child {
+        margin-bottom: 0;
+    }
+    &:nth-child(even) .ilgiorno__photograph:first-child {
+        grid-column: 2 / 4;
+    }
+    &:nth-child(even) .ilgiorno__photograph:nth-child(2) {
+        grid-column: 1;
+        grid-row: 1;
+    }
+    &:nth-child(even) .ilgiorno__photograph:nth-child(3) {
+        grid-column: 1;
+        grid-row: 2;
+    }
+    &[data-single] {
+        grid-template-rows: 54vw;
+    }
+    &[data-single] .ilgiorno__photograph:first-child {
+        grid-row: 1;
+        grid-column: 1 / -1;
+    }
+}
+.ilgiorno__photograph {
+    display: block;
+    position: relative;
+    min-width: 0;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    overflow: hidden;
+    &:first-child {
+        grid-column: 1 / 3;
+        grid-row: 1 / 3;
+    }
+}
 .ilgiorno__gallery-image {
     display: block;
-    grid-column: span 6;
-    margin: 0;
+    height: 100%;
     img {
         width: 100%;
-        height: auto;
+        height: 100%;
+        object-fit: cover;
         display: block;
     }
     &[data-image-loaded="true"] img {
         animation: ilgiorno-image-reveal 0.2s ease both;
     }
-}
-.ilgiorno__gallery-image:nth-of-type(5n + 1) {
-    grid-column: 1 / -1;
-    margin-inline: 9vw;
-}
-.ilgiorno__gallery-image:nth-of-type(5n + 2) {
-    grid-column: 1 / 6;
-}
-.ilgiorno__gallery-image:nth-of-type(5n + 3) {
-    grid-column: 7 / -1;
 }
 @media (max-width: tokens.$breakpoint-mobile) {
     .ilgiorno__heading {
@@ -71,14 +103,29 @@
         font-size: 14vw;
     }
     .ilgiorno__gallery {
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
         padding: 0 5vw 3rem;
     }
-    .ilgiorno__gallery-image:nth-of-type(n) {
-        width: 100%;
-        margin: 0;
+    .ilgiorno__photo-essay {
+        padding: 2rem 0;
+    }
+    .ilgiorno__spread {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-rows: 65vw 36vw 50vw 36vw;
+        gap: 0.4rem;
+        margin-bottom: 2rem;
+        &:nth-child(n) .ilgiorno__photograph:nth-child(n) {
+            grid-column: auto;
+            grid-row: auto;
+        }
+        &:nth-child(n) .ilgiorno__photograph:first-child {
+            grid-column: 1 / -1;
+        }
+        &:nth-child(n) .ilgiorno__photograph:nth-child(4) {
+            grid-column: 1 / -1;
+        }
+        &[data-single] {
+            grid-template-rows: 65vw;
+        }
     }
     .ilgiorno__caption {
         width: 100%;

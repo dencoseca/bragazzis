@@ -117,21 +117,18 @@ describe("IlGiornoGallery", () => {
         render(<IlGiornoGallery />);
 
         const gallery = screen.getByText("Aperto").parentElement;
-        const pictures = getGalleryPictures();
-
         expect(gallery?.firstElementChild?.textContent).toBe("Aperto");
         expect(gallery?.lastElementChild?.textContent).toBe("Chiuso");
         expect(screen.getAllByRole("img").map((image) => image.getAttribute("alt"))).toEqual(
             galleryImages.map(({ alt }) => alt),
         );
         expect(screen.getAllByRole("img").map((image) => image.getAttribute("sizes"))).toEqual(
-            [74, 37, 44.5, 44.5, 44.5, 74, 37, 44.5, 44.5, 44.5, 74, 37].map(
-                (width) => `(max-width: ${getSassMobileBreakpoint()}) 90vw, ${width}vw`,
+            galleryImages.map(
+                (_, index) =>
+                    `(max-width: ${getSassMobileBreakpoint()}) ${index % 6 === 0 || index % 6 === 3 ? "90vw" : "45vw"}, ${index % 6 === 0 ? "61vw" : "30vw"}`,
             ),
         );
-        expect(pictures.map((picture) => picture.dataset.size)).toEqual(
-            galleryImages.map(({ size }) => String(size)),
-        );
+        expect(screen.queryByRole("button")).toBeNull();
     });
 
     test("loads every gallery image when IntersectionObserver is unavailable", () => {
