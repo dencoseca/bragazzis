@@ -30,10 +30,6 @@
 }
 .header__logo-wrapper {
     width: 48px;
-    a {
-        color: inherit;
-        display: block;
-    }
     svg {
         display: block;
     }
@@ -41,7 +37,7 @@
 .header__nav {
     display: flex;
     justify-content: flex-end;
-    gap: 2.5rem;
+    gap: clamp(1.25rem, 3vw, 2.5rem);
 }
 .header__link {
     color: inherit;

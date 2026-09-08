@@ -141,7 +141,7 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
             await expect(page.getByRole("dialog")).toBeVisible();
             await page.setViewportSize({ width: 1280, height: 900 });
             await expect(page.getByRole("dialog")).toHaveCount(0);
-            await expect(page.getByRole("link", { name: "home", exact: true })).toBeFocused();
+            await expect(page.getByRole("link", { name: "Il Caffè", exact: true })).toBeFocused();
             await expect(page.locator(".layout__background")).not.toHaveAttribute("inert");
             await expect(page.locator(".layout__background")).not.toHaveAttribute("aria-hidden");
             await scrollTo(page, 400);

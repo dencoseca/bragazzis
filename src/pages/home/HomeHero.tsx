@@ -1,12 +1,11 @@
 import { motion, type MotionValue, useReducedMotion } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import parmesanImg from "@/assets/images/parmesan.jpg?preset=fullWidth";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { smoothTransition } from "@/constants/animations";
 import { getBreakpointMediaQuery } from "@/constants/breakpoints";
 import { siteConfig } from "@/constants/siteConfig";
-import { useIsMobile } from "@/hooks/useMediaQuery";
 import { useScrollParallax } from "@/pages/home/useScrollParallax";
 
 interface HomeHeroProps {
@@ -55,12 +54,9 @@ function OpeningHours() {
 }
 
 export function HomeHero({ scrollYProgress, onSettled }: HomeHeroProps) {
-    const isMobile = useIsMobile();
     const prefersReducedMotion = useReducedMotion();
     const [isHeroImageReady, setIsHeroImageReady] = useState(false);
     const [hasIntroWaitElapsed, setHasIntroWaitElapsed] = useState(false);
-    const mobileCoverRef = useRef<HTMLElement>(null);
-    const statementRef = useRef<HTMLDivElement>(null);
     const heroImageParallax = useScrollParallax(scrollYProgress, {
         input: [0, 1],
         output: ["0vh", "5vh"],
@@ -91,11 +87,6 @@ export function HomeHero({ scrollYProgress, onSettled }: HomeHeroProps) {
             onSettled?.();
         }
     }, [canStartIntro, onSettled]);
-
-    function handleScrollDown() {
-        const target = isMobile ? mobileCoverRef.current : statementRef.current;
-        target?.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth" });
-    }
 
     return (
         <>
@@ -133,15 +124,10 @@ export function HomeHero({ scrollYProgress, onSettled }: HomeHeroProps) {
                                 <span>{address.addressLocality} ↗</span>
                             </a>
                         </div>
-                        <button
-                            type="button"
-                            className="home-hero__down-arrow-btn"
-                            onClick={handleScrollDown}
-                            aria-label="Scroll down"
-                        >
+                        <div className="home-hero__scroll-cue">
                             <span>Il Caffè</span>
                             <span aria-hidden="true">↓</span>
-                        </button>
+                        </div>
                     </motion.div>
                     <div className="home-hero__image-wrapper">
                         <motion.div
@@ -168,13 +154,12 @@ export function HomeHero({ scrollYProgress, onSettled }: HomeHeroProps) {
             <section
                 className="home-hero__mobile-cover"
                 id="mobile-cover"
-                ref={mobileCoverRef}
                 aria-label="Opening hours"
             >
                 <span className="home-hero__hours-label">Opening hours</span>
                 <OpeningHours />
             </section>
-            <div id="statement" ref={statementRef} className="home-hero__statement" />
+            <div id="statement" className="home-hero__statement" />
         </>
     );
 }

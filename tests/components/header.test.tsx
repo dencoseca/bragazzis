@@ -62,7 +62,9 @@ describe("Header", () => {
             "closed",
             "closed",
         ]);
+        expect(screen.getByRole("img", { name: "Bragazzi’s" }).closest("a")).toBeNull();
         expect(links.map((link) => link.getAttribute("href"))).toEqual([
+            publicPageRoutes.home.path,
             publicPageRoutes.laStoria.path,
             publicPageRoutes.ilGiorno.path,
         ]);

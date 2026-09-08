@@ -37,7 +37,11 @@ export const notFoundRoute = {
     description: "Page not found.",
 } as const satisfies MetadataRoute;
 
-export const headerNavRoutes = [publicPageRoutes.laStoria, publicPageRoutes.ilGiorno] as const;
+export const headerNavRoutes = [
+    publicPageRoutes.home,
+    publicPageRoutes.laStoria,
+    publicPageRoutes.ilGiorno,
+] as const;
 
 export const menuNavRoutes = [
     publicPageRoutes.home,

@@ -68,7 +68,7 @@
         text-decoration: underline;
     }
 }
-.home-hero__down-arrow-btn {
+.home-hero__scroll-cue {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -81,7 +81,6 @@
     border: 0;
     border-top: 1px solid;
     font: inherit;
-    cursor: pointer;
     span:last-child {
         font-size: 1.5rem;
     }
