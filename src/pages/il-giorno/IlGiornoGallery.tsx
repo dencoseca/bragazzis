@@ -12,10 +12,16 @@ function getGalleryLoadIndex(index: number) {
     return Math.min(galleryImages.length - 1, index + GALLERY_IMAGE_LOAD_AHEAD_COUNT);
 }
 
-function getGalleryImageSizes(index: number) {
-    // Matches the five-image spreads in _il-giorno.scss, including the page gutters.
-    const desktopSizes = ["74vw", "37vw", "44.5vw", "44.5vw", "44.5vw"];
-    return `${getBreakpointMediaQuery("mobile")} 90vw, ${desktopSizes[index % 5]}`;
+const SPREAD_LENGTH = 6;
+const gallerySpreads = Array.from(
+    { length: Math.ceil(galleryImages.length / SPREAD_LENGTH) },
+    (_, spreadIndex) =>
+        galleryImages.slice(spreadIndex * SPREAD_LENGTH, (spreadIndex + 1) * SPREAD_LENGTH),
+);
+
+function getGalleryImageSizes(position: number, isLastSingle: boolean) {
+    const desktopWidth = isLastSingle ? "92vw" : position === 0 ? "61vw" : "30vw";
+    return `${getBreakpointMediaQuery("mobile")} ${position === 0 || position === 3 || isLastSingle ? "90vw" : "45vw"}, ${desktopWidth}`;
 }
 
 export function IlGiornoGallery() {
@@ -76,25 +82,34 @@ export function IlGiornoGallery() {
     return (
         <div className="ilgiorno__gallery">
             <div className="ilgiorno__caption ilgiorno__caption--aperto text--display">Aperto</div>
-            {galleryImages.map((image, index) => {
-                const shouldLoadImage = index <= loadedThroughIndex;
-
-                return (
-                    <OptimizedImage
-                        key={index}
-                        pictureRef={getGalleryImageElementRef(index)}
-                        className="ilgiorno__gallery-image"
-                        data-size={image.size}
-                        image={image.image}
-                        alt={image.alt}
-                        sizes={getGalleryImageSizes(index)}
-                        priority={index === 0}
-                        revealOnLoad
-                        shouldLoad={shouldLoadImage}
-                        loading="eager"
-                    />
-                );
-            })}
+            <div className="ilgiorno__photo-essay">
+                {gallerySpreads.map((spread, spreadIndex) => (
+                    <div
+                        className="ilgiorno__spread"
+                        key={spreadIndex}
+                        data-single={spread.length === 1 || undefined}
+                    >
+                        {spread.map((image, position) => {
+                            const index = spreadIndex * SPREAD_LENGTH + position;
+                            return (
+                                <div className="ilgiorno__photograph" key={index}>
+                                    <OptimizedImage
+                                        pictureRef={getGalleryImageElementRef(index)}
+                                        className="ilgiorno__gallery-image"
+                                        image={image.image}
+                                        alt={image.alt}
+                                        sizes={getGalleryImageSizes(position, spread.length === 1)}
+                                        priority={index === 0}
+                                        revealOnLoad
+                                        shouldLoad={index <= loadedThroughIndex}
+                                        loading="eager"
+                                    />
+                                </div>
+                            );
+                        })}
+                    </div>
+                ))}
+            </div>
             <div className="ilgiorno__caption ilgiorno__caption--chiuso text--display">Chiuso</div>
         </div>
     );
