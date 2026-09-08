@@ -41,7 +41,7 @@ export function SiteNavigation({ backgroundContentRef, theme, menuTheme }: SiteN
             if (!navigating.current) {
                 const target = isMobile
                     ? menuButtonRef.current
-                    : document.querySelector<HTMLAnchorElement>(".header__logo-wrapper a");
+                    : document.querySelector<HTMLAnchorElement>(".header__nav a");
                 target?.focus({ preventScroll: true });
             }
         }

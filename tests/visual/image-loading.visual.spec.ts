@@ -18,6 +18,6 @@ test("hero image failure leaves the fallback, intro and navigation available", a
         .all()) {
         await expect(image).toHaveAttribute("loading", "lazy");
     }
-    await page.getByRole("button", { name: "Scroll down" }).click();
+    await page.mouse.wheel(0, 700);
     await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
 });
