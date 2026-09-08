@@ -28,7 +28,6 @@ export function App() {
                                 pageTitle={publicPageRoutes.home.pageTitle}
                                 description={publicPageRoutes.home.description}
                                 theme={themeNames.light}
-                                headerTheme={themeNames.dark}
                             >
                                 <Home />
                             </Layout>

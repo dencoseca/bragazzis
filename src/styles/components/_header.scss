@@ -12,7 +12,7 @@
     background: tokens.$color-paper;
     color: tokens.$color-red;
     font-size: 0.875rem;
-    &:has(.header__link[href="/ilgiorno"][aria-current="page"]) {
+    &[data-theme="dark"] {
         background: tokens.$color-ink;
         color: tokens.$color-yellow;
         border-bottom-color: tokens.$color-yellow;

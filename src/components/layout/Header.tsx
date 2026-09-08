@@ -34,21 +34,11 @@ interface HeaderProps {
     menuButtonRef: Ref<HTMLButtonElement>;
     menuId: string;
     theme: ThemeName;
-    menuTheme: ThemeName;
 }
 
-export function Header({
-    menuIsOpen,
-    onMenuToggle,
-    menuButtonRef,
-    menuId,
-    theme,
-    menuTheme,
-}: HeaderProps) {
-    const headerTheme = menuIsOpen ? menuTheme : theme;
-
+export function Header({ menuIsOpen, onMenuToggle, menuButtonRef, menuId, theme }: HeaderProps) {
     return (
-        <header className="header" id="header" data-theme={headerTheme} data-menu-open={menuIsOpen}>
+        <header className="header" id="header" data-theme={theme} data-menu-open={menuIsOpen}>
             <div
                 className="header__tag"
                 aria-hidden={menuIsOpen || undefined}

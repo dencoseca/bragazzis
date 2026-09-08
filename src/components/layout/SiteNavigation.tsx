@@ -142,7 +142,6 @@ export function SiteNavigation({ backgroundContentRef, theme, menuTheme }: SiteN
                 menuButtonRef={menuButtonRef}
                 menuId={mobileMenuId}
                 theme={theme}
-                menuTheme={menuTheme}
             />
         </>
     );

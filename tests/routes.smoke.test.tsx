@@ -102,22 +102,20 @@ vi.mock("@/assets/images/ticket-roma.jpg?preset=editorial", () => ({
     },
 }));
 
-vi.mock("@/pages/il-giorno/galleryImages", () => ({
-    galleryImages: [
+vi.mock("@/pages/il-giorno/galleryImages", async () => {
+    const { getGallerySpreadLayout } = await import("@/pages/il-giorno/galleryLayout");
+    const images = [
         {
+            filename: "aperto.jpg",
             alt: "sandwich board sign outside cafe",
-            image: {
-                img: {
-                    h: 1,
-                    src: "/mock-image.jpg",
-                    w: 1,
-                },
-                sources: {},
-            },
-            size: 60,
+            image: { img: { h: 1, src: "/mock-image.jpg", w: 1 }, sources: {} },
         },
-    ],
-}));
+    ];
+    return {
+        galleryImages: images,
+        gallerySpreads: [{ images, ...getGallerySpreadLayout(images) }],
+    };
+});
 
 interface RouteSmokeCase {
     canonicalUrl?: string;

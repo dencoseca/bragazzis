@@ -12,24 +12,38 @@ const tokensScss = readFileSync(resolve(process.cwd(), "src/styles/_tokens.scss"
 
 const galleryImages = vi.hoisted(() =>
     Array.from({ length: 12 }, (_, index) => ({
+        filename: `gallery-${index}.jpg`,
         alt: `gallery image ${index}`,
         image: {
             img: {
                 h: 100,
                 src: `/gallery-${index}.jpg`,
-                w: 100,
+                w: index === 0 || index === 4 ? 150 : index === 1 ? 60 : 100,
             },
             sources: {
                 "image/avif": `/gallery-${index}.avif`,
             },
         },
-        size: 40,
     })),
 );
 
-vi.mock("@/pages/il-giorno/galleryImages", () => ({
-    galleryImages,
-}));
+vi.mock("@/pages/il-giorno/galleryImages", async () => {
+    const { getGallerySpreadLayout } = await import("@/pages/il-giorno/galleryLayout");
+    const groups = [
+        [0, 3],
+        [3, 5],
+        [5, 6],
+        [6, 9],
+        [9, 12],
+    ];
+    return {
+        galleryImages,
+        gallerySpreads: groups.map(([start, end]) => {
+            const images = galleryImages.slice(start, end);
+            return { images, ...getGallerySpreadLayout(images) };
+        }),
+    };
+});
 
 class MockIntersectionObserver {
     static instances: MockIntersectionObserver[] = [];
@@ -124,12 +138,12 @@ describe("IlGiornoGallery", () => {
         );
         expect(screen.getAllByRole("img").map((image) => image.getAttribute("sizes"))).toEqual(
             [
-                [90, 61],
-                [45, 31],
-                [45, 31],
-                [90, 61],
-                [45, 31],
-                [45, 31],
+                [90, 74],
+                [34, 18],
+                [56, 18],
+                [36, 37],
+                [54, 55],
+                [90, 92],
                 [90, 61],
                 [45, 31],
                 [45, 31],
@@ -141,6 +155,12 @@ describe("IlGiornoGallery", () => {
                     `(max-width: ${getSassMobileBreakpoint()}) ${mobile}vw, ${desktop}vw`,
             ),
         );
+        expect(
+            Array.from(
+                gallery!.querySelectorAll(".ilgiorno__spread"),
+                (spread) => spread.querySelectorAll("picture").length,
+            ),
+        ).toEqual([3, 2, 1, 3, 3]);
         expect(screen.queryByRole("button")).toBeNull();
     });
 

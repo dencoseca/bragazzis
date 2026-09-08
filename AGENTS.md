@@ -99,6 +99,8 @@ src/
 - **Visual direction:** butter-yellow paper, vermilion and dark green ink are defined in Sass tokens. The masthead uses
   the existing Abril Fatface font; editorial headings use Georgia and body copy uses the system sans-serif stack.
   Home is an editorial grid, La Storia pairs the original story with archival tickets, and Il Giorno presents 26 selected photographs in their original day-to-night order, using a continuous grid of pairs and three-photo compositions with uniform gutters, ending with the empty café alone.
+- **Gallery curation:** `galleryCompositions.ts` groups selected filenames explicitly; `galleryImages.ts` resolves their metadata and precomputes layout through `galleryLayout.ts`. Original image dimensions drive layout; there are no manual per-photo size values.
+- **Header colours:** the header uses its page theme, including while the mobile menu is open. The menu has its own theme; avoid deriving header colours from navigation URLs.
 - **Themes** are semantic in React (`data-theme="light"` / `data-theme="dark"`) and mapped to actual colors in Sass.
 - **Breakpoints** are owned by Sass tokens in `src/styles/_tokens.scss`; `vite.config.ts` injects their values at build
   time for `src/constants/breakpoints.ts`, so JavaScript never mirrors the numbers in TypeScript.
