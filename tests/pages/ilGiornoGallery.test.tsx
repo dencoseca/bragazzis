@@ -123,9 +123,22 @@ describe("IlGiornoGallery", () => {
             galleryImages.map(({ alt }) => alt),
         );
         expect(screen.getAllByRole("img").map((image) => image.getAttribute("sizes"))).toEqual(
-            galleryImages.map(
-                (_, index) =>
-                    `(max-width: ${getSassMobileBreakpoint()}) ${index % 6 === 0 || index % 6 === 3 ? "90vw" : "45vw"}, ${index % 6 === 0 ? "61vw" : "30vw"}`,
+            [
+                [90, 61],
+                [45, 31],
+                [45, 31],
+                [90, 61],
+                [45, 31],
+                [45, 31],
+                [90, 61],
+                [45, 31],
+                [45, 31],
+                [90, 61],
+                [45, 31],
+                [45, 31],
+            ].map(
+                ([mobile, desktop]) =>
+                    `(max-width: ${getSassMobileBreakpoint()}) ${mobile}vw, ${desktop}vw`,
             ),
         );
         expect(screen.queryByRole("button")).toBeNull();
