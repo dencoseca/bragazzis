@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type RefCallback } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type RefCallback } from "react";
 
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { getBreakpointMediaQuery } from "@/constants/breakpoints";
@@ -12,16 +12,53 @@ function getGalleryLoadIndex(index: number) {
     return Math.min(galleryImages.length - 1, index + GALLERY_IMAGE_LOAD_AHEAD_COUNT);
 }
 
-const SPREAD_LENGTH = 6;
-const gallerySpreads = Array.from(
-    { length: Math.ceil(galleryImages.length / SPREAD_LENGTH) },
-    (_, spreadIndex) =>
-        galleryImages.slice(spreadIndex * SPREAD_LENGTH, (spreadIndex + 1) * SPREAD_LENGTH),
-);
+// Preparation, service, lunch, then closing: pairs punctuate the larger scenes.
+const spreadLengths = [3, 3, 3, 3, 2, 3, 3, 2, 3, 1];
+const gallerySpreads: { start: number; images: typeof galleryImages }[] = [];
+for (let start = 0; start < galleryImages.length;) {
+    const length = spreadLengths[gallerySpreads.length] ?? 3;
+    gallerySpreads.push({ start, images: galleryImages.slice(start, start + length) });
+    start += length;
+}
 
-function getGalleryImageSizes(position: number, isLastSingle: boolean) {
-    const desktopWidth = isLastSingle ? "92vw" : position === 0 ? "61vw" : "30vw";
-    return `${getBreakpointMediaQuery("mobile")} ${position === 0 || position === 3 || isLastSingle ? "90vw" : "45vw"}, ${desktopWidth}`;
+function getSpreadGeometry(images: typeof galleryImages) {
+    const ratios = images.map(({ image }) => image.img.w / image.img.h);
+    const lead = ratios[0]!;
+    const stack = images.length === 3 ? 1 / (1 / ratios[1]! + 1 / ratios[2]!) : 0;
+    const total =
+        images.length === 3 ? lead + stack : ratios.reduce((sum, ratio) => sum + ratio, 0);
+    return {
+        ratios,
+        lead,
+        stack,
+        total,
+        style: {
+            "--spread-height": `calc((100cqw - var(--gallery-gap) * ${images.length === 3 ? 1 - stack : images.length - 1}) / ${total})`,
+            "--lead-width": `calc(var(--spread-height) * ${lead})`,
+            "--columns": ratios.map((ratio) => `${ratio}fr`).join(" "),
+            "--pair-columns": ratios
+                .slice(1)
+                .map((ratio) => `${ratio}fr`)
+                .join(" "),
+            "--stack-rows": ratios
+                .slice(1)
+                .map((ratio) => `${100 / ratio}fr`)
+                .join(" "),
+        } as CSSProperties,
+    };
+}
+
+function getGalleryImageSizes(position: number, spread: typeof galleryImages) {
+    const { ratios, lead, stack, total } = getSpreadGeometry(spread);
+    const desktopFraction =
+        spread.length === 3 ? (position === 0 ? lead : stack) / total : ratios[position]! / total;
+    const mobileFraction =
+        spread.length === 3
+            ? position === 0
+                ? 1
+                : ratios[position]! / (ratios[1]! + ratios[2]!)
+            : ratios[position]! / total;
+    return `${getBreakpointMediaQuery("mobile")} ${Math.round(90 * mobileFraction)}vw, ${Math.round(92 * desktopFraction)}vw`;
 }
 
 export function IlGiornoGallery() {
@@ -83,14 +120,15 @@ export function IlGiornoGallery() {
         <div className="ilgiorno__gallery">
             <div className="ilgiorno__caption ilgiorno__caption--aperto text--display">Aperto</div>
             <div className="ilgiorno__photo-essay">
-                {gallerySpreads.map((spread, spreadIndex) => (
+                {gallerySpreads.map(({ start, images: spread }, spreadIndex) => (
                     <div
                         className="ilgiorno__spread"
                         key={spreadIndex}
-                        data-single={spread.length === 1 || undefined}
+                        data-count={spread.length}
+                        style={getSpreadGeometry(spread).style}
                     >
                         {spread.map((image, position) => {
-                            const index = spreadIndex * SPREAD_LENGTH + position;
+                            const index = start + position;
                             return (
                                 <div className="ilgiorno__photograph" key={index}>
                                     <OptimizedImage
@@ -98,7 +136,7 @@ export function IlGiornoGallery() {
                                         className="ilgiorno__gallery-image"
                                         image={image.image}
                                         alt={image.alt}
-                                        sizes={getGalleryImageSizes(position, spread.length === 1)}
+                                        sizes={getGalleryImageSizes(position, spread)}
                                         priority={index === 0}
                                         revealOnLoad
                                         shouldLoad={index <= loadedThroughIndex}

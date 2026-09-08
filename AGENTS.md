@@ -98,7 +98,7 @@ src/
   use normal document flow without scroll transforms.
 - **Visual direction:** butter-yellow paper, vermilion and dark green ink are defined in Sass tokens. The masthead uses
   the existing Abril Fatface font; editorial headings use Georgia and body copy uses the system sans-serif stack.
-  Home is an editorial grid, La Storia pairs the original story with archival tickets, and Il Giorno uses an image-only sequence of large, joined photographic spreads.
+  Home is an editorial grid, La Storia pairs the original story with archival tickets, and Il Giorno presents 26 selected photographs in their original day-to-night order, using a continuous grid of pairs and three-photo compositions with uniform gutters, ending with the empty café alone.
 - **Themes** are semantic in React (`data-theme="light"` / `data-theme="dark"`) and mapped to actual colors in Sass.
 - **Breakpoints** are owned by Sass tokens in `src/styles/_tokens.scss`; `vite.config.ts` injects their values at build
   time for `src/constants/breakpoints.ts`, so JavaScript never mirrors the numbers in TypeScript.
