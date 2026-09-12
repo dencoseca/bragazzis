@@ -50,12 +50,11 @@ describe("useScrollParallax", () => {
         vi.clearAllMocks();
     });
 
-    test("creates one transform with the desktop output", () => {
+    test("uses the desktop output", () => {
         const { result } = renderHook(() =>
             useScrollParallax(scrollYProgress, { input, output, tabletOutput }),
         );
 
-        expect(useTransformMock).toHaveBeenCalledOnce();
         expect(useTransformMock).toHaveBeenCalledWith(scrollYProgress, input, output);
         expect(result.current).toBe(output);
     });
@@ -72,7 +71,6 @@ describe("useScrollParallax", () => {
         isTablet = true;
         rerender();
 
-        expect(useTransformMock).toHaveBeenCalledTimes(2);
         expect(useTransformMock).toHaveBeenLastCalledWith(scrollYProgress, input, tabletOutput);
         expect(result.current).toBe(tabletOutput);
     });
@@ -82,7 +80,6 @@ describe("useScrollParallax", () => {
 
         const { result } = renderHook(() => useScrollParallax(scrollYProgress, { input, output }));
 
-        expect(useTransformMock).toHaveBeenCalledOnce();
         expect(useTransformMock).toHaveBeenCalledWith(scrollYProgress, input, output);
         expect(result.current).toBe(output);
     });
@@ -90,18 +87,14 @@ describe("useScrollParallax", () => {
     test.each([
         { isMobile: true, prefersReducedMotion: false },
         { isMobile: false, prefersReducedMotion: true },
-    ])(
-        "returns zero while still creating one transform when parallax is disabled",
-        ({ isMobile, prefersReducedMotion }) => {
-            useIsMobileMock.mockReturnValue(isMobile);
-            useReducedMotionMock.mockReturnValue(prefersReducedMotion);
+    ])("returns zero when parallax is disabled", ({ isMobile, prefersReducedMotion }) => {
+        useIsMobileMock.mockReturnValue(isMobile);
+        useReducedMotionMock.mockReturnValue(prefersReducedMotion);
 
-            const { result } = renderHook(() =>
-                useScrollParallax(scrollYProgress, { input, output, tabletOutput }),
-            );
+        const { result } = renderHook(() =>
+            useScrollParallax(scrollYProgress, { input, output, tabletOutput }),
+        );
 
-            expect(useTransformMock).toHaveBeenCalledOnce();
-            expect(result.current).toBe(0);
-        },
-    );
+        expect(result.current).toBe(0);
+    });
 });

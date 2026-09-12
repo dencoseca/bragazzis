@@ -145,7 +145,7 @@ describe("useMediaQuery", () => {
         expect(tabletMediaQuery.addEventListener).toHaveBeenCalledOnce();
 
         act(() => {
-            mobileMediaQuery.dispatch(false);
+            mobileMediaQuery.dispatch(true);
         });
 
         expect(screen.getByText("false")).toBeDefined();

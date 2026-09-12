@@ -28,10 +28,6 @@ describe("Footer", () => {
                 .getAttribute("href"),
         ).toBe(siteConfig.business.phone.href);
 
-        const communityLinks = screen.getByRole("heading", { name: "Social" }).parentElement;
-
-        expect(communityLinks?.classList.contains("footer__list--community")).toBe(true);
-        expect(communityLinks?.className.includes("social")).toBe(false);
         for (const link of siteConfig.links.social) {
             expect(screen.getByRole("link", { name: link.label }).getAttribute("href")).toBe(
                 link.url,

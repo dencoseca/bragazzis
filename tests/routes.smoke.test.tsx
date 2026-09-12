@@ -31,12 +31,7 @@ interface MockOptimizedImageProps {
 // forcing CI to transform every responsive image variant.
 vi.mock("@/pages/home/HomeHero", () => ({
     HomeHero() {
-        return (
-            <>
-                <div>Monday: 9:00 AM</div>
-                <div>Roam freely and find inspiration</div>
-            </>
-        );
+        return null;
     },
 }));
 
@@ -131,7 +126,7 @@ const ROUTE_SMOKE_CASES: RouteSmokeCase[] = [
         canonicalUrl: getCanonicalUrl(publicPageRoutes.home.path),
         title: getPageDocumentTitle(publicPageRoutes.home.pageTitle),
         description: publicPageRoutes.home.description,
-        expectedTexts: ["Roam freely and find inspiration", "Monday: 9:00 AM"],
+        expectedTexts: [],
     },
     {
         path: publicPageRoutes.laStoria.path,

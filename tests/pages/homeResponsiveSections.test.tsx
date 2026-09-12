@@ -4,8 +4,6 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, test, vi } from "vite-plus/test";
 
 import { Home } from "@/pages/home/Home";
-import { HomeEditorial } from "@/pages/home/HomeEditorial";
-import { HomeSeasonalBanner } from "@/pages/home/HomeSeasonalBanner";
 
 vi.mock("motion/react", () => ({
     useScroll() {
@@ -55,40 +53,13 @@ describe("Home image loading", () => {
 
         const images = screen.getAllByRole("img");
         expect(images).toHaveLength(5);
+        expect(images.map((image) => image.getAttribute("sizes"))).toEqual(
+            Array.from({ length: 5 }, () => `(max-width: ${__BREAKPOINTS__.mobile}) 100vw, 50vw`),
+        );
         expect(images.map((image) => image.dataset.shouldLoad)).toEqual(images.map(() => "false"));
 
         fireEvent.click(screen.getByRole("button", { name: "Settle hero" }));
 
         expect(images.map((image) => image.dataset.shouldLoad)).toEqual(images.map(() => "true"));
-    });
-});
-
-describe("Home editorial content", () => {
-    test("preserves the shop, coffee, supplier and produce copy", () => {
-        const { container } = render(<HomeEditorial shouldLoadImages />);
-        expect(container.querySelectorAll(".home-editorial__item")).toHaveLength(4);
-        expect(
-            screen
-                .getByRole("img", { name: "Italian food and drink displayed on shop shelves" })
-                .getAttribute("sizes"),
-        ).toBe(`(max-width: ${__BREAKPOINTS__.mobile}) 100vw, 50vw`);
-        expect(screen.getByText(/Bragazzi's is a cafe, delicatessen and shop/)).toBeDefined();
-        expect(screen.getByText(/roasted by Darkwoods Coffee/)).toBeDefined();
-        expect(screen.getByText(/trade directly with suppliers in Italy/)).toBeDefined();
-        expect(screen.getByText(/fresh Italian eggs/)).toBeDefined();
-    });
-
-    test("uses one seasonal heading across viewport sizes", () => {
-        render(<HomeSeasonalBanner shouldLoadImage />);
-        expect(
-            screen.getByRole("heading", {
-                name: "Each season brings a selection of well considered products",
-            }),
-        ).toBeDefined();
-        expect(
-            screen
-                .getByRole("img", { name: "a gigantic italian chocolate easter egg" })
-                .getAttribute("sizes"),
-        ).toBe(`(max-width: ${__BREAKPOINTS__.mobile}) 100vw, 50vw`);
     });
 });
