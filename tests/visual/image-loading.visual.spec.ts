@@ -12,7 +12,14 @@ test("hero image failure leaves the fallback, intro and navigation available", a
     await expect(hero).toHaveCSS("opacity", "1");
     await expect(page.locator(".home-hero__content")).toHaveCSS("opacity", "1");
     await expect(page.getByRole("heading", { name: "BRAGAZZI'S", exact: true })).toBeVisible();
-    await expect(page.locator(".home-editorial__image source").first()).toBeAttached();
+    await expect(page.locator(".home-editorial__image, .home-seasonal-banner picture")).toHaveCount(
+        5,
+    );
+    for (const picture of await page
+        .locator(".home-editorial__image, .home-seasonal-banner picture")
+        .all()) {
+        await expect(picture.locator("source").first()).toBeAttached();
+    }
     for (const image of await page
         .locator(".home-editorial__image img, .home-seasonal-banner img")
         .all()) {
@@ -20,4 +27,10 @@ test("hero image failure leaves the fallback, intro and navigation available", a
     }
     await page.mouse.wheel(0, 700);
     await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
+    await page
+        .getByRole("navigation", { name: "Primary navigation" })
+        .getByRole("link", { name: "La Storia" })
+        .click();
+    await expect(page).toHaveURL(/\/lastoria$/);
+    await expect(page.getByRole("heading", { name: "La Storia", exact: true })).toBeVisible();
 });

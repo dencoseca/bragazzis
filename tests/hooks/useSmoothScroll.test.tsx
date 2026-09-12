@@ -7,18 +7,16 @@ import { afterEach, describe, expect, test, vi } from "vite-plus/test";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 
 const lenisMocks = vi.hoisted(() => ({
+    instances: [] as Array<{ destroy: ReturnType<typeof vi.fn> }>,
     construct: vi.fn(),
-    destroy: vi.fn(),
 }));
 
 vi.mock("lenis", () => ({
     default: class Lenis {
+        readonly destroy = vi.fn();
         constructor(options: unknown) {
             lenisMocks.construct(options);
-        }
-
-        destroy() {
-            lenisMocks.destroy();
+            lenisMocks.instances.push(this);
         }
     },
 }));
@@ -38,6 +36,7 @@ function SmoothScrollHarness({
 describe("useSmoothScroll", () => {
     afterEach(() => {
         vi.clearAllMocks();
+        lenisMocks.instances.length = 0;
     });
 
     test("creates and destroys a local Lenis instance", () => {
@@ -45,19 +44,25 @@ describe("useSmoothScroll", () => {
 
         expect(lenisMocks.construct).toHaveBeenCalledOnce();
         expect(lenisMocks.construct).toHaveBeenCalledWith({ autoRaf: true });
-        expect(lenisMocks.destroy).not.toHaveBeenCalled();
+        expect(lenisMocks.instances[0].destroy).not.toHaveBeenCalled();
 
         unmount();
 
-        expect(lenisMocks.destroy).toHaveBeenCalledOnce();
+        expect(lenisMocks.instances[0].destroy).toHaveBeenCalledOnce();
     });
 
-    test("resets scroll momentum when the history entry changes", () => {
+    test("replaces the Lenis instance when the history entry changes", () => {
         const { rerender, unmount } = render(<SmoothScrollHarness navigationKey="first" />);
         rerender(<SmoothScrollHarness navigationKey="second" />);
-        expect(lenisMocks.destroy).toHaveBeenCalledOnce();
+        expect(lenisMocks.instances[0].destroy).toHaveBeenCalledOnce();
         expect(lenisMocks.construct).toHaveBeenCalledTimes(2);
+        expect(lenisMocks.instances[0].destroy.mock.invocationCallOrder[0]).toBeLessThan(
+            lenisMocks.construct.mock.invocationCallOrder[1],
+        );
+        expect(lenisMocks.instances[1].destroy).not.toHaveBeenCalled();
         unmount();
+        expect(lenisMocks.instances[0].destroy).toHaveBeenCalledOnce();
+        expect(lenisMocks.instances[1].destroy).toHaveBeenCalledOnce();
     });
 
     test("does not create Lenis when smooth scrolling is disabled", () => {
@@ -67,20 +72,23 @@ describe("useSmoothScroll", () => {
 
         unmount();
 
-        expect(lenisMocks.destroy).not.toHaveBeenCalled();
+        expect(lenisMocks.instances).toHaveLength(0);
     });
 
-    test("destroys Lenis when smooth scrolling becomes disabled", () => {
+    test("destroys and recreates Lenis when smooth scrolling is toggled", () => {
         const { rerender, unmount } = render(<SmoothScrollHarness />);
 
         rerender(<SmoothScrollHarness enabled={false} />);
 
         expect(lenisMocks.construct).toHaveBeenCalledOnce();
-        expect(lenisMocks.destroy).toHaveBeenCalledOnce();
-
+        expect(lenisMocks.instances[0].destroy).toHaveBeenCalledOnce();
+        rerender(<SmoothScrollHarness enabled />);
+        expect(lenisMocks.instances).toHaveLength(2);
+        expect(lenisMocks.instances[1].destroy).not.toHaveBeenCalled();
         unmount();
+        expect(lenisMocks.instances[1].destroy).toHaveBeenCalledOnce();
 
-        expect(lenisMocks.destroy).toHaveBeenCalledOnce();
+        expect(lenisMocks.instances[0].destroy).toHaveBeenCalledOnce();
     });
 
     test("cleans up each Lenis instance under Strict Mode", () => {
@@ -91,10 +99,12 @@ describe("useSmoothScroll", () => {
         );
 
         expect(lenisMocks.construct).toHaveBeenCalledTimes(2);
-        expect(lenisMocks.destroy).toHaveBeenCalledOnce();
+        expect(lenisMocks.instances[0].destroy).toHaveBeenCalledOnce();
 
         unmount();
 
-        expect(lenisMocks.destroy).toHaveBeenCalledTimes(2);
+        for (const instance of lenisMocks.instances) {
+            expect(instance.destroy).toHaveBeenCalledOnce();
+        }
     });
 });

@@ -137,6 +137,8 @@ test.describe("home editorial section handoff", () => {
 
             const gap = await measureEditorialItemToBannerGap(page);
 
+            // Allow subpixel rounding, but never a visible overlap.
+            expect(gap).toBeGreaterThanOrEqual(-1);
             expect(gap).toBeLessThanOrEqual(viewport.height * EDITORIAL_HANDOFF_MAX_GAP_RATIO);
         });
     }

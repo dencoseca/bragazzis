@@ -1,10 +1,11 @@
 /** @vitest-environment happy-dom */
 
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import type { MotionValue } from "motion/react";
 import type { HTMLAttributes, SVGProps } from "react";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vite-plus/test";
 
+import { siteConfig } from "@/constants/siteConfig";
 import { HomeHero } from "@/pages/home/HomeHero";
 
 const { useIsMobileMock, useIsTabletMock, useReducedMotionMock } = vi.hoisted(() => ({
@@ -112,7 +113,8 @@ describe("HomeHero", () => {
         vi.clearAllMocks();
     });
 
-    test("holds the intro until the hero image is ready", () => {
+    test("settles once when the hero loads before the timeout", () => {
+        vi.useFakeTimers();
         const onSettled = vi.fn();
         render(<HomeHero scrollYProgress={scrollYProgress} onSettled={onSettled} />);
 
@@ -128,6 +130,8 @@ describe("HomeHero", () => {
 
         expect(title.dataset.animationState).toBe("animate");
         expect(onSettled).toHaveBeenCalledOnce();
+        act(() => vi.advanceTimersByTime(2_500));
+        expect(onSettled).toHaveBeenCalledOnce();
     });
 
     test("starts the intro after a bounded wait when the image is slow", () => {
@@ -139,23 +143,24 @@ describe("HomeHero", () => {
 
         expect(title.dataset.animationState).toBe("initial");
 
-        act(() => vi.advanceTimersByTime(2_500));
+        act(() => vi.advanceTimersByTime(2_499));
+        expect(title.dataset.animationState).toBe("initial");
+        expect(onSettled).not.toHaveBeenCalled();
+        act(() => vi.advanceTimersByTime(1));
 
         expect(title.dataset.animationState).toBe("animate");
         expect(onSettled).toHaveBeenCalledOnce();
+        fireEvent.load(screen.getByRole("img"));
+        expect(onSettled).toHaveBeenCalledOnce();
     });
 
-    test("keeps the scroll cue as non-interactive text and preserves opening hours", () => {
+    test("renders the configured opening hours", () => {
         render(<HomeHero scrollYProgress={scrollYProgress} />);
-        expect(screen.getAllByRole("list")).toHaveLength(1);
+        const hours = screen.getByRole("region", { name: "Opening hours" });
         expect(
-            screen.getByRole("heading", { name: /Roam freely and find inspiration/ }),
-        ).toBeDefined();
-        const cue = screen.getByText("Il Caffè", {
-            selector: ".home-hero__scroll-cue span",
-        }).parentElement;
-        expect(cue?.tagName).toBe("DIV");
-        expect(cue?.hasAttribute("tabindex")).toBe(false);
-        expect(screen.queryByRole("button", { name: "Scroll down" })).toBeNull();
+            within(hours)
+                .getAllByRole("listitem")
+                .map((item) => item.textContent),
+        ).toEqual(siteConfig.openingHours.display);
     });
 });

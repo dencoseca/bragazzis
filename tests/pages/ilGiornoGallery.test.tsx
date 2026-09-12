@@ -84,10 +84,13 @@ class MockIntersectionObserver {
 
 function installIntersectionObserverMock() {
     MockIntersectionObserver.instances = [];
-    window.IntersectionObserver =
-        MockIntersectionObserver as unknown as typeof IntersectionObserver;
+    vi.stubGlobal("IntersectionObserver", MockIntersectionObserver);
 }
 
+const originalIntersectionObserver = Object.getOwnPropertyDescriptor(
+    window,
+    "IntersectionObserver",
+);
 function removeIntersectionObserver() {
     Reflect.deleteProperty(window, "IntersectionObserver");
 }
@@ -124,7 +127,10 @@ function getSassMobileBreakpoint() {
 
 describe("IlGiornoGallery", () => {
     afterEach(() => {
-        removeIntersectionObserver();
+        vi.unstubAllGlobals();
+        if (originalIntersectionObserver)
+            Object.defineProperty(window, "IntersectionObserver", originalIntersectionObserver);
+        else Reflect.deleteProperty(window, "IntersectionObserver");
     });
 
     test("preserves captions, image ordering, and responsive sizes", () => {
@@ -227,6 +233,13 @@ describe("IlGiornoGallery", () => {
                 shouldLoad: "false",
             })),
         ]);
+        const advancedStates = getLoadStates();
+        act(() => observer.trigger(initialPictures[0], true));
+        expect(getLoadStates()).toEqual(advancedStates);
+        act(() => observer.trigger(initialPictures.at(-1)!, true));
+        expect(getLoadStates()).toEqual(
+            galleryImages.map(() => ({ loading: "eager", shouldLoad: "true" })),
+        );
     });
 
     test("marks each image as loaded for its reveal animation", async () => {
