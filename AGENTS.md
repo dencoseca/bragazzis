@@ -15,7 +15,7 @@ application with multiple routes, built with **React 19**, **TypeScript**, and *
 - **Animation:** Motion (Framer Motion), Lenis (smooth scroll)
 - **SEO:** React 19 native document metadata
 - **Image Optimization:** vite-imagetools (build-time responsive AVIF/JPEG fallback generation via sharp)
-- **Visual Testing:** Playwright visual regression tests (Chromium only)
+- **Browser Testing:** mandatory functional Playwright checks and optional screenshot comparisons (Chromium only)
 
 ## Project Structure
 
@@ -111,16 +111,20 @@ src/
   relevant surface and inspect it in the existing dev preview. Defer production builds, screenshot baseline updates,
   and full suites until the user settles on a version. Do not turn each preview into a release-validation cycle.
 - **Documentation-only changes:** review the diff and run `git diff --check`; application builds and tests are unnecessary.
-- **Final, isolated styling changes:** run `vp check` and the affected visual tests. For example,
-  `vp run test:visual --grep 'ilgiorno'` covers Il Giorno at the configured viewport sizes. Include other routes or
-  menu states when shared selectors affect them. Colour-only changes do not require rerunning unit tests.
+- **Final, isolated styling changes:** run `vp check` and inspect affected pages in the browser at relevant viewport
+  sizes. Run affected functional browser checks when layout or interaction changes warrant them. Screenshot comparisons
+  (`vp run test:visual`) are optional; do not run the full screenshot suite automatically for every UI edit.
 - **Behaviour, shared layout, routing, image loading, or toolchain changes:** run `vp check`, `vp test`, and
-  `vp run build`; run the full visual suite when the change affects rendering or browser behaviour across the site.
+  `vp run build`; run `vp run test:browser` when rendering or browser behaviour is affected. Playwright's web server
+  already runs the full build when it starts, so that result can satisfy build validation.
+- **CI policy:** pull requests run functional browser checks with `vp run test:browser:ci`; screenshot comparisons run
+  only locally on demand or through the manual Browser checks workflow with the screenshots input enabled. Keep
+  `@screenshot` on all baseline-comparison suites. Do not remove the functional section-overlap checks from CI.
 - **Reuse valid results.** Keep track of which source version and scope passed. After a small follow-up change,
   repeat only the affected checks unless a failure or new risk justifies broader validation. Committing or pushing
   unchanged, already-validated code does not require another test cycle.
 - **Avoid stale production previews.** Playwright may reuse an existing server on port 4173. If it is serving an
-  older build, rebuild once before the visual run; if Playwright starts its own server, its configuration builds for you.
+  older build, rebuild once before the browser run; if Playwright starts its own server, its configuration builds for you.
 - **Keep tool output focused.** Reuse source already read; request narrow CodeGraph queries and file excerpts.
   Save verbose build/test logs and inspect summaries or failure details. Review a representative screenshot for a
   preview and the changed screenshots before committing baselines; avoid repeatedly emitting full-page images.
@@ -142,8 +146,10 @@ src/
   noise.
 - CI runs on Linux with centralized Chromium baselines. Local macOS runs may differ slightly, so CI diffs should be
   treated as the source of truth when platform rendering differences appear.
-- `vp run test:visual` runs the complete local Playwright suite. CI uses `vp run test:visual:ci`, which excludes tests
-  tagged `@local-only` when their browser input emulation is not portable to Linux.
+- `vp run test:visual` runs only optional `@screenshot` comparisons. `vp run test:browser` excludes those comparisons;
+  CI uses `vp run test:browser:ci` to also exclude `@local-only` touch emulation. `vp exec playwright test` runs both.
+- The Browser checks workflow retains its existing `Chromium visual tests` job name for branch-protection compatibility;
+  its pull-request run contains functional tests only.
 - Do not commit `playwright-report/` or `test-results/`; only commit intentional baseline images under
   `tests/visual/__screenshots__/`.
 
@@ -180,8 +186,8 @@ This project is using Vite+, a unified toolchain built on top of Vite, Rolldown,
   `vite-plus`, the `vite` alias, Vitest, pnpm catalogs/overrides, and peer dependency rules according to the
   current global `vp`.
 - After `vp migrate`, run `vp install`, `vp check`, `vp test`, and `vp run build`. The build script runs `tsc && vp build`
-  for full build validation. Run `vp run test:visual` when
-  changing layout, typography, imagery, animation, or scroll behavior.
+  for full build validation. Run `vp run test:browser` when browser behaviour is affected. For layout, typography,
+  imagery or animation changes, inspect the affected pages; screenshot comparisons remain optional.
 - In Codex/non-TTY environments, if `vp migrate` updates files but its internal install fails with a pnpm
   confirmation prompt, rerun install with `env CI=true vp install --no-frozen-lockfile`.
 

@@ -9,9 +9,10 @@
     "build": "tsc && vp build",
     "preview": "vp preview",
     "test:coverage": "vp test --coverage",
-    "test:visual": "playwright test",
-    "test:visual:ci": "playwright test --grep-invert @local-only",
-    "test:visual:update": "playwright test --update-snapshots"
+    "test:visual": "playwright test --grep @screenshot",
+    "test:visual:update": "playwright test --grep @screenshot --update-snapshots",
+    "test:browser": "playwright test --grep-invert @screenshot",
+    "test:browser:ci": "playwright test --grep-invert \"@screenshot|@local-only\""
   },
   "dependencies": {
     "lenis": "1.3.26",
