@@ -21,7 +21,6 @@ interface EditorialParagraph {
 
 interface EditorialEntry {
     id: EditorialLayout;
-    layout: EditorialLayout;
     image: OptimizedPicture;
     alt: string;
     paragraphs: EditorialParagraph[];
@@ -49,7 +48,6 @@ const editorialLayoutClasses: Record<EditorialLayout, string> = {
 const editorialItems: EditorialEntry[] = [
     {
         id: "intro",
-        layout: "intro",
         image: shelvesImg,
         alt: "Italian food and drink displayed on shop shelves",
         paragraphs: [
@@ -67,7 +65,6 @@ const editorialItems: EditorialEntry[] = [
     },
     {
         id: "coffee",
-        layout: "coffee",
         image: coffeePourImg,
         alt: "silky coffee being poured",
         paragraphs: [
@@ -79,7 +76,6 @@ const editorialItems: EditorialEntry[] = [
     },
     {
         id: "suppliers",
-        layout: "suppliers",
         image: ciabattaImg,
         alt: "ciabatta sandwiches being prepared",
         paragraphs: [
@@ -91,7 +87,6 @@ const editorialItems: EditorialEntry[] = [
     },
     {
         id: "shop",
-        layout: "shop",
         image: shopChristmasImg,
         alt: "a beautifully stocked italian dry goods shop",
         paragraphs: [
@@ -105,7 +100,7 @@ const editorialItems: EditorialEntry[] = [
 
 function EditorialItem({ item, shouldLoadImage }: EditorialItemProps) {
     return (
-        <article className={`home-editorial__item ${editorialLayoutClasses[item.layout]}`}>
+        <article className={`home-editorial__item ${editorialLayoutClasses[item.id]}`}>
             <OptimizedImage
                 className="home-editorial__image"
                 image={item.image}

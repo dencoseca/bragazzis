@@ -7,22 +7,6 @@
     src: url("@/assets/fonts/AbrilFatface-Regular.ttf");
     font-display: swap;
 }
-// ===============
-// Main text
-// ===============
-// Josefin Sans
-@font-face {
-    font-family: "Josefin Sans";
-    src: url("@/assets/fonts/JosefinSans-Light.ttf");
-    font-weight: 300;
-    font-display: swap;
-}
-@font-face {
-    font-family: "Josefin Sans";
-    src: url("@/assets/fonts/JosefinSans-Regular.ttf");
-    font-weight: 400;
-    font-display: swap;
-}
 // Editorial type scale.
 .text--page-title {
     font-family: tokens.$font-display;
