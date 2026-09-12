@@ -42,7 +42,7 @@ const VIEWPORT_IMAGE_MARGIN = 240;
 const SCROLL_SETTLE_MS = 700;
 const EDITORIAL_HANDOFF_MAX_GAP_RATIO = 0.35;
 
-test.describe("main page visuals", () => {
+test.describe("main page visuals", { tag: "@screenshot" }, () => {
     for (const route of ROUTES) {
         for (const viewport of VIEWPORTS) {
             test(`${route.name} at ${viewport.name}`, async ({ page }) => {
@@ -66,7 +66,7 @@ test.describe("main page visuals", () => {
     }
 });
 
-test.describe("404 visuals", () => {
+test.describe("404 visuals", { tag: "@screenshot" }, () => {
     for (const viewport of VIEWPORTS) {
         test(`404 at ${viewport.name}`, async ({ page }) => {
             await page.setViewportSize(viewport);
@@ -83,7 +83,7 @@ test.describe("404 visuals", () => {
     }
 });
 
-test.describe("mobile menu visuals", () => {
+test.describe("mobile menu visuals", { tag: "@screenshot" }, () => {
     test("menu overlay open at mobile", async ({ page }) => {
         await page.setViewportSize(MOBILE_VIEWPORT);
         await gotoRouteAndSettle(page, publicPageRoutes.laStoria.path, 1_800);

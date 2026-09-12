@@ -70,22 +70,38 @@ Image imports use named presets configured in `vite.imagetools.ts` instead of lo
 - `?preset=fullWidth` for full-bleed hero/banner images.
 
 The imagetools cache lives at `node_modules/.cache/imagetools`. CI restores and saves that cache for both build checks
-and visual regression runs so repeated image transforms stay fast.
+and browser test runs so repeated image transforms stay fast.
 
-## Visual Regression Tests
+## Browser checks
 
-Run the Chromium-only Playwright visual suite with:
+Pull requests run lint, type checks, unit tests, the production build, and functional Chromium tests.
+Screenshot comparisons are optional and do not run on pull requests.
+
+```sh
+vp run test:browser
+```
+
+This covers navigation, menu focus and scrolling, image failure recovery, route recovery, and targeted
+section-overlap checks. CI uses `vp run test:browser:ci`, which also excludes the local-only touch-emulation case.
+The Playwright web server runs `vp run build` and serves the production output with `vp preview`.
+
+For UI changes, inspect the affected pages at relevant viewport sizes and report what was checked.
+Use screenshot comparisons when they would help assess an unintended visual change:
 
 ```sh
 vp run test:visual
 ```
 
-The Playwright web server builds the production app with `vp run build` and serves it with `vp preview`, so screenshots are taken against production output rather than the Vite dev server. Baselines live in `tests/visual/__screenshots__`.
+To run screenshots on GitHub, manually dispatch **Browser checks** with **Also run optional screenshot comparisons**
+enabled. The job retains its historical **Chromium visual tests** check name for branch-protection compatibility.
 
-When an intentional visual change is made, update baselines with:
+Screenshot suites are tagged `@screenshot`; keep that tag on any new baseline comparisons so they remain optional.
+Baselines stay in `tests/visual/__screenshots__/`. Update them only after reviewing intentional changes:
 
 ```sh
 vp run test:visual:update
 ```
 
-The suite centralizes Chromium baselines instead of generating separate macOS and Linux snapshots. `playwright.config.ts` uses one Chromium project, `deviceScaleFactor: 1`, sRGB color, and Chromium font-rendering flags (`--font-render-hinting=none`, `--disable-font-subpixel-positioning`, and `--disable-lcd-text`) to reduce platform noise. Local macOS runs can still differ slightly from Linux CI, so the screenshot thresholds are intentionally tolerant of small antialiasing differences while still catching layout, typography, image composition, and scroll-state regressions. No requested rendering stability flags are currently omitted.
+`vp exec playwright test` runs both suites together. The shared Chromium configuration uses a device scale of 1,
+sRGB, and font-rendering flags to reduce platform noise. Local macOS screenshots can still differ from Linux;
+inspect differences instead of automatically accepting them. Optional baselines may need review after design changes.

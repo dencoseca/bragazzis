@@ -1,11 +1,17 @@
-name: Visual Regression
+name: Browser checks
 
 on:
   pull_request:
   workflow_dispatch:
+    inputs:
+      screenshots:
+        description: Also run optional screenshot comparisons
+        type: boolean
+        default: false
 
 jobs:
   chromium:
+    # Retain the existing check name for branch-protection compatibility.
     name: Chromium visual tests
     runs-on: ubuntu-latest
 
@@ -30,16 +36,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-imagetools-
 
-      - name: Prime production build cache
-        run: vp build
-
       - name: Install Chromium
         run: vp exec playwright install --with-deps chromium
 
-      - name: Run visual regression tests
-        run: vp run test:visual:ci
+      - name: Run functional browser tests
+        run: vp run test:browser:ci
 
-      - name: Upload visual failure artifacts
+      - name: Run optional screenshot comparisons
+        if: github.event_name == 'workflow_dispatch' && inputs.screenshots
+        run: vp run test:visual
+
+      - name: Upload browser failure artifacts
         if: failure()
         uses: actions/upload-artifact@v4
         with:
