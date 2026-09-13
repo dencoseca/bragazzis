@@ -8,35 +8,32 @@
     "check": "vp check --fix",
     "build": "tsc && vp build",
     "preview": "vp preview",
-    "test:coverage": "vp test --coverage",
     "test:visual": "playwright test",
     "test:visual:ci": "playwright test --grep-invert @local-only",
     "test:visual:update": "playwright test --update-snapshots"
   },
   "dependencies": {
     "lenis": "1.3.26",
-    "motion": "13.1.1",
+    "motion": "13.2.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "react-error-boundary": "6.1.4",
-    "react-router-dom": "7.18.2"
+    "react-router-dom": "7.18.3"
   },
   "devDependencies": {
     "@playwright/test": "1.62.1",
-    "@testing-library/react": "16.3.2",
-    "@testing-library/user-event": "14.6.6",
-    "@types/node": "26.4.0",
+    "@testing-library/react": "16.3.3",
+    "@testing-library/user-event": "14.6.7",
+    "@types/node": "26.4.1",
     "@types/react": "19.2.18",
-    "@types/react-dom": "19.2.5",
-    "@vitejs/plugin-react": "6.1.0",
-    "@vitest/coverage-v8": "catalog:",
-    "happy-dom": "20.11.12",
-    "sass": "1.103.1",
+    "@types/react-dom": "19.2.7",
+    "@vitejs/plugin-react": "6.1.1",
+    "happy-dom": "20.14.0",
+    "sass": "1.104.0",
     "typescript": "7.0.2",
     "vite": "catalog:",
-    "vite-imagetools": "12.0.0",
-    "vite-plus": "catalog:",
-    "vitest": "catalog:"
+    "vite-imagetools": "12.0.1",
+    "vite-plus": "catalog:"
   },
   "engines": {
     "node": ">=24.11.0 <25.0.0"
