@@ -112,18 +112,17 @@ export function HomeHero({ scrollYProgress, onSettled }: HomeHeroProps) {
                         initial={initialAnimationState}
                         animate={animateAnimationState}
                     >
-                        <p className="home-hero__eyebrow">Il Caffè</p>
-                        <h2 className="home-hero__headline">
-                            Roam freely and find inspiration...
-                            <br />
-                            <em>or that obscure pasta shape that you've been looking for</em>
-                        </h2>
                         <div className="home-hero__address">
                             <a href={address.mapsUrl} target="_blank" rel="noreferrer">
                                 <span>{address.streetAddress}</span>
                                 <span>{address.addressLocality} ↗</span>
                             </a>
                         </div>
+                        <h2 className="home-hero__headline">
+                            Roam freely and find inspiration...
+                            <br />
+                            <em>or that obscure pasta shape that you've been looking for</em>
+                        </h2>
                         <div className="home-hero__scroll-cue">
                             <span>Il Caffè</span>
                             <span aria-hidden="true">↓</span>
