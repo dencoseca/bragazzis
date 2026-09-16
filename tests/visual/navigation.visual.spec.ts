@@ -78,7 +78,15 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
             await page.goBack();
             await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(500);
             await page.goForward();
-            await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+            await expect
+                .poll(() =>
+                    page.evaluate(() =>
+                        Math.round(
+                            document.querySelector("#main-content")!.getBoundingClientRect().top,
+                        ),
+                    ),
+                )
+                .toBe(0);
         });
 
         test("distinguishes fresh fragment navigation from Back and Forward", async ({ page }) => {
@@ -87,7 +95,15 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
             const skipLink = page.locator(".skip-to-content");
             await skipLink.evaluate((link: HTMLAnchorElement) => link.click());
             await expect(page).toHaveURL(/#main-content$/);
-            await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+            await expect
+                .poll(() =>
+                    page.evaluate(() =>
+                        Math.round(
+                            document.querySelector("#main-content")!.getBoundingClientRect().top,
+                        ),
+                    ),
+                )
+                .toBe(0);
             await scrollTo(page, 700);
             await page.goBack();
             await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(500);
@@ -100,7 +116,15 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
             await skipLink.evaluate((link: HTMLAnchorElement) => link.click());
             await expect(page).toHaveURL(/#main-content$/);
             await expect(page.locator("#main-content")).toBeFocused();
-            await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+            await expect
+                .poll(() =>
+                    page.evaluate(() =>
+                        Math.round(
+                            document.querySelector("#main-content")!.getBoundingClientRect().top,
+                        ),
+                    ),
+                )
+                .toBe(0);
             await scrollTo(page, 300);
             await page.goBack();
             await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(500);
@@ -117,10 +141,17 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
             await expect(page.getByRole("dialog")).toBeVisible();
             await page.setViewportSize({ width: 1280, height: 900 });
             await expect(page.getByRole("dialog")).toHaveCount(0);
-            await expect(page.getByRole("link", { name: "home", exact: true })).toBeFocused();
+            await expect(page.getByRole("link", { name: "Il Caffè", exact: true })).toBeFocused();
             await expect(page.locator(".layout__background")).not.toHaveAttribute("inert");
             await expect(page.locator(".layout__background")).not.toHaveAttribute("aria-hidden");
-            await scrollTo(page, 400);
+            await expect(page.locator("body")).not.toHaveCSS("overflow", "hidden");
+            await expect(page.locator("html")).not.toHaveCSS("overflow", "hidden");
+            const beforeScroll = await page.evaluate(() => window.scrollY);
+            await page.mouse.move(640, 450);
+            await page.mouse.wheel(0, 400);
+            await expect
+                .poll(() => page.evaluate(() => window.scrollY))
+                .toBeGreaterThan(beforeScroll);
         });
 
         test("mobile menu navigation focuses the destination", async ({ page }) => {
@@ -129,6 +160,10 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
             await scrollTo(page, 500);
             await page.getByRole("button", { name: "Open menu" }).click();
             await page.getByRole("dialog").getByRole("link", { name: "Il Giorno" }).click();
+            await expect(page).toHaveURL(/\/ilgiorno$/);
+            await expect(
+                page.getByRole("heading", { name: "IL GIORNO", exact: true }),
+            ).toBeVisible();
             await expect(page.locator("#main-content")).toBeFocused();
             await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
             await expect(page.getByRole("dialog")).toHaveCount(0);

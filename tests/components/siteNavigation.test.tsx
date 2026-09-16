@@ -2,7 +2,7 @@
 
 import { act, cleanup, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { useRef, type HTMLAttributes, type ReactNode } from "react";
+import { useRef, type HTMLAttributes, type ReactNode, type SVGProps } from "react";
 import { MemoryRouter, useNavigate } from "react-router-dom";
 import { afterEach, describe, expect, test, vi } from "vite-plus/test";
 
@@ -32,6 +32,23 @@ vi.mock("motion/react", () => ({
             void variants;
 
             return <div {...props} />;
+        },
+        svg({
+            animate,
+            exit,
+            initial,
+            transition,
+            variants,
+            ...props
+        }: SVGProps<SVGSVGElement> &
+            Pick<MotionElementProps, "animate" | "exit" | "initial" | "transition" | "variants">) {
+            void animate;
+            void exit;
+            void initial;
+            void transition;
+            void variants;
+
+            return <svg {...props} />;
         },
         nav({ animate, exit, initial, transition, variants, ...props }: MotionElementProps) {
             void animate;
@@ -135,9 +152,14 @@ describe("SiteNavigation", () => {
         expect(document.body.style.overflow).toBe("clip");
         expect(document.documentElement.style.overflow).toBe("auto");
         expect(document.activeElement).toBe(menuButton);
+        await user.click(menuButton);
+        await user.click(screen.getByRole("button", { name: "Close menu" }));
+        expect(screen.queryByRole("dialog")).toBeNull();
+        expect(menuButton.getAttribute("aria-expanded")).toBe("false");
+        expect(document.activeElement).toBe(menuButton);
     });
 
-    test("closes and restores focus after selecting a menu link", async () => {
+    test("closes and restores focus after reselecting the current home route", async () => {
         const user = userEvent.setup();
         render(
             <MemoryRouter>
@@ -148,9 +170,9 @@ describe("SiteNavigation", () => {
 
         await user.click(menuButton);
         await user.click(
-            within(screen.getByRole("dialog", { name: "Mobile navigation" })).getAllByRole(
-                "link",
-            )[0],
+            within(screen.getByRole("dialog", { name: "Mobile navigation" })).getByRole("link", {
+                name: "Il Caffè",
+            }),
         );
 
         expect(screen.queryByRole("dialog", { name: "Mobile navigation" })).toBeNull();

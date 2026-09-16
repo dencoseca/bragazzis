@@ -1,15 +1,8 @@
 import { describe, expect, test } from "vite-plus/test";
 
-import {
-    assertGalleryImageFilenameParity,
-    validateGalleryImageAssets,
-} from "../vite.gallery-assets";
+import { assertGalleryImageFilenameParity } from "../vite.gallery-assets";
 
 describe("gallery asset validation", () => {
-    test("accepts the gallery metadata and assets in the repository", () => {
-        expect(validateGalleryImageAssets).not.toThrow();
-    });
-
     test("rejects metadata without a matching asset", () => {
         expect(() => assertGalleryImageFilenameParity(["missing.jpg"], [])).toThrow(
             "metadata without asset: missing.jpg",

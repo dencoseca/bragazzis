@@ -12,24 +12,38 @@ const tokensScss = readFileSync(resolve(process.cwd(), "src/styles/_tokens.scss"
 
 const galleryImages = vi.hoisted(() =>
     Array.from({ length: 12 }, (_, index) => ({
+        filename: `gallery-${index}.jpg`,
         alt: `gallery image ${index}`,
         image: {
             img: {
                 h: 100,
                 src: `/gallery-${index}.jpg`,
-                w: 100,
+                w: index === 0 || index === 4 ? 150 : index === 1 ? 60 : 100,
             },
             sources: {
                 "image/avif": `/gallery-${index}.avif`,
             },
         },
-        size: 40,
     })),
 );
 
-vi.mock("@/pages/il-giorno/galleryImages", () => ({
-    galleryImages,
-}));
+vi.mock("@/pages/il-giorno/galleryImages", async () => {
+    const { getGallerySpreadLayout } = await import("@/pages/il-giorno/galleryLayout");
+    const groups = [
+        [0, 3],
+        [3, 5],
+        [5, 6],
+        [6, 9],
+        [9, 12],
+    ];
+    return {
+        galleryImages,
+        gallerySpreads: groups.map(([start, end]) => {
+            const images = galleryImages.slice(start, end);
+            return { images, ...getGallerySpreadLayout(images) };
+        }),
+    };
+});
 
 class MockIntersectionObserver {
     static instances: MockIntersectionObserver[] = [];
@@ -70,10 +84,13 @@ class MockIntersectionObserver {
 
 function installIntersectionObserverMock() {
     MockIntersectionObserver.instances = [];
-    window.IntersectionObserver =
-        MockIntersectionObserver as unknown as typeof IntersectionObserver;
+    vi.stubGlobal("IntersectionObserver", MockIntersectionObserver);
 }
 
+const originalIntersectionObserver = Object.getOwnPropertyDescriptor(
+    window,
+    "IntersectionObserver",
+);
 function removeIntersectionObserver() {
     Reflect.deleteProperty(window, "IntersectionObserver");
 }
@@ -110,26 +127,47 @@ function getSassMobileBreakpoint() {
 
 describe("IlGiornoGallery", () => {
     afterEach(() => {
-        removeIntersectionObserver();
+        vi.unstubAllGlobals();
+        if (originalIntersectionObserver)
+            Object.defineProperty(window, "IntersectionObserver", originalIntersectionObserver);
+        else Reflect.deleteProperty(window, "IntersectionObserver");
     });
 
     test("preserves captions, image ordering, and responsive sizes", () => {
         render(<IlGiornoGallery />);
 
         const gallery = screen.getByText("Aperto").parentElement;
-        const pictures = getGalleryPictures();
-
         expect(gallery?.firstElementChild?.textContent).toBe("Aperto");
         expect(gallery?.lastElementChild?.textContent).toBe("Chiuso");
         expect(screen.getAllByRole("img").map((image) => image.getAttribute("alt"))).toEqual(
             galleryImages.map(({ alt }) => alt),
         );
         expect(screen.getAllByRole("img").map((image) => image.getAttribute("sizes"))).toEqual(
-            galleryImages.map(() => `(max-width: ${getSassMobileBreakpoint()}) 100vw, 40vw`),
+            [
+                [90, 74],
+                [90, 18],
+                [90, 18],
+                [90, 37],
+                [90, 55],
+                [90, 92],
+                [90, 61],
+                [90, 31],
+                [90, 31],
+                [90, 61],
+                [90, 31],
+                [90, 31],
+            ].map(
+                ([mobile, desktop]) =>
+                    `(max-width: ${getSassMobileBreakpoint()}) ${mobile}vw, ${desktop}vw`,
+            ),
         );
-        expect(pictures.map((picture) => picture.dataset.size)).toEqual(
-            galleryImages.map(({ size }) => String(size)),
-        );
+        expect(
+            Array.from(
+                gallery!.querySelectorAll(".ilgiorno__spread"),
+                (spread) => spread.querySelectorAll("picture").length,
+            ),
+        ).toEqual([3, 2, 1, 3, 3]);
+        expect(screen.queryByRole("button")).toBeNull();
     });
 
     test("loads every gallery image when IntersectionObserver is unavailable", () => {
@@ -195,6 +233,13 @@ describe("IlGiornoGallery", () => {
                 shouldLoad: "false",
             })),
         ]);
+        const advancedStates = getLoadStates();
+        act(() => observer.trigger(initialPictures[0], true));
+        expect(getLoadStates()).toEqual(advancedStates);
+        act(() => observer.trigger(initialPictures.at(-1)!, true));
+        expect(getLoadStates()).toEqual(
+            galleryImages.map(() => ({ loading: "eager", shouldLoad: "true" })),
+        );
     });
 
     test("marks each image as loaded for its reveal animation", async () => {

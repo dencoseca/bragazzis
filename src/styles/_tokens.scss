@@ -1,8 +1,11 @@
-$color-paper: #f6f4f1;
-$color-ink: #1d1d1d;
+$color-paper: #f4e8c1;
+$color-ink: #262b24;
+
+$color-red: #a52c20;
+$color-yellow: #edca5b;
 
 $font-display: "Abril Fatface", cursive;
-$font-text: "Josefin Sans", sans-serif;
+$font-text: "Helvetica Neue", Arial, sans-serif;
 
 $breakpoint-mobile: 760px;
 $breakpoint-tablet: 1080px;
@@ -10,4 +13,6 @@ $breakpoint-tablet: 1080px;
 :root {
     --color-paper: #{$color-paper};
     --color-ink: #{$color-ink};
+    --color-red: #{$color-red};
+    --color-yellow: #{$color-yellow};
 }

@@ -31,12 +31,7 @@ interface MockOptimizedImageProps {
 // forcing CI to transform every responsive image variant.
 vi.mock("@/pages/home/HomeHero", () => ({
     HomeHero() {
-        return (
-            <>
-                <div>Monday: 9:00 AM</div>
-                <div>Roam freely and find inspiration</div>
-            </>
-        );
+        return null;
     },
 }));
 
@@ -102,22 +97,20 @@ vi.mock("@/assets/images/ticket-roma.jpg?preset=editorial", () => ({
     },
 }));
 
-vi.mock("@/pages/il-giorno/galleryImages", () => ({
-    galleryImages: [
+vi.mock("@/pages/il-giorno/galleryImages", async () => {
+    const { getGallerySpreadLayout } = await import("@/pages/il-giorno/galleryLayout");
+    const images = [
         {
+            filename: "aperto.jpg",
             alt: "sandwich board sign outside cafe",
-            image: {
-                img: {
-                    h: 1,
-                    src: "/mock-image.jpg",
-                    w: 1,
-                },
-                sources: {},
-            },
-            size: 60,
+            image: { img: { h: 1, src: "/mock-image.jpg", w: 1 }, sources: {} },
         },
-    ],
-}));
+    ];
+    return {
+        galleryImages: images,
+        gallerySpreads: [{ images, ...getGallerySpreadLayout(images) }],
+    };
+});
 
 interface RouteSmokeCase {
     canonicalUrl?: string;
@@ -133,7 +126,7 @@ const ROUTE_SMOKE_CASES: RouteSmokeCase[] = [
         canonicalUrl: getCanonicalUrl(publicPageRoutes.home.path),
         title: getPageDocumentTitle(publicPageRoutes.home.pageTitle),
         description: publicPageRoutes.home.description,
-        expectedTexts: ["Roam freely and find inspiration", "Monday: 9:00 AM"],
+        expectedTexts: [],
     },
     {
         path: publicPageRoutes.laStoria.path,

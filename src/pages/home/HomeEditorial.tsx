@@ -1,57 +1,55 @@
-import { motion, type MotionValue } from "motion/react";
-
-import ciabattaImg from "@/assets/images/ciabatta.jpg?preset=editorial";
 import coffeePourImg from "@/assets/images/coffee-pour.jpg?preset=editorial";
+import panettoneImg from "@/assets/images/panettone-display.jpg?preset=editorial";
 import shelvesImg from "@/assets/images/shelves.jpg?preset=editorial";
 import shopChristmasImg from "@/assets/images/shop-christmas.jpg?preset=editorial";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { getBreakpointMediaQuery } from "@/constants/breakpoints";
-import { useScrollParallax } from "@/pages/home/useScrollParallax";
 import type { OptimizedPicture } from "@/types/imagetools";
 
 const EDITORIAL_IMAGE_SIZES = `${getBreakpointMediaQuery("mobile")} 100vw, 50vw`;
 
 interface HomeEditorialProps {
-    scrollYProgress: MotionValue<number>;
     shouldLoadImages: boolean;
 }
 
-type FloatingItemLayout = "intro" | "coffee" | "suppliers" | "shop";
+type EditorialLayout = "intro" | "coffee" | "suppliers" | "shop";
 
-interface FloatingItemParagraph {
+interface EditorialParagraph {
     initial?: string;
     text: string;
 }
 
-interface FloatingItem {
-    id: FloatingItemLayout;
-    layout: FloatingItemLayout;
+interface EditorialEntry {
+    id: EditorialLayout;
     image: OptimizedPicture;
     alt: string;
-    parallaxVw: number;
-    paragraphs: FloatingItemParagraph[];
+    paragraphs: EditorialParagraph[];
 }
 
-interface FloatingItemCardProps {
-    item: FloatingItem;
-    scrollYProgress: MotionValue<number>;
+interface EditorialItemProps {
+    item: EditorialEntry;
     shouldLoadImage: boolean;
 }
 
-const floatingItemLayoutClasses: Record<FloatingItemLayout, string> = {
+const editorialHeadings: Record<EditorialLayout, string> = {
+    intro: "The occupation of shopkeeping.",
+    coffee: "Making good coffee.",
+    suppliers: "Quality, integrity and provenance.",
+    shop: "Everyday items.",
+};
+
+const editorialLayoutClasses: Record<EditorialLayout, string> = {
     intro: "home-editorial__item--intro",
     coffee: "home-editorial__item--coffee",
     suppliers: "home-editorial__item--suppliers",
     shop: "home-editorial__item--shop",
 };
 
-const floatingItems: FloatingItem[] = [
+const editorialItems: EditorialEntry[] = [
     {
         id: "intro",
-        layout: "intro",
         image: shelvesImg,
         alt: "Italian food and drink displayed on shop shelves",
-        parallaxVw: -59,
         paragraphs: [
             {
                 initial: "We",
@@ -67,10 +65,8 @@ const floatingItems: FloatingItem[] = [
     },
     {
         id: "coffee",
-        layout: "coffee",
         image: coffeePourImg,
         alt: "silky coffee being poured",
-        parallaxVw: -118,
         paragraphs: [
             {
                 initial: "We",
@@ -80,10 +76,8 @@ const floatingItems: FloatingItem[] = [
     },
     {
         id: "suppliers",
-        layout: "suppliers",
-        image: ciabattaImg,
-        alt: "ciabatta sandwiches being prepared",
-        parallaxVw: -59,
+        image: panettoneImg,
+        alt: "Paper-wrapped Italian panettone stacked beneath colourful boxes",
         paragraphs: [
             {
                 initial: "We",
@@ -93,10 +87,8 @@ const floatingItems: FloatingItem[] = [
     },
     {
         id: "shop",
-        layout: "shop",
         image: shopChristmasImg,
         alt: "a beautifully stocked italian dry goods shop",
-        parallaxVw: -29,
         paragraphs: [
             {
                 initial: "We",
@@ -106,17 +98,9 @@ const floatingItems: FloatingItem[] = [
     },
 ];
 
-function FloatingItemCard({ item, scrollYProgress, shouldLoadImage }: FloatingItemCardProps) {
-    const itemParallax = useScrollParallax(scrollYProgress, {
-        input: [0, 1],
-        output: ["0vw", `${item.parallaxVw}vw`],
-    });
-
+function EditorialItem({ item, shouldLoadImage }: EditorialItemProps) {
     return (
-        <motion.article
-            className={`home-editorial__item ${floatingItemLayoutClasses[item.layout]}`}
-            style={{ translateY: itemParallax }}
-        >
+        <article className={`home-editorial__item ${editorialLayoutClasses[item.id]}`}>
             <OptimizedImage
                 className="home-editorial__image"
                 image={item.image}
@@ -125,6 +109,11 @@ function FloatingItemCard({ item, scrollYProgress, shouldLoadImage }: FloatingIt
                 shouldLoad={shouldLoadImage}
             />
             <div className="home-editorial__text">
+                <span className="home-editorial__index" aria-hidden="true">
+                    0{editorialItems.indexOf(item) + 1} /{" "}
+                    {item.id === "intro" ? "Il Caffè" : item.id}
+                </span>
+                <h2 className="home-editorial__heading">{editorialHeadings[item.id]}</h2>
                 {item.paragraphs.map((paragraph, paragraphIndex) => (
                     <p className="text--md" key={paragraphIndex}>
                         {paragraph.initial ? (
@@ -134,20 +123,15 @@ function FloatingItemCard({ item, scrollYProgress, shouldLoadImage }: FloatingIt
                     </p>
                 ))}
             </div>
-        </motion.article>
+        </article>
     );
 }
 
-export function HomeEditorial({ scrollYProgress, shouldLoadImages }: HomeEditorialProps) {
+export function HomeEditorial({ shouldLoadImages }: HomeEditorialProps) {
     return (
         <section className="home-editorial">
-            {floatingItems.map((item) => (
-                <FloatingItemCard
-                    key={item.id}
-                    item={item}
-                    scrollYProgress={scrollYProgress}
-                    shouldLoadImage={shouldLoadImages}
-                />
+            {editorialItems.map((item) => (
+                <EditorialItem key={item.id} item={item} shouldLoadImage={shouldLoadImages} />
             ))}
         </section>
     );
