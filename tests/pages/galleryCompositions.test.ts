@@ -4,13 +4,13 @@ import { galleryCompositions } from "@/pages/il-giorno/galleryCompositions";
 import { galleryImageMetadata } from "@/pages/il-giorno/galleryImageMetadata";
 
 describe("gallery compositions", () => {
-    test("uses each selected photograph once in the original day-to-night order", () => {
+    test("uses every gallery photograph except the homepage café scene once in the original day-to-night order", () => {
         const selected = galleryCompositions.flat();
         const selection = new Set<string>(selected);
         expect(selection.size).toBe(selected.length);
         expect(selected).toEqual(
             galleryImageMetadata
-                .filter(({ filename }) => selection.has(filename))
+                .filter(({ filename }) => filename !== "cafe-view.jpg")
                 .map(({ filename }) => filename),
         );
         expect(selected[0]).toBe("aperto.jpg");

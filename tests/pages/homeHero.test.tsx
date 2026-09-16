@@ -95,7 +95,7 @@ vi.mock("@/components/OptimizedImage", () => ({
     },
 }));
 
-vi.mock("@/assets/images/coffee-display.jpg?preset=fullWidth", () => ({
+vi.mock("@/assets/images/gallery/cafe-view.jpg?preset=fullWidth", () => ({
     default: {},
 }));
 
@@ -120,7 +120,7 @@ describe("HomeHero", () => {
 
         const title = screen.getByRole("heading", { name: "BRAGAZZI'S" });
         const heroImage = screen.getByRole("img", {
-            name: "Bragazzi’s coffee bags displayed beside Italian coffee makers",
+            name: "Customers gathered around tables inside Bragazzi’s café",
         });
 
         expect(title.dataset.animationState).toBe("initial");

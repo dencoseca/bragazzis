@@ -1,5 +1,5 @@
-import ciabattaImg from "@/assets/images/ciabatta.jpg?preset=editorial";
 import coffeePourImg from "@/assets/images/coffee-pour.jpg?preset=editorial";
+import panettoneImg from "@/assets/images/panettone-display.jpg?preset=editorial";
 import shelvesImg from "@/assets/images/shelves.jpg?preset=editorial";
 import shopChristmasImg from "@/assets/images/shop-christmas.jpg?preset=editorial";
 import { OptimizedImage } from "@/components/OptimizedImage";
@@ -76,8 +76,8 @@ const editorialItems: EditorialEntry[] = [
     },
     {
         id: "suppliers",
-        image: ciabattaImg,
-        alt: "ciabatta sandwiches being prepared",
+        image: panettoneImg,
+        alt: "Paper-wrapped Italian panettone stacked beneath colourful boxes",
         paragraphs: [
             {
                 initial: "We",

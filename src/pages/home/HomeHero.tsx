@@ -1,7 +1,7 @@
 import { motion, type MotionValue, useReducedMotion } from "motion/react";
 import { useEffect, useState } from "react";
 
-import coffeeDisplayImg from "@/assets/images/coffee-display.jpg?preset=fullWidth";
+import cafeCustomersImg from "@/assets/images/gallery/cafe-view.jpg?preset=fullWidth";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { smoothTransition } from "@/constants/animations";
 import { getBreakpointMediaQuery } from "@/constants/breakpoints";
@@ -135,8 +135,8 @@ export function HomeHero({ scrollYProgress, onSettled }: HomeHeroProps) {
                         >
                             <OptimizedImage
                                 className="home-hero__image"
-                                image={coffeeDisplayImg}
-                                alt="Bragazzi’s coffee bags displayed beside Italian coffee makers"
+                                image={cafeCustomersImg}
+                                alt="Customers gathered around tables inside Bragazzi’s café"
                                 sizes={HERO_IMAGE_SIZES}
                                 priority
                                 revealOnLoad

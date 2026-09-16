@@ -41,7 +41,7 @@ vi.mock("@/pages/home/HomeHero", () => ({
     },
 }));
 
-vi.mock("@/assets/images/ciabatta.jpg?preset=editorial", () => ({ default: {} }));
+vi.mock("@/assets/images/panettone-display.jpg?preset=editorial", () => ({ default: {} }));
 vi.mock("@/assets/images/coffee-pour.jpg?preset=editorial", () => ({ default: {} }));
 vi.mock("@/assets/images/shelves.jpg?preset=editorial", () => ({ default: {} }));
 vi.mock("@/assets/images/shop-christmas.jpg?preset=editorial", () => ({ default: {} }));
