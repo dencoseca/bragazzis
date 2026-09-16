@@ -18,10 +18,6 @@ function getSpreadGeometry(images: readonly GalleryImage[]) {
             "--spread-height": `calc((100cqw - var(--gallery-gap) * ${images.length === 3 ? 1 - stack : images.length - 1}) / ${total})`,
             "--lead-width": `calc(var(--spread-height) * ${lead})`,
             "--columns": ratios.map((ratio) => `${ratio}fr`).join(" "),
-            "--pair-columns": ratios
-                .slice(1)
-                .map((ratio) => `${ratio}fr`)
-                .join(" "),
             "--stack-rows": ratios
                 .slice(1)
                 .map((ratio) => `${100 / ratio}fr`)
@@ -37,13 +33,7 @@ export function getGallerySpreadLayout(spread: readonly GalleryImage[]) {
             spread.length === 3
                 ? (position === 0 ? lead : stack) / total
                 : ratios[position]! / total;
-        const mobileFraction =
-            spread.length === 3
-                ? position === 0
-                    ? 1
-                    : ratios[position]! / (ratios[1]! + ratios[2]!)
-                : ratios[position]! / total;
-        return `${getBreakpointMediaQuery("mobile")} ${Math.round(90 * mobileFraction)}vw, ${Math.round(92 * desktopFraction)}vw`;
+        return `${getBreakpointMediaQuery("mobile")} 90vw, ${Math.round(92 * desktopFraction)}vw`;
     });
     return { style, sizes };
 }

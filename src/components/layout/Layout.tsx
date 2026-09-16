@@ -6,7 +6,7 @@ import { Footer } from "@/components/layout/Footer";
 import { SiteNavigation } from "@/components/layout/SiteNavigation";
 import { PageMeta } from "@/components/PageMeta";
 import { getCanonicalUrl } from "@/constants/routes";
-import { themeNames, type ThemeName } from "@/constants/themes";
+import { type ThemeName } from "@/constants/themes";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 
 interface LayoutProps {
@@ -41,7 +41,7 @@ export function Layout({
             <SiteNavigation
                 backgroundContentRef={backgroundContentRef}
                 theme={headerTheme}
-                menuTheme={themeNames.dark}
+                menuTheme={headerTheme}
             />
             <div className="layout__background" ref={backgroundContentRef}>
                 <a href="#main-content" className="skip-to-content">

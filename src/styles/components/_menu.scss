@@ -7,8 +7,13 @@
     flex-direction: column;
     justify-content: center;
     padding: 6rem 8vw 3rem;
-    color: tokens.$color-paper;
-    background: tokens.$color-red;
+    color: tokens.$color-red;
+    background: tokens.$color-paper;
+
+    &[data-theme="dark"] {
+        color: tokens.$color-yellow;
+        background: tokens.$color-ink;
+    }
 }
 .menu__link-wrapper {
     margin: 0;

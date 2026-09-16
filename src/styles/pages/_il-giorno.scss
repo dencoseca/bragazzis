@@ -106,18 +106,9 @@
         padding: 2rem 0;
     }
     .ilgiorno__spread {
+        display: flex;
+        flex-direction: column;
         height: auto;
-        &[data-count="3"]:nth-child(n) {
-            grid-template-columns: var(--pair-columns);
-            grid-template-rows: auto auto;
-            .ilgiorno__photograph:nth-child(n) {
-                grid-column: auto;
-                grid-row: auto;
-            }
-            .ilgiorno__photograph:first-child {
-                grid-column: 1 / -1;
-            }
-        }
     }
     .ilgiorno__gallery-image img {
         height: auto;

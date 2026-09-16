@@ -145,17 +145,17 @@ describe("IlGiornoGallery", () => {
         expect(screen.getAllByRole("img").map((image) => image.getAttribute("sizes"))).toEqual(
             [
                 [90, 74],
-                [34, 18],
-                [56, 18],
-                [36, 37],
-                [54, 55],
+                [90, 18],
+                [90, 18],
+                [90, 37],
+                [90, 55],
                 [90, 92],
                 [90, 61],
-                [45, 31],
-                [45, 31],
+                [90, 31],
+                [90, 31],
                 [90, 61],
-                [45, 31],
-                [45, 31],
+                [90, 31],
+                [90, 31],
             ].map(
                 ([mobile, desktop]) =>
                     `(max-width: ${getSassMobileBreakpoint()}) ${mobile}vw, ${desktop}vw`,
