@@ -1,3 +1,5 @@
+import { motion, useReducedMotion } from "motion/react";
+
 import earlyDaysImg from "@/assets/images/early-days.jpg?preset=editorial";
 import ticketPisaImg from "@/assets/images/ticket-pisa.jpg?preset=editorial";
 import ticketRomaImg from "@/assets/images/ticket-roma.jpg?preset=editorial";
@@ -8,6 +10,8 @@ import { publicPageRoutes } from "@/constants/routes";
 const STORY_IMAGE_SIZES = `${getBreakpointMediaQuery("mobile")} 100vw, 50vw`;
 
 export function LaStoria() {
+    const prefersReducedMotion = useReducedMotion();
+
     return (
         <div className="lastoria">
             <div className="lastoria__title-wrapper">
@@ -22,20 +26,34 @@ export function LaStoria() {
                     outlier and safe haven for people who enjoy the "qualcosa in più".
                 </p>
                 <div className="lastoria__tickets">
-                    <OptimizedImage
+                    <motion.div
                         className="lastoria__ticket lastoria__ticket--left"
-                        image={ticketRomaImg}
-                        alt="plane ticket"
-                        sizes={STORY_IMAGE_SIZES}
-                        loading="eager"
-                    />
-                    <OptimizedImage
+                        initial={prefersReducedMotion ? false : { opacity: 0, x: 20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true, amount: 0.2 }}
+                        transition={{ duration: prefersReducedMotion ? 0 : 0.7, ease: "easeOut" }}
+                    >
+                        <OptimizedImage
+                            image={ticketRomaImg}
+                            alt="plane ticket"
+                            sizes={STORY_IMAGE_SIZES}
+                            loading="eager"
+                        />
+                    </motion.div>
+                    <motion.div
                         className="lastoria__ticket lastoria__ticket--right"
-                        image={ticketPisaImg}
-                        alt="plane ticket"
-                        sizes={STORY_IMAGE_SIZES}
-                        loading="eager"
-                    />
+                        initial={prefersReducedMotion ? false : { opacity: 0, x: 20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true, amount: 0.2 }}
+                        transition={{ duration: prefersReducedMotion ? 0 : 0.7, ease: "easeOut" }}
+                    >
+                        <OptimizedImage
+                            image={ticketPisaImg}
+                            alt="plane ticket"
+                            sizes={STORY_IMAGE_SIZES}
+                            loading="eager"
+                        />
+                    </motion.div>
                 </div>
                 <div className="lastoria__image">
                     <OptimizedImage

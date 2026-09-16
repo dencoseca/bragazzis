@@ -46,11 +46,12 @@
     }
 }
 .lastoria__ticket--left {
-    transform: rotate(-8deg);
+    // Rotate the local slide axis with the ticket.
+    rotate: -8deg;
 }
 .lastoria__ticket--right {
     margin: -0.5rem 0 0 auto;
-    transform: rotate(7deg);
+    rotate: 7deg;
 }
 .lastoria__image {
     padding: 0.8rem;
