@@ -86,20 +86,34 @@ export function Header({ menuIsOpen, onMenuToggle, menuButtonRef, menuId, theme 
                 aria-expanded={menuIsOpen}
                 aria-controls={menuId}
             >
-                <motion.div
+                <motion.svg
+                    aria-hidden="true"
+                    focusable="false"
+                    width="30"
+                    height="1"
+                    viewBox="0 0 30 1"
                     className="header__mobile-menu-line"
                     initial="closed"
                     animate={menuIsOpen ? "open" : "closed"}
                     variants={topLineVariants}
                     transition={quickTransition}
-                />
-                <motion.div
+                >
+                    <path d="M0 0.5h30" stroke="currentColor" />
+                </motion.svg>
+                <motion.svg
+                    aria-hidden="true"
+                    focusable="false"
+                    width="30"
+                    height="1"
+                    viewBox="0 0 30 1"
                     className="header__mobile-menu-line"
                     initial="closed"
                     animate={menuIsOpen ? "open" : "closed"}
                     variants={bottomLineVariants}
                     transition={quickTransition}
-                />
+                >
+                    <path d="M0 0.5h30" stroke="currentColor" />
+                </motion.svg>
             </button>
         </header>
     );

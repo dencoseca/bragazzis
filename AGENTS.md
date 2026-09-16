@@ -62,6 +62,7 @@ src/
   `src/styles/main.scss`.
 - **Constants:** Shared TypeScript values go in `src/constants/`. Visual design tokens, theme colors, and breakpoints
   live in `src/styles/_tokens.scss`; `vite.config.ts` injects Sass breakpoint values into JavaScript at build time.
+- **Icons:** Use SVG paths with `currentColor` for UI icons, never Unicode or emoji glyphs. Decorative SVGs use `aria-hidden="true"` and `focusable="false"`; keep accessible labels on their links or buttons.
 - **Images:** Keep high-quality `.jpg` originals in `src/assets/images/`; do not overwrite or resize them. Use the
   named `vite-imagetools` presets from `vite.imagetools.ts` (`?preset=gallery`, `?preset=editorial`, or
   `?preset=fullWidth`) to generate responsive AVIF/JPEG fallback variants at build time. Use the shared

@@ -60,8 +60,8 @@
     cursor: pointer;
 }
 .header__mobile-menu-line {
+    display: block;
     height: 1px;
-    background: currentColor;
     margin: 10px 0;
 }
 @media (max-width: tokens.$breakpoint-mobile) {

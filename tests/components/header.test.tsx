@@ -2,7 +2,7 @@
 
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import type { HTMLAttributes } from "react";
+import type { SVGProps } from "react";
 import { MemoryRouter } from "react-router-dom";
 import { describe, expect, test, vi } from "vite-plus/test";
 
@@ -10,7 +10,7 @@ import { Header } from "@/components/layout/Header";
 import { publicPageRoutes } from "@/constants/routes";
 import { themeNames } from "@/constants/themes";
 
-interface MotionDivProps extends HTMLAttributes<HTMLDivElement> {
+interface MotionSvgProps extends SVGProps<SVGSVGElement> {
     animate?: unknown;
     initial?: unknown;
     transition?: unknown;
@@ -19,13 +19,13 @@ interface MotionDivProps extends HTMLAttributes<HTMLDivElement> {
 
 vi.mock("motion/react", () => ({
     motion: {
-        div({ animate, initial, transition, variants, ...props }: MotionDivProps) {
+        svg({ animate, initial, transition, variants, ...props }: MotionSvgProps) {
             void animate;
             void initial;
             void transition;
             void variants;
 
-            return <div {...props} />;
+            return <svg {...props} />;
         },
     },
 }));

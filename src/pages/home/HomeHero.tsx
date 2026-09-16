@@ -115,7 +115,21 @@ export function HomeHero({ scrollYProgress, onSettled }: HomeHeroProps) {
                         <div className="home-hero__address">
                             <a href={address.mapsUrl} target="_blank" rel="noreferrer">
                                 <span>{address.streetAddress}</span>
-                                <span>{address.addressLocality} ↗</span>
+                                <span>
+                                    {address.addressLocality}{" "}
+                                    <svg
+                                        aria-hidden="true"
+                                        focusable="false"
+                                        width="1em"
+                                        height="1em"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth="1"
+                                    >
+                                        <path d="M3 21 21 3m-8 0h8v8" />
+                                    </svg>
+                                </span>
                             </a>
                         </div>
                         <h2 className="home-hero__headline">
@@ -125,7 +139,18 @@ export function HomeHero({ scrollYProgress, onSettled }: HomeHeroProps) {
                         </h2>
                         <div className="home-hero__scroll-cue">
                             <span>Il Caffè</span>
-                            <span aria-hidden="true">↓</span>
+                            <svg
+                                aria-hidden="true"
+                                focusable="false"
+                                width="12"
+                                height="24"
+                                viewBox="0 0 12 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="1"
+                            >
+                                <path d="M6 1v21m-4-5 4 5 4-5" />
+                            </svg>
                         </div>
                     </motion.div>
                     <div className="home-hero__image-wrapper">

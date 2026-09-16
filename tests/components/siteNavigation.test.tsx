@@ -2,7 +2,7 @@
 
 import { act, cleanup, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { useRef, type HTMLAttributes, type ReactNode } from "react";
+import { useRef, type HTMLAttributes, type ReactNode, type SVGProps } from "react";
 import { MemoryRouter, useNavigate } from "react-router-dom";
 import { afterEach, describe, expect, test, vi } from "vite-plus/test";
 
@@ -32,6 +32,23 @@ vi.mock("motion/react", () => ({
             void variants;
 
             return <div {...props} />;
+        },
+        svg({
+            animate,
+            exit,
+            initial,
+            transition,
+            variants,
+            ...props
+        }: SVGProps<SVGSVGElement> &
+            Pick<MotionElementProps, "animate" | "exit" | "initial" | "transition" | "variants">) {
+            void animate;
+            void exit;
+            void initial;
+            void transition;
+            void variants;
+
+            return <svg {...props} />;
         },
         nav({ animate, exit, initial, transition, variants, ...props }: MotionElementProps) {
             void animate;
