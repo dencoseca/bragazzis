@@ -20,7 +20,7 @@ export function Footer({ theme, scrollToTopBehavior = "smooth" }: FooterProps) {
         <footer className="footer" data-theme={theme}>
             <div className="footer__lists">
                 <div className="footer__list footer__list--contact">
-                    <h4 className="text--heading-sm">Contact</h4>
+                    <h2 className="text--heading-sm">Contact</h2>
                     <ul>
                         <li className="text--sm">
                             <a
@@ -47,7 +47,7 @@ export function Footer({ theme, scrollToTopBehavior = "smooth" }: FooterProps) {
                     </ul>
                 </div>
                 <div className="footer__list footer__list--site">
-                    <h4 className="text--heading-sm">Site</h4>
+                    <h2 className="text--heading-sm">Site</h2>
                     <ul>
                         <li className="text--sm">
                             &copy;{" "}
@@ -70,7 +70,7 @@ export function Footer({ theme, scrollToTopBehavior = "smooth" }: FooterProps) {
                     </ul>
                 </div>
                 <div className="footer__list footer__list--community">
-                    <h4 className="text--heading-sm">Social</h4>
+                    <h2 className="text--heading-sm">Social</h2>
                     <ul>
                         {siteConfig.links.social.map((link) => (
                             <li key={link.url} className="text--sm">

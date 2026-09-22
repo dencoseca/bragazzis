@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type RefCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { getBreakpointMediaQuery } from "@/constants/breakpoints";
@@ -17,14 +17,13 @@ function getGalleryImageSizes(size: GalleryImageSize) {
 }
 
 export function IlGiornoGallery() {
-    const galleryImageElements = useRef<Array<HTMLPictureElement | null>>([]);
-    const galleryImageElementRefs = useRef<Array<RefCallback<HTMLPictureElement>>>([]);
+    const galleryRef = useRef<HTMLDivElement>(null);
     const [loadedThroughIndex, setLoadedThroughIndex] = useState(
         Math.min(galleryImages.length - 1, INITIAL_EAGER_GALLERY_IMAGE_COUNT - 1),
     );
 
     useEffect(() => {
-        if (typeof window === "undefined" || !("IntersectionObserver" in window)) {
+        if (!("IntersectionObserver" in window)) {
             setLoadedThroughIndex(galleryImages.length - 1);
             return;
         }
@@ -36,13 +35,7 @@ export function IlGiornoGallery() {
                         continue;
                     }
 
-                    const imageIndex = galleryImageElements.current.indexOf(
-                        entry.target as HTMLPictureElement,
-                    );
-
-                    if (imageIndex === -1) {
-                        continue;
-                    }
+                    const imageIndex = Number((entry.target as HTMLElement).dataset.galleryIndex);
 
                     setLoadedThroughIndex((currentIndex) =>
                         Math.max(currentIndex, getGalleryLoadIndex(imageIndex)),
@@ -54,34 +47,24 @@ export function IlGiornoGallery() {
             },
         );
 
-        for (const element of galleryImageElements.current) {
-            if (element) {
-                observer.observe(element);
-            }
+        for (const element of galleryRef.current?.querySelectorAll("[data-gallery-index]") ?? []) {
+            observer.observe(element);
         }
 
         return () => observer.disconnect();
     }, []);
 
-    function getGalleryImageElementRef(index: number) {
-        galleryImageElementRefs.current[index] ??= (element) => {
-            galleryImageElements.current[index] = element;
-        };
-
-        return galleryImageElementRefs.current[index];
-    }
-
     return (
-        <div className="ilgiorno__gallery">
+        <div className="ilgiorno__gallery" ref={galleryRef}>
             <div className="ilgiorno__caption ilgiorno__caption--aperto text--display">Aperto</div>
             {galleryImages.map((image, index) => {
                 const shouldLoadImage = index <= loadedThroughIndex;
 
                 return (
                     <OptimizedImage
-                        key={index}
-                        pictureRef={getGalleryImageElementRef(index)}
+                        key={image.filename}
                         className="ilgiorno__gallery-image"
+                        data-gallery-index={index}
                         data-size={image.size}
                         image={image.image}
                         alt={image.alt}

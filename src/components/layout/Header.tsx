@@ -32,6 +32,7 @@ interface HeaderProps {
     menuIsOpen: boolean;
     onMenuToggle: () => void;
     menuButtonRef: Ref<HTMLButtonElement>;
+    logoLinkRef?: Ref<HTMLAnchorElement>;
     menuId: string;
     theme: ThemeName;
     menuTheme: ThemeName;
@@ -41,6 +42,7 @@ export function Header({
     menuIsOpen,
     onMenuToggle,
     menuButtonRef,
+    logoLinkRef,
     menuId,
     theme,
     menuTheme,
@@ -61,7 +63,7 @@ export function Header({
                 aria-hidden={menuIsOpen || undefined}
                 inert={menuIsOpen ? true : undefined}
             >
-                <Link to={publicPageRoutes.home.path} aria-label="home">
+                <Link to={publicPageRoutes.home.path} aria-label="home" ref={logoLinkRef}>
                     <svg
                         width="100%"
                         viewBox="0 0 50 50"

@@ -1,6 +1,6 @@
 import { siteConfig } from "@/constants/siteConfig";
 
-type PublicPageRoute = {
+export type PublicPageRoute = {
     path: string;
     label: string;
     pageTitle: string;

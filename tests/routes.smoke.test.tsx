@@ -106,6 +106,7 @@ vi.mock("@/pages/il-giorno/galleryImages", () => ({
     galleryImages: [
         {
             alt: "sandwich board sign outside cafe",
+            filename: "aperto.jpg",
             image: {
                 img: {
                     h: 1,
@@ -147,7 +148,7 @@ const ROUTE_SMOKE_CASES: RouteSmokeCase[] = [
         canonicalUrl: getCanonicalUrl(publicPageRoutes.ilGiorno.path),
         title: getPageDocumentTitle(publicPageRoutes.ilGiorno.pageTitle),
         description: publicPageRoutes.ilGiorno.description,
-        expectedTexts: ["IL GIORNO", "Aperto", "Chiuso"],
+        expectedTexts: ["Il Giorno", "Aperto", "Chiuso"],
     },
     {
         path: "/missing-page",

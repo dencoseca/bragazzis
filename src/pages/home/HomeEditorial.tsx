@@ -24,7 +24,6 @@ interface FloatingItemParagraph {
 }
 
 interface FloatingItem {
-    id: FloatingItemLayout;
     layout: FloatingItemLayout;
     image: OptimizedPicture;
     alt: string;
@@ -38,16 +37,8 @@ interface FloatingItemCardProps {
     shouldLoadImage: boolean;
 }
 
-const floatingItemLayoutClasses: Record<FloatingItemLayout, string> = {
-    intro: "home-editorial__item--intro",
-    coffee: "home-editorial__item--coffee",
-    suppliers: "home-editorial__item--suppliers",
-    shop: "home-editorial__item--shop",
-};
-
 const floatingItems: FloatingItem[] = [
     {
-        id: "intro",
         layout: "intro",
         image: shelvesImg,
         alt: "Italian food and drink displayed on shop shelves",
@@ -66,7 +57,6 @@ const floatingItems: FloatingItem[] = [
         ],
     },
     {
-        id: "coffee",
         layout: "coffee",
         image: coffeePourImg,
         alt: "silky coffee being poured",
@@ -79,7 +69,6 @@ const floatingItems: FloatingItem[] = [
         ],
     },
     {
-        id: "suppliers",
         layout: "suppliers",
         image: ciabattaImg,
         alt: "ciabatta sandwiches being prepared",
@@ -92,7 +81,6 @@ const floatingItems: FloatingItem[] = [
         ],
     },
     {
-        id: "shop",
         layout: "shop",
         image: shopChristmasImg,
         alt: "a beautifully stocked italian dry goods shop",
@@ -114,7 +102,7 @@ function FloatingItemCard({ item, scrollYProgress, shouldLoadImage }: FloatingIt
 
     return (
         <motion.article
-            className={`home-editorial__item ${floatingItemLayoutClasses[item.layout]}`}
+            className={`home-editorial__item home-editorial__item--${item.layout}`}
             style={{ translateY: itemParallax }}
         >
             <OptimizedImage
@@ -143,7 +131,7 @@ export function HomeEditorial({ scrollYProgress, shouldLoadImages }: HomeEditori
         <section className="home-editorial">
             {floatingItems.map((item) => (
                 <FloatingItemCard
-                    key={item.id}
+                    key={item.layout}
                     item={item}
                     scrollYProgress={scrollYProgress}
                     shouldLoadImage={shouldLoadImages}

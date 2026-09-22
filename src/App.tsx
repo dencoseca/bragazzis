@@ -1,12 +1,12 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, type ComponentType } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import { Layout } from "@/components/layout/Layout";
 import { LoadingFallback } from "@/components/LoadingFallback";
 import { RouteErrorBoundary } from "@/components/RouteErrorBoundary";
 import { RouteNavigation } from "@/components/RouteNavigation";
-import { notFoundRoute, publicPageRoutes } from "@/constants/routes";
-import { themeNames } from "@/constants/themes";
+import { notFoundRoute, publicPageRoutes, type PublicPageRoute } from "@/constants/routes";
+import { themeNames, type ThemeName } from "@/constants/themes";
 import { Home } from "@/pages/home/Home";
 
 const LaStoria = lazy(() => import("@/pages/LaStoria").then((m) => ({ default: m.LaStoria })));
@@ -15,50 +15,57 @@ const IlGiorno = lazy(() =>
 );
 const NotFound = lazy(() => import("@/pages/NotFound").then((m) => ({ default: m.NotFound })));
 
+interface PageRouteConfig {
+    route: PublicPageRoute;
+    Page: ComponentType;
+    theme: ThemeName;
+    headerTheme?: ThemeName;
+    scrollToTopBehavior?: ScrollBehavior;
+}
+
+const pageRoutes: PageRouteConfig[] = [
+    {
+        route: publicPageRoutes.home,
+        Page: Home,
+        theme: themeNames.light,
+        headerTheme: themeNames.dark,
+    },
+    {
+        route: publicPageRoutes.laStoria,
+        Page: LaStoria,
+        theme: themeNames.light,
+    },
+    {
+        route: publicPageRoutes.ilGiorno,
+        Page: IlGiorno,
+        theme: themeNames.dark,
+        scrollToTopBehavior: "auto",
+    },
+];
+
 export function App() {
     return (
         <Suspense fallback={<LoadingFallback />}>
             <RouteNavigation />
             <RouteErrorBoundary>
                 <Routes>
-                    <Route
-                        path={publicPageRoutes.home.path}
-                        element={
-                            <Layout
-                                pageTitle={publicPageRoutes.home.pageTitle}
-                                description={publicPageRoutes.home.description}
-                                theme={themeNames.light}
-                                headerTheme={themeNames.dark}
-                            >
-                                <Home />
-                            </Layout>
-                        }
-                    />
-                    <Route
-                        path={publicPageRoutes.laStoria.path}
-                        element={
-                            <Layout
-                                pageTitle={publicPageRoutes.laStoria.pageTitle}
-                                description={publicPageRoutes.laStoria.description}
-                                theme={themeNames.light}
-                            >
-                                <LaStoria />
-                            </Layout>
-                        }
-                    />
-                    <Route
-                        path={publicPageRoutes.ilGiorno.path}
-                        element={
-                            <Layout
-                                pageTitle={publicPageRoutes.ilGiorno.pageTitle}
-                                description={publicPageRoutes.ilGiorno.description}
-                                theme={themeNames.dark}
-                                scrollToTopBehavior="auto"
-                            >
-                                <IlGiorno />
-                            </Layout>
-                        }
-                    />
+                    {pageRoutes.map(({ route, Page, theme, headerTheme, scrollToTopBehavior }) => (
+                        <Route
+                            key={route.path}
+                            path={route.path}
+                            element={
+                                <Layout
+                                    pageTitle={route.pageTitle}
+                                    description={route.description}
+                                    theme={theme}
+                                    headerTheme={headerTheme}
+                                    scrollToTopBehavior={scrollToTopBehavior}
+                                >
+                                    <Page />
+                                </Layout>
+                            }
+                        />
+                    ))}
                     <Route path={notFoundRoute.path} element={<NotFound />} />
                 </Routes>
             </RouteErrorBoundary>

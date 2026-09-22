@@ -1,27 +1,24 @@
-import { useEffect, useState } from "react";
+import { useCallback, useSyncExternalStore } from "react";
 
 import { getBreakpointMediaQuery, type BreakpointName } from "@/constants/breakpoints";
 
-function getMediaQueryMatches(query: string): boolean {
-    if (typeof window === "undefined") return false;
-    return window.matchMedia(query).matches;
+function getServerSnapshot(): boolean {
+    return false;
 }
 
 export function useMediaQuery(query: string): boolean {
-    const [matches, setMatches] = useState(() => getMediaQueryMatches(query));
+    const subscribe = useCallback(
+        (onChange: () => void) => {
+            const media = window.matchMedia(query);
 
-    useEffect(() => {
-        if (typeof window === "undefined") return;
+            media.addEventListener("change", onChange);
+            return () => media.removeEventListener("change", onChange);
+        },
+        [query],
+    );
+    const getSnapshot = useCallback(() => window.matchMedia(query).matches, [query]);
 
-        const media = window.matchMedia(query);
-        const updateMatches = () => setMatches(media.matches);
-
-        updateMatches();
-        media.addEventListener("change", updateMatches);
-        return () => media.removeEventListener("change", updateMatches);
-    }, [query]);
-
-    return matches;
+    return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }
 
 function useBreakpointMediaQuery(breakpoint: BreakpointName): boolean {
