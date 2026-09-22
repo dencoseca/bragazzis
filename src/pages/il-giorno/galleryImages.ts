@@ -1,4 +1,7 @@
-import { galleryImageMetadata } from "@/pages/il-giorno/galleryImageMetadata";
+import {
+    galleryImageMetadata,
+    type GalleryImageSize,
+} from "@/pages/il-giorno/galleryImageMetadata";
 import type { OptimizedPicture } from "@/types/imagetools";
 
 const galleryImageModules = import.meta.glob<OptimizedPicture>("@/assets/images/gallery/*.jpg", {
@@ -10,9 +13,10 @@ const galleryImageModules = import.meta.glob<OptimizedPicture>("@/assets/images/
 export type { GalleryImageSize } from "@/pages/il-giorno/galleryImageMetadata";
 
 interface GalleryImage {
+    filename: string;
     image: OptimizedPicture;
     alt: string;
-    size: (typeof galleryImageMetadata)[number]["size"];
+    size: GalleryImageSize;
 }
 
 function getGalleryImageFilename(modulePath: string) {
@@ -26,9 +30,20 @@ const galleryImagesByFilename = new Map(
     ]),
 );
 
+function getGalleryImage(filename: string) {
+    const image = galleryImagesByFilename.get(filename);
+
+    if (!image) {
+        throw new Error(`Missing gallery image asset: ${filename}`);
+    }
+
+    return image;
+}
+
 export const galleryImages: GalleryImage[] = galleryImageMetadata.map(
     ({ filename, alt, size }) => ({
-        image: galleryImagesByFilename.get(filename)!,
+        filename,
+        image: getGalleryImage(filename),
         alt,
         size,
     }),

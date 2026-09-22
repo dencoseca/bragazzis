@@ -15,37 +15,27 @@ const laStoriaTransition = {
     delay: 0.3,
 };
 
-const leftTicketVariants = {
-    initial: {
-        translateY: 300,
-        translateX: -500,
-        rotate: "-25deg",
-    },
-    animate: {
-        translateY: 0,
-        translateX: 0,
-        rotate: "-25deg",
-        transition: {
-            ...laStoriaTransition,
-        },
-    },
-};
+function getTicketVariants(side: "left" | "right") {
+    const direction = side === "left" ? -1 : 1;
+    const rotate = `${direction * 25}deg`;
 
-const rightTicketVariants = {
-    initial: {
-        translateY: 300,
-        translateX: 500,
-        rotate: "25deg",
-    },
-    animate: {
-        translateY: 0,
-        translateX: 0,
-        rotate: "25deg",
-        transition: {
-            ...laStoriaTransition,
+    return {
+        initial: {
+            translateY: 300,
+            translateX: direction * 500,
+            rotate,
         },
-    },
-};
+        animate: {
+            translateY: 0,
+            translateX: 0,
+            rotate,
+            transition: laStoriaTransition,
+        },
+    };
+}
+
+const leftTicketVariants = getTicketVariants("left");
+const rightTicketVariants = getTicketVariants("right");
 
 export function LaStoria() {
     return (
@@ -69,7 +59,7 @@ export function LaStoria() {
                     >
                         <OptimizedImage
                             image={ticketRomaImg}
-                            alt="plane ticket"
+                            alt=""
                             sizes={STORY_IMAGE_SIZES}
                             loading="eager"
                         />
@@ -91,7 +81,7 @@ export function LaStoria() {
                     >
                         <OptimizedImage
                             image={ticketPisaImg}
-                            alt="plane ticket"
+                            alt=""
                             sizes={STORY_IMAGE_SIZES}
                             loading="eager"
                         />

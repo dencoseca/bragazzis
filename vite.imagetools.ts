@@ -2,17 +2,15 @@ import { imagetools } from "vite-imagetools";
 
 const imagePresetQueryParam = "preset";
 
+const contentImageDirectives = {
+    w: "360;540;720;960;1200",
+    format: "avif;jpg",
+    as: "picture",
+} as const;
+
 const imagePresets = {
-    gallery: {
-        w: "360;540;720;960;1200",
-        format: "avif;jpg",
-        as: "picture",
-    },
-    editorial: {
-        w: "360;540;720;960;1200",
-        format: "avif;jpg",
-        as: "picture",
-    },
+    gallery: contentImageDirectives,
+    editorial: contentImageDirectives,
     fullWidth: {
         w: "480;768;1024;1440;1920",
         format: "avif;jpg",

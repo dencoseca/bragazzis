@@ -55,7 +55,7 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
             await requested;
             // React keeps the previous Suspense content visible during this transition.
             await expect(
-                page.getByRole("heading", { name: "IL GIORNO", exact: true }),
+                page.getByRole("heading", { name: "Il Giorno", exact: true }),
             ).toBeVisible();
             release();
             await expect(page).toHaveURL(/\/lastoria$/);

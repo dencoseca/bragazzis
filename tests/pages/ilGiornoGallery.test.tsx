@@ -13,6 +13,7 @@ const tokensScss = readFileSync(resolve(process.cwd(), "src/styles/_tokens.scss"
 const galleryImages = vi.hoisted(() =>
     Array.from({ length: 12 }, (_, index) => ({
         alt: `gallery image ${index}`,
+        filename: `gallery-${index}.jpg`,
         image: {
             img: {
                 h: 100,

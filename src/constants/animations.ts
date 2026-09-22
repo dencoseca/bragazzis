@@ -1,7 +1,7 @@
 /**
  * Shared animation transition presets used across components.
  *
- * - `smoothTransition` — page-level entrance animations (Cover, LaStoria)
+ * - `smoothTransition` — page-level entrance animations (HomeHero, LaStoria)
  * - `quickTransition` — shorter UI transitions (Header hamburger toggle)
  * - `menuSlideTransition` — menu slide/link animations (Menu)
  */

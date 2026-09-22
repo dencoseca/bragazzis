@@ -18,36 +18,35 @@ interface SiteNavigationProps {
 export function SiteNavigation({ backgroundContentRef, theme, menuTheme }: SiteNavigationProps) {
     const location = useLocation();
     const isMobile = useIsMobile();
-    const previousLocationKey = useRef(location.key);
-    const navigating = useRef(false);
     const menuButtonRef = useRef<HTMLButtonElement>(null);
-    const menuWasOpen = useRef(false);
+    const logoLinkRef = useRef<HTMLAnchorElement>(null);
+    const returnFocusTo = useRef<HTMLElement | null>(null);
     const [menuIsOpen, setMenuIsOpen] = useState(false);
 
+    function closeMenu(focusTarget: HTMLElement | null = menuButtonRef.current) {
+        returnFocusTo.current = focusTarget;
+        setMenuIsOpen(false);
+    }
+
+    // RouteNavigation owns focus after a route change, so close without returning focus.
     useEffect(() => {
-        if (previousLocationKey.current !== location.key) {
-            navigating.current = true;
-            setMenuIsOpen(false);
-            previousLocationKey.current = location.key;
-        }
+        returnFocusTo.current = null;
+        setMenuIsOpen(false);
     }, [location.key]);
 
+    // The toggle is hidden outside the mobile layout, so focus returns to the logo instead.
     useEffect(() => {
-        if (!isMobile) setMenuIsOpen(false);
-    }, [isMobile]);
-
-    useEffect(() => {
-        if (menuWasOpen.current && !menuIsOpen) {
-            if (!navigating.current) {
-                const target = isMobile
-                    ? menuButtonRef.current
-                    : document.querySelector<HTMLAnchorElement>(".header__logo-wrapper a");
-                target?.focus({ preventScroll: true });
-            }
-        }
-
-        menuWasOpen.current = menuIsOpen;
+        if (isMobile || !menuIsOpen) return;
+        returnFocusTo.current = logoLinkRef.current;
+        setMenuIsOpen(false);
     }, [isMobile, menuIsOpen]);
+
+    // Focus is restored after the close renders, once the header is no longer inert.
+    useEffect(() => {
+        if (menuIsOpen) return;
+        returnFocusTo.current?.focus({ preventScroll: true });
+        returnFocusTo.current = null;
+    }, [menuIsOpen]);
 
     useEffect(() => {
         if (!menuIsOpen) return;
@@ -68,7 +67,7 @@ export function SiteNavigation({ backgroundContentRef, theme, menuTheme }: SiteN
 
         function handleMenuKeyDown(event: KeyboardEvent) {
             if (event.key === "Escape") {
-                setMenuIsOpen(false);
+                closeMenu();
                 return;
             }
 
@@ -108,10 +107,7 @@ export function SiteNavigation({ backgroundContentRef, theme, menuTheme }: SiteN
             if (backgroundContent) {
                 backgroundContent.inert = previousBackgroundInert ?? false;
 
-                if (
-                    previousBackgroundAriaHidden === null ||
-                    previousBackgroundAriaHidden === undefined
-                ) {
+                if (previousBackgroundAriaHidden == null) {
                     backgroundContent.removeAttribute("aria-hidden");
                 } else {
                     backgroundContent.setAttribute("aria-hidden", previousBackgroundAriaHidden);
@@ -120,26 +116,23 @@ export function SiteNavigation({ backgroundContentRef, theme, menuTheme }: SiteN
         };
     }, [backgroundContentRef, menuIsOpen]);
 
-    function closeMenu() {
-        setMenuIsOpen(false);
-    }
-
     function toggleMenu() {
-        navigating.current = false;
-        setMenuIsOpen((isOpen) => !isOpen);
+        if (menuIsOpen) closeMenu();
+        else setMenuIsOpen(true);
     }
 
     return (
         <>
             <AnimatePresence>
                 {menuIsOpen ? (
-                    <Menu id={mobileMenuId} theme={menuTheme} onNavigate={closeMenu} />
+                    <Menu id={mobileMenuId} theme={menuTheme} onNavigate={() => closeMenu()} />
                 ) : null}
             </AnimatePresence>
             <Header
                 menuIsOpen={menuIsOpen}
                 onMenuToggle={toggleMenu}
                 menuButtonRef={menuButtonRef}
+                logoLinkRef={logoLinkRef}
                 menuId={mobileMenuId}
                 theme={theme}
                 menuTheme={menuTheme}
