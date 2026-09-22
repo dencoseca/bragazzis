@@ -1,11 +1,11 @@
 /** @vitest-environment happy-dom */
 
-import { act, fireEvent, render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import type { MotionValue } from "motion/react";
 import type { HTMLAttributes, SVGProps } from "react";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vite-plus/test";
 
+import { siteConfig } from "@/constants/siteConfig";
 import { HomeHero } from "@/pages/home/HomeHero";
 
 const { useIsMobileMock, useIsTabletMock, useReducedMotionMock } = vi.hoisted(() => ({
@@ -95,7 +95,7 @@ vi.mock("@/components/OptimizedImage", () => ({
     },
 }));
 
-vi.mock("@/assets/images/parmesan.jpg?preset=fullWidth", () => ({
+vi.mock("@/assets/images/gallery/cafe-view.jpg?preset=fullWidth", () => ({
     default: {},
 }));
 
@@ -113,13 +113,14 @@ describe("HomeHero", () => {
         vi.clearAllMocks();
     });
 
-    test("holds the intro until the hero image is ready", () => {
+    test("settles once when the hero loads before the timeout", () => {
+        vi.useFakeTimers();
         const onSettled = vi.fn();
         render(<HomeHero scrollYProgress={scrollYProgress} onSettled={onSettled} />);
 
         const title = screen.getByRole("heading", { name: "BRAGAZZI'S" });
         const heroImage = screen.getByRole("img", {
-            name: "an amaretti tin displayed on wheels of Parmesan cheese",
+            name: "Customers gathered around tables inside Bragazzi’s café",
         });
 
         expect(title.dataset.animationState).toBe("initial");
@@ -128,6 +129,8 @@ describe("HomeHero", () => {
         fireEvent.load(heroImage);
 
         expect(title.dataset.animationState).toBe("animate");
+        expect(onSettled).toHaveBeenCalledOnce();
+        act(() => vi.advanceTimersByTime(2_500));
         expect(onSettled).toHaveBeenCalledOnce();
     });
 
@@ -140,57 +143,24 @@ describe("HomeHero", () => {
 
         expect(title.dataset.animationState).toBe("initial");
 
-        act(() => vi.advanceTimersByTime(2_500));
+        act(() => vi.advanceTimersByTime(2_499));
+        expect(title.dataset.animationState).toBe("initial");
+        expect(onSettled).not.toHaveBeenCalled();
+        act(() => vi.advanceTimersByTime(1));
 
         expect(title.dataset.animationState).toBe("animate");
         expect(onSettled).toHaveBeenCalledOnce();
+        fireEvent.load(screen.getByRole("img"));
+        expect(onSettled).toHaveBeenCalledOnce();
     });
 
-    test("owns the desktop statement target and shared opening hours", async () => {
-        const user = userEvent.setup();
+    test("renders the configured opening hours", () => {
         render(<HomeHero scrollYProgress={scrollYProgress} />);
-        const mobileCover = document.querySelector<HTMLElement>("#mobile-cover");
-        const statement = document.querySelector<HTMLElement>("#statement");
-        const mobileScrollIntoView = vi.fn();
-        const statementScrollIntoView = vi.fn();
-
-        if (!mobileCover || !statement) {
-            throw new Error("Expected the complete Home hero to be rendered");
-        }
-
-        mobileCover.scrollIntoView = mobileScrollIntoView;
-        statement.scrollIntoView = statementScrollIntoView;
-
-        expect(screen.getAllByRole("list")).toHaveLength(2);
-        expect(screen.getByText("Roam freely and find inspiration...")).toBeDefined();
-
-        await user.click(screen.getByRole("button", { name: "Scroll down" }));
-
-        expect(statementScrollIntoView).toHaveBeenCalledWith({ behavior: "smooth" });
-        expect(mobileScrollIntoView).not.toHaveBeenCalled();
-    });
-
-    test("uses the mobile target and reduced-motion scroll behaviour", async () => {
-        const user = userEvent.setup();
-        useIsMobileMock.mockReturnValue(true);
-        useReducedMotionMock.mockReturnValue(true);
-
-        render(<HomeHero scrollYProgress={scrollYProgress} />);
-        const mobileCover = document.querySelector<HTMLElement>("#mobile-cover");
-        const statement = document.querySelector<HTMLElement>("#statement");
-        const mobileScrollIntoView = vi.fn();
-        const statementScrollIntoView = vi.fn();
-
-        if (!mobileCover || !statement) {
-            throw new Error("Expected the complete Home hero to be rendered");
-        }
-
-        mobileCover.scrollIntoView = mobileScrollIntoView;
-        statement.scrollIntoView = statementScrollIntoView;
-
-        await user.click(screen.getByRole("button", { name: "Scroll down" }));
-
-        expect(mobileScrollIntoView).toHaveBeenCalledWith({ behavior: "auto" });
-        expect(statementScrollIntoView).not.toHaveBeenCalled();
+        const hours = screen.getByRole("region", { name: "Opening hours" });
+        expect(
+            within(hours)
+                .getAllByRole("listitem")
+                .map((item) => item.textContent),
+        ).toEqual(siteConfig.openingHours.display);
     });
 });
