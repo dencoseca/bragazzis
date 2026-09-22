@@ -15,7 +15,7 @@ application with multiple routes, built with **React 19**, **TypeScript**, and *
 - **Animation:** Motion (Framer Motion), Lenis (smooth scroll)
 - **SEO:** React 19 native document metadata
 - **Image Optimization:** vite-imagetools (build-time responsive AVIF/JPEG fallback generation via sharp)
-- **Visual Testing:** Playwright visual regression tests (Chromium only)
+- **Browser Testing:** mandatory functional Playwright checks and optional screenshot comparisons (Chromium only)
 
 ## Project Structure
 
@@ -62,6 +62,7 @@ src/
   `src/styles/main.scss`.
 - **Constants:** Shared TypeScript values go in `src/constants/`. Visual design tokens, theme colors, and breakpoints
   live in `src/styles/_tokens.scss`; `vite.config.ts` injects Sass breakpoint values into JavaScript at build time.
+- **Icons:** Use SVG paths with `currentColor` for UI icons, never Unicode or emoji glyphs. Decorative SVGs use `aria-hidden="true"` and `focusable="false"`; keep accessible labels on their links or buttons.
 - **Images:** Keep high-quality `.jpg` originals in `src/assets/images/`; do not overwrite or resize them. Use the
   named `vite-imagetools` presets from `vite.imagetools.ts` (`?preset=gallery`, `?preset=editorial`, or
   `?preset=fullWidth`) to generate responsive AVIF/JPEG fallback variants at build time. Use the shared
@@ -93,12 +94,43 @@ src/
 - **Route navigation** is coordinated by `components/RouteNavigation.tsx` inside the shared route Suspense boundary: new page links start at the top (or their fragment target), and focus moves after lazy content is ready. Every route supplies a focusable `main#main-content`. Back/Forward scroll restoration and native fragment scrolling are browser-managed; exact positions are not guaranteed across asynchronous layout changes. Do not add custom history state or scroll-position tracking for this policy.
 - **Responsive JS behavior** uses the Sass-backed media-query helpers in `useMediaQuery`; viewport-relative Motion
   transforms use CSS units directly so resizing does not require React state.
-- **Scroll parallax** on Home is gated in one place: `src/pages/home/useScrollParallax.ts` owns the policy that parallax
-  is disabled on mobile and under reduced motion, so sections declare only their input/output ranges. `Home.tsx` keeps a
-  single `useScroll()` subscription that it passes to every section.
+- **Home motion:** `Home.tsx` keeps one `useScroll()` subscription for the hero photograph. Its restrained parallax is
+  disabled on mobile and under reduced motion by `src/pages/home/useScrollParallax.ts`. Editorial and seasonal sections
+  use normal document flow without scroll transforms.
+- **Visual direction:** butter-yellow paper, vermilion and dark green ink are defined in Sass tokens. The masthead uses
+  the existing Abril Fatface font; editorial headings use Georgia and body copy uses the system sans-serif stack.
+  Home is an editorial grid, La Storia pairs the original story with archival tickets, and Il Giorno presents 48 photographs in their original day-to-night order (the café scene in `cafe-view.jpg` is reserved for the homepage hero), using a continuous grid of pairs and three-photo compositions with uniform gutters, ending with the empty café alone.
+- **Gallery curation:** `galleryCompositions.ts` groups selected filenames explicitly; `galleryImages.ts` resolves their metadata and precomputes layout through `galleryLayout.ts`. Original image dimensions drive layout; there are no manual per-photo size values. On mobile, every photograph fills the gallery width in a single column, with responsive image sizes set to 90vw.
+- **Header colours:** the header uses its page theme, including while the mobile menu is open. The mobile menu matches the header’s theme and colours (cream/red on light pages, green/yellow on Il Giorno); avoid deriving header colours from navigation URLs.
 - **Themes** are semantic in React (`data-theme="light"` / `data-theme="dark"`) and mapped to actual colors in Sass.
 - **Breakpoints** are owned by Sass tokens in `src/styles/_tokens.scss`; `vite.config.ts` injects their values at build
   time for `src/constants/breakpoints.ts`, so JavaScript never mirrors the numbers in TypeScript.
+
+## Efficient Iteration and Validation
+
+- **Match effort to the change.** During colour, spacing, or other small design experiments, edit the smallest
+  relevant surface and inspect it in the existing dev preview. Defer production builds, screenshot baseline updates,
+  and full suites until the user settles on a version. Do not turn each preview into a release-validation cycle.
+- **Documentation-only changes:** review the diff and run `git diff --check`; application builds and tests are unnecessary.
+- **Final, isolated styling changes:** run `vp check` and inspect affected pages in the browser at relevant viewport
+  sizes. Run affected functional browser checks when layout or interaction changes warrant them. Screenshot comparisons
+  (`vp run test:visual`) are optional; do not run the full screenshot suite automatically for every UI edit.
+- **Behaviour, shared layout, routing, image loading, or toolchain changes:** run `vp check`, `vp test`, and
+  `vp run build`; run `vp run test:browser` when rendering or browser behaviour is affected. Playwright's web server
+  already runs the full build when it starts, so that result can satisfy build validation.
+- **CI policy:** pull requests run functional browser checks with `vp run test:browser:ci`; screenshot comparisons run
+  only locally on demand or through the manual Browser checks workflow with the screenshots input enabled. Keep
+  `@screenshot` on all baseline-comparison suites. Do not remove the functional section-overlap checks from CI.
+- **Reuse valid results.** Keep track of which source version and scope passed. After a small follow-up change,
+  repeat only the affected checks unless a failure or new risk justifies broader validation. Committing or pushing
+  unchanged, already-validated code does not require another test cycle.
+- **Avoid stale production previews.** Playwright may reuse an existing server on port 4173. If it is serving an
+  older build, rebuild once before the browser run; if Playwright starts its own server, its configuration builds for you.
+- **Keep tool output focused.** Reuse source already read; request narrow CodeGraph queries and file excerpts.
+  Save verbose build/test logs and inspect summaries or failure details. Review a representative screenshot for a
+  preview and the changed screenshots before committing baselines; avoid repeatedly emitting full-page images.
+- **Wait efficiently.** Use bounded waits of up to 30 seconds for running commands instead of repeated short polls.
+  Give concise updates when there is meaningful progress, while maintaining the required communication cadence.
 
 ## Visual Regression Troubleshooting
 
@@ -107,16 +139,18 @@ src/
 - Inspect the Playwright output in `test-results/` and `playwright-report/` to compare expected, actual, and diff
   images.
 - Decide whether the difference is an intentional visual change or an unintended regression.
-- If it is a regression, fix the source code, styles, or assets and rerun `vp check --fix`, `vp test`, and
-  `vp run test:visual`.
-- If the visual change is intentional, update baselines with `vp run test:visual:update`, then review the changed PNGs
-  before committing them.
+- If it is a regression, fix the source code, styles, or assets and rerun the affected checks using the scope above.
+- If the visual change is intentional and settled, update only affected baselines, for example
+  `vp run test:visual:update --grep 'ilgiorno'`, then review the changed PNGs before committing them. A successful
+  update run plus image review does not itself require an identical second run without source changes.
 - Do not loosen screenshot thresholds or add broad waits unless the failure is proven to be nondeterministic rendering
   noise.
 - CI runs on Linux with centralized Chromium baselines. Local macOS runs may differ slightly, so CI diffs should be
   treated as the source of truth when platform rendering differences appear.
-- `vp run test:visual` runs the complete local Playwright suite. CI uses `vp run test:visual:ci`, which excludes tests
-  tagged `@local-only` when their browser input emulation is not portable to Linux.
+- `vp run test:visual` runs only optional `@screenshot` comparisons. `vp run test:browser` excludes those comparisons;
+  CI uses `vp run test:browser:ci` to also exclude `@local-only` touch emulation. `vp exec playwright test` runs both.
+- The Browser checks workflow retains its existing `Chromium visual tests` job name for branch-protection compatibility;
+  its pull-request run contains functional tests only.
 - Do not commit `playwright-report/` or `test-results/`; only commit intentional baseline images under
   `tests/visual/__screenshots__/`.
 
@@ -155,8 +189,8 @@ This project is using Vite+, a unified toolchain built on top of Vite, Rolldown,
   `vite-plus`, the `vite` alias, Vitest, pnpm catalogs/overrides, and peer dependency rules according to the
   current global `vp`.
 - After `vp migrate`, run `vp install`, `vp check`, `vp test`, and `vp run build`. The build script runs `tsc && vp build`
-  for full build validation. Run `vp run test:visual` when
-  changing layout, typography, imagery, animation, or scroll behavior.
+  for full build validation. Run `vp run test:browser` when browser behaviour is affected. For layout, typography,
+  imagery or animation changes, inspect the affected pages; screenshot comparisons remain optional.
 - In Codex/non-TTY environments, if `vp migrate` updates files but its internal install fails with a pnpm
   confirmation prompt, rerun install with `env CI=true vp install --no-frozen-lockfile`.
 
@@ -166,11 +200,10 @@ When starting the local dev server in Codex, `vp dev --host 127.0.0.1` may fail 
 
 ### Review Checklist
 
-- [ ] Run `vp install` after pulling remote changes and before getting started.
-- [ ] Run `vp check` and `vp test` to format, lint, type check and test changes.
-- [ ] Run `vp run build` for the explicit TypeScript check and production build.
-- [ ] Run `vp run test:visual` when changing layout, typography, imagery, animation, or scroll behavior.
-- [ ] Check if there are tasks or `package.json` scripts necessary for validation, run via `vp run <script>`.
+- [ ] Run `vp install` when dependencies or the lockfile change, or dependencies are missing.
+- [ ] Choose checks using **Efficient Iteration and Validation** above; previews and documentation edits do not need full suites.
+- [ ] Confirm passing results apply to the final changed code and inspect any intentional screenshot updates.
+- [ ] Report what was checked accurately; do not imply a full suite ran when only focused checks ran.
 
 - Docs: https://viteplus.dev/guide/
 

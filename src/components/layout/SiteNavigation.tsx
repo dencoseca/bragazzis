@@ -19,7 +19,7 @@ export function SiteNavigation({ backgroundContentRef, theme, menuTheme }: SiteN
     const location = useLocation();
     const isMobile = useIsMobile();
     const menuButtonRef = useRef<HTMLButtonElement>(null);
-    const logoLinkRef = useRef<HTMLAnchorElement>(null);
+    const firstNavLinkRef = useRef<HTMLAnchorElement>(null);
     const returnFocusTo = useRef<HTMLElement | null>(null);
     const [menuIsOpen, setMenuIsOpen] = useState(false);
 
@@ -34,10 +34,10 @@ export function SiteNavigation({ backgroundContentRef, theme, menuTheme }: SiteN
         setMenuIsOpen(false);
     }, [location.key]);
 
-    // The toggle is hidden outside the mobile layout, so focus returns to the logo instead.
+    // The toggle is hidden outside the mobile layout, so focus moves to the header navigation.
     useEffect(() => {
         if (isMobile || !menuIsOpen) return;
-        returnFocusTo.current = logoLinkRef.current;
+        returnFocusTo.current = firstNavLinkRef.current;
         setMenuIsOpen(false);
     }, [isMobile, menuIsOpen]);
 
@@ -132,10 +132,9 @@ export function SiteNavigation({ backgroundContentRef, theme, menuTheme }: SiteN
                 menuIsOpen={menuIsOpen}
                 onMenuToggle={toggleMenu}
                 menuButtonRef={menuButtonRef}
-                logoLinkRef={logoLinkRef}
+                firstNavLinkRef={firstNavLinkRef}
                 menuId={mobileMenuId}
                 theme={theme}
-                menuTheme={menuTheme}
             />
         </>
     );
