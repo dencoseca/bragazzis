@@ -56,37 +56,11 @@ $gallery-placements: (
     }
 }
 
-.ilgiorno__details {
-    grid-column: 8 / 13;
-    align-self: end;
-    border-top: 1px solid var(--theme-rule-color);
-
-    div {
-        display: flex;
-        justify-content: space-between;
-        gap: 1rem;
-        padding-block: 0.75em;
-        border-bottom: 1px solid var(--theme-rule-color);
-    }
-
-    dt {
-        color: var(--theme-muted-color);
-    }
-
-    dd {
-        text-align: right;
-    }
-
-    @media (max-width: tokens.$breakpoint-mobile) {
-        grid-column: 1 / -1;
-    }
-}
-
 .ilgiorno__gallery {
     @include tokens.grid;
     align-items: start;
     row-gap: clamp(3.5rem, 9vw, 10rem);
-    padding-block: clamp(5rem, 12vw, 12rem) var(--section-space);
+    padding-block: clamp(3.5rem, 8vw, 8rem) var(--section-space);
 
     @media (max-width: tokens.$breakpoint-mobile) {
         row-gap: clamp(2.5rem, 12vw, 4rem);
