@@ -8,11 +8,11 @@ export function NotFound() {
     return (
         <ErrorPage
             title="404"
-            headline="There's no more bread."
-            message="D'you do soup? Nope... no, we don't do soup."
+            headline="There’s no more bread."
+            message="D’you do soup? Nope… no, we don’t do soup."
             action={
                 <Link to={publicPageRoutes.home.path} className="error-page__action">
-                    I'll come back
+                    I’ll come back
                 </Link>
             }
         >

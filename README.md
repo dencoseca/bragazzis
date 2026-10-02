@@ -64,9 +64,9 @@ fallback variants are generated at build time through `vite-imagetools` and `sha
 
 Image imports use named presets configured in `vite.imagetools.ts` instead of long raw transform query strings:
 
-- `?preset=gallery` for the Il Giorno gallery, with widths tuned for the real `40vw` to `70vw` desktop layout and
+- `?preset=gallery` for the Il Giorno gallery, with widths up to the 1500px originals for its `34vw` to full-bleed desktop placements and
   full-width mobile layout.
-- `?preset=editorial` for medium story and floating-item images.
+- `?preset=editorial` for medium editorial and story images.
 - `?preset=fullWidth` for full-bleed hero/banner images.
 
 The imagetools cache lives at `node_modules/.cache/imagetools`. CI restores and saves that cache for both build checks

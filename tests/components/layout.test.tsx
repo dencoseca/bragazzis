@@ -46,7 +46,7 @@ describe("Layout", () => {
             </MemoryRouter>,
         );
 
-        await user.click(screen.getByRole("button", { name: "Scroll to top" }));
+        await user.click(screen.getByRole("button", { name: "Back to top" }));
 
         expect(scrollTo).toHaveBeenCalledWith({ top: 0, behavior: "auto" });
         expect(layoutMocks.useSmoothScroll).toHaveBeenCalledWith(false, "default");

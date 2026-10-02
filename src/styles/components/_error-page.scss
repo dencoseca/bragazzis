@@ -1,147 +1,84 @@
 @use "../tokens" as tokens;
 .error-page {
-    height: 100dvh;
-    min-height: 42rem;
-    padding: clamp(1.5rem, 5vw, 4rem);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: tokens.$color-paper;
-    color: tokens.$color-ink;
-    font-weight: 300;
     position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 100dvh;
+    padding: var(--header-height) var(--grid-margin);
+    color: tokens.$color-ink;
+    background-color: tokens.$color-paper;
     text-align: center;
-    overflow: hidden;
+}
 
-    &::before {
-        content: "";
-        position: absolute;
-        top: calc(50% - 4rem);
-        left: 50%;
-        width: min(58vw, 36rem);
-        aspect-ratio: 1 / 0.28;
-        border: 1px solid rgba(tokens.$color-ink, 0.22);
-        border-radius: 50%;
-        pointer-events: none;
-        transform: translate(-50%, -45%);
+.error-page__logo {
+    position: absolute;
+    top: calc(var(--header-height) / 2);
+    left: var(--grid-margin);
+    width: clamp(2rem, 2.6vw, 2.75rem);
+    color: inherit;
+    translate: 0 -50%;
+
+    svg {
+        display: block;
     }
+}
 
-    .error-page__logo {
-        font-family: tokens.$font-display;
-        font-size: 3rem;
-        position: absolute;
-        top: clamp(2rem, 5dvh, 3.5rem);
-        left: 50%;
-        z-index: 1;
-        color: tokens.$color-ink;
-        text-decoration: none;
-        transform: translateX(-50%);
-    }
+.error-page__content {
+    display: grid;
+    justify-items: center;
+    width: min(44rem, 100%);
+}
 
-    .error-page__content {
-        position: relative;
-        z-index: 1;
-        width: min(44rem, 100%);
-    }
+.error-page__title {
+    font-family: tokens.$font-display;
+    font-size: clamp(9rem, 30vw, 24rem);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    line-height: 0.78;
+    color: tokens.$color-rosso;
+}
 
-    h1 {
-        margin: 0;
-        font-family: tokens.$font-display;
-        font-size: 14rem;
-        font-weight: 400;
-        line-height: 0.82;
-    }
+.error-page__headline {
+    margin-top: clamp(1.5rem, 3vw, 2.5rem);
+    font-family: tokens.$font-display;
+    font-size: clamp(2.25rem, 4.6vw, 4.25rem);
+    line-height: 1;
+    text-wrap: balance;
+}
 
-    .error-page__headline {
-        margin: clamp(1rem, 2vw, 1.5rem) 0 0;
-        font-family: tokens.$font-display;
-        font-size: 4rem;
-        line-height: 1;
-    }
+.error-page__message {
+    margin-top: 1rem;
+    text-wrap: balance;
+    font-size: clamp(1.0625rem, 1.3vw, 1.3125rem);
+    font-style: italic;
+    color: tokens.$color-stone;
+}
 
-    .error-page__message {
-        width: min(28rem, 100%);
-        margin: clamp(1rem, 2vw, 1.5rem) auto 0;
-        font-size: 1.25rem;
-        line-height: 1.45;
-    }
+.error-page__action {
+    margin-top: clamp(2rem, 5dvh, 3.5rem);
+    padding: 1rem 1.75rem;
+    font-family: tokens.$font-mono;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: inherit;
+    text-decoration: none;
+    background: none;
+    border: 1px solid rgb(27 23 19 / 35%);
+    cursor: pointer;
+    transition:
+        color 0.5s tokens.$ease-out,
+        background-color 0.5s tokens.$ease-out;
 
-    .error-page__action {
-        position: relative;
-        z-index: 1;
-        display: inline-block;
-        margin-top: clamp(2rem, 5dvh, 4rem);
-        color: tokens.$color-ink;
-        font-size: 1rem;
-        font-weight: 400;
-        text-decoration: none;
-
-        &::after {
-            content: "";
-            position: absolute;
-            right: 0;
-            bottom: -0.4rem;
-            left: 0;
-            height: 1px;
-            background-color: currentColor;
-            transform: scaleX(0.45);
-            transform-origin: center;
-            transition: transform 0.4s ease;
-        }
-
-        &:hover::after,
-        &:focus-visible::after {
-            transform: scaleX(1);
-        }
-    }
-
-    button.error-page__action {
-        padding: 0;
-        border: 0;
-        background: transparent;
-        font-family: inherit;
-        cursor: pointer;
-    }
-
-    @media (max-width: tokens.$breakpoint-mobile) {
-        min-height: 40rem;
-
-        &::before {
-            width: 88vw;
-        }
-
-        .error-page__logo {
-            font-size: 2rem;
-        }
-
-        h1 {
-            font-size: 7rem;
-        }
-
-        .error-page__headline {
-            font-size: 2rem;
-        }
-
-        .error-page__message {
-            font-size: 1rem;
-        }
+    &:hover,
+    &:focus-visible {
+        color: tokens.$color-paper;
+        background-color: tokens.$color-ink;
     }
 }
 
 // Longer recovery copy needs a quieter scale than the three-digit 404 title.
-.error-page--recovery {
-    &::before {
-        width: min(66vw, 24rem);
-    }
-
-    h1 {
-        font-size: clamp(4rem, 8vw, 7rem);
-        line-height: 1.1;
-    }
-
-    .error-page__headline {
-        font-size: clamp(1.5rem, 3vw, 2.5rem);
-        line-height: 1.15;
-    }
+.error-page--recovery .error-page__title {
+    font-size: clamp(5rem, 14vw, 11rem);
 }

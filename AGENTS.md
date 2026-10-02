@@ -22,11 +22,11 @@ application with multiple routes, built with **React 19**, **TypeScript**, and *
 ```
 src/
 ├── assets/            # Static assets
-│   ├── fonts/         # Project fonts (ttf, woff2, etc.)
+│   ├── fonts/         # Self-hosted woff2 fonts (Instrument Serif, Newsreader, DM Mono; Latin subsets)
 │   └── images/        # Static image assets (jpg, png, svg — high-quality originals)
 ├── components/        # Shared React components, with site shell/navigation under components/layout/
 ├── constants/         # Shared TypeScript constants (animations.ts, siteConfig.ts, etc.)
-├── hooks/             # React hooks shared across routes (useSmoothScroll, useMediaQuery)
+├── hooks/             # React hooks shared across routes (useSmoothScroll, useMediaQuery, useScrollParallax, useReveal)
 ├── pages/             # Route-level pages and their feature-local components/data (for example pages/home/)
 ├── styles/            # Global SCSS files
 │   ├── components/    # Component-specific SCSS partials
@@ -35,6 +35,7 @@ src/
 │   ├── _tokens.scss
 │   ├── _themes.scss
 │   ├── _typography.scss
+│   ├── _motion.scss   # Reveal-on-enter, image fade-in, and cropped media frames
 │   └── _normalize.scss
 ├── types/             # TypeScript type definitions (imagetools.ts, etc.)
 ├── App.tsx            # Router setup
@@ -55,8 +56,8 @@ src/
 - **Feature colocation:** Keep page-specific components beside their route under `src/pages/<feature>/`; reserve
   `src/components/` for components shared across routes.
 - **Hooks:** Prefix with `use`. Hooks shared across routes live in `src/hooks/`; a hook used by a single feature is
-  colocated with it (for example `src/pages/home/useScrollParallax.ts`), and moves to `src/hooks/` when a second route
-  needs it.
+  colocated with it, and moves to `src/hooks/` when a second route needs it (as `useScrollParallax` did when La Storia
+  adopted it).
 - **Styles:** SCSS partial filenames use kebab case and match their owning component or page feature (for example,
   `_footer.scss`, `_la-storia.scss`, `_il-giorno.scss`, and `_error-page.scss`). Import new partials into
   `src/styles/main.scss`.
@@ -93,10 +94,19 @@ src/
 - **Route navigation** is coordinated by `components/RouteNavigation.tsx` inside the shared route Suspense boundary: new page links start at the top (or their fragment target), and focus moves after lazy content is ready. Every route supplies a focusable `main#main-content`. Back/Forward scroll restoration and native fragment scrolling are browser-managed; exact positions are not guaranteed across asynchronous layout changes. Do not add custom history state or scroll-position tracking for this policy.
 - **Responsive JS behavior** uses the Sass-backed media-query helpers in `useMediaQuery`; viewport-relative Motion
   transforms use CSS units directly so resizing does not require React state.
-- **Scroll parallax** on Home is gated in one place: `src/pages/home/useScrollParallax.ts` owns the policy that parallax
-  is disabled on mobile and under reduced motion, so sections declare only their input/output ranges. `Home.tsx` keeps a
-  single `useScroll()` subscription that it passes to every section.
-- **Themes** are semantic in React (`data-theme="light"` / `data-theme="dark"`) and mapped to actual colors in Sass.
+- **Scroll parallax** is gated in one place: `src/hooks/useScrollParallax.ts` owns the policy that scroll-linked motion
+  is disabled on mobile and under reduced motion. Each effect tracks its own element through Motion's
+  `useScroll({ target })`, so sections declare only a target ref, an optional scroll offset, and output ranges. The Home
+  hero uses it to widen its photograph from the grid margins to full-bleed through a `--photo-expansion` CSS variable.
+- **Reveal-on-enter** uses `useReveal` (`src/hooks/useReveal.ts`) with the `.reveal` class in `_motion.scss`: one shared
+  `IntersectionObserver` sets `data-revealed="true"` once, and the movement is a CSS transition. Keep entrance motion in
+  CSS like this so reduced-motion preferences and Playwright's disabled animations both settle it deterministically.
+- **Typography** pairs Instrument Serif (display), Newsreader (text) and DM Mono (labels), defined in `_typography.scss`.
+  The Home masthead and footer wordmark size themselves from the measured advance width of "Bragazzi’s" (0.32 × the grid
+  width); re-measure if the wordmark text, typeface, or letter-spacing changes. Display copy uses typographic quotes and
+  apostrophes (’ “ ”); `siteConfig.business.name` stays plain ASCII for document titles and structured data.
+- **Themes** are semantic in React (`data-theme="light"`, `"dark"`, or `"accent"`) and mapped to actual colors in Sass.
+  Pages use light or dark; the footer always uses the red accent theme.
 - **Breakpoints** are owned by Sass tokens in `src/styles/_tokens.scss`; `vite.config.ts` injects their values at build
   time for `src/constants/breakpoints.ts`, so JavaScript never mirrors the numbers in TypeScript.
 

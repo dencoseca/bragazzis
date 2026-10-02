@@ -32,15 +32,10 @@ const SCROLL_STATES = [
     { name: "near-footer", ratio: 1 },
 ] as const;
 
-const FLOATING_HANDOFF_VIEWPORTS = [
-    TABLET_VIEWPORT,
-    TABLET_WIDE_VIEWPORT,
-    DESKTOP_VIEWPORT,
-] as const;
+const EXPANDING_HERO_VIEWPORTS = [TABLET_VIEWPORT, DESKTOP_VIEWPORT] as const;
 
 const VIEWPORT_IMAGE_MARGIN = 240;
 const SCROLL_SETTLE_MS = 700;
-const FLOATING_HANDOFF_MAX_GAP_RATIO = 0.35;
 
 test.describe("main page visuals", () => {
     for (const route of ROUTES) {
@@ -126,18 +121,18 @@ test.describe("mobile scrolling", () => {
     });
 });
 
-test.describe("home floating section handoff", () => {
-    for (const viewport of FLOATING_HANDOFF_VIEWPORTS) {
-        test(`final floating item leads naturally into seasonal banner at ${viewport.name}`, async ({
-            page,
-        }) => {
+test.describe("home hero photograph", () => {
+    for (const viewport of EXPANDING_HERO_VIEWPORTS) {
+        test(`widens from the grid margins to full-bleed at ${viewport.name}`, async ({ page }) => {
             await page.setViewportSize(viewport);
             await gotoRouteAndSettle(page, publicPageRoutes.home.path, 5_200);
-            await scrollToFloatingBannerHandoff(page);
 
-            const gap = await measureFloatingItemToBannerGap(page);
+            const framedInset = await measureHeroPhotoInset(page);
 
-            expect(gap).toBeLessThanOrEqual(viewport.height * FLOATING_HANDOFF_MAX_GAP_RATIO);
+            await scrollToHeroPhoto(page);
+
+            expect(framedInset).toBeGreaterThan(0);
+            expect(await measureHeroPhotoInset(page)).toBeLessThanOrEqual(1);
         });
     }
 });
@@ -192,13 +187,12 @@ async function openMobileMenuAndSettle(page: Page) {
     });
 }
 
-async function scrollToFloatingBannerHandoff(page: Page) {
+async function scrollToHeroPhoto(page: Page) {
     const targetTop = await page.evaluate(() => {
-        const banner = document.querySelector(".home-seasonal-banner");
-        if (!banner) return 0;
-
-        const bannerTop = banner.getBoundingClientRect().top + window.scrollY;
-        const scrollTop = Math.max(0, Math.round(bannerTop - window.innerHeight * 0.9));
+        const photo = document.querySelector(".home-hero__photo");
+        const scrollTop = photo
+            ? Math.round(photo.getBoundingClientRect().top + window.scrollY)
+            : 0;
 
         window.scrollTo(0, scrollTop);
 
@@ -209,20 +203,25 @@ async function scrollToFloatingBannerHandoff(page: Page) {
         (expectedTop) => Math.abs(window.scrollY - expectedTop) <= 2,
         targetTop,
     );
-    await waitForViewportAssets(page);
     await page.waitForTimeout(SCROLL_SETTLE_MS);
 }
 
-async function measureFloatingItemToBannerGap(page: Page) {
+/** Returns the horizontal inset, in pixels, that the hero photograph is clipped by. */
+async function measureHeroPhotoInset(page: Page) {
     return page.evaluate(() => {
-        const item = document.querySelector(".home-editorial__item--shop");
-        const banner = document.querySelector(".home-seasonal-banner");
+        const photo = document.querySelector<HTMLElement>(".home-hero__photo");
 
-        if (!item || !banner) {
-            throw new Error("Unable to find floating item or full-width banner");
+        if (!photo) {
+            throw new Error("Unable to find the hero photograph");
         }
 
-        return banner.getBoundingClientRect().top - item.getBoundingClientRect().bottom;
+        const probe = document.createElement("div");
+        probe.style.width = `calc(var(--grid-margin) * (1 - var(--photo-expansion)))`;
+        photo.append(probe);
+        const inset = probe.getBoundingClientRect().width;
+        probe.remove();
+
+        return inset;
     });
 }
 

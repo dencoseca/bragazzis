@@ -23,7 +23,6 @@ const ROUTE_RENDER_TIMEOUT_MS = 5_000;
 interface MockOptimizedImageProps {
     alt: string;
     className?: string;
-    "data-size"?: number;
     pictureRef?: Ref<HTMLPictureElement>;
 }
 
@@ -31,12 +30,13 @@ interface MockOptimizedImageProps {
 // forcing CI to transform every responsive image variant.
 vi.mock("@/pages/home/HomeHero", () => ({
     HomeHero() {
-        return (
-            <>
-                <div>Monday: 9:00 AM</div>
-                <div>Roam freely and find inspiration</div>
-            </>
-        );
+        return <h1>Bragazzi’s</h1>;
+    },
+}));
+
+vi.mock("@/pages/home/HomeIntro", () => ({
+    HomeIntro() {
+        return <div>Roam freely and find inspiration</div>;
     },
 }));
 
@@ -46,16 +46,28 @@ vi.mock("@/pages/home/HomeEditorial", () => ({
     },
 }));
 
-vi.mock("@/pages/home/HomeSeasonalBanner", () => ({
-    HomeSeasonalBanner() {
+vi.mock("@/pages/home/HomeSeasonal", () => ({
+    HomeSeasonal() {
+        return null;
+    },
+}));
+
+vi.mock("@/pages/home/HomeContinue", () => ({
+    HomeContinue() {
+        return null;
+    },
+}));
+
+vi.mock("@/pages/home/HomeShopfront", () => ({
+    HomeShopfront() {
         return null;
     },
 }));
 
 vi.mock("@/components/OptimizedImage", () => ({
-    OptimizedImage({ alt, className, "data-size": dataSize, pictureRef }: MockOptimizedImageProps) {
+    OptimizedImage({ alt, className, pictureRef }: MockOptimizedImageProps) {
         return (
-            <picture className={className} data-size={dataSize} ref={pictureRef}>
+            <picture className={className} ref={pictureRef}>
                 <img
                     alt={alt}
                     decoding="async"
@@ -115,7 +127,7 @@ vi.mock("@/pages/il-giorno/galleryImages", () => ({
                 },
                 sources: {},
             },
-            size: 60,
+            placement: "wide-right",
         },
     ],
 }));
@@ -134,27 +146,27 @@ const ROUTE_SMOKE_CASES: RouteSmokeCase[] = [
         canonicalUrl: getCanonicalUrl(publicPageRoutes.home.path),
         title: getPageDocumentTitle(publicPageRoutes.home.pageTitle),
         description: publicPageRoutes.home.description,
-        expectedTexts: ["Roam freely and find inspiration", "Monday: 9:00 AM"],
+        expectedTexts: ["Bragazzi’s", "Roam freely and find inspiration", "9:00 – 15:00"],
     },
     {
         path: publicPageRoutes.laStoria.path,
         canonicalUrl: getCanonicalUrl(publicPageRoutes.laStoria.path),
         title: getPageDocumentTitle(publicPageRoutes.laStoria.pageTitle),
         description: publicPageRoutes.laStoria.description,
-        expectedTexts: ["La Storia", "Bragazzi's opened in Sheffield in 2003"],
+        expectedTexts: ["La Storia", "Bragazzi’s opened in Sheffield in 2003"],
     },
     {
         path: publicPageRoutes.ilGiorno.path,
         canonicalUrl: getCanonicalUrl(publicPageRoutes.ilGiorno.path),
         title: getPageDocumentTitle(publicPageRoutes.ilGiorno.pageTitle),
         description: publicPageRoutes.ilGiorno.description,
-        expectedTexts: ["Il Giorno", "Aperto", "Chiuso"],
+        expectedTexts: ["Il Giorno", "A day at Bragazzi’s.", "Aperto", "Chiuso"],
     },
     {
         path: "/missing-page",
         title: getPageDocumentTitle(notFoundRoute.pageTitle),
         description: notFoundRoute.description,
-        expectedTexts: ["404", "There's no more bread.", "I'll come back"],
+        expectedTexts: ["404", "There’s no more bread.", "I’ll come back"],
     },
 ];
 
@@ -201,7 +213,7 @@ function expectStaticDocumentMetadata() {
         "width=device-width, initial-scale=1.0",
     );
     expect(expectSingleElement('link[rel="icon"]').getAttribute("href")).toBe("/favicon.svg");
-    expect(expectSingleElement('meta[name="theme-color"]').getAttribute("content")).toBe("#f6f4f1");
+    expect(expectSingleElement('meta[name="theme-color"]').getAttribute("content")).toBe("#f1ece3");
 }
 
 function expectPublicPageMetadata(route: RouteSmokeCase) {

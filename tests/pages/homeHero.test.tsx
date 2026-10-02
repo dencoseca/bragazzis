@@ -1,16 +1,12 @@
 /** @vitest-environment happy-dom */
 
 import { act, fireEvent, render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import type { MotionValue } from "motion/react";
-import type { HTMLAttributes, SVGProps } from "react";
+import type { HTMLAttributes } from "react";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vite-plus/test";
 
 import { HomeHero } from "@/pages/home/HomeHero";
 
-const { useIsMobileMock, useIsTabletMock, useReducedMotionMock } = vi.hoisted(() => ({
-    useIsMobileMock: vi.fn<() => boolean>(),
-    useIsTabletMock: vi.fn<() => boolean>(),
+const { useReducedMotionMock } = vi.hoisted(() => ({
     useReducedMotionMock: vi.fn<() => boolean>(),
 }));
 
@@ -19,62 +15,41 @@ interface MotionProps {
     initial?: unknown;
     transition?: unknown;
     variants?: unknown;
+    style?: unknown;
+}
+
+function stripMotionProps<T extends MotionProps>({
+    animate,
+    initial,
+    transition,
+    variants,
+    style,
+    ...props
+}: T) {
+    void initial;
+    void transition;
+    void variants;
+    void style;
+
+    return { ...props, "data-animation-state": String(animate) };
 }
 
 vi.mock("motion/react", () => ({
     motion: {
-        div({
-            animate,
-            initial,
-            transition,
-            variants,
-            ...props
-        }: HTMLAttributes<HTMLDivElement> & MotionProps) {
-            void animate;
-            void initial;
-            void transition;
-            void variants;
-
-            return <div {...props} data-animation-state={String(animate)} />;
+        div(props: HTMLAttributes<HTMLDivElement> & MotionProps) {
+            return <div {...stripMotionProps(props)} />;
         },
-        h1({
-            animate,
-            initial,
-            transition,
-            variants,
-            ...props
-        }: HTMLAttributes<HTMLHeadingElement> & MotionProps) {
-            void animate;
-            void initial;
-            void transition;
-            void variants;
-
-            return <h1 {...props} data-animation-state={String(animate)} />;
-        },
-        svg({
-            animate,
-            initial,
-            transition,
-            variants,
-            ...props
-        }: SVGProps<SVGSVGElement> & MotionProps) {
-            void animate;
-            void initial;
-            void transition;
-            void variants;
-
-            return <svg {...props} data-animation-state={String(animate)} />;
+        span(props: HTMLAttributes<HTMLSpanElement> & MotionProps) {
+            return <span {...stripMotionProps(props)} />;
         },
     },
     useReducedMotion: useReducedMotionMock,
-    useTransform() {
-        return 0;
-    },
 }));
 
-vi.mock("@/hooks/useMediaQuery", () => ({
-    useIsMobile: useIsMobileMock,
-    useIsTablet: useIsTabletMock,
+vi.mock("@/hooks/useScrollParallax", () => ({
+    useScrollParallax() {
+        return 0;
+    },
 }));
 
 vi.mock("@/components/OptimizedImage", () => ({
@@ -82,13 +57,15 @@ vi.mock("@/components/OptimizedImage", () => ({
         className,
         alt,
         onReady,
+        onError,
     }: {
         className?: string;
         alt: string;
         onReady?: () => void;
+        onError?: () => void;
     }) {
         return (
-            <picture className={className}>
+            <picture className={className} onError={onError}>
                 <img alt={alt} onLoad={onReady} />
             </picture>
         );
@@ -99,98 +76,112 @@ vi.mock("@/assets/images/parmesan.jpg?preset=fullWidth", () => ({
     default: {},
 }));
 
-const scrollYProgress = {} as MotionValue<number>;
+function getTitleState() {
+    return screen.getByText("Bragazzi’s").dataset.animationState;
+}
+
+function getPhotoState() {
+    return screen.getByRole("img").closest("picture")?.parentElement?.dataset.animationState;
+}
+
+function stubFontLoading() {
+    let resolveFont = () => {};
+    const fontLoad = new Promise<void>((resolve) => {
+        resolveFont = resolve;
+    });
+    const load = vi.fn(() => fontLoad);
+
+    Object.defineProperty(document, "fonts", { configurable: true, value: { load } });
+
+    return { load, resolveFont };
+}
 
 describe("HomeHero", () => {
     beforeEach(() => {
-        useIsMobileMock.mockReturnValue(false);
-        useIsTabletMock.mockReturnValue(false);
         useReducedMotionMock.mockReturnValue(false);
     });
 
     afterEach(() => {
         vi.useRealTimers();
         vi.clearAllMocks();
+        Reflect.deleteProperty(document, "fonts");
     });
 
-    test("holds the intro until the hero image is ready", () => {
+    test("renders the wordmark, the shop's details, and the hero photograph", () => {
+        render(<HomeHero />);
+
+        expect(screen.getByRole("heading", { level: 1, name: "Bragazzi’s" })).toBeDefined();
+        expect(screen.getByText("Purveyors of quality Italian goods")).toBeDefined();
+        expect(
+            screen.getByRole("link", { name: "224–228 Abbeydale Road, Sheffield" }),
+        ).toBeDefined();
+        expect(
+            screen.getByRole("img", {
+                name: "an amaretti tin displayed on wheels of Parmesan cheese",
+            }),
+        ).toBeDefined();
+    });
+
+    test("holds the wordmark until its typeface has loaded", async () => {
+        const { load, resolveFont } = stubFontLoading();
+        render(<HomeHero />);
+
+        expect(load).toHaveBeenCalledWith('400 1em "Instrument Serif"');
+        expect(getTitleState()).toBe("initial");
+
+        await act(async () => resolveFont());
+
+        expect(getTitleState()).toBe("animate");
+    });
+
+    test("holds the photograph until it is ready, then releases below-fold images", () => {
+        stubFontLoading();
         const onSettled = vi.fn();
-        render(<HomeHero scrollYProgress={scrollYProgress} onSettled={onSettled} />);
+        render(<HomeHero onSettled={onSettled} />);
 
-        const title = screen.getByRole("heading", { name: "BRAGAZZI'S" });
-        const heroImage = screen.getByRole("img", {
-            name: "an amaretti tin displayed on wheels of Parmesan cheese",
-        });
-
-        expect(title.dataset.animationState).toBe("initial");
+        expect(getPhotoState()).toBe("initial");
         expect(onSettled).not.toHaveBeenCalled();
 
-        fireEvent.load(heroImage);
+        fireEvent.load(screen.getByRole("img"));
 
-        expect(title.dataset.animationState).toBe("animate");
+        expect(getPhotoState()).toBe("animate");
         expect(onSettled).toHaveBeenCalledOnce();
     });
 
-    test("starts the intro after a bounded wait when the image is slow", () => {
-        vi.useFakeTimers();
+    test("reveals the photograph after a failed load", () => {
+        stubFontLoading();
         const onSettled = vi.fn();
-        render(<HomeHero scrollYProgress={scrollYProgress} onSettled={onSettled} />);
+        render(<HomeHero onSettled={onSettled} />);
 
-        const title = screen.getByRole("heading", { name: "BRAGAZZI'S" });
+        fireEvent.error(screen.getByRole("img"));
 
-        expect(title.dataset.animationState).toBe("initial");
-
-        act(() => vi.advanceTimersByTime(2_500));
-
-        expect(title.dataset.animationState).toBe("animate");
+        expect(getPhotoState()).toBe("animate");
         expect(onSettled).toHaveBeenCalledOnce();
     });
 
-    test("owns the desktop statement target and shared opening hours", async () => {
-        const user = userEvent.setup();
-        render(<HomeHero scrollYProgress={scrollYProgress} />);
-        const mobileCover = document.querySelector<HTMLElement>("#mobile-cover");
-        const statement = document.querySelector<HTMLElement>("#statement");
-        const mobileScrollIntoView = vi.fn();
-        const statementScrollIntoView = vi.fn();
+    test("starts the intro after bounded waits when the font and image are slow", () => {
+        vi.useFakeTimers();
+        stubFontLoading();
+        const onSettled = vi.fn();
+        render(<HomeHero onSettled={onSettled} />);
 
-        if (!mobileCover || !statement) {
-            throw new Error("Expected the complete Home hero to be rendered");
-        }
+        act(() => vi.advanceTimersByTime(1_200));
 
-        mobileCover.scrollIntoView = mobileScrollIntoView;
-        statement.scrollIntoView = statementScrollIntoView;
+        expect(getTitleState()).toBe("animate");
+        expect(getPhotoState()).toBe("initial");
 
-        expect(screen.getAllByRole("list")).toHaveLength(2);
-        expect(screen.getByText("Roam freely and find inspiration...")).toBeDefined();
+        act(() => vi.advanceTimersByTime(1_300));
 
-        await user.click(screen.getByRole("button", { name: "Scroll down" }));
-
-        expect(statementScrollIntoView).toHaveBeenCalledWith({ behavior: "smooth" });
-        expect(mobileScrollIntoView).not.toHaveBeenCalled();
+        expect(getPhotoState()).toBe("animate");
+        expect(onSettled).toHaveBeenCalledOnce();
     });
 
-    test("uses the mobile target and reduced-motion scroll behaviour", async () => {
-        const user = userEvent.setup();
-        useIsMobileMock.mockReturnValue(true);
+    test("skips the intro entirely under reduced motion", () => {
         useReducedMotionMock.mockReturnValue(true);
+        stubFontLoading();
+        render(<HomeHero />);
 
-        render(<HomeHero scrollYProgress={scrollYProgress} />);
-        const mobileCover = document.querySelector<HTMLElement>("#mobile-cover");
-        const statement = document.querySelector<HTMLElement>("#statement");
-        const mobileScrollIntoView = vi.fn();
-        const statementScrollIntoView = vi.fn();
-
-        if (!mobileCover || !statement) {
-            throw new Error("Expected the complete Home hero to be rendered");
-        }
-
-        mobileCover.scrollIntoView = mobileScrollIntoView;
-        statement.scrollIntoView = statementScrollIntoView;
-
-        await user.click(screen.getByRole("button", { name: "Scroll down" }));
-
-        expect(mobileScrollIntoView).toHaveBeenCalledWith({ behavior: "auto" });
-        expect(statementScrollIntoView).not.toHaveBeenCalled();
+        expect(getTitleState()).toBe("undefined");
+        expect(getPhotoState()).toBe("undefined");
     });
 });

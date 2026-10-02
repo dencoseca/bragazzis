@@ -1,13 +1,43 @@
-$color-paper: #f6f4f1;
-$color-ink: #1d1d1d;
+// Palette drawn from the shop: panelled walls, ink, espresso and the fascia's red.
+$color-paper: #f1ece3;
+$color-ink: #1b1713;
+$color-espresso: #15110d;
+$color-rosso: #7a2216;
+$color-stone: #6b6158;
 
-$font-display: "Abril Fatface", cursive;
-$font-text: "Josefin Sans", sans-serif;
+$font-display: "Instrument Serif", "Times New Roman", serif;
+$font-text: "Newsreader", Georgia, serif;
+$font-mono: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 
 $breakpoint-mobile: 760px;
 $breakpoint-tablet: 1080px;
 
+$ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+$ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
 :root {
     --color-paper: #{$color-paper};
     --color-ink: #{$color-ink};
+    --color-espresso: #{$color-espresso};
+    --color-rosso: #{$color-rosso};
+    --color-stone: #{$color-stone};
+
+    --grid-columns: 12;
+    --grid-margin: clamp(1.25rem, 3.2vw, 3.5rem);
+    --grid-gap: clamp(1rem, 1.6vw, 1.75rem);
+    --section-space: clamp(6rem, 13vw, 13rem);
+    --header-height: clamp(4.5rem, 7vw, 6.5rem);
+
+    @media (max-width: $breakpoint-mobile) {
+        --grid-columns: 6;
+        --section-space: clamp(4.5rem, 22vw, 7rem);
+    }
+}
+
+// Twelve columns on desktop and tablet, six on mobile.
+@mixin grid {
+    display: grid;
+    grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+    column-gap: var(--grid-gap);
+    padding-inline: var(--grid-margin);
 }

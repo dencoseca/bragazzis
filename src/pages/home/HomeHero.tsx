@@ -1,94 +1,109 @@
-import { motion, type MotionValue, useReducedMotion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
 import parmesanImg from "@/assets/images/parmesan.jpg?preset=fullWidth";
 import { OptimizedImage } from "@/components/OptimizedImage";
-import { smoothTransition } from "@/constants/animations";
-import { getBreakpointMediaQuery } from "@/constants/breakpoints";
+import { introTransition } from "@/constants/animations";
 import { siteConfig } from "@/constants/siteConfig";
-import { useIsMobile } from "@/hooks/useMediaQuery";
-import { useScrollParallax } from "@/pages/home/useScrollParallax";
+import { useScrollParallax } from "@/hooks/useScrollParallax";
 
 interface HomeHeroProps {
-    scrollYProgress: MotionValue<number>;
     onSettled?: () => void;
 }
 
 const HERO_INTRO_MAX_WAIT_MS = 2_500;
-const HERO_IMAGE_SIZES = `${getBreakpointMediaQuery("mobile")} 200vw, 100vw`;
+const DISPLAY_FONT_MAX_WAIT_MS = 1_200;
+const DISPLAY_FONT = '400 1em "Instrument Serif"';
 
-const contentVariants = {
+const titleVariants = {
+    initial: {
+        y: "125%",
+    },
+    animate: {
+        y: "0%",
+        transition: {
+            ...introTransition,
+            delay: 0.1,
+        },
+    },
+};
+
+const metaVariants = {
     initial: {
         opacity: 0,
     },
     animate: {
         opacity: 1,
         transition: {
-            ...smoothTransition,
-            delay: 1.5,
+            ...introTransition,
+            delay: 0.8,
         },
     },
 };
 
-const downArrowVariants = {
+const photoVariants = {
     initial: {
         opacity: 0,
+        scale: 1.06,
     },
     animate: {
-        opacity: [0, 1, 1],
-        translateY: [-20, 0, 0],
+        opacity: 1,
+        scale: 1,
         transition: {
-            ...smoothTransition,
-            delay: 1.5,
-            duration: 3,
-            times: [0, 0.6, 1],
+            ...introTransition,
+            duration: 2.4,
         },
     },
 };
 
-const titleVariants = {
-    initial: {
-        translateY: "100%",
-    },
-    animate: {
-        translateY: 0,
-        transition: {
-            ...smoothTransition,
-            duration: 1.4,
-            delay: 0.3,
-        },
-    },
-};
+/** Holds the wordmark back until its typeface has loaded, so it never animates in a fallback. */
+function useDisplayFontReady() {
+    const [isReady, setIsReady] = useState(false);
 
-function OpeningHours() {
-    return (
-        <ul className="home-hero__opening-hours">
-            {siteConfig.openingHours.display.map((line, index) => (
-                <li key={index}>{line}</li>
-            ))}
-        </ul>
-    );
+    useEffect(() => {
+        let isCurrent = true;
+        const markReady = () => {
+            if (isCurrent) setIsReady(true);
+        };
+        const timeoutId = window.setTimeout(markReady, DISPLAY_FONT_MAX_WAIT_MS);
+        const fontLoad = document.fonts?.load(DISPLAY_FONT) ?? Promise.resolve();
+
+        fontLoad.then(markReady, markReady);
+
+        return () => {
+            isCurrent = false;
+            window.clearTimeout(timeoutId);
+        };
+    }, []);
+
+    return isReady;
 }
 
-export function HomeHero({ scrollYProgress, onSettled }: HomeHeroProps) {
-    const isMobile = useIsMobile();
+export function HomeHero({ onSettled }: HomeHeroProps) {
     const prefersReducedMotion = useReducedMotion();
+    const heroRef = useRef<HTMLElement>(null);
+    const photoRef = useRef<HTMLDivElement>(null);
+    const isDisplayFontReady = useDisplayFontReady();
     const [isHeroImageReady, setIsHeroImageReady] = useState(false);
     const [hasIntroWaitElapsed, setHasIntroWaitElapsed] = useState(false);
-    const mobileCoverRef = useRef<HTMLElement>(null);
-    const statementRef = useRef<HTMLElement>(null);
-    const heroImageParallax = useScrollParallax(scrollYProgress, {
-        input: [0, 1],
-        output: ["0vh", "59vh"],
+    // The photo widens from the grid margins to full-bleed as the masthead scrolls away.
+    const photoExpansion = useScrollParallax(heroRef, {
+        offset: ["start start", "end end"],
+        output: [0, 1],
+    });
+    const photoParallax = useScrollParallax(photoRef, {
+        offset: ["start start", "end start"],
+        output: ["0%", "16%"],
     });
     const { address } = siteConfig.business;
-    const canStartIntro = isHeroImageReady || hasIntroWaitElapsed;
+    const canRevealPhoto = isHeroImageReady || hasIntroWaitElapsed;
     const initialAnimationState = prefersReducedMotion ? false : "initial";
-    const animateAnimationState = prefersReducedMotion
-        ? undefined
-        : canStartIntro
-          ? "animate"
-          : "initial";
+
+    function getAnimationState(isReady: boolean) {
+        if (prefersReducedMotion) return undefined;
+
+        return isReady ? "animate" : "initial";
+    }
 
     useEffect(() => {
         if (isHeroImageReady) {
@@ -103,98 +118,66 @@ export function HomeHero({ scrollYProgress, onSettled }: HomeHeroProps) {
     }, [isHeroImageReady]);
 
     useEffect(() => {
-        if (canStartIntro) {
+        if (canRevealPhoto) {
             onSettled?.();
         }
-    }, [canStartIntro, onSettled]);
-
-    function handleScrollDown() {
-        const target = isMobile ? mobileCoverRef.current : statementRef.current;
-        target?.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth" });
-    }
+    }, [canRevealPhoto, onSettled]);
 
     return (
-        <>
-            <div className="home-hero" id="cover">
-                <div className="home-hero__title-wrapper">
-                    <motion.h1
-                        className="home-hero__title text--page-title"
+        <section className="home-hero" ref={heroRef}>
+            <div className="home-hero__masthead">
+                <h1 className="home-hero__title text--masthead">
+                    <motion.span
+                        className="home-hero__title-text"
                         variants={titleVariants}
                         initial={initialAnimationState}
-                        animate={animateAnimationState}
+                        animate={getAnimationState(isDisplayFontReady)}
                     >
-                        BRAGAZZI'S
-                    </motion.h1>
-                </div>
-                <div className="home-hero__image-wrapper">
-                    <motion.div
-                        className="home-hero__image-inner"
-                        style={{ translateY: heroImageParallax }}
-                    >
-                        <OptimizedImage
-                            className="home-hero__image"
-                            image={parmesanImg}
-                            alt="an amaretti tin displayed on wheels of Parmesan cheese"
-                            sizes={HERO_IMAGE_SIZES}
-                            priority
-                            revealOnLoad
-                            onReady={() => setIsHeroImageReady(true)}
-                            onError={() => setIsHeroImageReady(true)}
-                        />
-                    </motion.div>
-                </div>
+                        Bragazzi’s
+                    </motion.span>
+                </h1>
                 <motion.div
-                    className="home-hero__content"
-                    variants={contentVariants}
+                    className="home-hero__meta text--label"
+                    variants={metaVariants}
                     initial={initialAnimationState}
-                    animate={animateAnimationState}
+                    animate={getAnimationState(isDisplayFontReady)}
                 >
-                    <OpeningHours />
-                    <div className="home-hero__address">
-                        <a href={address.mapsUrl} target="_blank" rel="noreferrer">
-                            <p>{address.streetAddress}</p>
-                            <p>{address.addressLocality}</p>
-                        </a>
-                    </div>
-                </motion.div>
-                <button
-                    type="button"
-                    className="home-hero__down-arrow-btn"
-                    onClick={handleScrollDown}
-                    aria-label="Scroll down"
-                >
-                    <motion.svg
-                        className="home-hero__down-arrow"
-                        variants={downArrowVariants}
-                        initial={initialAnimationState}
-                        animate={animateAnimationState}
-                        width="50"
-                        height="50"
-                        viewBox="0 0 50 50"
-                        fill="currentColor"
-                        xmlns="http://www.w3.org/2000/svg"
+                    <p>Purveyors of quality Italian goods</p>
+                    <a
+                        className="home-hero__address text-link"
+                        href={address.mapsUrl}
+                        target="_blank"
+                        rel="noreferrer"
                     >
-                        <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M25 50C38.8071 50 50 38.8071 50 25C50 11.1929 38.8071 0 25 0C11.1929 0 0 11.1929 0 25C0 38.8071 11.1929 50 25 50ZM23.5858 38.5858L17 32L18.4142 30.5858L24 36.1716V9H26V36.1716L31.5858 30.5858L33 32L26.4142 38.5858L26 39L25 40L24 39L23.5858 38.5858Z"
-                            fill="currentColor"
-                        />
-                    </motion.svg>
-                </button>
+                        {address.streetAddress}, {address.addressLocality}
+                    </a>
+                    <p className="home-hero__established">Est. 2003</p>
+                </motion.div>
             </div>
-            <section className="home-hero__mobile-cover" id="mobile-cover" ref={mobileCoverRef}>
-                <OpeningHours />
-            </section>
-            <section
-                className="home-hero__statement text--display"
-                id="statement"
-                ref={statementRef}
+            <motion.div
+                className="home-hero__photo"
+                ref={photoRef}
+                style={{ "--photo-expansion": photoExpansion }}
             >
-                <span>Roam freely and find inspiration...</span>
-                <span>or that obscure pasta shape that you've</span>
-                <span>been looking for</span>
-            </section>
-        </>
+                <motion.div
+                    className="home-hero__photo-inner"
+                    style={{ y: photoParallax }}
+                    variants={photoVariants}
+                    initial={initialAnimationState}
+                    animate={getAnimationState(canRevealPhoto)}
+                >
+                    <OptimizedImage
+                        className="home-hero__image"
+                        image={parmesanImg}
+                        alt="an amaretti tin displayed on wheels of Parmesan cheese"
+                        sizes="100vw"
+                        priority
+                        revealOnLoad
+                        onReady={() => setIsHeroImageReady(true)}
+                        onError={() => setIsHeroImageReady(true)}
+                    />
+                </motion.div>
+            </motion.div>
+        </section>
     );
 }

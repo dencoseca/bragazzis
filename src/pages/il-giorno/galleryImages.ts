@@ -1,6 +1,6 @@
 import {
     galleryImageMetadata,
-    type GalleryImageSize,
+    type GalleryImagePlacement,
 } from "@/pages/il-giorno/galleryImageMetadata";
 import type { OptimizedPicture } from "@/types/imagetools";
 
@@ -10,13 +10,13 @@ const galleryImageModules = import.meta.glob<OptimizedPicture>("@/assets/images/
     query: "?preset=gallery",
 });
 
-export type { GalleryImageSize } from "@/pages/il-giorno/galleryImageMetadata";
+export type { GalleryImagePlacement } from "@/pages/il-giorno/galleryImageMetadata";
 
 interface GalleryImage {
     filename: string;
     image: OptimizedPicture;
     alt: string;
-    size: GalleryImageSize;
+    placement: GalleryImagePlacement;
 }
 
 function getGalleryImageFilename(modulePath: string) {
@@ -41,10 +41,10 @@ function getGalleryImage(filename: string) {
 }
 
 export const galleryImages: GalleryImage[] = galleryImageMetadata.map(
-    ({ filename, alt, size }) => ({
+    ({ filename, alt, placement }) => ({
         filename,
         image: getGalleryImage(filename),
         alt,
-        size,
+        placement,
     }),
 );

@@ -10,14 +10,17 @@ test("hero image failure leaves the fallback, intro and navigation available", a
         hero.getByRole("img", { name: /Image unavailable: an amaretti tin/ }),
     ).toBeVisible();
     await expect(hero).toHaveCSS("opacity", "1");
-    await expect(page.locator(".home-hero__content")).toHaveCSS("opacity", "1");
-    await expect(page.getByRole("heading", { name: "BRAGAZZI'S", exact: true })).toBeVisible();
-    await expect(page.locator(".home-editorial__image source").first()).toBeAttached();
+    await expect(page.locator(".home-hero__photo-inner")).toHaveCSS("opacity", "1");
+    await expect(page.getByRole("heading", { name: "Bragazzi’s", exact: true })).toBeVisible();
+    await expect(page.locator(".home-editorial__frame-image source").first()).toBeAttached();
     for (const image of await page
-        .locator(".home-editorial__image img, .home-seasonal-banner img")
+        .locator(".home-editorial__frame-image img, .home-seasonal img, .home-shopfront img")
         .all()) {
         await expect(image).toHaveAttribute("loading", "lazy");
     }
-    await page.getByRole("button", { name: "Scroll down" }).click();
-    await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
+    await page
+        .getByRole("navigation", { name: "Primary navigation" })
+        .getByRole("link", { name: "Visit" })
+        .click();
+    await expect(page.getByRole("contentinfo")).toBeInViewport();
 });

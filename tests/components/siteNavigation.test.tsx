@@ -42,6 +42,15 @@ vi.mock("motion/react", () => ({
 
             return <nav {...props} />;
         },
+        span({ animate, exit, initial, transition, variants, ...props }: MotionElementProps) {
+            void animate;
+            void exit;
+            void initial;
+            void transition;
+            void variants;
+
+            return <span {...props} />;
+        },
     },
 }));
 

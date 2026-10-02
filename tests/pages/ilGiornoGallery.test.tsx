@@ -24,7 +24,7 @@ const galleryImages = vi.hoisted(() =>
                 "image/avif": `/gallery-${index}.avif`,
             },
         },
-        size: 40,
+        placement: index % 2 === 0 ? "half-left" : "narrow-right",
     })),
 );
 
@@ -75,6 +75,19 @@ function installIntersectionObserverMock() {
         MockIntersectionObserver as unknown as typeof IntersectionObserver;
 }
 
+// Gallery figures also register with the shared reveal observer, so find the load-ahead one.
+function getLoadAheadObserver() {
+    const observer = MockIntersectionObserver.instances.find(
+        ({ rootMargin }) => rootMargin === "1200px 0px",
+    );
+
+    if (!observer) {
+        throw new Error("Expected the gallery load-ahead observer");
+    }
+
+    return observer;
+}
+
 function removeIntersectionObserver() {
     Reflect.deleteProperty(window, "IntersectionObserver");
 }
@@ -114,11 +127,12 @@ describe("IlGiornoGallery", () => {
         removeIntersectionObserver();
     });
 
-    test("preserves captions, image ordering, and responsive sizes", () => {
+    test("preserves captions, image ordering, placements, and responsive sizes", () => {
         render(<IlGiornoGallery />);
 
         const gallery = screen.getByText("Aperto").parentElement;
         const pictures = getGalleryPictures();
+        const mobileQuery = `(max-width: ${getSassMobileBreakpoint()})`;
 
         expect(gallery?.firstElementChild?.textContent).toBe("Aperto");
         expect(gallery?.lastElementChild?.textContent).toBe("Chiuso");
@@ -126,10 +140,17 @@ describe("IlGiornoGallery", () => {
             galleryImages.map(({ alt }) => alt),
         );
         expect(screen.getAllByRole("img").map((image) => image.getAttribute("sizes"))).toEqual(
-            galleryImages.map(() => `(max-width: ${getSassMobileBreakpoint()}) 100vw, 40vw`),
+            galleryImages.map(({ placement }) =>
+                placement === "half-left"
+                    ? `${mobileQuery} 85vw, 50vw`
+                    : `${mobileQuery} 50vw, 34vw`,
+            ),
         );
-        expect(pictures.map((picture) => picture.dataset.size)).toEqual(
-            galleryImages.map(({ size }) => String(size)),
+        expect(pictures.map((picture) => picture.closest("figure")?.dataset.placement)).toEqual(
+            galleryImages.map(({ placement }) => placement),
+        );
+        expect(pictures.map((picture) => picture.closest("figure")?.textContent)).toEqual(
+            galleryImages.map((_, index) => String(index + 1).padStart(2, "0")),
         );
     });
 
@@ -156,7 +177,7 @@ describe("IlGiornoGallery", () => {
 
         render(<IlGiornoGallery />);
 
-        const observer = MockIntersectionObserver.instances[0];
+        const observer = getLoadAheadObserver();
         const initialPictures = getGalleryPictures();
 
         expect(observer).toBeDefined();
@@ -220,7 +241,7 @@ describe("IlGiornoGallery", () => {
         installIntersectionObserverMock();
 
         const { unmount } = render(<IlGiornoGallery />);
-        const observer = MockIntersectionObserver.instances[0];
+        const observer = getLoadAheadObserver();
 
         unmount();
 

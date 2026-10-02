@@ -9,7 +9,11 @@ const contentImageDirectives = {
 } as const;
 
 const imagePresets = {
-    gallery: contentImageDirectives,
+    // Gallery originals are 1500px wide, and some gallery placements run full-bleed.
+    gallery: {
+        ...contentImageDirectives,
+        w: "360;540;720;960;1200;1500",
+    },
     editorial: contentImageDirectives,
     fullWidth: {
         w: "480;768;1024;1440;1920",

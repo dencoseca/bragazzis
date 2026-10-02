@@ -37,13 +37,14 @@ export const notFoundRoute = {
     description: "Page not found.",
 } as const satisfies MetadataRoute;
 
-export const headerNavRoutes = [publicPageRoutes.laStoria, publicPageRoutes.ilGiorno] as const;
-
-export const menuNavRoutes = [
+export const siteNavRoutes = [
     publicPageRoutes.home,
     publicPageRoutes.laStoria,
     publicPageRoutes.ilGiorno,
 ] as const;
+
+/** The footer's id, so any page can link straight to the address and opening hours. */
+export const visitSectionId = "visit";
 
 export function getCanonicalUrl(path: string) {
     return `${siteConfig.business.origin}${path}`;

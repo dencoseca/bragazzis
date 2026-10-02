@@ -19,7 +19,6 @@ interface PageRouteConfig {
     route: PublicPageRoute;
     Page: ComponentType;
     theme: ThemeName;
-    headerTheme?: ThemeName;
     scrollToTopBehavior?: ScrollBehavior;
 }
 
@@ -28,7 +27,6 @@ const pageRoutes: PageRouteConfig[] = [
         route: publicPageRoutes.home,
         Page: Home,
         theme: themeNames.light,
-        headerTheme: themeNames.dark,
     },
     {
         route: publicPageRoutes.laStoria,
@@ -49,7 +47,7 @@ export function App() {
             <RouteNavigation />
             <RouteErrorBoundary>
                 <Routes>
-                    {pageRoutes.map(({ route, Page, theme, headerTheme, scrollToTopBehavior }) => (
+                    {pageRoutes.map(({ route, Page, theme, scrollToTopBehavior }) => (
                         <Route
                             key={route.path}
                             path={route.path}
@@ -58,7 +56,6 @@ export function App() {
                                     pageTitle={route.pageTitle}
                                     description={route.description}
                                     theme={theme}
-                                    headerTheme={headerTheme}
                                     scrollToTopBehavior={scrollToTopBehavior}
                                 >
                                     <Page />

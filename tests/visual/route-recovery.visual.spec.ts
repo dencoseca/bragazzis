@@ -29,7 +29,7 @@ test("failed navigation shows the shared error page and explicit reload recovers
     await request;
     await expect(page).toHaveURL(/\/lastoria$/);
     await expect(
-        page.getByText("Bragazzi's opened in Sheffield in 2003", { exact: false }),
+        page.getByText("Bragazzi’s opened in Sheffield in 2003", { exact: false }),
     ).toBeVisible();
     await expect(page.getByRole("button", { name: "Reload page" })).toHaveCount(0);
 });
@@ -44,7 +44,7 @@ test("a failed direct route remains recoverable and allows navigation away", asy
     await page.getByRole("link", { name: "Bragazzi's", exact: true }).click();
     await expect(page).toHaveURL("/");
     await expect(page.getByRole("button", { name: "Reload page" })).toHaveCount(0);
-    await expect(page.getByRole("heading", { name: "BRAGAZZI'S", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Bragazzi’s", exact: true })).toBeVisible();
 });
 
 test("failed 404 module provides a standalone recovery page", async ({ page }) => {
