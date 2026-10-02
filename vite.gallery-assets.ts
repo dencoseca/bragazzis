@@ -26,7 +26,7 @@ function getDifference(values: readonly string[], comparisonValues: ReadonlySet<
     return values.filter((value) => !comparisonValues.has(value)).sort();
 }
 
-export function assertGalleryImageFilenameParity(
+function assertGalleryImageFilenameParity(
     metadataFilenames: readonly string[],
     assetFilenames: readonly string[],
 ) {

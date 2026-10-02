@@ -15,7 +15,8 @@ application with multiple routes, built with **React 19**, **TypeScript**, and *
 - **Animation:** Motion (Framer Motion), Lenis (smooth scroll)
 - **SEO:** React 19 native document metadata
 - **Image Optimization:** vite-imagetools (build-time responsive AVIF/JPEG fallback generation via sharp)
-- **Visual Testing:** Playwright visual regression tests (Chromium only)
+- **Testing:** A small Vitest suite (via Vite+) covering routing and metadata, the mobile menu's focus handling, and
+  route-failure recovery
 
 ## Project Structure
 
@@ -100,7 +101,7 @@ src/
   hero uses it to widen its photograph from the grid margins to full-bleed through a `--photo-expansion` CSS variable.
 - **Reveal-on-enter** uses `useReveal` (`src/hooks/useReveal.ts`) with the `.reveal` class in `_motion.scss`: one shared
   `IntersectionObserver` sets `data-revealed="true"` once, and the movement is a CSS transition. Keep entrance motion in
-  CSS like this so reduced-motion preferences and Playwright's disabled animations both settle it deterministically.
+  CSS like this so reduced-motion preferences settle it without extra JavaScript.
 - **Typography** pairs Instrument Serif (display), Newsreader (text) and DM Mono (labels), defined in `_typography.scss`.
   The Home masthead and footer wordmark size themselves from the measured advance width of "Bragazzi’s" (0.32 × the grid
   width); re-measure if the wordmark text, typeface, or letter-spacing changes. Display copy uses typographic quotes and
@@ -110,26 +111,6 @@ src/
 - **Breakpoints** are owned by Sass tokens in `src/styles/_tokens.scss`; `vite.config.ts` injects their values at build
   time for `src/constants/breakpoints.ts`, so JavaScript never mirrors the numbers in TypeScript.
 
-## Visual Regression Troubleshooting
-
-- When `vp run test:visual` fails, do not update baselines automatically. Treat baseline updates as approval of an
-  intentional visual change.
-- Inspect the Playwright output in `test-results/` and `playwright-report/` to compare expected, actual, and diff
-  images.
-- Decide whether the difference is an intentional visual change or an unintended regression.
-- If it is a regression, fix the source code, styles, or assets and rerun `vp check --fix`, `vp test`, and
-  `vp run test:visual`.
-- If the visual change is intentional, update baselines with `vp run test:visual:update`, then review the changed PNGs
-  before committing them.
-- Do not loosen screenshot thresholds or add broad waits unless the failure is proven to be nondeterministic rendering
-  noise.
-- CI runs on Linux with centralized Chromium baselines. Local macOS runs may differ slightly, so CI diffs should be
-  treated as the source of truth when platform rendering differences appear.
-- `vp run test:visual` runs the complete local Playwright suite. CI uses `vp run test:visual:ci`, which excludes tests
-  tagged `@local-only` when their browser input emulation is not portable to Linux.
-- Do not commit `playwright-report/` or `test-results/`; only commit intentional baseline images under
-  `tests/visual/__screenshots__/`.
-
 ## Important Warnings
 
 - **Do NOT add `"use client"` directives.** This is not a Next.js project.
@@ -138,7 +119,7 @@ src/
   at build time by `vite-imagetools` using the named presets in `vite.imagetools.ts`.
 - **Keep bundle size in mind.** Lazy-load routes (already done in `App.tsx`) and avoid large eager imports.
 - **No default exports, except configuration files.** The project enforces named exports via linting, with explicit
-  exceptions for `vite.config.ts` and `playwright.config.ts`; preserve their default exports.
+  exception for `vite.config.ts`; preserve its default export.
 - **Keep AGENTS.md updated.** After finishing a task, update this file if any of your changes make its current content invalid or outdated.
 
 <!--VITE PLUS START-->
@@ -165,8 +146,7 @@ This project is using Vite+, a unified toolchain built on top of Vite, Rolldown,
   `vite-plus`, the `vite` alias, Vitest, pnpm catalogs/overrides, and peer dependency rules according to the
   current global `vp`.
 - After `vp migrate`, run `vp install`, `vp check`, `vp test`, and `vp run build`. The build script runs `tsc && vp build`
-  for full build validation. Run `vp run test:visual` when
-  changing layout, typography, imagery, animation, or scroll behavior.
+  for full build validation.
 - In Codex/non-TTY environments, if `vp migrate` updates files but its internal install fails with a pnpm
   confirmation prompt, rerun install with `env CI=true vp install --no-frozen-lockfile`.
 
@@ -179,7 +159,7 @@ When starting the local dev server in Codex, `vp dev --host 127.0.0.1` may fail 
 - [ ] Run `vp install` after pulling remote changes and before getting started.
 - [ ] Run `vp check` and `vp test` to format, lint, type check and test changes.
 - [ ] Run `vp run build` for the explicit TypeScript check and production build.
-- [ ] Run `vp run test:visual` when changing layout, typography, imagery, animation, or scroll behavior.
+- [ ] Check layout, typography, imagery, animation, or scroll changes in a browser at mobile, tablet, and desktop widths.
 - [ ] Check if there are tasks or `package.json` scripts necessary for validation, run via `vp run <script>`.
 
 - Docs: https://viteplus.dev/guide/

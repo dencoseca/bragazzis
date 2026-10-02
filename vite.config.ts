@@ -40,7 +40,6 @@ export default defineConfig({
         "*": "vp check --fix",
     },
     test: {
-        exclude: ["tests/visual/**"],
         setupFiles: ["./tests/setup.ts"],
     },
     lint: {
@@ -52,12 +51,6 @@ export default defineConfig({
         overrides: [
             {
                 files: ["vite.config.ts"],
-                rules: {
-                    "import/no-default-export": "off",
-                },
-            },
-            {
-                files: ["playwright.config.ts"],
                 rules: {
                     "import/no-default-export": "off",
                 },

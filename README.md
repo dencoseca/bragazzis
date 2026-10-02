@@ -69,23 +69,5 @@ Image imports use named presets configured in `vite.imagetools.ts` instead of lo
 - `?preset=editorial` for medium editorial and story images.
 - `?preset=fullWidth` for full-bleed hero/banner images.
 
-The imagetools cache lives at `node_modules/.cache/imagetools`. CI restores and saves that cache for both build checks
-and visual regression runs so repeated image transforms stay fast.
-
-## Visual Regression Tests
-
-Run the Chromium-only Playwright visual suite with:
-
-```sh
-vp run test:visual
-```
-
-The Playwright web server builds the production app with `vp run build` and serves it with `vp preview`, so screenshots are taken against production output rather than the Vite dev server. Baselines live in `tests/visual/__screenshots__`.
-
-When an intentional visual change is made, update baselines with:
-
-```sh
-vp run test:visual:update
-```
-
-The suite centralizes Chromium baselines instead of generating separate macOS and Linux snapshots. `playwright.config.ts` uses one Chromium project, `deviceScaleFactor: 1`, sRGB color, and Chromium font-rendering flags (`--font-render-hinting=none`, `--disable-font-subpixel-positioning`, and `--disable-lcd-text`) to reduce platform noise. Local macOS runs can still differ slightly from Linux CI, so the screenshot thresholds are intentionally tolerant of small antialiasing differences while still catching layout, typography, image composition, and scroll-state regressions. No requested rendering stability flags are currently omitted.
+The imagetools cache lives at `node_modules/.cache/imagetools`. CI restores and saves that cache for build checks so
+repeated image transforms stay fast.
