@@ -9,12 +9,14 @@
 @use "themes";
 // Utilities
 @use "utilities";
+@use "motion";
 // Fonts
 @use "typography";
 // Components
 @use "components/header";
 @use "components/footer";
 @use "components/menu";
+@use "components/opening-hours";
 @use "components/error-page";
 // Pages
 @use "pages/home";
@@ -23,6 +25,12 @@
 // ===============
 // General Styles
 // ===============
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
 img {
     max-width: 100%;
     height: auto;
@@ -34,14 +42,13 @@ html {
     /* Adjust font size */
     font-size: 100%;
     -webkit-text-size-adjust: 100%;
-    /* Font varient */
-    font-variant-ligatures: none;
-    -webkit-font-variant-ligatures: none;
+    font-kerning: normal;
     /* Smoothing */
     text-rendering: optimizeLegibility;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
     color: tokens.$color-ink;
+    background-color: tokens.$color-paper;
     width: 100%;
     margin: 0px;
     padding: 0px;
@@ -57,10 +64,35 @@ html {
 ::-webkit-scrollbar {
     display: none;
 }
+
+::selection {
+    color: tokens.$color-paper;
+    background-color: tokens.$color-rosso;
+}
+
+h1,
+h2,
+h3,
+p,
+figure,
+dl,
+dd {
+    margin: 0;
+}
+
+:focus-visible {
+    outline: 1px solid currentColor;
+    outline-offset: 0.3rem;
+}
+
 main {
     display: flow-root;
     color: var(--theme-content-color, tokens.$color-ink);
     background-color: var(--theme-background-color, tokens.$color-paper);
+
+    &:focus {
+        outline: none;
+    }
 }
 
 .layout__background {
@@ -69,7 +101,7 @@ main {
 
 .loading-fallback {
     min-height: 100vh;
-    background-color: var(--color-ink);
+    background-color: var(--color-paper);
 }
 @media (prefers-reduced-motion: reduce) {
     *,
@@ -79,6 +111,7 @@ main {
         animation-iteration-count: 1 !important;
         scroll-behavior: auto !important;
         transition-duration: 0.01ms !important;
+        transition-delay: 0s !important;
     }
 }
 
@@ -90,11 +123,14 @@ main {
     height: 1px;
     overflow: hidden;
     z-index: 10000;
-    padding: 1rem;
+    padding: 1rem 1.25rem;
     background: tokens.$color-ink;
     color: tokens.$color-paper;
     text-decoration: none;
-    font-size: 1rem;
+    font-family: tokens.$font-mono;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
 
     &:focus {
         position: fixed;

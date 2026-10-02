@@ -1,101 +1,140 @@
+@use "sass:map";
 @use "../tokens" as tokens;
 
-// Keep this scale aligned with GalleryImageSize in galleryImageMetadata.ts.
-$gallery-image-sizes: 40, 45, 50, 55, 60, 65, 70;
+// Keep these placements aligned with galleryImagePlacements in galleryImageMetadata.ts.
+$gallery-placements: (
+    "full": (
+        desktop: "1 / -1",
+        mobile: "1 / -1",
+    ),
+    "wide-left": (
+        desktop: "1 / 8",
+        mobile: "1 / 6",
+    ),
+    "wide-right": (
+        desktop: "6 / 13",
+        mobile: "2 / 7",
+    ),
+    "centre": (
+        desktop: "3 / 11",
+        mobile: "1 / -1",
+    ),
+    "half-left": (
+        desktop: "1 / 7",
+        mobile: "1 / 6",
+    ),
+    "half-right": (
+        desktop: "7 / 13",
+        mobile: "2 / 7",
+    ),
+    "narrow-left": (
+        desktop: "2 / 6",
+        mobile: "1 / 4",
+    ),
+    "narrow-right": (
+        desktop: "9 / 13",
+        mobile: "4 / 7",
+    ),
+);
 
-@keyframes ilgiorno-image-reveal {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
+.ilgiorno__opening {
+    @include tokens.grid;
+    row-gap: clamp(1.5rem, 3vw, 2.5rem);
+    padding-top: calc(var(--header-height) + clamp(1.5rem, 5vw, 5rem));
 }
 
 .ilgiorno__title {
-    padding: 8vw 0 0;
-    color: tokens.$color-paper;
+    grid-column: 1 / -1;
+}
+
+.ilgiorno__standfirst {
+    grid-column: 1 / 7;
+    font-style: italic;
 
     @media (max-width: tokens.$breakpoint-mobile) {
-        padding-top: 20vw;
+        grid-column: 1 / -1;
     }
 }
 
 .ilgiorno__gallery {
-    display: flex;
-    flex-direction: column;
-    margin-top: 8vw;
-    margin-bottom: 5vw;
+    @include tokens.grid;
+    align-items: start;
+    row-gap: clamp(3.5rem, 9vw, 10rem);
+    padding-block: clamp(3.5rem, 8vw, 8rem) var(--section-space);
 
     @media (max-width: tokens.$breakpoint-mobile) {
-        margin-bottom: 10vw;
-    }
-
-    // =====================
-    // General Image Styles
-    // =====================
-    .ilgiorno__gallery-image {
-        display: block;
-        margin: 5vw;
-
-        @media (max-width: tokens.$breakpoint-mobile) {
-            margin: 0;
-            margin-top: 2vw;
-        }
-
-        &:nth-of-type(odd) {
-            align-self: flex-end;
-        }
-
-        &:nth-of-type(3n - 1) {
-            margin-left: 0vw;
-            margin-right: 0vw;
-        }
-
-        img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        &[data-image-loaded="true"] img {
-            animation: ilgiorno-image-reveal 0.2s ease both;
-        }
-    }
-
-    // ===================
-    // Image Size Classes
-    // ===================
-    @each $size in $gallery-image-sizes {
-        .ilgiorno__gallery-image[data-size="#{$size}"] {
-            width: #{$size}vw;
-        }
-    }
-
-    .ilgiorno__gallery-image[data-size] {
-        @media (max-width: tokens.$breakpoint-mobile) {
-            width: 100%;
-        }
+        row-gap: clamp(2.5rem, 12vw, 4rem);
     }
 }
 
 .ilgiorno__caption {
-    color: tokens.$color-paper;
+    align-self: end;
+    font-family: tokens.$font-display;
+    font-size: clamp(3.5rem, 8vw, 9rem);
+    font-style: italic;
+    letter-spacing: -0.01em;
+    line-height: 0.85;
 }
 
 .ilgiorno__caption--aperto {
-    margin-bottom: 2vw;
+    grid-column: 1 / 6;
 
     @media (max-width: tokens.$breakpoint-mobile) {
-        margin-bottom: 8vw;
+        grid-column: 1 / -1;
     }
 }
 
 .ilgiorno__caption--chiuso {
-    margin-top: 5vw;
+    grid-column: 8 / 13;
+    text-align: right;
 
     @media (max-width: tokens.$breakpoint-mobile) {
-        margin-top: 20vw;
+        grid-column: 1 / -1;
+        text-align: left;
     }
+}
+
+.ilgiorno__figure {
+    @each $placement, $columns in $gallery-placements {
+        &[data-placement="#{$placement}"] {
+            grid-column: #{map.get($columns, desktop)};
+
+            @media (max-width: tokens.$breakpoint-mobile) {
+                grid-column: #{map.get($columns, mobile)};
+            }
+        }
+    }
+
+    // The second photograph of a pair settles lower than the first.
+    &[data-placement="half-right"],
+    &[data-placement="narrow-right"] {
+        align-self: end;
+        margin-top: clamp(2rem, 9vw, 11rem);
+    }
+
+    // Full-width photographs run to the edges of the screen.
+    &[data-placement="full"] {
+        margin-inline: calc(-1 * var(--grid-margin));
+
+        .ilgiorno__index {
+            padding-inline: var(--grid-margin);
+        }
+    }
+}
+
+.ilgiorno__gallery-image {
+    display: block;
+    background-color: var(--theme-placeholder-color);
+
+    img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+}
+
+.ilgiorno__index {
+    display: block;
+    margin-top: 0.75rem;
+    color: var(--theme-muted-color);
 }

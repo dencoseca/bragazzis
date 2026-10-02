@@ -6,110 +6,89 @@
     left: 0;
     z-index: 999;
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    padding: 3vw;
-    font-size: clamp(0.875rem, 1vw, 1.125rem);
-    font-weight: 400;
-    line-height: 1.1;
-    color: var(--theme-content-color, tokens.$color-paper);
+    height: var(--header-height);
+    padding-inline: var(--grid-margin);
+    color: var(--theme-content-color, tokens.$color-ink);
 
     &[data-menu-open="true"] {
         position: fixed;
     }
+}
 
-    @media (max-width: tokens.$breakpoint-tablet) {
-        padding: 5vw;
-        font-size: clamp(0.875rem, 1.5vw, 1.125rem);
-    }
+.header__logo {
+    display: block;
+    width: clamp(2rem, 2.6vw, 2.75rem);
+    color: inherit;
 
-    .header__tag {
-        text-transform: uppercase;
-        color: currentColor;
-
-        @media (max-width: tokens.$breakpoint-mobile) {
-            display: none;
-        }
-    }
-
-    .header__logo-wrapper {
-        width: 70px;
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        top: 2vw;
-
-        @media (max-width: tokens.$breakpoint-tablet) {
-            width: 50px;
-            top: 2.5vw;
-        }
-
-        @media (max-width: tokens.$breakpoint-mobile) {
-            position: relative;
-            width: 40px;
-            transform: translateX(0);
-            left: 0;
-            top: 0;
-        }
-
-        a {
-            color: inherit;
-        }
-    }
-
-    .header__link {
-        position: relative;
-        display: inline-block;
-        text-decoration: none;
-        color: currentColor;
-        text-transform: uppercase;
-
-        &:first-of-type {
-            margin-right: 3vw;
-        }
-
-        &:after {
-            content: "";
-            position: absolute;
-            height: 1px;
-            width: 0;
-            display: block;
-            margin-top: 0.3vw;
-            right: 0;
-            background-color: currentColor;
-            transition: 0.4s ease;
-        }
-
-        &:hover {
-            &:after {
-                width: 100%;
-                left: 0;
-                background-color: currentColor;
-            }
-        }
-
-        @media (max-width: tokens.$breakpoint-mobile) {
-            display: none;
-        }
+    svg {
+        display: block;
     }
 }
 
-.header__mobile-menu-button {
+.header__nav {
+    display: flex;
+    align-items: center;
+    gap: clamp(1.25rem, 2.4vw, 2.75rem);
+
+    @media (max-width: tokens.$breakpoint-mobile) {
+        display: none;
+    }
+}
+
+// A small dot marks the current page; hovering previews it in the text colour.
+.header__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    padding-block: 0.5rem;
+    color: inherit;
+    text-decoration: none;
+
+    &::before {
+        content: "";
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background-color: currentColor;
+        scale: 0;
+        transition: scale 0.5s tokens.$ease-out;
+    }
+
+    &:hover::before,
+    &:focus-visible::before {
+        scale: 0.7;
+    }
+
+    &[aria-current="page"]::before {
+        background-color: var(--theme-accent-color);
+        scale: 1;
+    }
+}
+
+.header__link--visit {
+    padding-left: clamp(1.25rem, 2.4vw, 2.75rem);
+    border-left: 1px solid var(--theme-rule-color);
+}
+
+.header__menu-button {
     display: none;
-    width: 30px;
+    position: relative;
+    min-width: 4rem;
+    padding: 0.75rem 0;
+    overflow: hidden;
+    color: inherit;
     background: none;
     border: none;
-    color: inherit;
-    padding: 0;
     cursor: pointer;
 
     @media (max-width: tokens.$breakpoint-mobile) {
-        display: block;
+        display: inline-flex;
+        justify-content: flex-end;
     }
+}
 
-    .header__mobile-menu-line {
-        height: 1px;
-        background-color: currentColor;
-        width: 100%;
-        margin: 10px 0;
-    }
+.header__menu-label {
+    display: block;
 }

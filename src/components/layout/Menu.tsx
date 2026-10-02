@@ -2,46 +2,37 @@ import { motion } from "motion/react";
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
-import { menuSlideTransition } from "@/constants/animations";
-import { menuNavRoutes } from "@/constants/routes";
+import { OpeningHours } from "@/components/OpeningHours";
+import { menuExitTransition, menuTransition } from "@/constants/animations";
+import { siteNavRoutes } from "@/constants/routes";
+import { siteConfig } from "@/constants/siteConfig";
 import type { ThemeName } from "@/constants/themes";
 
 const menuVariants = {
     closed: {
-        translateX: "-100%",
-        overflow: "visible" as const,
-        transition: {
-            ...menuSlideTransition,
-            duration: 0.4,
-        },
+        clipPath: "inset(0% 0% 100% 0%)",
+        transition: menuExitTransition,
     },
     open: {
-        translateX: "0%",
-        overflow: "hidden" as const,
+        clipPath: "inset(0% 0% 0% 0%)",
         transition: {
-            ...menuSlideTransition,
-            staggerChildren: 0.15,
-            delayChildren: 0.1,
+            ...menuTransition,
+            staggerChildren: 0.07,
+            delayChildren: 0.15,
         },
     },
 };
 
-const linkVariants = {
+const itemVariants = {
     closed: {
         opacity: 0,
-        translateX: -200,
-        transition: {
-            ...menuSlideTransition,
-            duration: 0.4,
-        },
+        y: 24,
+        transition: menuExitTransition,
     },
     open: {
         opacity: 1,
-        translateX: 0,
-        transition: {
-            ...menuSlideTransition,
-            duration: 0.5,
-        },
+        y: 0,
+        transition: menuTransition,
     },
 };
 
@@ -53,6 +44,7 @@ interface MenuProps {
 
 export function Menu({ id, theme, onNavigate }: MenuProps) {
     const firstLinkRef = useRef<HTMLAnchorElement>(null);
+    const { address } = siteConfig.business;
 
     useEffect(() => {
         firstLinkRef.current?.focus();
@@ -71,18 +63,33 @@ export function Menu({ id, theme, onNavigate }: MenuProps) {
             exit="closed"
             variants={menuVariants}
         >
-            {menuNavRoutes.map((route) => (
-                <motion.div key={route.path} className="menu__link-wrapper" variants={linkVariants}>
-                    <Link
-                        className="menu__link text--menu-link"
-                        to={route.path}
-                        onClick={onNavigate}
-                        ref={route === menuNavRoutes[0] ? firstLinkRef : undefined}
+            <div className="menu__links">
+                {siteNavRoutes.map((route, index) => (
+                    <motion.div
+                        key={route.path}
+                        className="menu__link-wrapper"
+                        variants={itemVariants}
                     >
-                        {route.label}
-                    </Link>
-                </motion.div>
-            ))}
+                        <Link
+                            className="menu__link"
+                            to={route.path}
+                            onClick={onNavigate}
+                            ref={index === 0 ? firstLinkRef : undefined}
+                        >
+                            <span className="menu__link-index text--label" aria-hidden="true">
+                                {String(index + 1).padStart(2, "0")}
+                            </span>
+                            <span className="menu__link-label">{route.label}</span>
+                        </Link>
+                    </motion.div>
+                ))}
+            </div>
+            <motion.div className="menu__details text--label" variants={itemVariants}>
+                <a className="text-link" href={address.mapsUrl} target="_blank" rel="noreferrer">
+                    {address.streetAddress}, {address.addressLocality}
+                </a>
+                <OpeningHours />
+            </motion.div>
         </motion.nav>
     );
 }

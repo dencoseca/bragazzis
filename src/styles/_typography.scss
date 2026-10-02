@@ -3,115 +3,129 @@
 // Display
 // ===============
 @font-face {
-    font-family: "Abril Fatface";
-    src: url("@/assets/fonts/AbrilFatface-Regular.ttf");
-    font-display: swap;
-}
-// ===============
-// Main text
-// ===============
-// Josefin Sans
-@font-face {
-    font-family: "Josefin Sans";
-    src: url("@/assets/fonts/JosefinSans-Light.ttf");
-    font-weight: 300;
+    font-family: "Instrument Serif";
+    src: url("@/assets/fonts/InstrumentSerif-Regular.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 400;
     font-display: swap;
 }
 @font-face {
-    font-family: "Josefin Sans";
-    src: url("@/assets/fonts/JosefinSans-Regular.ttf");
+    font-family: "Instrument Serif";
+    src: url("@/assets/fonts/InstrumentSerif-Italic.woff2") format("woff2");
+    font-style: italic;
+    font-weight: 400;
+    font-display: swap;
+}
+// ===============
+// Text
+// ===============
+@font-face {
+    font-family: "Newsreader";
+    src: url("@/assets/fonts/Newsreader-Text.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 400 500;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Newsreader";
+    src: url("@/assets/fonts/Newsreader-TextItalic.woff2") format("woff2");
+    font-style: italic;
+    font-weight: 400;
+    font-display: swap;
+}
+// ===============
+// Labels
+// ===============
+@font-face {
+    font-family: "DM Mono";
+    src: url("@/assets/fonts/DMMono-Regular.woff2") format("woff2");
+    font-style: normal;
     font-weight: 400;
     font-display: swap;
 }
 // ===================
 // Global text styles
 // ===================
-// Display
-.text--page-title {
+// "Bragazzi’s" advances 3.12em, so this font size sets the wordmark across the full grid.
+.text--masthead {
     font-family: tokens.$font-display;
-    font-size: clamp(5.5rem, 16.5vw, 20rem);
+    font-size: calc((100vw - 2 * var(--grid-margin)) * 0.32);
     font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 0.8;
     margin: 0;
-    text-align: center;
-    text-transform: uppercase;
+}
+.text--title {
+    font-family: tokens.$font-display;
+    font-size: clamp(4.5rem, 17vw, 22rem);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 0.82;
+    margin: 0;
 
     @media (max-width: tokens.$breakpoint-mobile) {
-        font-size: clamp(3.25rem, 15vw, 7rem);
+        font-size: 25vw;
     }
 }
 .text--display {
     font-family: tokens.$font-display;
-    font-size: clamp(2.75rem, 4vw, 8rem);
-    text-align: center;
+    font-size: clamp(2.5rem, 5.4vw, 6.5rem);
+    font-weight: 400;
+    letter-spacing: -0.012em;
+    line-height: 1;
+    text-wrap: balance;
 
     @media (max-width: tokens.$breakpoint-mobile) {
-        font-size: clamp(2.25rem, 8.5vw, 4.25rem);
+        font-size: clamp(2.25rem, 10.5vw, 3.5rem);
+        line-height: 1.02;
     }
 }
-// Copy
-.text--sm {
-    font-size: clamp(0.875rem, 1vw, 1.125rem);
-    font-weight: 300;
-
-    @media (max-width: tokens.$breakpoint-tablet) {
-        font-size: clamp(0.875rem, 1.4vw, 1.125rem);
-    }
-
-    @media (max-width: tokens.$breakpoint-mobile) {
-        font-size: clamp(1rem, 3.2vw, 1.25rem);
-    }
-}
-.text--md {
-    font-weight: 300;
-    font-size: clamp(1rem, 1.2vw, 1.375rem);
-    line-height: 1.45;
-
-    @media (max-width: tokens.$breakpoint-tablet) {
-        font-size: clamp(0.9375rem, 1.6vw, 1.25rem);
-    }
-
-    @media (max-width: tokens.$breakpoint-mobile) {
-        font-size: clamp(1rem, 4vw, 1.375rem);
-        line-height: 1.5;
-    }
-}
-.text--lg {
-    font-weight: 300;
-    font-size: clamp(1.25rem, 2vw, 2.75rem);
-    line-height: 1.3;
-
-    @media (max-width: tokens.$breakpoint-tablet) {
-        font-size: clamp(1.125rem, 1.6vw, 1.75rem);
-    }
-
-    @media (max-width: tokens.$breakpoint-mobile) {
-        font-size: clamp(1rem, 4vw, 1.375rem);
-        line-height: 1.5;
-    }
-}
-.text--initial {
-    display: inline-block;
+.text--heading {
     font-family: tokens.$font-display;
-    font-size: clamp(3rem, 6vw, 7rem);
-    line-height: 0;
-    color: tokens.$color-ink;
-    vertical-align: -0.06em;
+    font-size: clamp(2.5rem, 4.4vw, 5rem);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 0.98;
 
     @media (max-width: tokens.$breakpoint-mobile) {
-        font-size: clamp(2.5rem, 8vw, 4.5rem);
+        font-size: clamp(2.5rem, 12vw, 3.25rem);
     }
 }
-// Links
-.text--heading-sm {
+.text--lead {
     font-family: tokens.$font-display;
-    font-size: clamp(1rem, 1.25vw, 1.5rem);
+    font-size: clamp(1.625rem, 2.5vw, 2.875rem);
+    font-weight: 400;
+    line-height: 1.14;
+    text-wrap: pretty;
 
     @media (max-width: tokens.$breakpoint-mobile) {
-        font-size: clamp(1.375rem, 4.5vw, 2rem);
+        font-size: clamp(1.625rem, 7vw, 2rem);
+        line-height: 1.16;
     }
 }
-.text--menu-link {
-    font-family: tokens.$font-display;
+.text--body {
+    font-family: tokens.$font-text;
+    font-size: clamp(1.0625rem, 1.2vw, 1.3125rem);
+    line-height: 1.55;
+    text-wrap: pretty;
+
+    p {
+        margin: 0;
+    }
+
+    p + p {
+        margin-top: 1em;
+    }
+}
+.text--label {
+    font-family: tokens.$font-mono;
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    line-height: 1.5;
     text-transform: uppercase;
-    font-size: clamp(3rem, 12vw, 14rem);
+
+    @media (max-width: tokens.$breakpoint-mobile) {
+        font-size: 0.6875rem;
+    }
 }

@@ -1,25 +1,31 @@
 /**
- * Shared animation transition presets used across components.
+ * Shared animation transition presets used across components. Every curve decelerates without
+ * overshoot; nothing bounces.
  *
- * - `smoothTransition` — page-level entrance animations (HomeHero, LaStoria)
- * - `quickTransition` — shorter UI transitions (Header hamburger toggle)
- * - `menuSlideTransition` — menu slide/link animations (Menu)
+ * - `introTransition` — slow page-level entrances (HomeHero)
+ * - `quickTransition` — short UI state changes (Header menu label)
+ * - `menuTransition` — the mobile menu sheet and its links (Menu)
  */
 
-const SMOOTH_EASE: [number, number, number, number] = [0.43, 0.13, 0.13, 0.96];
-const MENU_EASE: [number, number, number, number] = [0.13, 0.43, 0.45, 0.96];
+const EASE_OUT: [number, number, number, number] = [0.16, 1, 0.3, 1];
+const EASE_IN_OUT: [number, number, number, number] = [0.65, 0, 0.35, 1];
 
-export const smoothTransition = {
-    duration: 1.1,
-    ease: SMOOTH_EASE,
+export const introTransition = {
+    duration: 1.6,
+    ease: EASE_OUT,
 };
 
 export const quickTransition = {
-    duration: 0.6,
-    ease: SMOOTH_EASE,
+    duration: 0.4,
+    ease: EASE_IN_OUT,
 };
 
-export const menuSlideTransition = {
-    duration: 0.6,
-    ease: MENU_EASE,
+export const menuTransition = {
+    duration: 0.9,
+    ease: EASE_OUT,
+};
+
+export const menuExitTransition = {
+    duration: 0.5,
+    ease: EASE_IN_OUT,
 };

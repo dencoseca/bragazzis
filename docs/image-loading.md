@@ -46,7 +46,8 @@ before they enter the viewport. This single paired run demonstrates request
 deferral, not an LCP, bandwidth, or general page-speed improvement. Small absolute
 timing differences between runs should not be interpreted as performance gains.
 
-To reproduce, run `vp run build` and `vp preview --host 127.0.0.1 --port 4173`,
+Playwright is no longer a project dependency, so install `@playwright/test` temporarily to reproduce.
+Run `vp run build` and `vp preview --host 127.0.0.1 --port 4173`,
 then run the following with `node --input-type=module` from the repository root
 for each revision. Stop the preview before changing builds.
 

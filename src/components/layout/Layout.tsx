@@ -14,7 +14,6 @@ interface LayoutProps {
     pageTitle: string;
     description: string;
     theme: ThemeName;
-    headerTheme?: ThemeName;
     scrollToTopBehavior?: ScrollBehavior;
 }
 
@@ -23,7 +22,6 @@ export function Layout({
     pageTitle,
     description,
     theme: pageTheme,
-    headerTheme = pageTheme,
     scrollToTopBehavior = "smooth",
 }: LayoutProps) {
     const location = useLocation();
@@ -40,7 +38,7 @@ export function Layout({
             <PageMeta pageTitle={pageTitle} description={description} canonicalUrl={canonicalUrl} />
             <SiteNavigation
                 backgroundContentRef={backgroundContentRef}
-                theme={headerTheme}
+                theme={pageTheme}
                 menuTheme={themeNames.dark}
             />
             <div className="layout__background" ref={backgroundContentRef}>
@@ -50,7 +48,10 @@ export function Layout({
                 <main id="main-content" tabIndex={-1} data-theme={pageTheme}>
                     {children}
                 </main>
-                <Footer theme={pageTheme} scrollToTopBehavior={resolvedScrollToTopBehavior} />
+                <Footer
+                    theme={themeNames.accent}
+                    scrollToTopBehavior={resolvedScrollToTopBehavior}
+                />
             </div>
         </>
     );

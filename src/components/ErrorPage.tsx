@@ -1,6 +1,7 @@
 import type { ReactNode, Ref } from "react";
 import { Link } from "react-router-dom";
 
+import { BrandMark } from "@/components/BrandMark";
 import { publicPageRoutes } from "@/constants/routes";
 import { siteConfig } from "@/constants/siteConfig";
 
@@ -32,14 +33,15 @@ export function ErrorPage({
         >
             {children}
             <Link to={publicPageRoutes.home.path} className="error-page__logo">
-                {siteConfig.business.name}
+                <BrandMark />
+                <span className="visually-hidden">{siteConfig.business.name}</span>
             </Link>
             <div className="error-page__content">
-                <h1>{title}</h1>
+                <h1 className="error-page__title">{title}</h1>
                 <p className="error-page__headline">{headline}</p>
                 <p className="error-page__message">{message}</p>
+                {action}
             </div>
-            {action}
         </main>
     );
 }

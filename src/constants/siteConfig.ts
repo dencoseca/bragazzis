@@ -3,6 +3,11 @@ type ExternalLink = {
     url: string;
 };
 
+type OpeningHoursDisplay = {
+    days: string;
+    hours: string;
+};
+
 type OpeningHoursSpecification = {
     "@type": "OpeningHoursSpecification";
     dayOfWeek: string[];
@@ -27,7 +32,7 @@ export const siteConfig = {
             international: "+44 114 258 1483",
         },
         address: {
-            streetAddress: "224-228 Abbeydale Road",
+            streetAddress: "224–228 Abbeydale Road",
             addressLocality: "Sheffield",
             addressRegion: "South Yorkshire",
             postalCode: "S7 1FL",
@@ -40,7 +45,11 @@ export const siteConfig = {
         logo: `${SITE_ORIGIN}/favicon.svg`,
     },
     openingHours: {
-        display: ["Mon – Thur: 9:00 AM – 3:00 PM", "Fri – Sat: 9:00 AM – 4:15 PM", "Sun: Closed"],
+        display: [
+            { days: "Mon – Thur", hours: "9:00 – 15:00" },
+            { days: "Fri – Sat", hours: "9:00 – 16:15" },
+            { days: "Sun", hours: "Closed" },
+        ] satisfies OpeningHoursDisplay[],
         schema: [
             {
                 "@type": "OpeningHoursSpecification",

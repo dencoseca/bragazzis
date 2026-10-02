@@ -1,125 +1,141 @@
 @use "../tokens" as tokens;
 .footer {
-    color: var(--theme-content-color, tokens.$color-ink);
-    background-color: var(--theme-background-color, tokens.$color-paper);
+    @include tokens.grid;
+    row-gap: clamp(3.5rem, 7vw, 7rem);
+    padding-top: clamp(4.5rem, 9vw, 9rem);
+    color: var(--theme-content-color, tokens.$color-paper);
+    background-color: var(--theme-background-color, tokens.$color-rosso);
 
-    // ====================
-    // General List Styles
-    // ====================
-    .footer__lists {
+    &:focus {
+        outline: none;
+    }
+
+    ul {
         display: grid;
-        grid-template-columns: 1fr 1.2fr 1fr;
-        column-gap: clamp(1.5rem, 5vw, 6rem);
-        padding: 3vw 6vw 2vw;
-
-        @media (max-width: tokens.$breakpoint-mobile) {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 10vw;
-        }
-
-        .footer__list {
-            min-width: 0;
-
-            // The footer layout was designed around the browser default h4 spacing.
-            h2 {
-                margin-block: 1.33em;
-            }
-
-            @media (max-width: tokens.$breakpoint-mobile) {
-                width: 100%;
-            }
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-
-            li {
-                margin-bottom: 1vw;
-
-                @media (max-width: tokens.$breakpoint-mobile) {
-                    margin-bottom: 3.4vw;
-                }
-
-                p {
-                    margin: 0;
-                    margin-bottom: 0.2vw;
-
-                    @media (max-width: tokens.$breakpoint-mobile) {
-                        margin-bottom: 1vw;
-                    }
-                }
-            }
-        }
-
-        // =====================
-        // Specific List Styles
-        // =====================
-        .footer__list--site {
-            text-align: center;
-        }
-
-        .footer__list--community {
-            text-align: right;
-        }
-
-        .footer__list--contact,
-        .footer__list--site,
-        .footer__list--community {
-            @media (max-width: tokens.$breakpoint-mobile) {
-                text-align: center;
-            }
-        }
-    }
-
-    .footer__scroll-to-top {
-        display: flex;
-        justify-content: center;
-        width: 100%;
-        background: none;
-        border: none;
-        color: inherit;
+        gap: 0.65rem;
+        margin: 0;
         padding: 0;
-        padding-bottom: 3vw;
-
-        @media (max-width: tokens.$breakpoint-tablet) {
-            transform: scale(0.9);
-        }
-
-        @media (max-width: tokens.$breakpoint-mobile) {
-            padding-bottom: 10vw;
-        }
-
-        svg {
-            cursor: pointer;
-        }
+        list-style: none;
     }
 
-    .footer__link {
-        position: relative;
-        display: inline-block;
-        text-decoration: none;
-        color: currentColor;
+    a {
+        color: inherit;
+    }
+}
 
-        &:after {
-            content: "";
-            position: absolute;
-            height: 1px;
-            width: 0;
-            display: block;
-            margin-top: 2px;
-            right: 0;
-            background-color: currentColor;
-            transition: 0.4s ease;
-        }
+.footer__label {
+    margin: 0 0 1.25rem;
+    color: var(--theme-muted-color);
+    font-weight: 400;
+}
 
-        &:hover {
-            &:after {
-                width: 100%;
-                left: 0;
-                background-color: currentColor;
-            }
-        }
+.footer__visit {
+    grid-column: 1 / 8;
+
+    @media (max-width: tokens.$breakpoint-tablet) {
+        grid-column: 1 / 9;
+    }
+
+    @media (max-width: tokens.$breakpoint-mobile) {
+        grid-column: 1 / -1;
+    }
+}
+
+.footer__address {
+    display: block;
+    text-decoration: none;
+
+    > span:not(.footer__directions) {
+        display: block;
+    }
+}
+
+.footer__directions {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    margin-top: 1.75rem;
+    padding-bottom: 0.2rem;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1px;
+    transition: background-size 0.6s tokens.$ease-out;
+
+    .footer__address:hover &,
+    .footer__address:focus-visible & {
+        background-size: 100% 1px;
+    }
+}
+
+.footer__hours {
+    grid-column: 9 / 13;
+    align-self: end;
+
+    @media (max-width: tokens.$breakpoint-tablet) {
+        grid-column: 9 / 13;
+    }
+
+    @media (max-width: tokens.$breakpoint-mobile) {
+        grid-column: 1 / -1;
+    }
+}
+
+.footer__lists {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+    row-gap: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--theme-rule-color);
+}
+
+.footer__list {
+    grid-column: span 4;
+
+    @media (max-width: tokens.$breakpoint-mobile) {
+        grid-column: 1 / -1;
+    }
+}
+
+.footer__base {
+    display: grid;
+    grid-column: 1 / -1;
+    row-gap: clamp(1.5rem, 3vw, 3rem);
+}
+
+// The wordmark sits on the bottom edge of the page with its descender cropped.
+.footer__wordmark {
+    --wordmark-size: calc((100vw - 2 * var(--grid-margin)) * 0.32);
+    height: calc(var(--wordmark-size) * 0.74);
+    margin: 0;
+    overflow: hidden;
+    font-family: tokens.$font-display;
+    font-size: var(--wordmark-size);
+    letter-spacing: -0.02em;
+    line-height: 0.8;
+    white-space: nowrap;
+    user-select: none;
+}
+
+.footer__top {
+    grid-row: 1;
+    justify-self: end;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    padding: 0.5rem 0;
+    color: inherit;
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    .arrow-icon {
+        transition: translate 0.6s tokens.$ease-out;
+    }
+
+    &:hover .arrow-icon,
+    &:focus-visible .arrow-icon {
+        translate: 0 -0.2em;
     }
 }

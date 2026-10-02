@@ -1,88 +1,188 @@
 @use "../tokens" as tokens;
-.lastoria__title-wrapper {
-    position: relative;
+
+.lastoria {
+    padding-bottom: var(--section-space);
+}
+
+.lastoria__opening {
+    @include tokens.grid;
+    row-gap: clamp(1.5rem, 3vw, 2.5rem);
+    padding-top: calc(var(--header-height) + clamp(1.5rem, 5vw, 5rem));
+}
+
+.lastoria__kicker {
+    grid-column: 1 / -1;
+    padding-bottom: 1.1rem;
+    color: var(--theme-accent-color);
+    border-bottom: 1px solid var(--theme-rule-color);
 }
 
 .lastoria__title {
-    padding: 8vw 0 0;
-    position: relative;
-    z-index: 1;
+    grid-column: 1 / -1;
+}
+
+.lastoria__standfirst {
+    grid-column: 5 / 12;
+    margin-top: clamp(1.5rem, 5vw, 5rem);
+
+    em {
+        font-style: italic;
+    }
+
+    @media (max-width: tokens.$breakpoint-tablet) {
+        grid-column: 3 / 13;
+    }
 
     @media (max-width: tokens.$breakpoint-mobile) {
-        padding-top: 20vw;
+        grid-column: 1 / -1;
     }
 }
 
-.lastoria__story {
-    margin: 10vw 20vw 4vw;
-    text-align: center;
+.lastoria__chapter {
+    @include tokens.grid;
+    align-items: start;
+    padding-top: clamp(5rem, 12vw, 12rem);
 
     @media (max-width: tokens.$breakpoint-mobile) {
-        margin: 10vw;
+        row-gap: 1.5rem;
+    }
+}
+
+.lastoria__place {
+    grid-column: 1 / 4;
+    grid-row: 1;
+    padding-top: 0.9rem;
+    color: var(--theme-accent-color);
+    border-top: 1px solid var(--theme-rule-color);
+
+    @media (max-width: tokens.$breakpoint-mobile) {
+        grid-column: 1 / -1;
+    }
+}
+
+.lastoria__text {
+    grid-column: 5 / 10;
+    grid-row: 1;
+    font-size: clamp(1.1875rem, 1.45vw, 1.5rem);
+
+    // A drop capital opens each chapter.
+    p:first-child::first-letter {
+        float: left;
+        padding: 0.08em 0.1em 0 0;
+        font-family: tokens.$font-display;
+        font-size: 4.4em;
+        line-height: 0.74;
+        color: var(--theme-accent-color);
     }
 
-    p {
-        position: relative;
-        z-index: 1;
-        width: min(45rem, 45vw);
-        margin: 3vw auto;
+    @media (max-width: tokens.$breakpoint-tablet) {
+        grid-column: 5 / 12;
+    }
 
-        @media (max-width: tokens.$breakpoint-mobile) {
-            width: 80vw;
+    @media (max-width: tokens.$breakpoint-mobile) {
+        grid-column: 1 / -1;
+        grid-row: 2;
+    }
+}
+
+.lastoria__ticket-track {
+    grid-row: 1;
+
+    .lastoria__chapter--right & {
+        grid-column: 10 / 13;
+        margin-top: clamp(2rem, 6vw, 6rem);
+    }
+
+    .lastoria__chapter--left & {
+        grid-column: 1 / 5;
+        margin-top: clamp(5rem, 12vw, 12rem);
+    }
+
+    @media (max-width: tokens.$breakpoint-tablet) {
+        .lastoria__chapter--right & {
+            grid-column: 5 / 10;
+            grid-row: 2;
+            margin-top: 3rem;
+        }
+
+        .lastoria__chapter--left & {
+            grid-column: 1 / 5;
+            margin-top: 6rem;
         }
     }
 
-    .lastoria__story-line {
-        position: relative;
-        width: 1px;
-        height: 15vw;
-        background-color: #aaa;
-        margin: 0 auto;
+    @media (max-width: tokens.$breakpoint-mobile) {
+        grid-row: 3;
+        margin-top: 1.5rem;
 
-        @media (max-width: tokens.$breakpoint-mobile) {
-            height: clamp(6.25rem, 26vw, 13rem);
-        }
-    }
-
-    .lastoria__ticket {
-        position: absolute;
-        top: 0;
-        width: 30vw;
-        pointer-events: none;
-
-        @media (max-width: tokens.$breakpoint-mobile) {
-            top: clamp(1.25rem, 5.5vw, 2.5rem);
-            width: clamp(7rem, 30vw, 12rem);
+        .lastoria__chapter--right & {
+            grid-column: 2 / 7;
+            grid-row: 3;
+            margin-top: 1.5rem;
         }
 
-        img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        &.lastoria__ticket--left {
-            left: -55vw;
-        }
-
-        &.lastoria__ticket--right {
-            left: 25vw;
+        .lastoria__chapter--left & {
+            grid-column: 1 / 6;
+            margin-top: 1.5rem;
         }
     }
 }
 
-.lastoria__image {
-    margin: 0 auto;
-    width: 50vw;
+// Scanned tickets, set down on the page at a slight angle.
+.lastoria__ticket {
+    rotate: var(--ticket-rotate);
+    box-shadow: 0 1.75rem 3rem -2rem rgb(27 23 19 / 55%);
 
     img {
+        display: block;
         width: 100%;
         height: auto;
-        display: block;
     }
 
-    @media (max-width: tokens.$breakpoint-mobile) {
-        width: 100%;
-        margin-bottom: 10vw;
+    &.reveal {
+        rotate: calc(var(--ticket-rotate) * 2.5);
+        translate: 0 3rem;
+        transition:
+            opacity 1.2s tokens.$ease-out,
+            translate 1.8s tokens.$ease-out,
+            rotate 2.2s tokens.$ease-out;
+    }
+
+    &.reveal[data-revealed="true"] {
+        rotate: var(--ticket-rotate);
+        translate: 0 0;
+    }
+}
+
+.lastoria__ticket--right {
+    --ticket-rotate: 4deg;
+}
+
+.lastoria__ticket--left {
+    --ticket-rotate: -5deg;
+}
+
+.lastoria__figure {
+    @include tokens.grid;
+    margin-top: clamp(6rem, 14vw, 14rem);
+
+    .media-frame {
+        grid-column: 3 / 11;
+        aspect-ratio: 1;
+
+        @media (max-width: tokens.$breakpoint-mobile) {
+            grid-column: 1 / -1;
+            margin-inline: calc(-1 * var(--grid-margin));
+        }
+    }
+
+    figcaption {
+        grid-column: 3 / 11;
+        margin-top: 0.9rem;
+        color: var(--theme-muted-color);
+
+        @media (max-width: tokens.$breakpoint-mobile) {
+            grid-column: 1 / -1;
+        }
     }
 }
