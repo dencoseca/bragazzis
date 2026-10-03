@@ -1,167 +1,36 @@
-# AGENTS.md
+# Repository rules
 
-Instructions for AI agents working on the Bragazzi's website codebase.
+## Code and assets
 
-## Project Overview
+- Use `@/` imports for source files under `src/`; keep relative imports in root configuration files.
+- Use named exports; `vite.config.ts` is the default-export exception. Avoid TypeScript `any`.
+- Colocate page-specific components, hooks, and data under `src/pages/<feature>/`. Put code shared
+  across routes in `src/components/`, `src/hooks/`, or `src/constants/` as appropriate.
+- Use global SCSS, with kebab-case partials imported by `src/styles/main.scss`. Do not introduce
+  CSS modules or CSS-in-JS. Keep design tokens and breakpoints in `src/styles/_tokens.scss`;
+  use the existing breakpoint helpers in JavaScript rather than duplicating values.
+- Never overwrite, resize, or re-encode original `.jpg` assets. Use the presets in
+  `vite.imagetools.ts` and the shared `OptimizedImage` component. Do not import generated `.webp`
+  files as source assets. Keep `src/assets/images/gallery/` limited to gallery `.jpg` originals.
+- Keep routes lazy-loaded and give each page a focusable `main#main-content`. Leave Back/Forward
+  scroll restoration to the browser; do not add custom history state or scroll-position tracking.
 
-This is the website for **Bragazzi's**, an Italian deli and café in Sheffield. It is a single-page-style React
-application with multiple routes, built with **React 19**, **TypeScript**, and **Vite**.
+## Tooling and validation
 
-## Tech Stack
+- Use Vite+ (`vp`). Run package scripts with `vp run <script>`; built-in commands such as
+  `vp build` do not run the corresponding package script.
+- Import tooling APIs from `vite-plus` and test APIs from `vite-plus/test`. Use `vp migrate`
+  for toolchain upgrades; do not independently manage its bundled Vitest, Oxlint, Oxfmt, or tsdown.
+- Run `vp install` after pulling changes. For code changes, run `vp check`, `vp test`, and
+  `vp run build` (which includes the explicit TypeScript check).
+- Verify visual, animation, and scrolling changes in a browser at mobile, tablet, and desktop widths.
 
-- **Runtime/Framework:** React 19, React Router 7, TypeScript 7.0
-- **Build Tool:** Vite 8 (managed via Vite+)
-- **Styling:** Sass/SCSS (no CSS modules — global styles in `src/styles/`)
-- **Animation:** Motion (Framer Motion), Lenis (smooth scroll)
-- **SEO:** React 19 native document metadata
-- **Image Optimization:** vite-imagetools (build-time responsive AVIF/JPEG fallback generation via sharp)
-- **Testing:** A small Vitest suite (via Vite+) covering routing and metadata, the mobile menu's focus handling, and
-  route-failure recovery
+## GitHub workflow
 
-## Project Structure
+- Start new issue branches from an up-to-date `main`.
+- Open PRs ready for review unless a draft is requested. Include `Closes #<issue>` for each
+  issue completed by the PR.
+- Use squash merges only.
 
-```
-src/
-├── assets/            # Static assets
-│   ├── fonts/         # Self-hosted woff2 fonts (Instrument Serif, Newsreader, DM Mono; Latin subsets)
-│   └── images/        # Static image assets (jpg, png, svg — high-quality originals)
-├── components/        # Shared React components, with site shell/navigation under components/layout/
-├── constants/         # Shared TypeScript constants (animations.ts, siteConfig.ts, etc.)
-├── hooks/             # React hooks shared across routes (useSmoothScroll, useMediaQuery, useScrollParallax, useReveal)
-├── pages/             # Route-level pages and their feature-local components/data (for example pages/home/)
-├── styles/            # Global SCSS files
-│   ├── components/    # Component-specific SCSS partials
-│   ├── pages/         # Page-specific SCSS partials
-│   ├── main.scss      # Entry point that imports all partials
-│   ├── _tokens.scss
-│   ├── _themes.scss
-│   ├── _typography.scss
-│   ├── _motion.scss   # Reveal-on-enter, image fade-in, and cropped media frames
-│   └── _normalize.scss
-├── types/             # TypeScript type definitions (imagetools.ts, etc.)
-├── App.tsx            # Router setup
-└── main.tsx           # App entry point
-```
-
-- **Path alias:** `@` maps to `src/` (configured in `vite.config.ts` and `tsconfig.json`). In application code under
-  `src/`, use `@/` imports for other source files. Preserve relative imports in root configuration files.
-- **Config files:** `vite.config.ts`, `vite.imagetools.ts`, `tsconfig.json`
-
-## Code Style & Conventions
-
-- **Follow existing patterns.** Match the style of surrounding code — naming, formatting, file organization.
-- **TypeScript:** Strict mode. Do not use `any` — prefer explicit types or `unknown`. All files use `.ts` or `.tsx`
-  extensions.
-- **Imports:** In application code under `src/`, use the `@/` path alias for other source files. Example: `import { OptimizedImage } from "@/components/OptimizedImage"`.
-- **Components:** Functional components only. Use named exports for everything (components, hooks, types, interfaces).
-- **Feature colocation:** Keep page-specific components beside their route under `src/pages/<feature>/`; reserve
-  `src/components/` for components shared across routes.
-- **Hooks:** Prefix with `use`. Hooks shared across routes live in `src/hooks/`; a hook used by a single feature is
-  colocated with it, and moves to `src/hooks/` when a second route needs it (as `useScrollParallax` did when La Storia
-  adopted it).
-- **Styles:** SCSS partial filenames use kebab case and match their owning component or page feature (for example,
-  `_footer.scss`, `_la-storia.scss`, `_il-giorno.scss`, and `_error-page.scss`). Import new partials into
-  `src/styles/main.scss`.
-- **Constants:** Shared TypeScript values go in `src/constants/`. Visual design tokens, theme colors, and breakpoints
-  live in `src/styles/_tokens.scss`; `vite.config.ts` injects Sass breakpoint values into JavaScript at build time.
-- **Images:** Keep high-quality `.jpg` originals in `src/assets/images/`; do not overwrite or resize them. Use the
-  named `vite-imagetools` presets from `vite.imagetools.ts` (`?preset=gallery`, `?preset=editorial`, or
-  `?preset=fullWidth`) to generate responsive AVIF/JPEG fallback variants at build time. Use the shared
-  `OptimizedImage` component for rendering images where possible. Il Giorno gallery originals live in
-  `src/assets/images/gallery/`; its wildcard import and build-time metadata parity check depend on that directory
-  containing only gallery `.jpg` files. Existing `.webp` files are not source assets and should not be imported
-  directly.
-- **Image loading:** `OptimizedImage.shouldLoad` gates real sources; `loading` independently controls urgency and
-  defaults to lazy. `priority` forces eager/high-priority loading only when eligible. The gallery explicitly opts into
-  eager loading for its observer-driven load-ahead. Failed images show a local accessible fallback and report through
-  picture `onError`; `onReady` is reserved for successful loads. See `docs/image-loading.md` for measured behaviour.
-
-## GitHub Workflow
-
-- **Start issue branches from an up-to-date `main`.** Before branching from `main`, fetch the latest remote changes and
-  fast-forward or pull `main`.
-- **Raise pull requests as ready for review.** Do not create draft PRs unless the user explicitly asks for a draft.
-- **Use squash merges only when merging pull requests.** Merge commits are not allowed in this repository.
-- **Close completed issues from PR descriptions.** When a pull request completes one or more GitHub issues, include a
-  closing keyword for each issue in the PR description, such as `Closes #3`.
-
-## Key Architecture Notes
-
-- **No SSR** — this is a client-side SPA, but browser-dependent hooks include `typeof window` guards for SSR-safety as
-  a best practice.
-- **Routing** is handled by React Router in `src/App.tsx` with lazy-loaded page components. Pages use named exports; `App.tsx` maps them to default exports for `React.lazy`.
-- **Route failures** are caught around route content by `RouteErrorBoundary`. Its standalone recovery screen shares `ErrorPage` and its styles with the 404 page. Recovery uses an explicit full-page reload because rejected lazy imports are cached; changing pathname resets the boundary so the home link remains usable. Keep the shared Suspense boundary and its loading behavior unchanged.
-- **Smooth scrolling** is powered by Lenis via the `useSmoothScroll` hook, used in `components/layout/Layout.tsx`; history-entry changes reset its momentum.
-- **Route navigation** is coordinated by `components/RouteNavigation.tsx` inside the shared route Suspense boundary: new page links start at the top (or their fragment target), and focus moves after lazy content is ready. Every route supplies a focusable `main#main-content`. Back/Forward scroll restoration and native fragment scrolling are browser-managed; exact positions are not guaranteed across asynchronous layout changes. Do not add custom history state or scroll-position tracking for this policy.
-- **Responsive JS behavior** uses the Sass-backed media-query helpers in `useMediaQuery`; viewport-relative Motion
-  transforms use CSS units directly so resizing does not require React state.
-- **Scroll parallax** is gated in one place: `src/hooks/useScrollParallax.ts` owns the policy that scroll-linked motion
-  is disabled on mobile and under reduced motion. Each effect tracks its own element through Motion's
-  `useScroll({ target })`, so sections declare only a target ref, an optional scroll offset, and output ranges. The Home
-  hero uses it to widen its photograph from the grid margins to full-bleed through a `--photo-expansion` CSS variable.
-- **Reveal-on-enter** uses `useReveal` (`src/hooks/useReveal.ts`) with the `.reveal` class in `_motion.scss`: one shared
-  `IntersectionObserver` sets `data-revealed="true"` once, and the movement is a CSS transition. Keep entrance motion in
-  CSS like this so reduced-motion preferences settle it without extra JavaScript.
-- **Typography** pairs Instrument Serif (display), Newsreader (text) and DM Mono (labels), defined in `_typography.scss`.
-  The Home masthead and footer wordmark size themselves from the measured advance width of "Bragazzi’s" (0.32 × the grid
-  width); re-measure if the wordmark text, typeface, or letter-spacing changes. Display copy uses typographic quotes and
-  apostrophes (’ “ ”); `siteConfig.business.name` stays plain ASCII for document titles and structured data.
-- **Themes** are semantic in React (`data-theme="light"`, `"dark"`, or `"accent"`) and mapped to actual colors in Sass.
-  Pages use light or dark; the footer always uses the red accent theme.
-- **Breakpoints** are owned by Sass tokens in `src/styles/_tokens.scss`; `vite.config.ts` injects their values at build
-  time for `src/constants/breakpoints.ts`, so JavaScript never mirrors the numbers in TypeScript.
-
-## Important Warnings
-
-- **Do NOT add `"use client"` directives.** This is not a Next.js project.
-- **Do NOT introduce CSS-in-JS or CSS modules.** The project uses global SCSS with a partial-based architecture.
-- **Do NOT overwrite, resize, or re-encode `.jpg` originals** in `src/assets/images/`. Responsive variants are generated
-  at build time by `vite-imagetools` using the named presets in `vite.imagetools.ts`.
-- **Keep bundle size in mind.** Lazy-load routes (already done in `App.tsx`) and avoid large eager imports.
-- **No default exports, except configuration files.** The project enforces named exports via linting, with explicit
-  exception for `vite.config.ts`; preserve its default export.
-- **Keep AGENTS.md updated.** After finishing a task, update this file if any of your changes make its current content invalid or outdated.
-
-<!--VITE PLUS START-->
-
-## Using Vite+, the Unified Toolchain for the Web
-
-This project is using Vite+, a unified toolchain built on top of Vite, Rolldown, Vitest, tsdown, Oxlint, Oxfmt, and Vite Task. Vite+ wraps runtime management, package management, and frontend tooling in a single global CLI called `vp`. Vite+ is distinct from Vite, and it invokes Vite through `vp dev` and `vp build`. Run `vp help` to print a list of commands and `vp <command> --help` for information about a specific command.
-
-### Common Pitfalls
-
-- **Running scripts:** Vite+ built-in commands (`vp lint`, `vp dev`, `vp build`, `vp test`, etc.) always run the Vite+ built-in tool. Use `vp run <script>` to run `package.json` scripts or tasks defined in `vite.config.ts`
-- **Do not manage Vitest, Oxlint, Oxfmt, or tsdown directly:** Vite+ owns these tool versions. Do not
-  install or upgrade them by hand; use Vite+ commands so its pins, catalogs, and overrides stay aligned.
-- **Import JavaScript modules from `vite-plus`:** Import modules from the `vite-plus` dependency, not from
-  `vite` or `vitest`. For example, `import { defineConfig } from 'vite-plus';` or
-  `import { expect, test, vi } from 'vite-plus/test';`. Tests use Vite+'s bundled Vitest without a direct
-  `vitest` dependency. Let `vp migrate` manage Vitest dependencies and overrides if a future integration
-  requires them. See the
-  [direct Vitest dependency rules](https://viteplus.dev/guide/migrate-rules#when-vitest-is-directly-required).
-
-### Upgrading Vite+
-
-- For existing Vite+ projects, prefer `vp migrate` when upgrading the local Vite+ toolchain. It repins
-  `vite-plus`, the `vite` alias, Vitest, pnpm catalogs/overrides, and peer dependency rules according to the
-  current global `vp`.
-- After `vp migrate`, run `vp install`, `vp check`, `vp test`, and `vp run build`. The build script runs `tsc && vp build`
-  for full build validation.
-- In Codex/non-TTY environments, if `vp migrate` updates files but its internal install fails with a pnpm
-  confirmation prompt, rerun install with `env CI=true vp install --no-frozen-lockfile`.
-
-### Codex Sandbox Note
-
-When starting the local dev server in Codex, `vp dev --host 127.0.0.1` may fail with `listen EPERM` because binding a localhost port requires approval. If that happens, rerun the same command with escalated permission rather than changing the host, port, or dev tooling.
-
-### Review Checklist
-
-- [ ] Run `vp install` after pulling remote changes and before getting started.
-- [ ] Run `vp check` and `vp test` to format, lint, type check and test changes.
-- [ ] Run `vp run build` for the explicit TypeScript check and production build.
-- [ ] Check layout, typography, imagery, animation, or scroll changes in a browser at mobile, tablet, and desktop widths.
-- [ ] Check if there are tasks or `package.json` scripts necessary for validation, run via `vp run <script>`.
-
-- Docs: https://viteplus.dev/guide/
-
-<!--VITE PLUS END-->
+Keep this file limited to actionable repo rules. Put implementation explanations in code comments
+or `docs/`; update these rules when they become outdated.
