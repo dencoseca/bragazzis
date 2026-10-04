@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { m } from "motion/react";
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
@@ -51,7 +51,7 @@ export function Menu({ id, theme, onNavigate }: MenuProps) {
     }, []);
 
     return (
-        <motion.nav
+        <m.nav
             id={id}
             className="menu"
             data-theme={theme}
@@ -65,11 +65,7 @@ export function Menu({ id, theme, onNavigate }: MenuProps) {
         >
             <div className="menu__links">
                 {siteNavRoutes.map((route, index) => (
-                    <motion.div
-                        key={route.path}
-                        className="menu__link-wrapper"
-                        variants={itemVariants}
-                    >
+                    <m.div key={route.path} className="menu__link-wrapper" variants={itemVariants}>
                         <Link
                             className="menu__link"
                             to={route.path}
@@ -81,15 +77,15 @@ export function Menu({ id, theme, onNavigate }: MenuProps) {
                             </span>
                             <span className="menu__link-label">{route.label}</span>
                         </Link>
-                    </motion.div>
+                    </m.div>
                 ))}
             </div>
-            <motion.div className="menu__details text--label" variants={itemVariants}>
+            <m.div className="menu__details text--label" variants={itemVariants}>
                 <a className="text-link" href={address.mapsUrl} target="_blank" rel="noreferrer">
                     {address.streetAddress}, {address.addressLocality}
                 </a>
                 <OpeningHours />
-            </motion.div>
-        </motion.nav>
+            </m.div>
+        </m.nav>
     );
 }

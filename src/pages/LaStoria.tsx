@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { m } from "motion/react";
 import { useRef, type ReactNode } from "react";
 
 import earlyDaysImg from "@/assets/images/early-days.jpg?preset=editorial";
@@ -37,7 +37,7 @@ function StoryChapter({ place, ticket, side, children }: StoryChapterProps) {
             <div className="lastoria__text text--body reveal" ref={textRef}>
                 {children}
             </div>
-            <motion.div className="lastoria__ticket-track" style={{ y: ticketParallax }}>
+            <m.div className="lastoria__ticket-track" style={{ y: ticketParallax }}>
                 {/* The tickets are souvenirs of the trip rather than content, so they stay silent. */}
                 <div
                     className={`lastoria__ticket lastoria__ticket--${side} reveal`}
@@ -50,7 +50,7 @@ function StoryChapter({ place, ticket, side, children }: StoryChapterProps) {
                         loading="eager"
                     />
                 </div>
-            </motion.div>
+            </m.div>
         </section>
     );
 }

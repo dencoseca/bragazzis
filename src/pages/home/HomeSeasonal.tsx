@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { m } from "motion/react";
 import { useRef } from "react";
 
 import eggImg from "@/assets/images/egg.jpg?preset=editorial";
@@ -51,7 +51,7 @@ export function HomeSeasonal({ shouldLoadImages }: HomeSeasonalProps) {
                     Pasqua
                 </figcaption>
             </figure>
-            <motion.div
+            <m.div
                 className="home-seasonal__figure home-seasonal__figure--christmas"
                 style={{ y: christmasParallax }}
             >
@@ -69,7 +69,7 @@ export function HomeSeasonal({ shouldLoadImages }: HomeSeasonalProps) {
                         Natale
                     </figcaption>
                 </figure>
-            </motion.div>
+            </m.div>
         </section>
     );
 }

@@ -23,7 +23,7 @@ vi.mock("motion/react", () => ({
     AnimatePresence({ children }: { children: ReactNode }) {
         return children;
     },
-    motion: {
+    m: {
         div({ animate, exit, initial, transition, variants, ...props }: MotionElementProps) {
             void animate;
             void exit;

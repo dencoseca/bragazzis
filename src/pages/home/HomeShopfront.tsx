@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { m } from "motion/react";
 import { useRef } from "react";
 
 import shopfrontImg from "@/assets/images/shopfront.jpg?preset=fullWidth";
@@ -18,7 +18,7 @@ export function HomeShopfront({ shouldLoadImage }: HomeShopfrontProps) {
 
     return (
         <div className="home-shopfront media-frame" ref={frameRef}>
-            <motion.div className="home-shopfront__inner" style={{ y: imageParallax }}>
+            <m.div className="home-shopfront__inner" style={{ y: imageParallax }}>
                 <OptimizedImage
                     image={shopfrontImg}
                     alt="the Bragazzi’s shopfront on Abbeydale Road"
@@ -26,7 +26,7 @@ export function HomeShopfront({ shouldLoadImage }: HomeShopfrontProps) {
                     shouldLoad={shouldLoadImage}
                     revealOnLoad
                 />
-            </motion.div>
+            </m.div>
         </div>
     );
 }

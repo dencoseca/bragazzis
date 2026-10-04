@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, m } from "motion/react";
 import type { Ref } from "react";
 import { Link, NavLink } from "react-router-dom";
 
@@ -72,7 +72,7 @@ export function Header({
                 aria-controls={menuId}
             >
                 <AnimatePresence initial={false} mode="popLayout">
-                    <motion.span
+                    <m.span
                         key={menuLabel}
                         className="header__menu-label"
                         variants={menuLabelVariants}
@@ -82,7 +82,7 @@ export function Header({
                         transition={quickTransition}
                     >
                         {menuLabel}
-                    </motion.span>
+                    </m.span>
                 </AnimatePresence>
             </button>
         </header>
