@@ -1,4 +1,4 @@
-import { motion, useReducedMotion } from "motion/react";
+import { m, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
 import parmesanImg from "@/assets/images/parmesan.jpg?preset=fullWidth";
@@ -127,16 +127,16 @@ export function HomeHero({ onSettled }: HomeHeroProps) {
         <section className="home-hero" ref={heroRef}>
             <div className="home-hero__masthead">
                 <h1 className="home-hero__title text--masthead">
-                    <motion.span
+                    <m.span
                         className="home-hero__title-text"
                         variants={titleVariants}
                         initial={initialAnimationState}
                         animate={getAnimationState(isDisplayFontReady)}
                     >
                         Bragazzi’s
-                    </motion.span>
+                    </m.span>
                 </h1>
-                <motion.div
+                <m.div
                     className="home-hero__meta text--label"
                     variants={metaVariants}
                     initial={initialAnimationState}
@@ -152,14 +152,14 @@ export function HomeHero({ onSettled }: HomeHeroProps) {
                         {address.streetAddress}, {address.addressLocality}
                     </a>
                     <p className="home-hero__established">Est. 2003</p>
-                </motion.div>
+                </m.div>
             </div>
-            <motion.div
+            <m.div
                 className="home-hero__photo"
                 ref={photoRef}
                 style={{ "--photo-expansion": photoExpansion }}
             >
-                <motion.div
+                <m.div
                     className="home-hero__photo-inner"
                     style={{ y: photoParallax }}
                     variants={photoVariants}
@@ -176,8 +176,8 @@ export function HomeHero({ onSettled }: HomeHeroProps) {
                         onReady={() => setIsHeroImageReady(true)}
                         onError={() => setIsHeroImageReady(true)}
                     />
-                </motion.div>
-            </motion.div>
+                </m.div>
+            </m.div>
         </section>
     );
 }

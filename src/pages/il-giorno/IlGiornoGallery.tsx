@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { getBreakpointMediaQuery } from "@/constants/breakpoints";
@@ -36,7 +36,8 @@ interface GalleryFigureProps {
     shouldLoad: boolean;
 }
 
-function GalleryFigure({ index, shouldLoad }: GalleryFigureProps) {
+// Advancing the load-ahead boundary only changes the newly eligible figures.
+const GalleryFigure = memo(function GalleryFigure({ index, shouldLoad }: GalleryFigureProps) {
     const revealRef = useReveal<HTMLElement>();
     const image = galleryImages[index];
 
@@ -62,7 +63,7 @@ function GalleryFigure({ index, shouldLoad }: GalleryFigureProps) {
             </span>
         </figure>
     );
-}
+});
 
 export function IlGiornoGallery() {
     const galleryRef = useRef<HTMLDivElement>(null);
@@ -77,7 +78,9 @@ export function IlGiornoGallery() {
         }
 
         const observer = new IntersectionObserver(
-            (entries) => {
+            (entries, observer) => {
+                let nextIndex = -1;
+
                 for (const entry of entries) {
                     if (!entry.isIntersecting) {
                         continue;
@@ -85,9 +88,13 @@ export function IlGiornoGallery() {
 
                     const imageIndex = Number((entry.target as HTMLElement).dataset.galleryIndex);
 
-                    setLoadedThroughIndex((currentIndex) =>
-                        Math.max(currentIndex, getGalleryLoadIndex(imageIndex)),
-                    );
+                    nextIndex = Math.max(nextIndex, getGalleryLoadIndex(imageIndex));
+                    // Eligibility only advances, so this target never needs to load again.
+                    observer.unobserve(entry.target);
+                }
+
+                if (nextIndex >= 0) {
+                    setLoadedThroughIndex((currentIndex) => Math.max(currentIndex, nextIndex));
                 }
             },
             {

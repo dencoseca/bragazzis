@@ -37,4 +37,4 @@ jobs:
         run: vp test
 
       - name: Build production app
-        run: vp build
+        run: vp run build
