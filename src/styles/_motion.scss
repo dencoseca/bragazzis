@@ -13,6 +13,13 @@
         translate: 0 0;
     }
 
+    // Keyboard focus must be visible immediately, even before the scroll reveal has run.
+    &:focus-within {
+        opacity: 1;
+        translate: none;
+        transition: none;
+    }
+
     @media print {
         opacity: 1;
         translate: none;
