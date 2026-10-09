@@ -13,6 +13,7 @@ export function Footer({ theme, scrollToTopBehavior = "smooth" }: FooterProps) {
     const { address, email, phone } = siteConfig.business;
 
     function scrollToTop() {
+        document.querySelector<HTMLAnchorElement>(".header__logo")?.focus({ preventScroll: true });
         window.scrollTo({
             top: 0,
             behavior: scrollToTopBehavior,

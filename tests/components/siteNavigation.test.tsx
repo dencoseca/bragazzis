@@ -20,6 +20,7 @@ interface MotionElementProps extends HTMLAttributes<HTMLElement> {
 }
 
 vi.mock("motion/react", () => ({
+    useIsPresent: () => true,
     AnimatePresence({ children }: { children: ReactNode }) {
         return children;
     },
@@ -85,6 +86,19 @@ describe("SiteNavigation", () => {
         document.documentElement.style.overflow = "";
     });
 
+    test("offers the skip link before navigation in keyboard order", async () => {
+        const user = userEvent.setup();
+        render(
+            <MemoryRouter>
+                <NavigationTestHarness />
+            </MemoryRouter>,
+        );
+
+        await user.tab();
+
+        expect(document.activeElement).toBe(screen.getByRole("link", { name: "Skip to content" }));
+    });
+
     test("makes the menu modal, traps focus, and restores background state", async () => {
         const user = userEvent.setup();
         document.body.style.overflow = "clip";
@@ -109,7 +123,9 @@ describe("SiteNavigation", () => {
         const firstMenuLink = menuLinks[0];
         const lastMenuLink = menuLinks.at(-1);
 
-        expect(dialog.id).toBe("mobile-menu");
+        expect(within(dialog).getByRole("navigation").id).toBe("mobile-menu");
+        expect(within(dialog).getByRole("button", { name: "Close menu" })).toBe(menuButton);
+        expect(firstMenuLink.getAttribute("aria-current")).toBe("page");
         expect(dialog.getAttribute("aria-modal")).toBe("true");
         expect(menuButton.getAttribute("aria-expanded")).toBe("true");
         expect(backgroundContent?.inert).toBe(true);

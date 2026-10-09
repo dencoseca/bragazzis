@@ -27,6 +27,13 @@
     display: grid;
     justify-items: center;
     width: min(44rem, 100%);
+    min-width: 0;
+    overflow-wrap: anywhere;
+
+    > * {
+        min-width: 0;
+        max-width: 100%;
+    }
 }
 
 .error-page__title {

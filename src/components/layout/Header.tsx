@@ -55,7 +55,7 @@ export function Header({
             >
                 {siteNavRoutes.map((route) => (
                     <NavLink key={route.path} className="header__link" to={route.path} end>
-                        {route.label}
+                        <span lang="it">{route.label}</span>
                     </NavLink>
                 ))}
                 <a className="header__link header__link--visit" href={`#${visitSectionId}`}>

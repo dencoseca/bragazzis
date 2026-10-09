@@ -1,6 +1,6 @@
-import { m } from "motion/react";
+import { m, useIsPresent } from "motion/react";
 import { useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import { OpeningHours } from "@/components/OpeningHours";
 import { menuExitTransition, menuTransition } from "@/constants/animations";
@@ -43,6 +43,7 @@ interface MenuProps {
 }
 
 export function Menu({ id, theme, onNavigate }: MenuProps) {
+    const isPresent = useIsPresent();
     const firstLinkRef = useRef<HTMLAnchorElement>(null);
     const { address } = siteConfig.business;
 
@@ -55,9 +56,9 @@ export function Menu({ id, theme, onNavigate }: MenuProps) {
             id={id}
             className="menu"
             data-theme={theme}
-            role="dialog"
-            aria-modal="true"
-            aria-label="Mobile navigation"
+            aria-label="Primary navigation"
+            inert={!isPresent}
+            aria-hidden={!isPresent || undefined}
             initial="closed"
             animate="open"
             exit="closed"
@@ -66,17 +67,20 @@ export function Menu({ id, theme, onNavigate }: MenuProps) {
             <div className="menu__links">
                 {siteNavRoutes.map((route, index) => (
                     <m.div key={route.path} className="menu__link-wrapper" variants={itemVariants}>
-                        <Link
+                        <NavLink
                             className="menu__link"
                             to={route.path}
+                            end
                             onClick={onNavigate}
                             ref={index === 0 ? firstLinkRef : undefined}
                         >
                             <span className="menu__link-index text--label" aria-hidden="true">
                                 {String(index + 1).padStart(2, "0")}
                             </span>
-                            <span className="menu__link-label">{route.label}</span>
-                        </Link>
+                            <span className="menu__link-label" lang="it">
+                                {route.label}
+                            </span>
+                        </NavLink>
                     </m.div>
                 ))}
             </div>

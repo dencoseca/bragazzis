@@ -123,20 +123,30 @@ export function SiteNavigation({ backgroundContentRef, theme, menuTheme }: SiteN
 
     return (
         <>
-            <AnimatePresence>
-                {menuIsOpen ? (
-                    <Menu id={mobileMenuId} theme={menuTheme} onNavigate={() => closeMenu()} />
-                ) : null}
-            </AnimatePresence>
-            <Header
-                menuIsOpen={menuIsOpen}
-                onMenuToggle={toggleMenu}
-                menuButtonRef={menuButtonRef}
-                logoLinkRef={logoLinkRef}
-                menuId={mobileMenuId}
-                theme={theme}
-                menuTheme={menuTheme}
-            />
+            <a href="#main-content" className="skip-to-content" inert={menuIsOpen}>
+                Skip to content
+            </a>
+            {/* The modal includes its header Close button as well as the navigation links. */}
+            <div
+                role={menuIsOpen ? "dialog" : undefined}
+                aria-modal={menuIsOpen || undefined}
+                aria-label={menuIsOpen ? "Mobile navigation" : undefined}
+            >
+                <AnimatePresence>
+                    {menuIsOpen ? (
+                        <Menu id={mobileMenuId} theme={menuTheme} onNavigate={() => closeMenu()} />
+                    ) : null}
+                </AnimatePresence>
+                <Header
+                    menuIsOpen={menuIsOpen}
+                    onMenuToggle={toggleMenu}
+                    menuButtonRef={menuButtonRef}
+                    logoLinkRef={logoLinkRef}
+                    menuId={mobileMenuId}
+                    theme={theme}
+                    menuTheme={menuTheme}
+                />
+            </div>
         </>
     );
 }

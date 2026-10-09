@@ -42,9 +42,6 @@ export function Layout({
                 menuTheme={themeNames.dark}
             />
             <div className="layout__background" ref={backgroundContentRef}>
-                <a href="#main-content" className="skip-to-content">
-                    Skip to content
-                </a>
                 <main id="main-content" tabIndex={-1} data-theme={pageTheme}>
                     {children}
                 </main>
