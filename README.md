@@ -51,11 +51,26 @@ Check for package updates:
 vp outdated
 ```
 
-Apply dependency updates:
+Upgrade the Vite+ toolchain using the target release's migrator before changing its
+dependencies or lockfile, so it can detect and migrate the previous test runner:
 
 ```sh
-vp update --latest
+npx --package=vite-plus@<target-version> vp migrate --no-interactive
 ```
+
+Keep the `vite` and `vite-plus` catalog pins aligned, and the `vitest` override equal
+to `vp toolchain vitest`. Do not independently upgrade Vite+'s bundled tools.
+See the [Vite+ upgrade guide](https://viteplus.dev/guide/migrate#upgrade-from-vite-03-to-10).
+
+Apply other dependency updates with exact versions, review their release notes,
+then run `vp check`, `vp test`, and `vp run build`:
+
+```sh
+vp update <package-name> --latest
+```
+
+The separate performance-audit package also has its own manifest and lockfile.
+From `scripts/performance-audit`, install it with `vp install -- --ignore-workspace`.
 
 ## Images
 

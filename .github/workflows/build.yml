@@ -11,10 +11,10 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7.0.1
 
       - name: Set up Vite+
-        uses: voidzero-dev/setup-vp@v1
+        uses: voidzero-dev/setup-vp@v1.21.2
         with:
           node-version: "24"
           cache: true
@@ -23,7 +23,7 @@ jobs:
         run: vp install --frozen-lockfile
 
       - name: Cache imagetools transforms
-        uses: actions/cache@v4
+        uses: actions/cache@v6.1.0
         with:
           path: node_modules/.cache/imagetools
           key: ${{ runner.os }}-imagetools-${{ hashFiles('src/assets/images/**/*.jpg', 'src/**/*.{ts,tsx}', 'vite.config.ts', 'vite.imagetools.ts', 'package.json', 'pnpm-lock.yaml') }}
