@@ -21,7 +21,15 @@ for (const file of screenshots) {
     let rawPixels = 0;
     for (let i = 0; i < a.data.length; i += 4)
         if (!a.data.subarray(i, i + 4).equals(b.data.subarray(i, i + 4))) rawPixels++;
-    rows.push({ file, pixels, rawPixels, pct: (100 * pixels) / (a.width * a.height) });
+    // Pixelmatch 8 changed the metric: counts cannot be compared with older reports.
+    rows.push({
+        file,
+        metric: "oklab-hyab",
+        threshold: 0.1,
+        pixels,
+        rawPixels,
+        pct: (100 * pixels) / (a.width * a.height),
+    });
     if (pixels) writeFileSync(`${base}/after/diff-${file}`, PNG.sync.write(diff));
 }
 writeFileSync(`${base}/comparison.json`, JSON.stringify(rows, null, 2));
