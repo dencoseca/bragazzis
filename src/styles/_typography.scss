@@ -1,20 +1,23 @@
 @use "tokens" as tokens;
+
+// Inline the small masthead face so the wordmark fits from the first paint. Preload the
+// remaining faces in index.html; if they arrive late, keep the fallback without reflow.
 // ===============
 // Display
 // ===============
 @font-face {
     font-family: "Instrument Serif";
-    src: url("@/assets/fonts/InstrumentSerif-Regular.woff2") format("woff2");
+    src: url("@/assets/fonts/InstrumentSerif-Regular.woff2?inline") format("woff2");
     font-style: normal;
     font-weight: 400;
-    font-display: swap;
+    font-display: optional;
 }
 @font-face {
     font-family: "Instrument Serif";
     src: url("@/assets/fonts/InstrumentSerif-Italic.woff2") format("woff2");
     font-style: italic;
     font-weight: 400;
-    font-display: swap;
+    font-display: optional;
 }
 // ===============
 // Text
@@ -24,14 +27,14 @@
     src: url("@/assets/fonts/Newsreader-Text.woff2") format("woff2");
     font-style: normal;
     font-weight: 400 500;
-    font-display: swap;
+    font-display: optional;
 }
 @font-face {
     font-family: "Newsreader";
     src: url("@/assets/fonts/Newsreader-TextItalic.woff2") format("woff2");
     font-style: italic;
     font-weight: 400;
-    font-display: swap;
+    font-display: optional;
 }
 // ===============
 // Labels
@@ -41,7 +44,7 @@
     src: url("@/assets/fonts/DMMono-Regular.woff2") format("woff2");
     font-style: normal;
     font-weight: 400;
-    font-display: swap;
+    font-display: optional;
 }
 // ===================
 // Global text styles
