@@ -4,11 +4,10 @@ allowBuilds:
   sharp: false
 overrides:
   vite@*: "catalog:"
-  vitest@*: 5.0.3
 savePrefix: ""
 catalog:
-  vite: npm:@voidzero-dev/vite-plus-core@1.1.0
-  vite-plus: 1.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.6.0
+  vite-plus: 1.6.0
 peerDependencyRules:
   allowAny:
     - vite
@@ -16,7 +15,7 @@ peerDependencyRules:
     typescript: "*"
     vite: "*"
 minimumReleaseAgeExclude:
-  - "@types/node@26.4.0"
+  - "@types/node@24.13.3 || 26.4.0"
   - "happy-dom@20.11.12"
   - "@typescript/typescript-aix-ppc64@7.0.2"
   - "@typescript/typescript-darwin-arm64@7.0.2"
@@ -39,4 +38,15 @@ minimumReleaseAgeExclude:
   - "@typescript/typescript-win32-arm64@7.0.2"
   - "@typescript/typescript-win32-x64@7.0.2"
   - typescript@7.0.2
-  - "@types/node@24.13.3"
+  - "@voidzero-dev/vite-plus-core@1.6.0"
+  - "@voidzero-dev/vite-plus-darwin-arm64@1.6.0"
+  - "@voidzero-dev/vite-plus-darwin-x64@1.6.0"
+  - "@voidzero-dev/vite-plus-linux-arm64-gnu@1.6.0"
+  - "@voidzero-dev/vite-plus-linux-arm64-musl@1.6.0"
+  - "@voidzero-dev/vite-plus-linux-x64-gnu@1.6.0"
+  - "@voidzero-dev/vite-plus-linux-x64-musl@1.6.0"
+  - "@voidzero-dev/vite-plus-win32-arm64-msvc@1.6.0"
+  - "@voidzero-dev/vite-plus-win32-x64-msvc@1.6.0"
+  - vite-plus@1.6.0
+  - sass@1.108.2
+  - vite-imagetools@12.0.2
