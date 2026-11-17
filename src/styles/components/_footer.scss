@@ -106,15 +106,9 @@
 
 // The wordmark sits on the bottom edge of the page with its descender cropped.
 .footer__wordmark {
-    --wordmark-size: calc((100vw - 2 * var(--grid-margin)) * 0.32);
-    height: calc(var(--wordmark-size) * 0.74);
+    aspect-ratio: 312 / 80;
     margin: 0;
     overflow: hidden;
-    font-family: tokens.$font-display;
-    font-size: var(--wordmark-size);
-    letter-spacing: -0.02em;
-    line-height: 0.8;
-    white-space: nowrap;
     user-select: none;
 }
 

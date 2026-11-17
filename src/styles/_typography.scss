@@ -49,14 +49,13 @@
 // ===================
 // Global text styles
 // ===================
-// "Bragazzi’s" advances 3.12em, so this font size sets the wordmark across the full grid.
-.text--masthead {
+.wordmark {
+    display: block;
+    height: auto;
+    fill: currentColor;
     font-family: tokens.$font-display;
-    font-size: calc((100vw - 2 * var(--grid-margin)) * 0.32);
     font-weight: 400;
-    letter-spacing: -0.02em;
-    line-height: 0.8;
-    margin: 0;
+    letter-spacing: -2px;
 }
 .text--title {
     font-family: tokens.$font-display;

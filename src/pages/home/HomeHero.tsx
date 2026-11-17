@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 
 import parmesanImg from "@/assets/images/parmesan.jpg?preset=fullWidth";
 import { OptimizedImage } from "@/components/OptimizedImage";
+import { Wordmark } from "@/components/Wordmark";
 import { introTransition } from "@/constants/animations";
 import { siteConfig } from "@/constants/siteConfig";
 import { useScrollParallax } from "@/hooks/useScrollParallax";
@@ -126,14 +127,14 @@ export function HomeHero({ onSettled }: HomeHeroProps) {
     return (
         <section className="home-hero" ref={heroRef}>
             <div className="home-hero__masthead">
-                <h1 className="home-hero__title text--masthead">
+                <h1 className="home-hero__title">
                     <m.span
                         className="home-hero__title-text"
                         variants={titleVariants}
                         initial={initialAnimationState}
                         animate={getAnimationState(isDisplayFontReady)}
                     >
-                        Bragazzi’s
+                        <Wordmark />
                     </m.span>
                 </h1>
                 <m.div
