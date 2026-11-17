@@ -15,7 +15,6 @@ interface ContinueLink {
     route: PublicPageRoute;
     summary: string;
     image: OptimizedPicture;
-    alt: string;
 }
 
 const continueLinks: ContinueLink[] = [
@@ -23,13 +22,11 @@ const continueLinks: ContinueLink[] = [
         route: publicPageRoutes.laStoria,
         summary: "The story of Bragazzi’s",
         image: earlyDaysImg,
-        alt: "the cafe counter in the early days",
     },
     {
         route: publicPageRoutes.ilGiorno,
         summary: "A day at Bragazzi’s",
         image: apertoImg,
-        alt: "sandwich board sign outside cafe",
     },
 ];
 
