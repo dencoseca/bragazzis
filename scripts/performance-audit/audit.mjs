@@ -3,6 +3,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { chromium } from "playwright";
 
 import { artifactRoot, browserPath, siteUrl } from "./config.mjs";
+import { readGalleryPhotos } from "./gallery-photos.mjs";
 const [version = "before", mode = "metrics"] = process.argv.slice(2);
 const out = `${artifactRoot}/${version}`;
 await mkdir(out, { recursive: true });
@@ -231,12 +232,16 @@ if (mode === "metrics") {
         const down = await page.evaluate(() => ({
             ...window.audit,
             targets: window.audit.targets.size,
-            images: [...document.images].map((i) => ({
-                src: i.currentSrc.split("/").pop(),
-                alt: i.alt,
-                loaded: i.complete && i.naturalWidth > 0,
-            })),
         }));
+        down.images = await page.evaluate(readGalleryPhotos);
+        const failed = down.images.filter((image) => !image.loaded);
+        if (!down.images.length || failed.length) {
+            console.error(
+                `Gallery run ${run}: ${down.images.length - failed.length}/${down.images.length} photos decoded`,
+                failed,
+            );
+            process.exitCode = 1;
+        }
         for (let y = max; y >= 0; y -= 700) await scrollTo(page, y);
         await scrollTo(page, 0);
         await page.waitForTimeout(400);
