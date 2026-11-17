@@ -22,13 +22,19 @@ jobs:
       - name: Install dependencies
         run: vp install --frozen-lockfile
 
+      - name: Fingerprint image requests
+        id: image-requests
+        run: |
+          git grep -hoE '"([^"]+\.jpg\?[^"]+|[^"]*\*\.jpg|\?preset=[^"]+)"' -- ':(glob)src/**/*.ts' ':(glob)src/**/*.tsx' |
+            LC_ALL=C sort -u | sha256sum | awk '{ print "hash=" $1 }' >> "$GITHUB_OUTPUT"
+
       - name: Cache imagetools transforms
         uses: actions/cache@v6.1.0
         with:
           path: node_modules/.cache/imagetools
-          key: ${{ runner.os }}-imagetools-${{ hashFiles('src/assets/images/**/*.jpg', 'src/**/*.{ts,tsx}', 'vite.config.ts', 'vite.imagetools.ts', 'package.json', 'pnpm-lock.yaml') }}
+          key: imagetools-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('pnpm-lock.yaml', 'vite.config.ts', 'vite.imagetools.ts') }}-${{ hashFiles('src/assets/images/**/*.jpg') }}-${{ steps.image-requests.outputs.hash }}
           restore-keys: |
-            ${{ runner.os }}-imagetools-
+            imagetools-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('pnpm-lock.yaml', 'vite.config.ts', 'vite.imagetools.ts') }}-
 
       - name: Run Vite+ checks
         run: vp check
