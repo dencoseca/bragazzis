@@ -1,4 +1,4 @@
-import { useCallback, useSyncExternalStore } from "react";
+import { useMemo, useSyncExternalStore } from "react";
 
 import { getBreakpointMediaQuery, type BreakpointName } from "@/constants/breakpoints";
 
@@ -7,16 +7,19 @@ function getServerSnapshot(): boolean {
 }
 
 export function useMediaQuery(query: string): boolean {
-    const subscribe = useCallback(
-        (onChange: () => void) => {
-            const media = window.matchMedia(query);
+    const { subscribe, getSnapshot } = useMemo(() => {
+        let media: MediaQueryList;
+        const getMedia = () => (media ??= window.matchMedia(query));
 
-            media.addEventListener("change", onChange);
-            return () => media.removeEventListener("change", onChange);
-        },
-        [query],
-    );
-    const getSnapshot = useCallback(() => window.matchMedia(query).matches, [query]);
+        return {
+            subscribe(onChange: () => void) {
+                const list = getMedia();
+                list.addEventListener("change", onChange);
+                return () => list.removeEventListener("change", onChange);
+            },
+            getSnapshot: () => getMedia().matches,
+        };
+    }, [query]);
 
     return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }
