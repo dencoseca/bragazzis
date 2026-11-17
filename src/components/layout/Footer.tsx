@@ -1,5 +1,6 @@
 import { ArrowIcon } from "@/components/ArrowIcon";
 import { OpeningHours } from "@/components/OpeningHours";
+import { Wordmark } from "@/components/Wordmark";
 import { visitSectionId } from "@/constants/routes";
 import { siteConfig } from "@/constants/siteConfig";
 import type { ThemeName } from "@/constants/themes";
@@ -105,7 +106,7 @@ export function Footer({ theme, scrollToTopBehavior = "smooth" }: FooterProps) {
             </div>
             <div className="footer__base">
                 <p className="footer__wordmark" aria-hidden="true">
-                    Bragazzi’s
+                    <Wordmark />
                 </p>
                 <button type="button" className="footer__top text--label" onClick={scrollToTop}>
                     Back to top <ArrowIcon direction="up" />

@@ -10,8 +10,8 @@
 // The title is its own mask: the wordmark rises into view from below its baseline.
 .home-hero__title {
     overflow: hidden;
-    padding-bottom: 0.17em;
-    margin-bottom: -0.17em;
+    margin: 0;
+    margin-bottom: calc((100vw - 2 * var(--grid-margin)) * -0.087);
 
     // Narrow screens stack the details beneath the wordmark, so it keeps its descender room.
     @media (max-width: tokens.$breakpoint-mobile) {
