@@ -4,6 +4,7 @@ import pixelmatch from "pixelmatch";
 import { PNG } from "pngjs";
 
 import { artifactRoot } from "./config.mjs";
+import { countChangedPixels } from "./raw-pixels.mjs";
 const base = artifactRoot;
 const rows = [];
 const screenshots = readdirSync(`${base}/before`).filter((f) => /^\d+-.*\.png$/.test(f));
@@ -18,9 +19,7 @@ for (const file of screenshots) {
         threshold: 0.1,
         includeAA: true,
     });
-    let rawPixels = 0;
-    for (let i = 0; i < a.data.length; i += 4)
-        if (!a.data.subarray(i, i + 4).equals(b.data.subarray(i, i + 4))) rawPixels++;
+    const rawPixels = countChangedPixels(a.data, b.data);
     // Pixelmatch 8 changed the metric: counts cannot be compared with older reports.
     rows.push({
         file,
